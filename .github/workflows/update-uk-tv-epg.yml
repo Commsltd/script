@@ -66,6 +66,7 @@ jobs:
           npm run grab --- \
             --channels="$RUNNER_TEMP/custom.channels.xml" \
             --output="$RUNNER_TEMP/guide.xml" \
+            --days=7 \
             --maxConnections=4 > "$RUNNER_TEMP/grab.log" 2>&1
           status=$?
           tail -n 80 "$RUNNER_TEMP/grab.log" || true
