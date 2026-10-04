@@ -91,7 +91,11 @@ jobs:
               root = ET.parse(f).getroot()
           channels = root.findall("channel")
           programmes = root.findall("programme")
-          print(f"Validated XMLTV: {len(channels)} channels, {len(programmes)} programmes")
+          descriptions = [p.find("desc") for p in programmes]
+          descriptions = [d for d in descriptions if d is not None and (d.text or "").strip()]
+          subtitles = [p.find("sub-title") for p in programmes]
+          subtitles = [d for d in subtitles if d is not None and (d.text or "").strip()]
+          print(f"Validated XMLTV: {len(channels)} channels, {len(programmes)} programmes, {len(descriptions)} descriptions, {len(subtitles)} subtitles")
           if len(channels) < 10 or len(programmes) < 100:
               raise SystemExit("Guide looks unexpectedly small; refusing to publish")
 
