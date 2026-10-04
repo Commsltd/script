@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 UA = "Mozilla/5.0 (UK-EPG-Builder/1.0)"
-TVG_ID_RE = re.compile(r'tvg-id\\s*=\\s*"([^"]+)"', re.I)
+TVG_ID_RE = re.compile(r'tvg-id\s*=\s*"([^"]+)"', re.I)
 
 
 def die(msg: str) -> None:
