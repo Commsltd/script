@@ -412,18 +412,113 @@ def preferred_variant_score(entry: dict) -> int:
     return score
 
 
+MAIN_NAME_RULES = [
+    ("BBC One", re.compile(r"^bbc one\\b", re.I)),
+    ("BBC Two", re.compile(r"^bbc two\\b", re.I)),
+    ("ITV1", re.compile(r"^itv1\\b", re.I)),
+    ("Channel 4", re.compile(r"^channel 4\\b", re.I)),
+    ("Channel 5", re.compile(r"^channel 5\\b", re.I)),
+    ("BBC Three", re.compile(r"^bbc three\\b", re.I)),
+    ("BBC Four", re.compile(r"^bbc four\\b", re.I)),
+    ("ITV2", re.compile(r"^itv2\\b", re.I)),
+    ("ITV3", re.compile(r"^itv3\\b", re.I)),
+    ("ITV4", re.compile(r"^itv4\\b", re.I)),
+    ("E4", re.compile(r"^e4\\b", re.I)),
+    ("More4", re.compile(r"^more ?4\\b", re.I)),
+    ("Film4", re.compile(r"^film ?4\\b", re.I)),
+    ("4seven", re.compile(r"^4seven\\b", re.I)),
+    ("5STAR", re.compile(r"^5star\\b", re.I)),
+    ("5USA", re.compile(r"^5usa\\b", re.I)),
+    ("5ACTION", re.compile(r"^5action\\b", re.I)),
+    ("5SELECT", re.compile(r"^5select\\b", re.I)),
+    ("U&Dave", re.compile(r"^(u&)?dave\\b", re.I)),
+    ("U&Drama", re.compile(r"^(u&)?drama\\b", re.I)),
+    ("U&Yesterday", re.compile(r"^(u&)?yesterday\\b", re.I)),
+    ("U&W", re.compile(r"^(u&)?w\\b", re.I)),
+    ("Sky Arts", re.compile(r"^sky arts\\b", re.I)),
+    ("Sky Mix", re.compile(r"^sky mix\\b", re.I)),
+    ("Quest", re.compile(r"^quest\\b(?!.*red)", re.I)),
+    ("Quest Red", re.compile(r"^quest red\\b", re.I)),
+    ("Really", re.compile(r"^really\\b", re.I)),
+    ("Food Network", re.compile(r"^food network\\b", re.I)),
+    ("Talking Pictures", re.compile(r"^talking pictures", re.I)),
+    ("GREAT! TV", re.compile(r"^great!? tv\\b", re.I)),
+    ("GREAT! Movies", re.compile(r"^great!? movies\\b", re.I)),
+    ("GREAT! Romance", re.compile(r"^great!? romance\\b", re.I)),
+    ("GREAT! Action", re.compile(r"^great!? action\\b", re.I)),
+    ("Legend", re.compile(r"^legend\\b", re.I)),
+    ("Blaze", re.compile(r"^blaze\\b", re.I)),
+]
+
+
+def compact_name(entry: dict) -> str:
+    name = entry["name"]
+    name = re.sub(r"\\s*\\([^)]*\\)", "", name)
+    name = re.sub(r"\\s*\\[[^]]*\\]", "", name)
+    return re.sub(r"\\s+", " ", name).strip()
+
+
+def main_candidate_score(slot: str, entry: dict) -> int:
+    name = compact_name(entry).casefold()
+    cid = entry["id"].casefold()
+    variant = entry["variant"].casefold()
+    hay = " ".join([name, cid, variant])
+    score = stream_score(entry) + preferred_variant_score(entry)
+
+    if "plus1" in hay or "+1" in hay:
+        return -100000
+
+    if slot == "BBC One":
+        if "london" in hay:
+            score += 3000
+        regional = [
+            "scotland", "wales", "northern ireland", "northernireland",
+            "east", "west", "south", "north", "midlands", "yorkshire",
+            "channel islands", "channelislands", "cumbria"
+        ]
+        if any(x in hay for x in regional) and "london" not in hay:
+            score -= 1200
+    elif slot == "BBC Two":
+        if " hd" in " " + hay or "@hd" in cid:
+            score += 1200
+        if "wales" in hay or "northern ireland" in hay or "northernireland" in hay:
+            score -= 500
+    elif slot == "ITV1":
+        if "london" in hay:
+            score += 3000
+        regional = [
+            "anglia", "border", "central", "granada", "meridian", "tyne",
+            "wales", "westcountry", "yorkshire", "channel television"
+        ]
+        if any(x in hay for x in regional) and "london" not in hay:
+            score -= 1000
+    elif slot in {"Channel 4", "Channel 5"}:
+        if "hd" in hay:
+            score += 700
+
+    return score
+
+
 def choose_main(entries: list[dict]) -> dict[str, dict]:
     selected = {}
-    for base in MAIN_BASES:
-        candidates = [e for e in entries if e["base"] == base and e["id"]]
+    used = set()
+
+    for slot, pattern in MAIN_NAME_RULES:
+        candidates = [
+            e for e in entries
+            if id(e) not in used and pattern.search(compact_name(e))
+        ]
         if not candidates:
             continue
-        selected[base] = max(
-            candidates,
-            key=lambda e: (preferred_variant_score(e), stream_score(e), -entries.index(e))
-        )
-    return selected
 
+        best = max(candidates, key=lambda e: (main_candidate_score(slot, e), -entries.index(e)))
+        if main_candidate_score(slot, best) <= -100000:
+            continue
+
+        selected[slot] = best
+        used.add(id(best))
+
+    return selected
 
 def classify(entry: dict, main_entry_ids: set[int]) -> str:
     if id(entry) in main_entry_ids:
@@ -444,6 +539,9 @@ def classify(entry: dict, main_entry_ids: set[int]) -> str:
         return "80 RED BUTTON / SPECIAL EVENTS"
 
     if base in {"bbcone.uk", "itv1.uk"}:
+        return "07 LOCAL & REGIONAL"
+    compact = compact_name(entry).casefold()
+    if compact.startswith("bbc one") or compact.startswith("itv1"):
         return "07 LOCAL & REGIONAL"
     if any(x in hay for x in [
         "stv", "utv", "londonlive", "london tv", "latesttv", "latest tv",
@@ -506,51 +604,67 @@ def classify(entry: dict, main_entry_ids: set[int]) -> str:
     return "95 OTHER / ODDITIES"
 
 
-def build_playlist(playlist_url: str, output_path: str) -> None:
+def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -> None:
     text = fetch_text(playlist_url)
     header, entries = parse_m3u_entries(text)
     if not entries:
         die("No playable entries found in playlist")
 
-    main_by_base = choose_main(entries)
-    main_entry_ids = {id(e) for e in main_by_base.values()}
+    main_by_slot = choose_main(entries)
+    main_entry_ids = {id(e) for e in main_by_slot.values()}
+    main_entry_rank = {
+        id(entry): i for i, (_, entry) in enumerate(main_by_slot.items())
+    }
 
-    # For every exact tvg-id, keep the strongest stream in its normal category
-    # and move the extra streams to the alternatives group.
-    by_tvg_id: dict[str, list[dict]] = {}
-    no_id = []
-    for e in entries:
-        if e["id"]:
-            by_tvg_id.setdefault(e["id"], []).append(e)
-        else:
-            no_id.append(e)
+    # The public country playlist is our primary set because that is what is
+    # already working for the user. We do not replace its chosen stream URLs.
+    primaries = entries[:]
 
-    primary_ids = set()
+    # Pull extra candidate URLs from IPTV-org's underlying UK stream pool.
+    # They only appear in the separate Alternatives group and never displace a
+    # currently working primary stream automatically.
     alternatives: list[dict] = []
-    primaries: list[dict] = []
+    source_urls = {e["url"] for e in primaries}
+    primary_by_id = {e["id"]: e for e in primaries if e["id"]}
 
-    for cid, candidates in by_tvg_id.items():
-        forced_main = [e for e in candidates if id(e) in main_entry_ids]
-        if forced_main:
-            primary = forced_main[0]
-        else:
-            primary = max(candidates, key=lambda e: (stream_score(e), -entries.index(e)))
-        primary_ids.add(id(primary))
-        primaries.append(primary)
+    try:
+        alt_text = fetch_text(alt_playlist_url)
+        _, alt_entries = parse_m3u_entries(alt_text)
+    except Exception as exc:
+        print(f"WARNING: could not load alternative stream pool: {exc}")
+        alt_entries = []
 
-        alts = [e for e in candidates if e is not primary]
-        alts.sort(key=stream_score, reverse=True)
-        for n, alt in enumerate(alts, start=2):
+    alt_by_id: dict[str, list[dict]] = {}
+    for e in alt_entries:
+        if not e["id"] or e["id"] not in primary_by_id:
+            continue
+        if not e["url"] or e["url"] in source_urls:
+            continue
+        alt_by_id.setdefault(e["id"], []).append(e)
+
+    # Keep at most three backup URLs per logical channel so the Alternatives
+    # group remains useful instead of becoming another dump.
+    for cid, candidates in alt_by_id.items():
+        seen = set()
+        unique = []
+        for e in sorted(candidates, key=stream_score, reverse=True):
+            if e["url"] in seen:
+                continue
+            seen.add(e["url"])
+            unique.append(e)
+            if len(unique) == 3:
+                break
+
+        primary = primary_by_id[cid]
+        primary_logo = primary["attrs"].get("tvg-logo", "")
+        for n, alt in enumerate(unique, start=1):
             alt = dict(alt)
             alt["block"] = alt["block"][:]
             alt["alt_number"] = n
+            alt["primary_logo"] = primary_logo
             alternatives.append(alt)
 
-    # Entries without tvg-id cannot be matched to EPG, but are still preserved.
-    primaries.extend(no_id)
-
     group_entries = {g: [] for g in GROUPS}
-    main_order = {base: i for i, base in enumerate(MAIN_BASES)}
 
     for e in primaries:
         group = classify(e, main_entry_ids)
@@ -560,8 +674,8 @@ def build_playlist(playlist_url: str, output_path: str) -> None:
         group_entries["90 ALTERNATIVE STREAMS"].append(e)
 
     def normal_sort_key(e: dict):
-        if classify(e, main_entry_ids) == "01 MAIN UK":
-            return (main_order.get(e["base"], 9999), e["name"].casefold(), e["id"].casefold())
+        if id(e) in main_entry_rank:
+            return (main_entry_rank[id(e)], e["name"].casefold(), e["id"].casefold())
         return (e["name"].casefold(), e["id"].casefold(), -stream_score(e))
 
     out_lines = [header]
@@ -578,7 +692,9 @@ def build_playlist(playlist_url: str, output_path: str) -> None:
             extinf = set_m3u_attr(extinf, "tvg-chno", str(channel_number))
 
             if group == "90 ALTERNATIVE STREAMS":
-                alt_n = e.get("alt_number", 2)
+                alt_n = e.get("alt_number", 1)
+                if not e["attrs"].get("tvg-logo") and e.get("primary_logo"):
+                    extinf = set_m3u_attr(extinf, "tvg-logo", e["primary_logo"])
                 extinf = set_m3u_name(extinf, f'{e["name"]} [Alt {alt_n}]')
 
             block[0] = extinf
@@ -587,12 +703,13 @@ def build_playlist(playlist_url: str, output_path: str) -> None:
 
     Path(output_path).write_text(chr(10).join(out_lines) + chr(10), encoding="utf-8")
 
-    print(f"Structured playlist written: {len(entries)} source streams")
-    print(f"Primary guide entries: {len(primaries)}")
-    print(f"Alternative streams: {len(alternatives)}")
+    print(f"Structured playlist written: {len(entries)} primary streams")
+    print(f"Main UK channels selected: {len(main_by_slot)}")
+    for slot, entry in main_by_slot.items():
+        print(f"  MAIN {slot}: {entry['name']} [{entry['id']}]")
+    print(f"Alternative streams added: {len(alternatives)}")
     for group in GROUPS:
         print(f"  {group}: {len(group_entries[group])}")
-
 
 def main() -> None:
     if len(sys.argv) < 2:
@@ -603,8 +720,8 @@ def main() -> None:
         prepare(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif cmd == "apply" and len(sys.argv) == 5:
         apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4])
-    elif cmd == "build-playlist" and len(sys.argv) == 4:
-        build_playlist(sys.argv[2], sys.argv[3])
+    elif cmd == "build-playlist" and len(sys.argv) == 5:
+        build_playlist(sys.argv[2], sys.argv[3], sys.argv[4])
     else:
         die(__doc__.strip())
 
