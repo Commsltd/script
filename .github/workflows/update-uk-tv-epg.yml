@@ -19,6 +19,7 @@ concurrency:
 
 env:
   PLAYLIST_URL: https://iptv-org.github.io/iptv/countries/uk.m3u
+  ALT_STREAMS_URL: https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk.m3u
 
 jobs:
   build:
@@ -53,6 +54,7 @@ jobs:
         run: |
           python3 uk-tv-epg/epg_helper.py build-playlist \
             "$PLAYLIST_URL" \
+            "$ALT_STREAMS_URL" \
             "$RUNNER_TEMP/playlist.m3u"
 
       - name: Grab current Freeview listings
