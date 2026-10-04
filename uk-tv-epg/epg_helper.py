@@ -3,7 +3,7 @@
 
 Commands:
   prepare <freeview.channels.xml> <playlist_url> <custom.channels.xml> <aliases.json>
-  apply   <guide.xml> <aliases.json> <guide.xml.gz>
+  apply   <guide.xml> <aliases.json> <playlist.m3u> <guide.xml.gz>
 
 Only Python's standard library is used.
 """
@@ -172,7 +172,7 @@ def prepare(channels_path: str, playlist_source: str, output_path: str, aliases_
             print(f"  - {cid}")
 
 
-def apply_aliases(guide_path: str, aliases_path: str, gzip_path: str) -> None:
+def apply_aliases(guide_path: str, aliases_path: str, playlist_source: str, gzip_path: str) -> None:
     aliases: dict[str, str] = json.loads(Path(aliases_path).read_text(encoding="utf-8"))
     tree = ET.parse(guide_path)
     root = tree.getroot()
@@ -215,6 +215,33 @@ def apply_aliases(guide_path: str, aliases_path: str, gzip_path: str) -> None:
             p.set("channel", target)
             root.append(p)
             added_programmes += 1
+
+    # Mirror the M3U logos into XMLTV channel icons. This avoids players
+    # showing blank logos when their logo priority is set to EPG rather than
+    # playlist, and keeps both sources visually consistent.
+    try:
+        _, playlist_entries = parse_m3u_entries(load_text(playlist_source))
+        logo_by_id = {}
+        for entry in playlist_entries:
+            cid = entry.get("id", "")
+            logo = entry.get("attrs", {}).get("tvg-logo", "").strip()
+            if cid and logo and cid not in logo_by_id:
+                logo_by_id[cid] = logo
+
+        epg_logo_count = 0
+        for channel in root.findall("channel"):
+            cid = channel.get("id", "")
+            logo = logo_by_id.get(cid)
+            if not logo:
+                continue
+            icon = channel.find("icon")
+            if icon is None:
+                icon = ET.SubElement(channel, "icon")
+            icon.set("src", logo)
+            epg_logo_count += 1
+        print(f"EPG channel logos synced: {epg_logo_count}")
+    except Exception as exc:
+        print(f"WARNING: could not sync playlist logos into EPG: {exc}")
 
     ET.indent(tree, space="  ")
     tree.write(guide_path, encoding="utf-8", xml_declaration=True)
@@ -807,8 +834,8 @@ def main() -> None:
     cmd = sys.argv[1]
     if cmd == "prepare" and len(sys.argv) == 6:
         prepare(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
-    elif cmd == "apply" and len(sys.argv) == 5:
-        apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif cmd == "apply" and len(sys.argv) == 6:
+        apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif cmd == "build-playlist" and len(sys.argv) == 6:
         build_playlist(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     else:
