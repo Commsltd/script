@@ -79,6 +79,7 @@ jobs:
           python3 uk-tv-epg/epg_helper.py apply \
             "$RUNNER_TEMP/guide.xml" \
             "$RUNNER_TEMP/aliases.json" \
+            "$RUNNER_TEMP/playlist.m3u" \
             "$RUNNER_TEMP/guide.xml.gz"
 
       - name: Validate generated guide
