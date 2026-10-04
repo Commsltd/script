@@ -228,6 +228,372 @@ def apply_aliases(guide_path: str, aliases_path: str, gzip_path: str) -> None:
             print(f"  - {target} <- {source}")
 
 
+# ---------------------------------------------------------------------------
+# Structured playlist builder
+# ---------------------------------------------------------------------------
+
+ATTR_RE = re.compile(r'([\\w-]+)="([^"]*)"')
+
+GROUPS = [
+    "01 MAIN UK",
+    "02 NEWS",
+    "03 FILM & ENTERTAINMENT",
+    "04 KIDS",
+    "05 MUSIC",
+    "06 SPORT",
+    "07 LOCAL & REGIONAL",
+    "08 INTERNATIONAL",
+    "09 RELIGIOUS",
+    "10 SHOPPING",
+    "80 RED BUTTON / SPECIAL EVENTS",
+    "90 ALTERNATIVE STREAMS",
+    "95 OTHER / ODDITIES",
+    "99 EXPERIMENTAL / UNRELIABLE",
+]
+
+MAIN_BASES = [
+    "BBCOne.uk",
+    "BBCTwo.uk",
+    "ITV1.uk",
+    "Channel4.uk",
+    "Channel5.uk",
+    "BBCThree.uk",
+    "BBCFour.uk",
+    "ITV2.uk",
+    "ITV3.uk",
+    "ITV4.uk",
+    "E4.uk",
+    "More4.uk",
+    "Film4.uk",
+    "4seven.uk",
+    "5STAR.uk",
+    "5USA.uk",
+    "5Action.uk",
+    "5SELECT.uk",
+    "UDave.uk",
+    "UDrama.uk",
+    "UYesterday.uk",
+    "UW.uk",
+    "SkyArts.uk",
+    "SkyMix.uk",
+    "Quest.uk",
+    "QuestRed.uk",
+    "Really.uk",
+    "FoodNetwork.uk",
+    "TalkingPicturesTV.uk",
+    "GREATtv.uk",
+    "GREATmovies.uk",
+    "GREATromance.uk",
+    "GREATaction.uk",
+    "Legend.uk",
+    "HorrorXtra.uk",
+    "Blaze.uk",
+]
+
+PREFERRED_VARIANTS = {
+    "BBCOne.uk": ["LondonHD", "London", "UKHD", "HD", "UK", "SD"],
+    "BBCTwo.uk": ["HD", "England", "UKHD", "UK", "SD"],
+    "ITV1.uk": ["LondonHD", "London", "CentralHD", "GranadaHD", "MeridianHD", "HD", "SD"],
+    "Channel4.uk": ["UKHD", "HD", "UK", "SD"],
+    "Channel5.uk": ["HD", "UKHD", "UK", "SD"],
+}
+
+
+def parse_m3u_entries(text: str) -> tuple[str, list[dict]]:
+    lines = text.splitlines()
+    header = lines[0].strip() if lines and lines[0].startswith("#EXTM3U") else "#EXTM3U"
+    entries = []
+    block = []
+
+    for line in lines[1:] if lines and lines[0].startswith("#EXTM3U") else lines:
+        if line.startswith("#EXTINF"):
+            if block:
+                entries.append(parse_m3u_block(block))
+            block = [line]
+        elif block:
+            block.append(line)
+
+    if block:
+        entries.append(parse_m3u_block(block))
+
+    return header, [e for e in entries if e.get("url")]
+
+
+def parse_m3u_block(block: list[str]) -> dict:
+    extinf = block[0]
+    attrs = {m.group(1): m.group(2) for m in ATTR_RE.finditer(extinf)}
+    comma = extinf.find(",")
+    name = extinf[comma + 1:].strip() if comma >= 0 else attrs.get("tvg-name", "")
+    url = ""
+    for line in reversed(block[1:]):
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#"):
+            url = stripped
+            break
+    cid = attrs.get("tvg-id", "").strip()
+    base, variant = split_id(cid) if cid else ("", "")
+    return {
+        "block": block[:],
+        "extinf": extinf,
+        "attrs": attrs,
+        "name": name,
+        "url": url,
+        "id": cid,
+        "base": base,
+        "variant": variant,
+    }
+
+
+def set_m3u_attr(extinf: str, key: str, value: str) -> str:
+    pattern = re.compile(rf'{re.escape(key)}="[^"]*"')
+    replacement = f'{key}="{value}"'
+    if pattern.search(extinf):
+        return pattern.sub(replacement, extinf, count=1)
+    comma = extinf.find(",")
+    if comma < 0:
+        return extinf + " " + replacement
+    return extinf[:comma].rstrip() + " " + replacement + extinf[comma:]
+
+
+def set_m3u_name(extinf: str, name: str) -> str:
+    comma = extinf.find(",")
+    if comma < 0:
+        return extinf + "," + name
+    return extinf[:comma + 1] + name
+
+
+def stream_score(entry: dict) -> int:
+    name = entry["name"].casefold()
+    url = entry["url"].casefold()
+    score = 0
+
+    m = re.search(r'\\((2160|1440|1080|720|576|540|480|396|360)p\\)', name)
+    if m:
+        res = int(m.group(1))
+        score += {2160: 90, 1440: 80, 1080: 70, 720: 60, 576: 50,
+                  540: 45, 480: 40, 396: 35, 360: 30}.get(res, 0)
+
+    if "[not 24/7]" in name:
+        score -= 80
+    if url.startswith("https://"):
+        score += 8
+    if ".m3u8" in url:
+        score += 18
+    elif ".mpd" in url:
+        score += 10
+    if "short.gy" in url:
+        score -= 2
+
+    return score
+
+
+def preferred_variant_score(entry: dict) -> int:
+    base = entry["base"]
+    variant = entry["variant"]
+    prefs = PREFERRED_VARIANTS.get(base)
+    if prefs:
+        try:
+            return 2000 - prefs.index(variant) * 100
+        except ValueError:
+            pass
+
+    v = variant.casefold()
+    score = 0
+    if "plus1" in v or "+1" in v:
+        score -= 1200
+    if "hd" in v:
+        score += 250
+    if "uk" in v:
+        score += 80
+    if "sd" in v:
+        score += 30
+    if not v:
+        score += 20
+    return score
+
+
+def choose_main(entries: list[dict]) -> dict[str, dict]:
+    selected = {}
+    for base in MAIN_BASES:
+        candidates = [e for e in entries if e["base"] == base and e["id"]]
+        if not candidates:
+            continue
+        selected[base] = max(
+            candidates,
+            key=lambda e: (preferred_variant_score(e), stream_score(e), -entries.index(e))
+        )
+    return selected
+
+
+def classify(entry: dict, main_entry_ids: set[int]) -> str:
+    if id(entry) in main_entry_ids:
+        return "01 MAIN UK"
+
+    name = entry["name"].casefold()
+    cid = entry["id"].casefold()
+    base = entry["base"].casefold()
+    variant = entry["variant"].casefold()
+    hay = " ".join([name, cid, base, variant])
+
+    if "[not 24/7]" in name:
+        return "99 EXPERIMENTAL / UNRELIABLE"
+
+    if any(x in hay for x in [
+        "redbutton", "red button", "bbcrb", "bbcuhd1", "bbcuhd2", "bbcuhd3", "bbcuhd4"
+    ]):
+        return "80 RED BUTTON / SPECIAL EVENTS"
+
+    if base in {"bbcone.uk", "itv1.uk"}:
+        return "07 LOCAL & REGIONAL"
+    if any(x in hay for x in [
+        "stv", "utv", "londonlive", "london tv", "latesttv", "latest tv",
+        "kmtv", "talkbirmingham", "talkbristol", "talkcardiff", "talkleeds",
+        "talkliverpool", "talknorthwales", "talkteesside", "talktynewear",
+        "thatstv.uk@", "bbcscotland", "bbcalba", "s4c"
+    ]):
+        return "07 LOCAL & REGIONAL"
+
+    if any(x in hay for x in [
+        "bbcnews", "skynews", "gbnews", "newsmax", "aljazeera", "al jazeera",
+        "france24", "france 24", "euronews", "bloomberg", "cnbc", "iraninternational",
+        "afghanistaninternational", "talktv"
+    ]):
+        return "02 NEWS"
+
+    if any(x in hay for x in [
+        "sport", "fifa", "mutv", "sky sports", "talksport", "setantasports"
+    ]):
+        return "06 SPORT"
+
+    if any(x in hay for x in [
+        "cbbc", "cbeebies", "tinypop", "tiny pop", "pop.uk", "pop up",
+        "nickelodeon", "moonbug", "babytv", "baby tv", "ketchup", "cartoon"
+    ]):
+        return "04 KIDS"
+
+    if any(x in hay for x in [
+        "music", "mtv", "now80s", "now90s", "totalmusic", "gigs"
+    ]):
+        return "05 MUSIC"
+
+    if any(x in hay for x in [
+        "faith", "godtv", "revelation", "tbn", "islam", "iqra", "ahlulbayt",
+        "eman", "noortv", "mta1", "mta2", "mta3", "mta4", "mta5", "mta6",
+        "mta7", "mta8", "takbeer", "sonlife", "it is written"
+    ]):
+        return "09 RELIGIOUS"
+
+    if any(x in hay for x in [
+        "qvc", "gemporia", "tjc", "idealworld", "ideal world", "hobbymaker",
+        "hobby maker", "jewellerymaker", "jewellery maker", "shop on tv",
+        "high street tv", "must have ideas", "tvwarehouse", "tv warehouse"
+    ]):
+        return "10 SHOPPING"
+
+    if any(x in hay for x in [
+        "film4", "movie", "movies", "legend", "horror", "blaze", "drama",
+        "dave", "yesterday", "quest", "really", "foodnetwork", "food network",
+        "skyarts", "sky arts", "skymix", "sky mix", "talkingpictures",
+        "talking pictures", "great!", "greattv", "greatmovies", "greatromance",
+        "great action", "amc", "epicdrama", "epic drama"
+    ]):
+        return "03 FILM & ENTERTAINMENT"
+
+    # Anything whose canonical ID is not UK is kept, but moved after the UK groups.
+    if entry["id"] and ".uk" not in base:
+        return "08 INTERNATIONAL"
+
+    return "95 OTHER / ODDITIES"
+
+
+def build_playlist(playlist_url: str, output_path: str) -> None:
+    text = fetch_text(playlist_url)
+    header, entries = parse_m3u_entries(text)
+    if not entries:
+        die("No playable entries found in playlist")
+
+    main_by_base = choose_main(entries)
+    main_entry_ids = {id(e) for e in main_by_base.values()}
+
+    # For every exact tvg-id, keep the strongest stream in its normal category
+    # and move the extra streams to the alternatives group.
+    by_tvg_id: dict[str, list[dict]] = {}
+    no_id = []
+    for e in entries:
+        if e["id"]:
+            by_tvg_id.setdefault(e["id"], []).append(e)
+        else:
+            no_id.append(e)
+
+    primary_ids = set()
+    alternatives: list[dict] = []
+    primaries: list[dict] = []
+
+    for cid, candidates in by_tvg_id.items():
+        forced_main = [e for e in candidates if id(e) in main_entry_ids]
+        if forced_main:
+            primary = forced_main[0]
+        else:
+            primary = max(candidates, key=lambda e: (stream_score(e), -entries.index(e)))
+        primary_ids.add(id(primary))
+        primaries.append(primary)
+
+        alts = [e for e in candidates if e is not primary]
+        alts.sort(key=stream_score, reverse=True)
+        for n, alt in enumerate(alts, start=2):
+            alt = dict(alt)
+            alt["block"] = alt["block"][:]
+            alt["alt_number"] = n
+            alternatives.append(alt)
+
+    # Entries without tvg-id cannot be matched to EPG, but are still preserved.
+    primaries.extend(no_id)
+
+    group_entries = {g: [] for g in GROUPS}
+    main_order = {base: i for i, base in enumerate(MAIN_BASES)}
+
+    for e in primaries:
+        group = classify(e, main_entry_ids)
+        group_entries[group].append(e)
+
+    for e in alternatives:
+        group_entries["90 ALTERNATIVE STREAMS"].append(e)
+
+    def normal_sort_key(e: dict):
+        if classify(e, main_entry_ids) == "01 MAIN UK":
+            return (main_order.get(e["base"], 9999), e["name"].casefold(), e["id"].casefold())
+        return (e["name"].casefold(), e["id"].casefold(), -stream_score(e))
+
+    out_lines = [header]
+    channel_number = 1
+
+    for group in GROUPS:
+        items = group_entries[group]
+        items.sort(key=normal_sort_key)
+
+        for e in items:
+            block = e["block"][:]
+            extinf = block[0]
+            extinf = set_m3u_attr(extinf, "group-title", group)
+            extinf = set_m3u_attr(extinf, "tvg-chno", str(channel_number))
+
+            if group == "90 ALTERNATIVE STREAMS":
+                alt_n = e.get("alt_number", 2)
+                extinf = set_m3u_name(extinf, f'{e["name"]} [Alt {alt_n}]')
+
+            block[0] = extinf
+            out_lines.extend(block)
+            channel_number += 1
+
+    Path(output_path).write_text(chr(10).join(out_lines) + chr(10), encoding="utf-8")
+
+    print(f"Structured playlist written: {len(entries)} source streams")
+    print(f"Primary guide entries: {len(primaries)}")
+    print(f"Alternative streams: {len(alternatives)}")
+    for group in GROUPS:
+        print(f"  {group}: {len(group_entries[group])}")
+
+
 def main() -> None:
     if len(sys.argv) < 2:
         die(__doc__.strip())
@@ -237,6 +603,8 @@ def main() -> None:
         prepare(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif cmd == "apply" and len(sys.argv) == 5:
         apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif cmd == "build-playlist" and len(sys.argv) == 4:
+        build_playlist(sys.argv[2], sys.argv[3])
     else:
         die(__doc__.strip())
 
