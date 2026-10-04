@@ -34,6 +34,13 @@ def fetch_text(url: str) -> str:
         return r.read().decode("utf-8", errors="replace")
 
 
+def load_text(source: str) -> str:
+    path = Path(source)
+    if path.exists():
+        return path.read_text(encoding="utf-8", errors="replace")
+    return fetch_text(source)
+
+
 def split_id(cid: str) -> tuple[str, str]:
     if "@" in cid:
         base, variant = cid.split("@", 1)
@@ -97,8 +104,8 @@ def parse_playlist_ids(text: str) -> list[str]:
     return out
 
 
-def prepare(channels_path: str, playlist_url: str, output_path: str, aliases_path: str) -> None:
-    playlist = fetch_text(playlist_url)
+def prepare(channels_path: str, playlist_source: str, output_path: str, aliases_path: str) -> None:
+    playlist = load_text(playlist_source)
     playlist_ids = parse_playlist_ids(playlist)
     if not playlist_ids:
         die("No tvg-id values found in playlist")
@@ -604,25 +611,96 @@ def classify(entry: dict, main_entry_ids: set[int]) -> str:
     return "95 OTHER / ODDITIES"
 
 
-def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -> None:
+CARRIER_ID_MAP = {
+    "bbc2.uk": ("BBCTwo.uk@HD", "BBC Two HD"),
+    "bbc3cbbc.uk": ("BBCThreeCBBC.uk@HD", "BBC Three/CBBC"),
+    "bbc4cbeebies.uk": ("BBCFourCBeebies.uk@HD", "BBC Four/CBeebies"),
+    "bbcworld.uk": ("BBCNews.uk@UKHD", "BBC News HD"),
+    "itv2.uk": ("ITV2.uk@HD", "ITV2 HD"),
+    "itv3.uk": ("ITV3.uk@SD", "ITV3"),
+    "itv4.uk": ("ITV4.uk@SD", "ITV4"),
+    "questtv.com": ("Quest.uk@SD", "Quest"),
+    "channel4.uk": ("Channel4.uk@UKHD", "Channel 4"),
+    "channel5.uk": ("Channel5.uk@HD", "Channel 5"),
+    "film4.uk": ("Film4.uk@SD", "Film4"),
+    "more4.uk": ("More4.uk@SD", "More4"),
+    "foodnetwork.uk": ("FoodNetwork.uk@SD", "Food Network"),
+}
+
+
+def canonicalise_carrier_entry(entry: dict) -> dict | None:
+    mapping = CARRIER_ID_MAP.get(entry["id"].casefold())
+    if not mapping:
+        return None
+
+    target_id, display_name = mapping
+    out = dict(entry)
+    out["block"] = entry["block"][:]
+    out["id"] = target_id
+    out["base"], out["variant"] = split_id(target_id)
+    out["name"] = display_name
+
+    extinf = out["block"][0]
+    extinf = set_m3u_attr(extinf, "tvg-id", target_id)
+    extinf = set_m3u_name(extinf, display_name)
+    out["block"][0] = extinf
+    out["extinf"] = extinf
+    out["attrs"] = dict(entry["attrs"])
+    out["attrs"]["tvg-id"] = target_id
+    return out
+
+
+def build_playlist(
+    playlist_url: str,
+    alt_playlist_url: str,
+    carrier_playlist_url: str,
+    output_path: str
+) -> None:
     text = fetch_text(playlist_url)
     header, entries = parse_m3u_entries(text)
     if not entries:
         die("No playable entries found in playlist")
 
-    main_by_slot = choose_main(entries)
+    # Start with the user's existing IPTV-org country playlist. These remain
+    # the preferred streams wherever a logical channel already exists.
+    primaries = entries[:]
+    carrier_alternatives: list[dict] = []
+
+    # Supplement only selected missing UK channels from a current carrier OTT
+    # playlist. Existing working IPTV-org channels are never replaced.
+    try:
+        carrier_text = fetch_text(carrier_playlist_url)
+        _, carrier_entries_raw = parse_m3u_entries(carrier_text)
+    except Exception as exc:
+        print(f"WARNING: could not load carrier stream pool: {exc}")
+        carrier_entries_raw = []
+
+    existing_bases = {e["base"].casefold() for e in primaries if e["base"]}
+    added_carrier_primaries = []
+
+    for raw in carrier_entries_raw:
+        e = canonicalise_carrier_entry(raw)
+        if e is None or not e["url"]:
+            continue
+
+        base_key = e["base"].casefold()
+        if base_key not in existing_bases:
+            primaries.append(e)
+            added_carrier_primaries.append(e)
+            existing_bases.add(base_key)
+        else:
+            carrier_alternatives.append(e)
+
+    # Choose the Freeview-like headline set only after supplemental sources
+    # have been merged, so missing C4/C5/ITV3/ITV4/etc can be promoted.
+    main_by_slot = choose_main(primaries)
     main_entry_ids = {id(e) for e in main_by_slot.values()}
     main_entry_rank = {
         id(entry): i for i, (_, entry) in enumerate(main_by_slot.items())
     }
 
-    # The public country playlist is our primary set because that is what is
-    # already working for the user. We do not replace its chosen stream URLs.
-    primaries = entries[:]
-
     # Pull extra candidate URLs from IPTV-org's underlying UK stream pool.
-    # They only appear in the separate Alternatives group and never displace a
-    # currently working primary stream automatically.
+    # They only appear in Alternatives and never displace a working primary.
     alternatives: list[dict] = []
     source_urls = {e["url"] for e in primaries}
     primary_by_id = {e["id"]: e for e in primaries if e["id"]}
@@ -642,8 +720,11 @@ def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -
             continue
         alt_by_id.setdefault(e["id"], []).append(e)
 
-    # Keep at most three backup URLs per logical channel so the Alternatives
-    # group remains useful instead of becoming another dump.
+    for e in carrier_alternatives:
+        if e["id"] in primary_by_id and e["url"] not in source_urls:
+            alt_by_id.setdefault(e["id"], []).append(e)
+
+    # Keep at most three backup URLs per logical channel.
     for cid, candidates in alt_by_id.items():
         seen = set()
         unique = []
@@ -678,10 +759,11 @@ def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -
             return (main_entry_rank[id(e)], e["name"].casefold(), e["id"].casefold())
         return (e["name"].casefold(), e["id"].casefold(), -stream_score(e))
 
-    # Advertise the matching XMLTV source in the M3U header. TiviMate may
-    # still require the EPG source to be associated manually, but compatible
-    # players can discover it from here.
-    header = set_m3u_attr(header, "x-tvg-url", "https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz")
+    header = set_m3u_attr(
+        header,
+        "x-tvg-url",
+        "https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz"
+    )
     out_lines = [header]
     channel_number = 1
 
@@ -707,7 +789,10 @@ def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -
 
     Path(output_path).write_text(chr(10).join(out_lines) + chr(10), encoding="utf-8")
 
-    print(f"Structured playlist written: {len(entries)} primary streams")
+    print(f"Structured playlist written: {len(primaries)} primary streams")
+    print(f"Carrier primaries added: {len(added_carrier_primaries)}")
+    for entry in added_carrier_primaries:
+        print(f"  CARRIER PRIMARY {entry['name']}: {entry['id']}")
     print(f"Main UK channels selected: {len(main_by_slot)}")
     for slot, entry in main_by_slot.items():
         print(f"  MAIN {slot}: {entry['name']} [{entry['id']}]")
@@ -724,8 +809,8 @@ def main() -> None:
         prepare(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif cmd == "apply" and len(sys.argv) == 5:
         apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4])
-    elif cmd == "build-playlist" and len(sys.argv) == 5:
-        build_playlist(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif cmd == "build-playlist" and len(sys.argv) == 6:
+        build_playlist(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     else:
         die(__doc__.strip())
 
