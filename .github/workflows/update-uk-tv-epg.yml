@@ -54,10 +54,14 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
+          set +e
           npm run grab --- \
             --channels="$RUNNER_TEMP/custom.channels.xml" \
             --output="$RUNNER_TEMP/guide.xml" \
-            --maxConnections=4
+            --maxConnections=4 > "$RUNNER_TEMP/grab.log" 2>&1
+          status=$?
+          tail -n 80 "$RUNNER_TEMP/grab.log" || true
+          exit $status
 
       - name: Add playlist aliases and compress
         run: |
