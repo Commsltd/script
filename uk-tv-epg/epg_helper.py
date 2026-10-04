@@ -232,7 +232,7 @@ def apply_aliases(guide_path: str, aliases_path: str, gzip_path: str) -> None:
 # Structured playlist builder
 # ---------------------------------------------------------------------------
 
-ATTR_RE = re.compile(r'([\\w-]+)="([^"]*)"')
+ATTR_RE = re.compile(r'([\w-]+)="([^"]*)"')
 
 GROUPS = [
     "01 MAIN UK",
@@ -367,7 +367,7 @@ def stream_score(entry: dict) -> int:
     url = entry["url"].casefold()
     score = 0
 
-    m = re.search(r'\\((2160|1440|1080|720|576|540|480|396|360)p\\)', name)
+    m = re.search(r'\((2160|1440|1080|720|576|540|480|396|360)p\)', name)
     if m:
         res = int(m.group(1))
         score += {2160: 90, 1440: 80, 1080: 70, 720: 60, 576: 50,
@@ -413,49 +413,49 @@ def preferred_variant_score(entry: dict) -> int:
 
 
 MAIN_NAME_RULES = [
-    ("BBC One", re.compile(r"^bbc one\\b", re.I)),
-    ("BBC Two", re.compile(r"^bbc two\\b", re.I)),
-    ("ITV1", re.compile(r"^itv1\\b", re.I)),
-    ("Channel 4", re.compile(r"^channel 4\\b", re.I)),
-    ("Channel 5", re.compile(r"^channel 5\\b", re.I)),
-    ("BBC Three", re.compile(r"^bbc three\\b", re.I)),
-    ("BBC Four", re.compile(r"^bbc four\\b", re.I)),
-    ("ITV2", re.compile(r"^itv2\\b", re.I)),
-    ("ITV3", re.compile(r"^itv3\\b", re.I)),
-    ("ITV4", re.compile(r"^itv4\\b", re.I)),
-    ("E4", re.compile(r"^e4\\b", re.I)),
-    ("More4", re.compile(r"^more ?4\\b", re.I)),
-    ("Film4", re.compile(r"^film ?4\\b", re.I)),
-    ("4seven", re.compile(r"^4seven\\b", re.I)),
-    ("5STAR", re.compile(r"^5star\\b", re.I)),
-    ("5USA", re.compile(r"^5usa\\b", re.I)),
-    ("5ACTION", re.compile(r"^5action\\b", re.I)),
-    ("5SELECT", re.compile(r"^5select\\b", re.I)),
-    ("U&Dave", re.compile(r"^(u&)?dave\\b", re.I)),
-    ("U&Drama", re.compile(r"^(u&)?drama\\b", re.I)),
-    ("U&Yesterday", re.compile(r"^(u&)?yesterday\\b", re.I)),
-    ("U&W", re.compile(r"^(u&)?w\\b", re.I)),
-    ("Sky Arts", re.compile(r"^sky arts\\b", re.I)),
-    ("Sky Mix", re.compile(r"^sky mix\\b", re.I)),
-    ("Quest", re.compile(r"^quest\\b(?!.*red)", re.I)),
-    ("Quest Red", re.compile(r"^quest red\\b", re.I)),
-    ("Really", re.compile(r"^really\\b", re.I)),
-    ("Food Network", re.compile(r"^food network\\b", re.I)),
+    ("BBC One", re.compile(r"^bbc one\b", re.I)),
+    ("BBC Two", re.compile(r"^bbc two\b", re.I)),
+    ("ITV1", re.compile(r"^itv1\b", re.I)),
+    ("Channel 4", re.compile(r"^channel 4\b", re.I)),
+    ("Channel 5", re.compile(r"^channel 5\b", re.I)),
+    ("BBC Three", re.compile(r"^bbc three\b", re.I)),
+    ("BBC Four", re.compile(r"^bbc four\b", re.I)),
+    ("ITV2", re.compile(r"^itv2\b", re.I)),
+    ("ITV3", re.compile(r"^itv3\b", re.I)),
+    ("ITV4", re.compile(r"^itv4\b", re.I)),
+    ("E4", re.compile(r"^e4\b", re.I)),
+    ("More4", re.compile(r"^more ?4\b", re.I)),
+    ("Film4", re.compile(r"^film ?4\b", re.I)),
+    ("4seven", re.compile(r"^4seven\b", re.I)),
+    ("5STAR", re.compile(r"^5star\b", re.I)),
+    ("5USA", re.compile(r"^5usa\b", re.I)),
+    ("5ACTION", re.compile(r"^5action\b", re.I)),
+    ("5SELECT", re.compile(r"^5select\b", re.I)),
+    ("U&Dave", re.compile(r"^(u&)?dave\b", re.I)),
+    ("U&Drama", re.compile(r"^(u&)?drama\b", re.I)),
+    ("U&Yesterday", re.compile(r"^(u&)?yesterday\b", re.I)),
+    ("U&W", re.compile(r"^(u&)?w\b", re.I)),
+    ("Sky Arts", re.compile(r"^sky arts\b", re.I)),
+    ("Sky Mix", re.compile(r"^sky mix\b", re.I)),
+    ("Quest", re.compile(r"^quest\b(?!.*red)", re.I)),
+    ("Quest Red", re.compile(r"^quest red\b", re.I)),
+    ("Really", re.compile(r"^really\b", re.I)),
+    ("Food Network", re.compile(r"^food network\b", re.I)),
     ("Talking Pictures", re.compile(r"^talking pictures", re.I)),
-    ("GREAT! TV", re.compile(r"^great!? tv\\b", re.I)),
-    ("GREAT! Movies", re.compile(r"^great!? movies\\b", re.I)),
-    ("GREAT! Romance", re.compile(r"^great!? romance\\b", re.I)),
-    ("GREAT! Action", re.compile(r"^great!? action\\b", re.I)),
-    ("Legend", re.compile(r"^legend\\b", re.I)),
-    ("Blaze", re.compile(r"^blaze\\b", re.I)),
+    ("GREAT! TV", re.compile(r"^great!? tv\b", re.I)),
+    ("GREAT! Movies", re.compile(r"^great!? movies\b", re.I)),
+    ("GREAT! Romance", re.compile(r"^great!? romance\b", re.I)),
+    ("GREAT! Action", re.compile(r"^great!? action\b", re.I)),
+    ("Legend", re.compile(r"^legend\b", re.I)),
+    ("Blaze", re.compile(r"^blaze\b", re.I)),
 ]
 
 
 def compact_name(entry: dict) -> str:
     name = entry["name"]
-    name = re.sub(r"\\s*\\([^)]*\\)", "", name)
-    name = re.sub(r"\\s*\\[[^]]*\\]", "", name)
-    return re.sub(r"\\s+", " ", name).strip()
+    name = re.sub(r"\s*\([^)]*\)", "", name)
+    name = re.sub(r"\s*\[[^]]*\]", "", name)
+    return re.sub(r"\s+", " ", name).strip()
 
 
 def main_candidate_score(slot: str, entry: dict) -> int:
