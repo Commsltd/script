@@ -678,6 +678,10 @@ def build_playlist(playlist_url: str, alt_playlist_url: str, output_path: str) -
             return (main_entry_rank[id(e)], e["name"].casefold(), e["id"].casefold())
         return (e["name"].casefold(), e["id"].casefold(), -stream_score(e))
 
+    # Advertise the matching XMLTV source in the M3U header. TiviMate may
+    # still require the EPG source to be associated manually, but compatible
+    # players can discover it from here.
+    header = set_m3u_attr(header, "x-tvg-url", "https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz")
     out_lines = [header]
     channel_number = 1
 
