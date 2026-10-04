@@ -1,0 +1,94 @@
+name: Update UK TV EPG
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "uk-tv-epg/**"
+      - ".github/workflows/update-uk-tv-epg.yml"
+  schedule:
+    - cron: "20 05,18 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-uk-tv-epg
+  cancel-in-progress: true
+
+env:
+  PLAYLIST_URL: https://iptv-org.github.io/iptv/countries/uk.m3u
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Get current IPTV-org EPG grabber
+        run: git clone --depth 1 -b master https://github.com/iptv-org/epg.git "$RUNNER_TEMP/iptv-epg"
+
+      - name: Install grabber dependencies
+        working-directory: ${{ runner.temp }}/iptv-epg
+        run: npm ci
+
+      - name: Select Freeview channels matching the live UK playlist
+        run: |
+          python3 uk-tv-epg/epg_helper.py prepare \
+            "$RUNNER_TEMP/iptv-epg/sites/freeview.co.uk/freeview.co.uk.channels.xml" \
+            "$PLAYLIST_URL" \
+            "$RUNNER_TEMP/custom.channels.xml" \
+            "$RUNNER_TEMP/aliases.json"
+
+      - name: Grab current Freeview listings
+        working-directory: ${{ runner.temp }}/iptv-epg
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          npm run grab --- \
+            --channels="$RUNNER_TEMP/custom.channels.xml" \
+            --output="$RUNNER_TEMP/guide.xml" \
+            --maxConnections=4
+
+      - name: Add playlist aliases and compress
+        run: |
+          python3 uk-tv-epg/epg_helper.py apply \
+            "$RUNNER_TEMP/guide.xml" \
+            "$RUNNER_TEMP/aliases.json" \
+            "$RUNNER_TEMP/guide.xml.gz"
+
+      - name: Validate generated guide
+        run: |
+          python3 - <<'PY'
+          import gzip, os, xml.etree.ElementTree as ET
+          p = os.path.join(os.environ["RUNNER_TEMP"], "guide.xml.gz")
+          with gzip.open(p, "rb") as f:
+              root = ET.parse(f).getroot()
+          channels = root.findall("channel")
+          programmes = root.findall("programme")
+          print(f"Validated XMLTV: {len(channels)} channels, {len(programmes)} programmes")
+          if len(channels) < 10 or len(programmes) < 100:
+              raise SystemExit("Guide looks unexpectedly small; refusing to publish")
+          PY
+
+      - name: Publish guide
+        run: |
+          cp "$RUNNER_TEMP/guide.xml.gz" /tmp/guide.xml.gz
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan uk-tv-epg-publish
+          git rm -rf . >/dev/null 2>&1 || true
+          cp /tmp/guide.xml.gz ./guide.xml.gz
+          printf '%s\n' 'Automatically generated UK Freeview XMLTV guide for the IPTV-org UK playlist.' > README.txt
+          git add guide.xml.gz README.txt
+          git commit -m "Update UK TV EPG"
+          git push --force origin HEAD:uk-tv-epg-output
