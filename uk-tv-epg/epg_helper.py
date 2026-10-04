@@ -151,7 +151,7 @@ def prepare(channels_path: str, playlist_url: str, output_path: str, aliases_pat
     ET.indent(out_root, space="  ")
     ET.ElementTree(out_root).write(output_path, encoding="utf-8", xml_declaration=True)
     Path(aliases_path).write_text(
-        json.dumps(aliases, indent=2, sort_keys=True) + "\n",
+        json.dumps(aliases, indent=2, sort_keys=True) + chr(10),
         encoding="utf-8",
     )
 
