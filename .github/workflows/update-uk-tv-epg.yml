@@ -110,31 +110,17 @@ jobs:
           git rm -rf . >/dev/null 2>&1 || true
           cp /tmp/guide.xml.gz ./guide.xml.gz
           cp /tmp/playlist.m3u ./playlist.m3u
-          cat > README.txt <<'EOF'
-Automatically generated UK TV playlist + XMLTV guide.
-
-Playlist:
-https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/playlist.m3u
-
-EPG:
-https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz
-
-The playlist keeps all IPTV-org UK streams, but orders them into:
-01 MAIN UK
-02 NEWS
-03 FILM & ENTERTAINMENT
-04 KIDS
-05 MUSIC
-06 SPORT
-07 LOCAL & REGIONAL
-08 INTERNATIONAL
-09 RELIGIOUS
-10 SHOPPING
-80 RED BUTTON / SPECIAL EVENTS
-90 ALTERNATIVE STREAMS
-95 OTHER / ODDITIES
-99 EXPERIMENTAL / UNRELIABLE
-EOF
+          printf '%s\n' \
+            'Automatically generated UK TV playlist + XMLTV guide.' \
+            '' \
+            'Playlist:' \
+            'https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/playlist.m3u' \
+            '' \
+            'EPG:' \
+            'https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz' \
+            '' \
+            'Groups: MAIN UK, NEWS, FILM & ENTERTAINMENT, KIDS, MUSIC, SPORT, LOCAL & REGIONAL, INTERNATIONAL, RELIGIOUS, SHOPPING, RED BUTTON / SPECIAL EVENTS, ALTERNATIVE STREAMS, OTHER / ODDITIES, EXPERIMENTAL / UNRELIABLE.' \
+            > README.txt
           git add guide.xml.gz playlist.m3u README.txt
           git commit -m "Update UK TV playlist and EPG"
           git push --force origin HEAD:uk-tv-epg-output
