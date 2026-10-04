@@ -49,6 +49,12 @@ jobs:
             "$RUNNER_TEMP/custom.channels.xml" \
             "$RUNNER_TEMP/aliases.json"
 
+      - name: Build structured UK playlist
+        run: |
+          python3 uk-tv-epg/epg_helper.py build-playlist \
+            "$PLAYLIST_URL" \
+            "$RUNNER_TEMP/playlist.m3u"
+
       - name: Grab current Freeview listings
         working-directory: ${{ runner.temp }}/iptv-epg
         env:
@@ -82,17 +88,53 @@ jobs:
           print(f"Validated XMLTV: {len(channels)} channels, {len(programmes)} programmes")
           if len(channels) < 10 or len(programmes) < 100:
               raise SystemExit("Guide looks unexpectedly small; refusing to publish")
+
+          playlist = os.path.join(os.environ["RUNNER_TEMP"], "playlist.m3u")
+          text = open(playlist, "r", encoding="utf-8").read()
+          extinf_count = text.count("#EXTINF:")
+          print(f"Validated playlist: {extinf_count} stream entries")
+          if extinf_count < 20:
+              raise SystemExit("Structured playlist looks unexpectedly small; refusing to publish")
+          for required in ["01 MAIN UK", "02 NEWS", "07 LOCAL & REGIONAL", "90 ALTERNATIVE STREAMS"]:
+              if required not in text:
+                  raise SystemExit(f"Missing expected playlist group: {required}")
           PY
 
-      - name: Publish guide
+      - name: Publish guide and structured playlist
         run: |
           cp "$RUNNER_TEMP/guide.xml.gz" /tmp/guide.xml.gz
+          cp "$RUNNER_TEMP/playlist.m3u" /tmp/playlist.m3u
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan uk-tv-epg-publish
           git rm -rf . >/dev/null 2>&1 || true
           cp /tmp/guide.xml.gz ./guide.xml.gz
-          printf '%s\n' 'Automatically generated UK Freeview XMLTV guide for the IPTV-org UK playlist.' > README.txt
-          git add guide.xml.gz README.txt
-          git commit -m "Update UK TV EPG"
+          cp /tmp/playlist.m3u ./playlist.m3u
+          cat > README.txt <<'EOF'
+Automatically generated UK TV playlist + XMLTV guide.
+
+Playlist:
+https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/playlist.m3u
+
+EPG:
+https://raw.githubusercontent.com/Commsltd/script/uk-tv-epg-output/guide.xml.gz
+
+The playlist keeps all IPTV-org UK streams, but orders them into:
+01 MAIN UK
+02 NEWS
+03 FILM & ENTERTAINMENT
+04 KIDS
+05 MUSIC
+06 SPORT
+07 LOCAL & REGIONAL
+08 INTERNATIONAL
+09 RELIGIOUS
+10 SHOPPING
+80 RED BUTTON / SPECIAL EVENTS
+90 ALTERNATIVE STREAMS
+95 OTHER / ODDITIES
+99 EXPERIMENTAL / UNRELIABLE
+EOF
+          git add guide.xml.gz playlist.m3u README.txt
+          git commit -m "Update UK TV playlist and EPG"
           git push --force origin HEAD:uk-tv-epg-output
