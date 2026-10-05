@@ -59,7 +59,7 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(len(youtube), 1)
         self.assertEqual(
             youtube[0]['url'],
-            'https://www.youtube.com/watch?v=XOacA3RYrXk'
+            'https://www.youtube.com/watch?v=xDWQ3LkccY8'
         )
 
     def test_drm_not_silently_treated_as_unprotected(self):
