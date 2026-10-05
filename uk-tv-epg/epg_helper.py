@@ -3,6 +3,7 @@
 
 Commands:
   prepare <freeview.channels.xml> <playlist_url> <custom.channels.xml> <aliases.json>
+  enrich <guide.xml> <epgshare_UK1.xml.gz>
   apply   <guide.xml> <aliases.json> <playlist.m3u> <guide.xml.gz>
 
 Only Python's standard library is used.
@@ -14,6 +15,8 @@ import copy
 import gzip
 import json
 import re
+from datetime import datetime, timedelta, timezone
+from difflib import SequenceMatcher
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -260,6 +263,347 @@ def apply_aliases(guide_path: str, aliases_path: str, playlist_source: str, gzip
         print("Aliases whose source was absent from generated guide:")
         for target, source in missing_sources:
             print(f"  - {target} <- {source}")
+
+
+
+# ---------------------------------------------------------------------------
+# Programme metadata enrichment
+# ---------------------------------------------------------------------------
+
+def xmltv_timestamp(value: str) -> int | None:
+    if not value:
+        return None
+    m = re.match(r"^(\\d{14})(?:\\s+([+-]\\d{4}))?", value.strip())
+    if not m:
+        return None
+    try:
+        dt = datetime.strptime(m.group(1), "%Y%m%d%H%M%S")
+        offset = m.group(2)
+        if offset:
+            sign = 1 if offset[0] == "+" else -1
+            hours = int(offset[1:3])
+            minutes = int(offset[3:5])
+            tz = timezone(sign * timedelta(hours=hours, minutes=minutes))
+            dt = dt.replace(tzinfo=tz)
+        else:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return int(dt.timestamp())
+    except Exception:
+        return None
+
+
+def normalise_programme_title(value: str) -> str:
+    value = (value or "").casefold()
+    value = value.replace("&", " and ")
+    value = re.sub(r"[^a-z0-9]+", " ", value)
+    return re.sub(r"\\s+", " ", value).strip()
+
+
+def normalise_channel_name(value: str) -> str:
+    value = normalise_programme_title(value)
+    replacements = {
+        "bbc one lon": "bbc one london",
+        "bbc one e mid": "bbc one east midlands",
+        "bbc one n west": "bbc one north west",
+        "bbc one ne and c": "bbc one north east cumbria",
+        "bbc one ni": "bbc one northern ireland",
+        "bbc one s east": "bbc one south east",
+        "bbc one s west": "bbc one south west",
+        "bbc one scot": "bbc one scotland",
+        "bbc one sth": "bbc one south",
+        "bbc one wal": "bbc one wales",
+        "bbc one wm": "bbc one west midlands",
+        "bbc one yorks": "bbc one yorkshire",
+        "bbc two ni": "bbc two northern ireland",
+        "bbc two wal": "bbc two wales",
+        "u and yesterday": "u yesterday",
+        "u and dave": "u dave",
+        "u and drama": "u drama",
+        "u and w": "u w",
+    }
+    for old, new in replacements.items():
+        value = value.replace(old, new)
+    value = re.sub(r"\\b(hd|sd|uk|united kingdom)\\b", " ", value)
+    return re.sub(r"\\s+", " ", value).strip()
+
+
+def epgshare_source_id(target_id: str) -> str | None:
+    base, variant = split_id(target_id)
+    v = variant.casefold()
+    plus1 = "plus1" in v or "+1" in v
+
+    if base == "BBCOne.uk":
+        region_map = {
+            "london": "BBC.One.Lon.HD.uk",
+            "east": "BBC.One.EastHD.uk",
+            "eastmidlands": "BBC.One.E.Mid.HD.uk",
+            "northeastcumbria": "BBC.One.NE.and.C.HD.uk",
+            "northernireland": "BBC.One.NI.HD.uk",
+            "northwest": "BBC.One.N.West.HD.uk",
+            "scotland": "BBC.One.ScotHD.uk",
+            "south": "BBC.One.Sth.HD.uk",
+            "southeast": "BBC.One.S.East.HD.uk",
+            "southwest": "BBC.One.S.West.HD.uk",
+            "wales": "BBC.One.Wal.HD.uk",
+            "west": "BBC.One.West.HD.uk",
+            "westmidlands": "BBC.One.WM.HD.uk",
+            "yorkshire": "BBC.One.Yorks.HD.uk",
+            "yorkshirelincolnshire": "BBC.One.Y.and.L.HD.uk",
+            "channelislands": "BBC.One.CI.HD.uk",
+        }
+        for token, source in region_map.items():
+            if token in v:
+                return source
+        return "BBC.One.Lon.HD.uk"
+
+    if base == "BBCTwo.uk":
+        if "northernireland" in v:
+            return "BBC.Two.NI.HD.uk"
+        if "wales" in v:
+            return "BBC.Two.Wal.HD.uk"
+        return "BBC.Two.HD.uk"
+
+    fixed = {
+        "BBCThree.uk": "BBC.Three.HD.uk",
+        "BBCThreeCBBC.uk": "BBC.Three.HD.uk",
+        "BBCFour.uk": "BBC.Four.HD.uk",
+        "BBCFourCBeebies.uk": "BBC.Four.HD.uk",
+        "CBBC.uk": "CBBC.HD.uk",
+        "CBeebies.uk": "CBeebies.HD.uk",
+        "BBCNews.uk": "BBC.NEWS.HD.uk",
+        "SkyNews.uk": "Sky.News.HD.uk",
+        "SkyArts.uk": "Sky.Arts.HD.uk",
+        "SkyMix.uk": "Sky.Mix.HD.uk",
+        "TalkingPicturesTV.uk": "TalkingPictures.uk",
+        "Blaze.uk": "BLAZE.uk",
+        "FoodNetwork.uk": "Food.Network.uk",
+        "5SELECT.uk": "5SELECT.uk",
+        "5Action.uk": "5ACTION.uk",
+        "4seven.uk": "4seven.uk",
+        "GREATmovies.uk": "GREAT!.movies.uk",
+        "GREATromance.uk": "GREAT!.romance.uk",
+        "GREATaction.uk": "GREAT!.action.uk",
+        "GREATtv.uk": "GREAT!.tv.uk",
+        "talkSPORT.uk": "talkSPORT.uk",
+    }
+    if base in fixed:
+        return fixed[base]
+
+    if base == "ITV1.uk":
+        return "ITV1+1.uk" if plus1 else "ITV1.HD.uk"
+    if base == "ITV2.uk":
+        return "ITV2+1.uk" if plus1 else "ITV2.HD.uk"
+    if base == "ITV3.uk":
+        return "ITV3+1.uk" if plus1 else "ITV3.HD.uk"
+    if base == "ITV4.uk":
+        return "ITV4+1.uk" if plus1 else "ITV4.HD.uk"
+    if base == "Channel4.uk":
+        return "Channel.4+1.uk" if plus1 else "Channel.4.HD.uk"
+    if base == "Channel5.uk":
+        return "Channel.5+1.uk" if plus1 else "Channel.5.HD.uk"
+    if base == "E4.uk":
+        return "E4+1.uk" if plus1 else "E4.HD.uk"
+    if base == "Film4.uk":
+        return "Film4+1.uk" if plus1 else "Film4.HD.uk"
+    if base == "More4.uk":
+        return "More4+1.uk" if plus1 else "More4.HD.uk"
+    if base == "5STAR.uk":
+        return "5STAR+1.uk" if plus1 else "5STAR.uk"
+    if base == "5USA.uk":
+        return "5USA+1.uk" if plus1 else None
+    if base == "UDave.uk":
+        return "U.and.Dave.ja.vu.uk" if plus1 else "U.and.Dave.HD.uk"
+    if base == "UDaveJaVu.uk":
+        return "U.and.Dave.ja.vu.uk"
+    if base == "UDrama.uk":
+        return "U.and.Drama+1.uk" if plus1 else "U.and.Drama.uk"
+    if base == "UYesterday.uk":
+        return "U.and.YESTERDAY+1.uk" if plus1 else "U.and.YESTERDAY.uk"
+    if base == "UW.uk":
+        return "U.and.W+1.uk" if plus1 else "U.and.W.HD.uk"
+    if base == "Quest.uk":
+        return "QUEST+1.uk" if plus1 else "QUEST.HD.uk"
+    if base == "QuestRed.uk":
+        return "Quest.Red+1.uk" if plus1 else "Quest.Red.uk"
+    if base == "SkySportsCricket.uk":
+        return "SkySpCricket.HD.uk"
+
+    return None
+
+
+def enrich_guide(guide_path: str, source_gzip_path: str) -> None:
+    source_path = Path(source_gzip_path)
+    if not source_path.exists() or source_path.stat().st_size < 1000:
+        print("WARNING: enrichment guide unavailable; keeping Freeview-only metadata")
+        return
+
+    tree = ET.parse(guide_path)
+    root = tree.getroot()
+
+    target_channel_names = {}
+    for ch in root.findall("channel"):
+        cid = ch.get("id", "")
+        names = [
+            (n.text or "").strip()
+            for n in ch.findall("display-name")
+            if (n.text or "").strip()
+        ]
+        if cid:
+            target_channel_names[cid] = names
+
+    source_channel_names = {}
+    with gzip.open(source_path, "rb") as fh:
+        for _, elem in ET.iterparse(fh, events=("end",)):
+            if elem.tag == "channel":
+                cid = elem.get("id", "")
+                names = [
+                    (n.text or "").strip()
+                    for n in elem.findall("display-name")
+                    if (n.text or "").strip()
+                ]
+                if cid:
+                    source_channel_names[cid] = names
+            elem.clear()
+
+    normalised_source_names = {}
+    for cid, names in source_channel_names.items():
+        for name in names:
+            norm = normalise_channel_name(name)
+            if norm:
+                normalised_source_names.setdefault(norm, []).append(cid)
+
+    target_to_source = {}
+    for target_id, names in target_channel_names.items():
+        explicit = epgshare_source_id(target_id)
+        if explicit and explicit in source_channel_names:
+            target_to_source[target_id] = explicit
+            continue
+
+        candidates = []
+        for name in names:
+            norm = normalise_channel_name(name)
+            candidates.extend(normalised_source_names.get(norm, []))
+        if candidates:
+            target_to_source[target_id] = candidates[0]
+
+    wanted_sources = set(target_to_source.values())
+    source_programmes = {}
+
+    with gzip.open(source_path, "rb") as fh:
+        for _, elem in ET.iterparse(fh, events=("end",)):
+            if elem.tag != "programme":
+                elem.clear()
+                continue
+
+            source_channel = elem.get("channel", "")
+            if source_channel not in wanted_sources:
+                elem.clear()
+                continue
+
+            start = xmltv_timestamp(elem.get("start", ""))
+            title_node = elem.find("title")
+            title = normalise_programme_title(
+                title_node.text if title_node is not None else ""
+            )
+            if start is not None and title:
+                source_programmes.setdefault(source_channel, {}).setdefault(
+                    start // 60, []
+                ).append(copy.deepcopy(elem))
+            elem.clear()
+
+    copy_tags = {
+        "desc", "sub-title", "category", "episode-num", "date",
+        "rating", "star-rating", "credits", "country"
+    }
+
+    matched = 0
+    descriptions_added = 0
+    metadata_nodes_added = 0
+    target_channels_enriched = set()
+
+    for programme in root.findall("programme"):
+        target_channel = programme.get("channel", "")
+        source_channel = target_to_source.get(target_channel)
+        if not source_channel:
+            continue
+
+        start = xmltv_timestamp(programme.get("start", ""))
+        title_node = programme.find("title")
+        target_title = normalise_programme_title(
+            title_node.text if title_node is not None else ""
+        )
+        if start is None or not target_title:
+            continue
+
+        best = None
+        best_score = 0.0
+        minute = start // 60
+        by_minute = source_programmes.get(source_channel, {})
+
+        for delta in range(-10, 11):
+            for candidate in by_minute.get(minute + delta, []):
+                source_title_node = candidate.find("title")
+                source_title = normalise_programme_title(
+                    source_title_node.text if source_title_node is not None else ""
+                )
+                if not source_title:
+                    continue
+
+                if source_title == target_title:
+                    score = 1.0
+                else:
+                    score = SequenceMatcher(
+                        None, target_title, source_title
+                    ).ratio()
+
+                # Prefer title similarity, with a small penalty for time drift.
+                score -= abs(delta) * 0.01
+                if score > best_score:
+                    best_score = score
+                    best = candidate
+
+        if best is None or best_score < 0.72:
+            continue
+
+        matched += 1
+        target_channels_enriched.add(target_channel)
+        existing_tags = {child.tag for child in programme}
+
+        for child in list(best):
+            if child.tag not in copy_tags:
+                continue
+
+            if child.tag == "desc":
+                existing_desc = programme.find("desc")
+                if existing_desc is not None and (existing_desc.text or "").strip():
+                    continue
+                programme.append(copy.deepcopy(child))
+                descriptions_added += 1
+                metadata_nodes_added += 1
+                continue
+
+            if child.tag in {"sub-title", "date", "credits"} and child.tag in existing_tags:
+                continue
+
+            if child.tag in {"category", "episode-num", "rating", "star-rating", "country"}:
+                serialised = ET.tostring(child, encoding="unicode")
+                if any(
+                    ET.tostring(existing, encoding="unicode") == serialised
+                    for existing in programme.findall(child.tag)
+                ):
+                    continue
+
+            programme.append(copy.deepcopy(child))
+            metadata_nodes_added += 1
+
+    ET.indent(tree, space="  ")
+    tree.write(guide_path, encoding="utf-8", xml_declaration=True)
+
+    print(f"EPGshare channel mappings: {len(target_to_source)}")
+    print(f"EPGshare programme matches: {matched}")
+    print(f"Programme descriptions added: {descriptions_added}")
+    print(f"Extra metadata nodes added: {metadata_nodes_added}")
+    print(f"Channels enriched: {len(target_channels_enriched)}")
 
 
 # ---------------------------------------------------------------------------
@@ -858,6 +1202,8 @@ def main() -> None:
     cmd = sys.argv[1]
     if cmd == "prepare" and len(sys.argv) == 6:
         prepare(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+    elif cmd == "enrich" and len(sys.argv) == 4:
+        enrich_guide(sys.argv[2], sys.argv[3])
     elif cmd == "apply" and len(sys.argv) == 6:
         apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     elif cmd == "build-playlist" and len(sys.argv) == 6:
