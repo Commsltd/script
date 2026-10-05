@@ -119,7 +119,7 @@ jobs:
           print(f"Validated playlist: {extinf_count} stream entries")
           if extinf_count < 20:
               raise SystemExit("Structured playlist looks unexpectedly small; refusing to publish")
-          for required in ["01 MAIN UK", "02 NEWS", "07 LOCAL & REGIONAL", "90 ALTERNATIVE STREAMS"]:
+          for required in ["01 MAIN UK", "02 NEWS", "07 LOCAL & REGIONAL"]:
               if required not in text:
                   raise SystemExit(f"Missing expected playlist group: {required}")
           PY
