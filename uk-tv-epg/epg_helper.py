@@ -292,7 +292,9 @@ MAIN_BASES = [
     "Channel4.uk",
     "Channel5.uk",
     "BBCThree.uk",
+    "BBCThreeCBBC.uk",
     "BBCFour.uk",
+    "BBCFourCBeebies.uk",
     "ITV2.uk",
     "ITV3.uk",
     "ITV4.uk",
@@ -323,6 +325,9 @@ MAIN_BASES = [
     "HorrorXtra.uk",
     "Blaze.uk",
 ]
+
+MAIN_VARIANT_BASES = {base.casefold() for base in MAIN_BASES}
+
 
 PREFERRED_VARIANTS = {
     "BBCOne.uk": ["LondonHD", "London", "UKHD", "HD", "UK", "SD"],
@@ -572,11 +577,16 @@ def classify(entry: dict, main_entry_ids: set[int]) -> str:
     ]):
         return "80 RED BUTTON / SPECIAL EVENTS"
 
-    if base in {"bbcone.uk", "itv1.uk"}:
-        return "07 LOCAL & REGIONAL"
+    # Keep variants of the main UK channel families in the main guide.
+    # This includes BBC One regions, ITV1 regions/+1, Channel 4/5 variants,
+    # ITV2/3/4 variants and the U/Quest/etc families. Core selected streams
+    # still sort first; variants follow afterwards.
     compact = compact_name(entry).casefold()
+    if base in MAIN_VARIANT_BASES:
+        return "01 MAIN UK"
     if compact.startswith("bbc one") or compact.startswith("itv1"):
-        return "07 LOCAL & REGIONAL"
+        return "01 MAIN UK"
+
     if any(x in hay for x in [
         "stv", "utv", "londonlive", "london tv", "latesttv", "latest tv",
         "kmtv", "talkbirmingham", "talkbristol", "talkcardiff", "talkleeds",
@@ -781,10 +791,24 @@ def build_playlist(
     for e in alternatives:
         group_entries["90 ALTERNATIVE STREAMS"].append(e)
 
+    family_rank = {
+        base.casefold(): i for i, base in enumerate(MAIN_BASES)
+    }
+
     def normal_sort_key(e: dict):
         if id(e) in main_entry_rank:
-            return (main_entry_rank[id(e)], e["name"].casefold(), e["id"].casefold())
-        return (e["name"].casefold(), e["id"].casefold(), -stream_score(e))
+            return (0, main_entry_rank[id(e)], 0, e["name"].casefold())
+
+        base_key = e["base"].casefold()
+        if classify(e, main_entry_ids) == "01 MAIN UK" and base_key in family_rank:
+            return (
+                1,
+                family_rank[base_key],
+                -preferred_variant_score(e),
+                e["name"].casefold(),
+            )
+
+        return (2, e["name"].casefold(), e["id"].casefold(), -stream_score(e))
 
     header = set_m3u_attr(
         header,
