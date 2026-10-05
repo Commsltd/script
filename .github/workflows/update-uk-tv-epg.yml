@@ -74,6 +74,18 @@ jobs:
           tail -n 80 "$RUNNER_TEMP/grab.log" || true
           exit $status
 
+      - name: Download UK programme metadata enrichment
+        run: |
+          curl -fsSL --retry 3 --retry-delay 2 \
+            "https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz" \
+            -o "$RUNNER_TEMP/epgshare_UK1.xml.gz" || true
+
+      - name: Enrich programme descriptions and metadata
+        run: |
+          python3 uk-tv-epg/epg_helper.py enrich \
+            "$RUNNER_TEMP/guide.xml" \
+            "$RUNNER_TEMP/epgshare_UK1.xml.gz"
+
       - name: Add playlist aliases and compress
         run: |
           python3 uk-tv-epg/epg_helper.py apply \
