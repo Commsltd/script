@@ -17,14 +17,14 @@ adb shell settings put global device_provisioned 1
 adb shell settings put secure user_setup_complete 1
 adb shell input keyevent KEYCODE_WAKEUP
 adb shell input keyevent KEYCODE_HOME
-adb install -r delivery/UK-Television-0.2.0-preview.apk
+adb install -r delivery/UK-Television-0.3.0-preview.apk
 adb install -r delivery/uk-tv-tests.apk
 adb logcat -c
 set +e
 adb shell am instrument -w -r com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
 instrument_status=${PIPESTATUS[0]}
 adb logcat -d -s AndroidRuntime:E > delivery/android-crashes.log
-for name in guide options playback-test; do
+for name in guide options quick-guide playback-test; do
   adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
 done
 adb shell uiautomator dump /sdcard/final-ui.xml
