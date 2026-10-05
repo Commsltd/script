@@ -25,6 +25,7 @@ def resolve(url: str) -> dict | None:
         "--skip-download",
         "--no-warnings",
         "--no-playlist",
+        "--js-runtimes", "node",
         "--dump-single-json",
         url,
     ]
@@ -58,11 +59,24 @@ def resolve(url: str) -> dict | None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--previous", type=Path)
     args = parser.parse_args()
+
+    previous = {}
+    if args.previous and args.previous.exists():
+        try:
+            previous = json.loads(args.previous.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            previous = {}
 
     result = {}
     for channel_id, url in CHANNELS.items():
         resolved = resolve(url)
+        if not resolved:
+            prior = previous.get(channel_id) or {}
+            prior_url = str(prior.get("url") or "")
+            if prior_url.startswith("https://www.youtube.com/watch?v="):
+                resolved = resolve(prior_url)
         if resolved:
             result[channel_id] = resolved
 

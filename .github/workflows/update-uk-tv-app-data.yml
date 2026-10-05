@@ -1,4 +1,5 @@
 name: Update UK Television native catalogue
+
 on:
   workflow_dispatch:
   workflow_run:
@@ -11,52 +12,79 @@ on:
       - 'uk-tv-app/tools/test_manifest.py'
       - 'uk-tv-app/tools/mirror_artwork.py'
       - 'uk-tv-app/tools/test_mirror_artwork.py'
+      - 'uk-tv-app/tools/resolve_youtube_live.py'
+      - 'uk-tv-app/tools/test_youtube_resolver.py'
       - '.github/workflows/update-uk-tv-app-data.yml'
   schedule:
     - cron: '47 0,6,12,18 * * *'
+
 permissions:
   contents: write
+
 concurrency:
   group: uk-television-native-catalogue
   cancel-in-progress: false
+
 jobs:
   export:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - name: Install artwork tooling
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir Pillow==11.3.0
-      - name: Test exporter and artwork mirror
+      - uses: actions/checkout@v7
+
+      - name: Install catalogue tooling
+        run: |
+          python3 -m pip install             --disable-pip-version-check             --no-cache-dir             Pillow==11.3.0             yt-dlp==2026.8.19
+
+      - name: Test exporter, artwork and YouTube resolvers
         working-directory: uk-tv-app/tools
-        run: python3 -m unittest -v test_manifest.py test_mirror_artwork.py
+        run: |
+          python3 -m unittest -v             test_manifest.py             test_mirror_artwork.py             test_youtube_resolver.py
+
+      - name: Resolve current official YouTube live videos
+        run: |
+          mkdir -p "$RUNNER_TEMP/native"
+          curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/youtube-live.json"             -o "$RUNNER_TEMP/previous-youtube-live.json" || true
+          python3 uk-tv-app/tools/resolve_youtube_live.py             --previous "$RUNNER_TEMP/previous-youtube-live.json"             --output "$RUNNER_TEMP/native/youtube-live.json"
+          cat "$RUNNER_TEMP/native/youtube-live.json"
+
       - name: Convert an immutable copy of the existing outputs
         run: |
-          git clone --depth 1 --single-branch --branch uk-tv-epg-output https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
+          git clone --depth 1 --single-branch --branch uk-tv-epg-output             https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
           revision=$(git -C "$RUNNER_TEMP/tv-feed" rev-parse HEAD)
-          python3 uk-tv-app/tools/export_manifest.py --source "$RUNNER_TEMP/tv-feed" --revision "$revision" --output "$RUNNER_TEMP/native/catalogue.json.gz"
+          python3 uk-tv-app/tools/export_manifest.py             --source "$RUNNER_TEMP/tv-feed"             --revision "$revision"             --youtube-live "$RUNNER_TEMP/native/youtube-live.json"             --output "$RUNNER_TEMP/native/catalogue.json.gz"
+
       - name: Reuse previous privacy artwork when available
         run: |
           mkdir -p "$RUNNER_TEMP/native/artwork"
           curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork.zip"             -o "$RUNNER_TEMP/previous-artwork.zip" || true
           if [ -s "$RUNNER_TEMP/previous-artwork.zip" ]; then
-            unzip -q -o "$RUNNER_TEMP/previous-artwork.zip" -d "$RUNNER_TEMP/native/artwork" || true
+            unzip -q -o "$RUNNER_TEMP/previous-artwork.zip"               -d "$RUNNER_TEMP/native/artwork" || true
           fi
+
       - name: Mirror artwork and rewrite catalogue to local artwork references
         run: |
           python3 uk-tv-app/tools/mirror_artwork.py             --catalogue "$RUNNER_TEMP/native/catalogue.json.gz"             --output-dir "$RUNNER_TEMP/native/artwork"             --zip "$RUNNER_TEMP/native/artwork.zip"
+
       - name: Publish only to the separate app-data branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout --orphan uk-television-data-publish
           git rm -rf . >/dev/null
+
           cp "$RUNNER_TEMP/native/catalogue.json.gz" .
           cp "$RUNNER_TEMP/native/status.json" .
           cp "$RUNNER_TEMP/native/artwork.zip" .
           cp "$RUNNER_TEMP/native/artwork-status.json" .
-          printf '%s\n' 'UK Television native catalogue and privacy artwork bundle. Derived from the existing M3U/XMLTV outputs; this branch does not alter those feeds.' > README.txt
-          git add catalogue.json.gz status.json artwork.zip artwork-status.json README.txt
+          cp "$RUNNER_TEMP/native/youtube-live.json" .
+
+          printf '%s\n'             'UK Television native catalogue, privacy artwork bundle and resolved official live-video identities. This branch does not alter the source M3U/XMLTV feeds.'             > README.txt
+
+          git add             catalogue.json.gz             status.json             artwork.zip             artwork-status.json             youtube-live.json             README.txt
           git commit -m 'Update UK Television native catalogue'
           git push --force origin HEAD:uk-tv-app-data

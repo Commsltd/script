@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
 
     private var dialogOpen = false
     private var selectDownAt = 0L
+    private var longPressTriggered = false
     private var overlayJob: Job? = null
     private var surface by mutableStateOf(TvSurface.GUIDE)
     private var liveOverlay by mutableStateOf(LiveOverlay.NONE)
@@ -131,6 +132,7 @@ class MainActivity : ComponentActivity() {
     private fun present(builder: AlertDialog.Builder) {
         dialogOpen = true
         selectDownAt = 0L
+        longPressTriggered = false
         val dialog = builder.create()
         dialog.setOnDismissListener {
             dialogOpen = false
@@ -284,15 +286,27 @@ class MainActivity : ComponentActivity() {
         val key = event.keyCode
 
         if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER) {
-            if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
-                selectDownAt = SystemClock.elapsedRealtime()
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                if (event.repeatCount == 0) {
+                    selectDownAt = SystemClock.elapsedRealtime()
+                    longPressTriggered = false
+                } else if (!longPressTriggered) {
+                    longPressTriggered = true
+                    showSources()
+                }
                 return true
             }
             if (event.action == KeyEvent.ACTION_UP) {
                 val heldFor = if (selectDownAt > 0L)
                     SystemClock.elapsedRealtime() - selectDownAt else 0L
+                val wasLong = longPressTriggered || heldFor >= 550L
                 selectDownAt = 0L
-                if (heldFor >= 550L) showSources() else shortSelect()
+                longPressTriggered = false
+                if (wasLong) {
+                    if (!dialogOpen) showSources()
+                } else {
+                    shortSelect()
+                }
                 return true
             }
             return true

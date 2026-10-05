@@ -11,6 +11,12 @@ class GuideRulesTest {
         assertEquals(p, GuideRules.at(listOf(p), 100))
         assertNull(GuideRules.at(listOf(p), 200))
     }
+    @Test fun nearestProgrammeDoesNotLoseTheCursorAtGaps() {
+        val a = programme(100,200); val b = programme(300,400)
+        assertEquals(a, GuideRules.nearest(listOf(a,b),150))
+        assertEquals(b, GuideRules.nearest(listOf(a,b),250))
+        assertEquals(b, GuideRules.nearest(listOf(a,b),999))
+    }
     @Test fun adjacentProgrammesChooseCorrectOne() {
         val a = programme(100,200); val b = programme(200,300)
         assertEquals(b, GuideRules.at(listOf(a,b),200))

@@ -13,27 +13,13 @@ from urllib.parse import urlsplit, parse_qsl
 
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
-OFFICIAL_SOURCES = {
-    # Official YouTube players are embedded inside UK Television.  These are
-    # player URLs, not extracted/temporary video-CDN URLs.
-    'EuronewsEnglish.fr': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCSrZ3UV4jOidv8ppoVuvW9Q&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
-    'SkyNews.uk': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCoMdktPbSTixAyNGwb-UYkQ&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
-    'ABCNewsLive.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCBi2mrWuNuyYy4gbM6fU18Q&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
-    'CBSNews247.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UC8p1vwvWtl6T73JiExfWs1g&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
-    'NBCNewsNOW.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCeY0bbntWzzVIaj2z3QigXg&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
-    'LiveNOWfromFOX.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCJg9wBPyKMNA5sRDnvzmkdg&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
-    ],
+YOUTUBE_LABELS = {
+    'SkyNews.uk': 'Sky News official YouTube',
+    'EuronewsEnglish.fr': 'Euronews official YouTube',
+    'ABCNewsLive.us': 'ABC News official YouTube',
+    'CBSNews247.us': 'CBS News official YouTube',
+    'NBCNewsNOW.us': 'NBC News official YouTube',
+    'LiveNOWfromFOX.us': 'LiveNOW from FOX official YouTube',
 }
 
 def identity(value):
@@ -87,7 +73,8 @@ def family(cid):
     base = cid.partition('@')[0]
     return {'BBCThreeCBBC.uk': 'BBCThree.uk', 'BBCFourCBeebies.uk': 'BBCFour.uk', 'STV.uk': 'ITV1.uk'}.get(base, base)
 
-def build(playlist, xml_bytes, revision='unknown'):
+def build(playlist, xml_bytes, revision='unknown', youtube_live=None):
+    youtube_live = youtube_live or {}
     channels = {}
     warnings = []
     for order, entry in enumerate(parse_playlist(playlist)):
@@ -106,7 +93,7 @@ def build(playlist, xml_bytes, revision='unknown'):
                 'name': entry['name'], 'group': attrs.get('group-title', '95 OTHER / ODDITIES'),
                 'order': order, 'logo': attrs.get('tvg-logo', ''),
                 'variant': cid.partition('@')[2], 'sources': [],
-                'officialUrl': 'https://www.youtube.com/@SkyNews/live' if cid.partition('@')[0] == 'SkyNews.uk' else ''
+                'officialUrl': ''
             }
         channel = channels[cid]
         headers = entry['headers']
@@ -120,22 +107,34 @@ def build(playlist, xml_bytes, revision='unknown'):
         if not channel['logo'] and attrs.get('tvg-logo'):
             channel['logo'] = attrs['tvg-logo']
 
+    youtube_count = 0
     for channel in channels.values():
         base = channel['id'].partition('@')[0]
-        for source in OFFICIAL_SOURCES.get(base, []):
-            sid = identity(source['kind'] + '|' + source['url'])
-            if any(s['id'] == sid for s in channel['sources']):
-                continue
-            channel['sources'].append({
-                'id': sid,
-                'url': source['url'],
-                'label': source['label'],
-                'host': urlsplit(source['url']).hostname or '',
-                'mime': 'application/x-external',
-                'headers': {},
-                'unsupportedDrm': False,
-                'kind': source['kind'],
-            })
+        resolved = youtube_live.get(base) or {}
+        url = str(resolved.get('url') or '')
+        video_id = str(resolved.get('videoId') or '')
+        parsed = urlsplit(url)
+        if (
+            base in YOUTUBE_LABELS
+            and parsed.scheme == 'https'
+            and parsed.hostname in {'www.youtube.com', 'youtube.com'}
+            and parsed.path == '/watch'
+            and re.fullmatch(r'[A-Za-z0-9_-]{6,20}', video_id)
+            and dict(parse_qsl(parsed.query)).get('v') == video_id
+        ):
+            sid = identity('youtube|' + url)
+            if not any(s['id'] == sid for s in channel['sources']):
+                channel['sources'].append({
+                    'id': sid,
+                    'url': url,
+                    'label': YOUTUBE_LABELS[base],
+                    'host': parsed.hostname or '',
+                    'mime': 'application/x-external',
+                    'headers': {},
+                    'unsupportedDrm': False,
+                    'kind': 'youtube',
+                })
+                youtube_count += 1
 
     if b'<!ENTITY' in xml_bytes.upper():
         raise ValueError('XML entities are not accepted')
@@ -188,22 +187,34 @@ def build(playlist, xml_bytes, revision='unknown'):
                 details.extend(f'{c.tag.title()}: {c.text}' for c in credits if c.text)
             programmes.append({'key': key, 'channelId': cid, 'start': start, 'stop': stop, 'title': title, 'subtitle': (p.findtext('sub-title') or '').strip(), 'description': (p.findtext('desc') or '').strip(), 'details': ' · '.join(dict.fromkeys(details)), 'artwork': p.find('icon').get('src', '') if p.find('icon') is not None else ''})
     programmes.sort(key=lambda p: (p['channelId'], p['start'], p['stop']))
-    return {'schemaVersion': 1, 'sourceRevision': revision, 'builtAt': int(datetime.now(timezone.utc).timestamp() * 1000), 'guideStart': min((p['start'] for p in programmes), default=0), 'guideEnd': max((p['stop'] for p in programmes), default=0), 'descriptionCount': sum(bool(p['description']) for p in programmes), 'warnings': sorted(set(warnings)), 'channels': list(channels.values()), 'programmes': programmes}
+    return {'schemaVersion': 1, 'sourceRevision': revision, 'youtubeLiveSources': youtube_count, 'builtAt': int(datetime.now(timezone.utc).timestamp() * 1000), 'guideStart': min((p['start'] for p in programmes), default=0), 'guideEnd': max((p['stop'] for p in programmes), default=0), 'descriptionCount': sum(bool(p['description']) for p in programmes), 'warnings': sorted(set(warnings)), 'channels': list(channels.values()), 'programmes': programmes}
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--source', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--revision', default='unknown')
+    parser.add_argument('--youtube-live', type=Path)
     args = parser.parse_args()
+    live = {}
+    if args.youtube_live and args.youtube_live.exists():
+        try:
+            live = json.loads(args.youtube_live.read_text(encoding='utf-8'))
+        except (OSError, json.JSONDecodeError):
+            live = {}
     xml = gzip.decompress((args.source / 'guide.xml.gz').read_bytes())
-    data = build((args.source / 'playlist.m3u').read_text(encoding='utf-8-sig'), xml, args.revision)
+    data = build(
+        (args.source / 'playlist.m3u').read_text(encoding='utf-8-sig'),
+        xml,
+        args.revision,
+        live
+    )
     if len(data['channels']) < 10 or len(data['programmes']) < 100:
         raise SystemExit('Refusing to publish an incomplete catalogue')
     args.output.parent.mkdir(parents=True, exist_ok=True)
     encoded = json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode()
     args.output.write_bytes(gzip.compress(encoded, mtime=0))
-    summary = {k: data[k] for k in ('schemaVersion', 'sourceRevision', 'builtAt', 'guideStart', 'guideEnd', 'descriptionCount', 'warnings')}
+    summary = {k: data[k] for k in ('schemaVersion', 'sourceRevision', 'youtubeLiveSources', 'builtAt', 'guideStart', 'guideEnd', 'descriptionCount', 'warnings')}
     summary.update(channels=len(data['channels']), programmes=len(data['programmes']), bytes=args.output.stat().st_size)
     args.output.with_name('status.json').write_text(json.dumps(summary, indent=2) + '\n')
     print(json.dumps(summary, indent=2))

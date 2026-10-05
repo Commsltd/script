@@ -660,7 +660,7 @@ private fun LiveScreen(
 }
 
 @Composable
-private fun LiveInfoOverlay(
+private fun BoxScope.LiveInfoOverlay(
     model: TvModel,
     engine: PlaybackEngine,
     youtubeSource: StreamSource?
@@ -754,7 +754,7 @@ private fun LiveInfoOverlay(
 }
 
 @Composable
-private fun QuickGuideOverlay(model: TvModel, quickGuideKey: String) {
+private fun BoxScope.QuickGuideOverlay(model: TvModel, quickGuideKey: String) {
     val rows = model.channelRows()
     if (rows.isEmpty()) return
     val index = rows.indexOfFirst { it.station.id == quickGuideKey }.coerceAtLeast(0)
