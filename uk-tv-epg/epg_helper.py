@@ -1039,10 +1039,51 @@ def canonicalise_carrier_entry(entry: dict) -> dict | None:
     return out
 
 
+EXTERNAL_ID_MAP = {
+    "itv1.uk": ("ITV1.uk@London", "ITV1"),
+}
+
+
+def canonicalise_external_entry(entry: dict) -> dict | None:
+    mapping = EXTERNAL_ID_MAP.get(entry["id"].casefold())
+    if not mapping:
+        return None
+
+    target_id, display_name = mapping
+    out = dict(entry)
+    out["block"] = entry["block"][:]
+    out["id"] = target_id
+    out["base"], out["variant"] = split_id(target_id)
+    out["name"] = display_name
+
+    extinf = out["block"][0]
+    extinf = set_m3u_attr(extinf, "tvg-id", target_id)
+    extinf = set_m3u_name(extinf, display_name)
+    out["block"][0] = extinf
+    out["extinf"] = extinf
+    out["attrs"] = dict(entry["attrs"])
+    out["attrs"]["tvg-id"] = target_id
+    return out
+
+
+def is_plus1_entry(entry: dict) -> bool:
+    hay = " ".join([
+        entry.get("id", ""),
+        entry.get("variant", ""),
+        entry.get("name", ""),
+    ]).casefold()
+    return "plus1" in hay or "+1" in hay
+
+
+def logical_channel_key(entry: dict) -> tuple[str, bool]:
+    return (entry.get("base", "").casefold(), is_plus1_entry(entry))
+
+
 def build_playlist(
     playlist_url: str,
     alt_playlist_url: str,
     carrier_playlist_url: str,
+    external_playlist_url: str,
     output_path: str
 ) -> None:
     text = fetch_text(playlist_url)
@@ -1064,7 +1105,7 @@ def build_playlist(
         print(f"WARNING: could not load carrier stream pool: {exc}")
         carrier_entries_raw = []
 
-    existing_bases = {e["base"].casefold() for e in primaries if e["base"]}
+    existing_keys = {logical_channel_key(e) for e in primaries if e["base"]}
     added_carrier_primaries = []
 
     for raw in carrier_entries_raw:
@@ -1072,13 +1113,37 @@ def build_playlist(
         if e is None or not e["url"]:
             continue
 
-        base_key = e["base"].casefold()
-        if base_key not in existing_bases:
+        key = logical_channel_key(e)
+        if key not in existing_keys:
             primaries.append(e)
             added_carrier_primaries.append(e)
-            existing_bases.add(base_key)
+            existing_keys.add(key)
         else:
             carrier_alternatives.append(e)
+
+    # A second maintained UK playlist fills gaps the main and carrier pools
+    # still leave behind. At present we only accept normal ITV1 from it.
+    external_alternatives: list[dict] = []
+    added_external_primaries = []
+    try:
+        external_text = fetch_text(external_playlist_url)
+        _, external_entries_raw = parse_m3u_entries(external_text)
+    except Exception as exc:
+        print(f"WARNING: could not load external UK stream pool: {exc}")
+        external_entries_raw = []
+
+    for raw in external_entries_raw:
+        e = canonicalise_external_entry(raw)
+        if e is None or not e["url"]:
+            continue
+
+        key = logical_channel_key(e)
+        if key not in existing_keys:
+            primaries.append(e)
+            added_external_primaries.append(e)
+            existing_keys.add(key)
+        else:
+            external_alternatives.append(e)
 
     # Choose the Freeview-like headline set only after supplemental sources
     # have been merged, so missing C4/C5/ITV3/ITV4/etc can be promoted.
@@ -1110,6 +1175,10 @@ def build_playlist(
         alt_by_id.setdefault(e["id"], []).append(e)
 
     for e in carrier_alternatives:
+        if e["id"] in primary_by_id and e["url"] not in source_urls:
+            alt_by_id.setdefault(e["id"], []).append(e)
+
+    for e in external_alternatives:
         if e["id"] in primary_by_id and e["url"] not in source_urls:
             alt_by_id.setdefault(e["id"], []).append(e)
 
@@ -1196,6 +1265,9 @@ def build_playlist(
     print(f"Carrier primaries added: {len(added_carrier_primaries)}")
     for entry in added_carrier_primaries:
         print(f"  CARRIER PRIMARY {entry['name']}: {entry['id']}")
+    print(f"External primaries added: {len(added_external_primaries)}")
+    for entry in added_external_primaries:
+        print(f"  EXTERNAL PRIMARY {entry['name']}: {entry['id']}")
     print(f"Main UK channels selected: {len(main_by_slot)}")
     for slot, entry in main_by_slot.items():
         print(f"  MAIN {slot}: {entry['name']} [{entry['id']}]")
@@ -1214,8 +1286,8 @@ def main() -> None:
         enrich_guide(sys.argv[2], sys.argv[3])
     elif cmd == "apply" and len(sys.argv) == 6:
         apply_aliases(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
-    elif cmd == "build-playlist" and len(sys.argv) == 6:
-        build_playlist(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+    elif cmd == "build-playlist" and len(sys.argv) == 7:
+        build_playlist(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
     else:
         die(__doc__.strip())
 
