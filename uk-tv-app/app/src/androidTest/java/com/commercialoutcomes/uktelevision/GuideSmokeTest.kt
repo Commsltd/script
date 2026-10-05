@@ -86,7 +86,7 @@ class GuideSmokeTest {
                 synopsis = current.description
                 model.focus(station, current)
                 if (!(current.start <= now && current.stop > now)) model.now()
-                model.setGuideZone(GuideZone.PROGRAMMES)
+                model.chooseGuideZone(GuideZone.PROGRAMMES)
             }
 
             assertTrue(

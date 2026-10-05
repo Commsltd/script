@@ -246,7 +246,7 @@ class MainActivity : ComponentActivity() {
                 LiveOverlay.NONE -> showInfo()
             }
             TvSurface.GUIDE -> when (model.guideZone) {
-                GuideZone.CATEGORIES -> model.setGuideZone(GuideZone.CHANNELS)
+                GuideZone.CATEGORIES -> model.chooseGuideZone(GuideZone.CHANNELS)
                 GuideZone.CHANNELS -> previewSelected()
                 GuideZone.PROGRAMMES -> previewSelected()
             }
@@ -438,7 +438,7 @@ class MainActivity : ComponentActivity() {
                         "Stream sources" -> handler.post { showSources() }
                         "Programme details", "Programme info" -> handler.post { showDetails() }
                         "Search" -> handler.post { showSearch() }
-                        "Categories" -> model.setGuideZone(GuideZone.CATEGORIES)
+                        "Categories" -> model.chooseGuideZone(GuideZone.CATEGORIES)
                         "Back to now" -> model.now()
                         "Refresh guide" -> {
                             model.refresh()

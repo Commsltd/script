@@ -218,7 +218,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setGuideZone(zone: GuideZone) {
+    fun chooseGuideZone(zone: GuideZone) {
         guideZone = zone
         if (zone == GuideZone.PROGRAMMES) syncProgrammeToCursor()
     }

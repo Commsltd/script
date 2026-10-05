@@ -19,6 +19,13 @@ CHANNELS = {
     "LiveNOWfromFOX.us": "https://www.youtube.com/@LiveNOWFOX/live",
 }
 
+# Sky News has used this official verified 24/7 live video for years.  We only
+# use the public video identity as a fallback if YouTube's /live route cannot
+# be resolved from CI; the app still uses YouTube's official embedded player.
+KNOWN_OFFICIAL_FALLBACKS = {
+    "SkyNews.uk": "https://www.youtube.com/watch?v=XOacA3RYrXk",
+}
+
 def resolve(url: str) -> dict | None:
     cmd = [
         "yt-dlp",
@@ -77,6 +84,10 @@ def main() -> None:
             prior_url = str(prior.get("url") or "")
             if prior_url.startswith("https://www.youtube.com/watch?v="):
                 resolved = resolve(prior_url)
+        if not resolved:
+            known = KNOWN_OFFICIAL_FALLBACKS.get(channel_id)
+            if known:
+                resolved = resolve(known)
         if resolved:
             result[channel_id] = resolved
 
