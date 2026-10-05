@@ -15,12 +15,13 @@ import io
 import json
 import mimetypes
 import urllib.request
+import zipfile
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from PIL import Image
 
-MIRROR_PREFIX = "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork/"
+MIRROR_PREFIX = "artwork://"
 MAX_INPUT = 4 * 1024 * 1024
 MAX_PROGRAMME_IMAGES = 1000
 WORKERS = 16
@@ -40,14 +41,21 @@ def fetch(url: str) -> tuple[bytes, str]:
         return data, ctype
 
 def convert(url: str, purpose: str, out_dir: Path) -> tuple[str, int]:
-    data, ctype = fetch(url)
     digest = key(url)
+    existing = sorted(out_dir.glob(digest + ".*"))
+    if existing:
+        return existing[0].name, existing[0].stat().st_size
+    data, ctype = fetch(url)
     if ctype in SVG_TYPES or urlsplit(url).path.lower().endswith(".svg"):
-        if b"<svg" not in data[:4096].lower():
+        lower = data.lower()
+        if b"<svg" not in lower[:4096]:
             raise ValueError("invalid SVG")
+        if any(token in lower for token in (b"<script", b"<foreignobject", b"href=\"http", b"href='http", b"xlink:href=\"http", b"xlink:href='http")):
+            raise ValueError("active/external SVG content rejected")
         name = digest + ".svg"
-        (out_dir / name).write_bytes(data)
-        return name, len(data)
+        target = out_dir / name
+        target.write_bytes(data)
+        return name, target.stat().st_size
 
     if ctype not in ALLOWED_RASTER:
         guessed, _ = mimetypes.guess_type(urlsplit(url).path)
@@ -74,6 +82,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalogue", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--zip", required=True, type=Path)
     args = parser.parse_args()
 
     data = json.loads(gzip.decompress(args.catalogue.read_bytes()))
@@ -143,6 +152,12 @@ def main() -> None:
         mtime=0
     ))
 
+    args.zip.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(args.zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
+        for item in sorted(args.output_dir.iterdir()):
+            if item.is_file():
+                archive.write(item, arcname=item.name)
+
     status = {
         "channelLogoUrls": len(logo_urls),
         "programmeArtworkUrlsSelected": len(programme_urls),
@@ -151,6 +166,7 @@ def main() -> None:
         "channelEntriesRewritten": channel_mirrors,
         "programmeEntriesRewritten": programme_mirrors,
         "mirrorBytes": total_bytes,
+        "bundleBytes": args.zip.stat().st_size,
         "programmeArtworkCap": MAX_PROGRAMME_IMAGES,
     }
     args.output_dir.parent.joinpath("artwork-status.json").write_text(
