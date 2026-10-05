@@ -30,14 +30,22 @@ jobs:
           log-accepted-android-sdk-licenses: false
       - name: Install SDK
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Test catalogue exporter
+      - name: Install artwork tooling
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir Pillow==11.3.0
+      - name: Test catalogue exporter and artwork mirror
         working-directory: uk-tv-app/tools
-        run: python3 -m unittest -v test_manifest.py
+        run: python3 -m unittest -v test_manifest.py test_mirror_artwork.py
       - name: Bundle current real channels and enriched listings
         run: |
           git clone --depth 1 --single-branch --branch uk-tv-epg-output https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
           revision=$(git -C "$RUNNER_TEMP/tv-feed" rev-parse HEAD)
           python3 uk-tv-app/tools/export_manifest.py --source "$RUNNER_TEMP/tv-feed" --revision "$revision" --output uk-tv-app/app/src/main/assets/catalogue.json.gz
+          mkdir -p "$RUNNER_TEMP/build-artwork"
+          curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork.zip"             -o "$RUNNER_TEMP/previous-artwork.zip" || true
+          if [ -s "$RUNNER_TEMP/previous-artwork.zip" ]; then
+            unzip -q -o "$RUNNER_TEMP/previous-artwork.zip" -d "$RUNNER_TEMP/build-artwork" || true
+          fi
+          python3 uk-tv-app/tools/mirror_artwork.py             --catalogue uk-tv-app/app/src/main/assets/catalogue.json.gz             --output-dir "$RUNNER_TEMP/build-artwork"             --zip uk-tv-app/app/src/main/assets/artwork.zip
       - name: Compile, unit test and lint
         working-directory: uk-tv-app
         run: gradle --no-daemon testDebugUnitTest lintDebug assembleDebug assembleDebugAndroidTest --stacktrace
@@ -64,6 +72,7 @@ jobs:
             cp uk-tv-app/app/build/outputs/apk/release/app-release.apk delivery/UK-Television-0.2.0.apk
           fi
           cp uk-tv-app/app/src/main/assets/status.json delivery/catalogue-status.json
+          cp uk-tv-app/app/src/main/assets/artwork-status.json delivery/artwork-status.json 2>/dev/null || true
           cp uk-tv-app/README.md delivery/README.md
           git archive --format=zip HEAD uk-tv-app .github/workflows/build-uk-tv-app.yml .github/workflows/update-uk-tv-app-data.yml > delivery/UK-Television-source.zip
           sha256sum delivery/*.apk > delivery/SHA256SUMS.txt
