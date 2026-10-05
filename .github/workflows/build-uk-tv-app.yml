@@ -68,14 +68,14 @@ jobs:
           git archive --format=zip HEAD uk-tv-app .github/workflows/build-uk-tv-app.yml .github/workflows/update-uk-tv-app-data.yml > delivery/UK-Television-source.zip
           sha256sum delivery/*.apk > delivery/SHA256SUMS.txt
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs delivery/UK-Television-0.2.0-preview.apk > delivery/apk-signature.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: UK-Television-build
           path: delivery/
           retention-days: 30
       - name: Upload test and lint reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: UK-Television-reports
           path: |
@@ -113,7 +113,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           script: bash uk-tv-app/tools/smoke.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: UK-Television-smoke
