@@ -155,6 +155,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
                             ChannelLine(row,model.schedule[row.station.id].orEmpty(),row.key==selected?.key && !model.railSelected,
                                 model.windowStart,model.cursor,model.clock,Modifier.fillMaxWidth().height(rowHeight),
                                 favourite=row.station.id in model.favourites,
+                                allowRemoteArtwork=model.allowRemoteArtwork,
                                 onSelect={model.selectedKey=row.key;model.railSelected=false},
                                 onProgramme={p -> model.selectedKey=row.key;model.railSelected=false;model.cursor=maxOf(p.start,model.windowStart)},
                                 onWatch={onWatch(row)})
@@ -177,6 +178,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
 @Composable
 private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Boolean,
     window: Long, cursor: Long, now: Long, modifier: Modifier, favourite: Boolean,
+    allowRemoteArtwork: Boolean,
     onSelect:()->Unit,onProgramme:(Programme)->Unit,onWatch:()->Unit) {
     Row(modifier.padding(bottom=3.dp)) {
         Row(Modifier.width(175.dp).fillMaxHeight().background(if(selected) Soft else Panel,RoundedCornerShape(topStart=5.dp,bottomStart=5.dp))
