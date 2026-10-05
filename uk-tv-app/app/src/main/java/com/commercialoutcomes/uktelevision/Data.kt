@@ -42,7 +42,8 @@ data class Snapshot(@PrimaryKey val id: Int = 1, val revision: String, val built
     val programmeCount: Int, val warnings: String)
 
 data class StreamSource(val id: String, val url: String, val label: String, val host: String,
-    val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean)
+    val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean,
+    val kind: String = "direct")
 
 fun Station.sources(): List<StreamSource> = parseSources(JSONArray(sourcesJson))
 fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()).map { index ->
@@ -50,7 +51,8 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
     val headers = obj.optJSONObject("headers") ?: JSONObject()
     StreamSource(obj.getString("id"), obj.getString("url"), obj.optString("label"),
         obj.optString("host"), obj.optString("mime", "application/x-mpegURL"),
-        headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"))
+        headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"),
+        obj.optString("kind", "direct"))
 }
 
 @Dao

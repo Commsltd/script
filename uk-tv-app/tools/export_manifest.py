@@ -13,6 +13,26 @@ from urllib.parse import urlsplit, parse_qsl
 
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
+OFFICIAL_SOURCES = {
+    'SkyNews.uk': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@SkyNews/live', 'label': 'Official YouTube'},
+        {'kind': 'web', 'url': 'https://news.sky.com/watch-live', 'label': 'Sky News website'},
+    ],
+    'ABCNewsLive.us': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@ABCNews/live', 'label': 'Official YouTube'},
+    ],
+    'CBSNews247.us': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@CBSNews/live', 'label': 'Official YouTube'},
+        {'kind': 'web', 'url': 'https://www.cbsnews.com/live/', 'label': 'CBS News website'},
+    ],
+    'NBCNewsNOW.us': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@NBCNews/live', 'label': 'Official YouTube'},
+    ],
+    'LiveNOWfromFOX.us': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@LiveNOWFOX/live', 'label': 'Official YouTube'},
+    ],
+}
+
 def identity(value):
     return hashlib.sha256(value.encode('utf-8')).hexdigest()[:24]
 
@@ -93,9 +113,27 @@ def build(playlist, xml_bytes, revision='unknown'):
             continue
         path = urlsplit(url).path.lower()
         mime = 'application/dash+xml' if path.endswith('.mpd') else ('video/mp2t' if path.endswith('.ts') else 'application/x-mpegURL')
-        channel['sources'].append({'id': sid, 'url': url, 'label': entry['name'], 'host': urlsplit(url).hostname or '', 'mime': mime, 'headers': headers, 'unsupportedDrm': entry['drm']})
+        channel['sources'].append({'id': sid, 'url': url, 'label': entry['name'], 'host': urlsplit(url).hostname or '', 'mime': mime, 'headers': headers, 'unsupportedDrm': entry['drm'], 'kind': 'direct'})
         if not channel['logo'] and attrs.get('tvg-logo'):
             channel['logo'] = attrs['tvg-logo']
+
+    for channel in channels.values():
+        base = channel['id'].partition('@')[0]
+        for source in OFFICIAL_SOURCES.get(base, []):
+            sid = identity(source['kind'] + '|' + source['url'])
+            if any(s['id'] == sid for s in channel['sources']):
+                continue
+            channel['sources'].append({
+                'id': sid,
+                'url': source['url'],
+                'label': source['label'],
+                'host': urlsplit(source['url']).hostname or '',
+                'mime': 'application/x-external',
+                'headers': {},
+                'unsupportedDrm': False,
+                'kind': source['kind'],
+            })
+
     if b'<!ENTITY' in xml_bytes.upper():
         raise ValueError('XML entities are not accepted')
     root = ET.fromstring(xml_bytes)

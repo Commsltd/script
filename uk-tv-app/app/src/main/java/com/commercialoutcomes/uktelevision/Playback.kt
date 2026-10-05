@@ -45,14 +45,28 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
             val health = model.dao.health(profile).associateBy { it.streamId }
             val pin = model.prefs.getString("pin:$profile:${row.station.id}", "")
             val forced = if (forceSource || row.sourceIndex > 0) row.source.id else null
-            candidates = row.station.sources().filterNot { it.unsupportedDrm }.sortedWith(
+            candidates = row.station.sources()
+                .filter { it.kind == "direct" && !it.unsupportedDrm }
+                .filter { model.allowCleartextVideo || it.url.startsWith("https://") }
+                .sortedWith(
                 compareByDescending<StreamSource> { it.id == forced }
                     .thenByDescending { it.id == pin }
                     .thenByDescending { GuideRules.healthScore(health[it.id]) }
             )
             if (token != generation) return@launch
-            if (candidates.isEmpty()) { failed = true; status = "No supported direct stream. This service may require its provider's app." }
-            else startNext(token)
+            if (candidates.isEmpty()) {
+                failed = true
+                val hasExternal = row.station.sources().any { it.kind != "direct" }
+                val hasHttp = row.station.sources().any { it.kind == "direct" && it.url.startsWith("http://") }
+                status = when {
+                    model.privacyMode == PrivacyMode.STRICT && hasHttp ->
+                        "Strict Privacy blocked this channel's unencrypted HTTP source. Hold OK for other sources."
+                    hasExternal ->
+                        "No direct stream is available. Hold OK for an official external source."
+                    else ->
+                        "No supported direct stream is available for this service."
+                }
+            } else startNext(token)
         }
     }
     private fun connected(): Boolean {
@@ -62,7 +76,7 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
     private fun startNext(token: Int) {
         if (token != generation) return
         val next = candidates.firstOrNull { it.id !in tried }
-        val limit = if (model.autoFallback) 3 else 1
+        val limit = if (model.autoFallback) candidates.size else 1
         if (next == null || tried.size >= limit) {
             failed = true
             status = "No available source played. Hold OK for sources or Back for the guide."
