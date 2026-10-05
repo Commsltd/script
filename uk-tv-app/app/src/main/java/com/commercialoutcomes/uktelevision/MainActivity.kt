@@ -282,7 +282,7 @@ class MainActivity : ComponentActivity() {
         ) { dialog, which ->
             engine.close()
             model.isPlayer = false
-            model.setPrivacyMode(if (which == 1) PrivacyMode.STRICT else PrivacyMode.HARDENED)
+            model.choosePrivacyMode(if (which == 1) PrivacyMode.STRICT else PrivacyMode.HARDENED)
             dialog.dismiss()
         }.setNegativeButton("Cancel", null))
     }

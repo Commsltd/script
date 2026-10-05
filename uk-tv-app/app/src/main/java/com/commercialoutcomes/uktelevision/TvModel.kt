@@ -171,7 +171,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     fun setFailover(enabled: Boolean) { autoFallback = enabled; prefs.edit().putBoolean("autoFallback", enabled).apply() }
     fun setProfile(value: String) { connectionProfile = value; prefs.edit().putString("profile", value).apply() }
 
-    fun setPrivacyMode(mode: PrivacyMode) {
+    fun choosePrivacyMode(mode: PrivacyMode) {
         privacyMode = mode
         prefs.edit().putString("privacyMode", mode.name).apply()
         viewModelScope.launch { message = refreshUserPlaylistsInternal() ?: "Privacy mode: ${mode.label}" }
