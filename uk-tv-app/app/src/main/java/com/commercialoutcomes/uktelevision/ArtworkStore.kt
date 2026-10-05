@@ -3,7 +3,6 @@ package com.commercialoutcomes.uktelevision
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -84,17 +83,19 @@ object ArtworkStore {
             if (connection.url.protocol.lowercase() != "https") {
                 throw IOException("Artwork download downgraded from HTTPS")
             }
-            val out = ByteArrayOutputStream()
+            var total = 0L
             val buffer = ByteArray(32768)
-            connection.inputStream.use { input ->
-                while (true) {
-                    val n = input.read(buffer)
-                    if (n < 0) break
-                    if (out.size() + n > MAX_DOWNLOAD) throw IOException("Artwork bundle too large")
-                    out.write(buffer, 0, n)
+            target.outputStream().buffered().use { output ->
+                connection.inputStream.use { input ->
+                    while (true) {
+                        val n = input.read(buffer)
+                        if (n < 0) break
+                        total += n
+                        if (total > MAX_DOWNLOAD) throw IOException("Artwork bundle too large")
+                        output.write(buffer, 0, n)
+                    }
                 }
             }
-            target.writeBytes(out.toByteArray())
         } finally {
             connection.disconnect()
         }
