@@ -161,7 +161,7 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
     suspend fun seed() = withContext(Dispatchers.IO) {
         lock.withLock {
             if (db.dao().stationCount() == 0) {
-                context.assets.open("catalogue.json.gz").use { replace(CatalogueParser.parse(it)) }
+                replace(BundledCatalogue.read(context))
             }
         }
     }
