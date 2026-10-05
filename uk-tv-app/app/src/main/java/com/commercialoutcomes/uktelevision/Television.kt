@@ -2,10 +2,10 @@ package com.commercialoutcomes.uktelevision
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
@@ -32,203 +32,862 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private val Ink = Color(0xFF0D1421)
-private val Panel = Color(0xFF162234)
-private val Soft = Color(0xFF223349)
-private val Mint = Color(0xFF58DFC2)
-private val White = Color(0xFFF3F7FB)
-private val Muted = Color(0xFFA5B3C6)
-private val Gold = Color(0xFFFFD483)
+private val Ink = Color(0xFF071019)
+private val Deep = Color(0xFF0B1724)
+private val Panel = Color(0xFF101F2E)
+private val Panel2 = Color(0xFF162A3C)
+private val Soft = Color(0xFF223A50)
+private val Mint = Color(0xFF63E6C6)
+private val Sky = Color(0xFF6BB8FF)
+private val White = Color(0xFFF7FAFD)
+private val Muted = Color(0xFF9EADBC)
+private val Dim = Color(0xFF617183)
+private val Gold = Color(0xFFFFD27A)
+private val LiveRed = Color(0xFFFF5C68)
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
-fun Television(model: TvModel, engine: PlaybackEngine, youtubeSource: StreamSource?, hud: Boolean, resizeMode: Int,
-    onWatch: (GuideRow) -> Unit, onOptions: () -> Unit, onBack: () -> Unit) {
-    LaunchedEffect(Unit) { while (true) { model.clock = System.currentTimeMillis(); delay(30000) } }
+fun Television(
+    model: TvModel,
+    engine: PlaybackEngine,
+    youtubeSource: StreamSource?,
+    surface: TvSurface,
+    liveOverlay: LiveOverlay,
+    quickGuideKey: String,
+    resizeMode: Int,
+    onOptions: () -> Unit,
+    onBack: () -> Unit
+) {
+    LaunchedEffect(Unit) {
+        while (true) {
+            model.clock = System.currentTimeMillis()
+            delay(30000)
+        }
+    }
+
     MaterialTheme {
-        if (model.isPlayer) {
-            if (youtubeSource != null) {
-                Box(Modifier.fillMaxSize().background(Color.Black)) {
-                    EmbeddedYouTubePlayer(
-                        source = youtubeSource,
-                        strict = model.privacyMode == PrivacyMode.STRICT
+        Box(Modifier.fillMaxSize().background(Ink)) {
+            if (surface == TvSurface.LIVE) {
+                LiveScreen(
+                    model, engine, youtubeSource, liveOverlay,
+                    quickGuideKey, resizeMode
+                )
+            } else {
+                GuideScreen(model, engine, youtubeSource, resizeMode)
+            }
+        }
+    }
+}
+
+@Composable
+private fun MediaSurface(
+    model: TvModel,
+    engine: PlaybackEngine,
+    youtubeSource: StreamSource?,
+    modifier: Modifier,
+    resizeMode: Int,
+    interactiveYoutube: Boolean
+) {
+    Box(modifier.background(Color.Black)) {
+        if (youtubeSource != null) {
+            EmbeddedYouTubePlayer(
+                source = youtubeSource,
+                strict = model.privacyMode == PrivacyMode.STRICT,
+                modifier = Modifier.fillMaxSize(),
+                interactive = interactiveYoutube
+            )
+        } else {
+            AndroidView(
+                factory = { context ->
+                    PlayerView(context).apply {
+                        useController = false
+                        keepScreenOn = true
+                        isFocusable = false
+                    }
+                },
+                modifier = Modifier.fillMaxSize(),
+                update = {
+                    it.player = engine.player
+                    it.resizeMode = resizeMode
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun GuideScreen(
+    model: TvModel,
+    engine: PlaybackEngine,
+    youtubeSource: StreamSource?,
+    resizeMode: Int
+) {
+    val rows = model.rows()
+    val selected = model.selected()
+    val programme = model.highlighted()
+    val playing = model.playingRow
+    val context = LocalContext.current
+
+    Column(
+        Modifier.fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    listOf(Color(0xFF071019), Color(0xFF091521), Color(0xFF06101A))
+                )
+            )
+            .padding(horizontal = 24.dp, vertical = 14.dp)
+    ) {
+        TopBar(model)
+        Spacer(Modifier.height(10.dp))
+
+        Row(
+            Modifier.fillMaxWidth().height(196.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(
+                Modifier.weight(1f).fillMaxHeight()
+                    .background(Brush.horizontalGradient(listOf(Panel2, Deep)), RoundedCornerShape(12.dp))
+                    .padding(18.dp)
+            ) {
+                Logo(
+                    selected?.station?.logo.orEmpty(),
+                    selected?.station?.name.orEmpty(),
+                    Modifier.size(76.dp),
+                    model.privacyMode
+                )
+                Spacer(Modifier.width(16.dp))
+                Column(Modifier.weight(1f)) {
+                    val time = programme?.let {
+                        "${SimpleDateFormat("EEE d MMM", Locale.UK).format(Date(it.start))}  " +
+                            "${formatTime(it.start)}–${formatTime(it.stop)}"
+                    }.orEmpty()
+                    Text(
+                        listOfNotNull(
+                            selected?.station?.name,
+                            time.takeIf { it.isNotBlank() }
+                        ).joinToString("   "),
+                        color = Mint,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(Modifier.height(5.dp))
+                    Text(
+                        programme?.title ?: "No programme information",
+                        color = White,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (!programme?.subtitle.isNullOrBlank()) {
+                        Text(
+                            programme!!.subtitle,
+                            color = Gold,
+                            fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    Spacer(Modifier.height(7.dp))
+                    Text(
+                        programme?.description?.ifBlank { "No synopsis supplied for this programme." }
+                            ?: "Select a channel or programme to see its details.",
+                        color = White.copy(alpha = .92f),
+                        fontSize = 13.sp,
+                        lineHeight = 18.sp,
+                        maxLines = 4,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (!programme?.details.isNullOrBlank()) {
+                        Spacer(Modifier.height(5.dp))
+                        Text(
+                            programme!!.details,
+                            color = Muted,
+                            fontSize = 10.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+
+                val art = remember(programme?.artwork, model.privacyMode) {
+                    ArtworkStore.model(context, programme?.artwork.orEmpty(), model.privacyMode)
+                }
+                if (art != null) {
+                    Spacer(Modifier.width(12.dp))
+                    AsyncImage(
+                        model = art,
+                        contentDescription = null,
+                        modifier = Modifier.width(148.dp).fillMaxHeight().clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
                     )
                 }
-            } else {
-                Box(Modifier.fillMaxSize().background(Color.Black)) {
-                    AndroidView(factory = { context -> PlayerView(context).apply { useController = false; keepScreenOn = true } },
-                        modifier = Modifier.fillMaxSize(), update = { it.player = engine.player; it.resizeMode = resizeMode })
-                    val row = model.playingRow
-                    val p = row?.let { GuideRules.at(model.schedule[it.station.id].orEmpty(), model.clock) }
-                    val showHud = hud || engine.failed || !engine.status.startsWith("Playing")
-                    if (showHud) {
-                        Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter)
-                            .background(Brush.verticalGradient(listOf(Color.Transparent, Ink.copy(alpha=.97f))))
-                            .padding(horizontal=32.dp, vertical=22.dp)) {
-                            Text(row?.station?.name.orEmpty(), color=Mint, fontSize=15.sp, fontWeight=FontWeight.SemiBold)
-                            Text(p?.title ?: "Live television", color=White, fontSize=26.sp, maxLines=1, overflow=TextOverflow.Ellipsis)
-                            Text(p?.description?.ifBlank { "No synopsis supplied." } ?: "No programme listings supplied.", color=White, fontSize=14.sp, maxLines=2, overflow=TextOverflow.Ellipsis)
-                            Spacer(Modifier.height(8.dp))
-                            Text(engine.status, color=if(engine.failed) Gold else Muted, fontSize=12.sp)
-                            Text("↑↓ Channel   •   OK Pause / retry   •   Hold OK Sources   •   MENU Options   •   Back Guide", color=Muted, fontSize=11.sp)
+            }
+
+            Box(
+                Modifier.width(348.dp).fillMaxHeight()
+                    .clip(RoundedCornerShape(12.dp))
+                    .border(1.dp, if (playing != null) Mint.copy(alpha = .6f) else Soft, RoundedCornerShape(12.dp))
+            ) {
+                if (playing != null) {
+                    MediaSurface(
+                        model, engine, youtubeSource,
+                        Modifier.fillMaxSize(),
+                        resizeMode,
+                        interactiveYoutube = false
+                    )
+                    Box(
+                        Modifier.align(Alignment.TopStart)
+                            .padding(10.dp)
+                            .background(Ink.copy(alpha = .78f), RoundedCornerShape(5.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            "LIVE PREVIEW  ·  ${playing.station.name}",
+                            color = White,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    if (engine.failed && youtubeSource == null) {
+                        Box(
+                            Modifier.align(Alignment.BottomCenter).fillMaxWidth()
+                                .background(Ink.copy(alpha = .88f))
+                                .padding(10.dp)
+                        ) {
+                            Text(engine.status, color = Gold, fontSize = 11.sp)
                         }
                     }
-                    if (engine.failed) {
-                        Column(Modifier.align(Alignment.Center).widthIn(max=580.dp).background(Panel,RoundedCornerShape(14.dp)).padding(28.dp)) {
-                            Text("This source is not playing",color=White,fontSize=25.sp,fontWeight=FontWeight.SemiBold)
+                } else {
+                    Box(Modifier.fillMaxSize().background(Deep), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Logo(
+                                selected?.station?.logo.orEmpty(),
+                                selected?.station?.name.orEmpty(),
+                                Modifier.size(78.dp),
+                                model.privacyMode
+                            )
                             Spacer(Modifier.height(10.dp))
-                            Text(engine.status,color=Muted,fontSize=16.sp)
-                            Spacer(Modifier.height(16.dp))
-                            Row(horizontalArrangement=Arrangement.spacedBy(20.dp)) {
-                                Text("SOURCES / OPTIONS",Modifier.clickable(onClick=onOptions).padding(8.dp),color=Mint,fontSize=14.sp)
-                                Text("BACK TO GUIDE",Modifier.clickable(onClick=onBack).padding(8.dp),color=White,fontSize=14.sp)
+                            Text("OK previews live TV here", color = Muted, fontSize = 12.sp)
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(10.dp))
+
+        Row(
+            Modifier.weight(1f).fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            CategoryRail(model, Modifier.width(158.dp).fillMaxHeight())
+            GuideGrid(model, rows, Modifier.weight(1f).fillMaxHeight())
+        }
+
+        Spacer(Modifier.height(7.dp))
+        GuideFooter(model, rows.size)
+    }
+}
+
+@Composable
+private fun TopBar(model: TvModel) {
+    Row(Modifier.fillMaxWidth().height(34.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(7.dp).background(Mint, RoundedCornerShape(4.dp)))
+        Spacer(Modifier.width(9.dp))
+        Text(
+            "UK TELEVISION",
+            color = White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.7.sp
+        )
+        Spacer(Modifier.width(14.dp))
+        Text(
+            when (model.guideZone) {
+                GuideZone.CATEGORIES -> "CATEGORIES"
+                GuideZone.CHANNELS -> "CHANNELS"
+                GuideZone.PROGRAMMES -> "PROGRAMMES"
+            },
+            color = Mint,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(Modifier.weight(1f))
+        Text(
+            "${model.profile}  ·  ${model.privacyMode.label}",
+            color = Muted,
+            fontSize = 10.sp
+        )
+        Spacer(Modifier.width(16.dp))
+        Text(
+            SimpleDateFormat("EEE d MMM  HH:mm", Locale.UK).format(Date(model.clock)),
+            color = White,
+            fontSize = 12.sp
+        )
+    }
+}
+
+@Composable
+private fun CategoryRail(model: TvModel, modifier: Modifier) {
+    val groups = model.groups()
+    val state = rememberLazyListState()
+    val index = groups.indexOf(model.group).coerceAtLeast(0)
+
+    LaunchedEffect(model.group, groups.size) {
+        if (groups.isNotEmpty()) state.scrollToItem(index.coerceIn(0, groups.lastIndex))
+    }
+
+    Column(
+        modifier.background(Deep.copy(alpha = .8f), RoundedCornerShape(10.dp)).padding(6.dp)
+    ) {
+        Text(
+            "CHANNELS",
+            color = Dim,
+            fontSize = 9.sp,
+            letterSpacing = 1.3.sp,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)
+        )
+        LazyColumn(state = state, verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            items(groups, key = { it }) { group ->
+                val active = group == model.group
+                val focused = active && model.guideZone == GuideZone.CATEGORIES
+                val label = group.replace(Regex("^\\d+\\s+"), "")
+                Row(
+                    Modifier.fillMaxWidth()
+                        .background(
+                            when {
+                                focused -> Mint
+                                active -> Soft
+                                else -> Color.Transparent
+                            },
+                            RoundedCornerShape(6.dp)
+                        )
+                        .padding(horizontal = 9.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (group == "FAVOURITES") {
+                        Text("★", color = if (focused) Ink else Gold, fontSize = 11.sp)
+                        Spacer(Modifier.width(5.dp))
+                    }
+                    Text(
+                        label,
+                        color = if (focused) Ink else if (active) White else Muted,
+                        fontSize = 10.sp,
+                        fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) {
+    Column(modifier) {
+        Row(Modifier.fillMaxWidth().height(27.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "CHANNEL",
+                Modifier.width(215.dp).padding(start = 10.dp),
+                color = Dim,
+                fontSize = 9.sp,
+                letterSpacing = 1.2.sp
+            )
+            repeat(6) { i ->
+                Text(
+                    formatTime(model.windowStart + i * HALF_HOUR),
+                    Modifier.weight(1f),
+                    color = Muted,
+                    fontSize = 10.sp
+                )
+            }
+        }
+
+        val state = rememberLazyListState()
+        val selectedIndex = rows.indexOfFirst { it.key == model.selectedKey }.coerceAtLeast(0)
+        LaunchedEffect(model.selectedKey, rows.size) {
+            if (rows.isNotEmpty()) {
+                state.scrollToItem((selectedIndex - 2).coerceAtLeast(0))
+            }
+        }
+
+        if (rows.isEmpty()) {
+            Box(
+                Modifier.fillMaxSize().background(Deep, RoundedCornerShape(8.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    if (model.refreshing) model.message else "No channels in this category",
+                    color = Muted,
+                    fontSize = 15.sp
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp)),
+                state = state,
+                verticalArrangement = Arrangement.spacedBy(3.dp)
+            ) {
+                itemsIndexed(rows, key = { _, it -> it.key }) { _, row ->
+                    ChannelLine(
+                        row = row,
+                        programmes = model.schedule[row.station.id].orEmpty(),
+                        selected = row.key == model.selectedKey,
+                        selectedProgrammeKey = model.selectedProgrammeKey,
+                        guideZone = model.guideZone,
+                        window = model.windowStart,
+                        cursor = model.cursor,
+                        now = model.clock,
+                        favourite = row.station.id in model.favourites,
+                        privacyMode = model.privacyMode,
+                        modifier = Modifier.fillMaxWidth().height(49.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChannelLine(
+    row: GuideRow,
+    programmes: List<Programme>,
+    selected: Boolean,
+    selectedProgrammeKey: String,
+    guideZone: GuideZone,
+    window: Long,
+    cursor: Long,
+    now: Long,
+    favourite: Boolean,
+    privacyMode: PrivacyMode,
+    modifier: Modifier
+) {
+    Row(modifier) {
+        val channelFocused = selected && guideZone == GuideZone.CHANNELS
+        Row(
+            Modifier.width(215.dp).fillMaxHeight()
+                .background(
+                    when {
+                        channelFocused -> Mint
+                        selected -> Panel2
+                        else -> Panel
+                    },
+                    RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp)
+                )
+                .then(
+                    if (selected && guideZone == GuideZone.PROGRAMMES)
+                        Modifier.border(1.dp, Sky.copy(alpha = .6f), RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
+                    else Modifier
+                )
+                .padding(horizontal = 9.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Logo(row.station.logo, row.station.name, Modifier.size(31.dp), privacyMode)
+            Spacer(Modifier.width(8.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    (if (favourite) "★  " else "") + row.label,
+                    color = if (channelFocused) Ink else White,
+                    fontSize = 10.5.sp,
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (row.sourceIndex > 0 || row.source.kind == "youtube") {
+                    Text(
+                        if (row.source.kind == "youtube") "official YouTube" else row.source.host,
+                        color = if (channelFocused) Ink.copy(alpha = .65f) else Dim,
+                        fontSize = 8.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+
+        BoxWithConstraints(
+            Modifier.weight(1f).fillMaxHeight()
+                .clipToBounds()
+                .background(Deep)
+        ) {
+            val end = window + WINDOW
+            val available = GuideRules.inWindow(programmes, window, end)
+            if (available.isEmpty()) {
+                Box(
+                    Modifier.fillMaxSize()
+                        .background(if (selected && guideZone == GuideZone.PROGRAMMES) Soft else Panel)
+                        .padding(horizontal = 12.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text("No programme information", color = Muted, fontSize = 10.5.sp)
+                }
+            }
+
+            available.forEach { p ->
+                val left = ((p.start - window).toDouble() / WINDOW).coerceIn(0.0, 1.0).toFloat()
+                val right = ((p.stop - window).toDouble() / WINDOW).coerceIn(0.0, 1.0).toFloat()
+                val active = selected && guideZone == GuideZone.PROGRAMMES &&
+                    (p.key == selectedProgrammeKey || (selectedProgrammeKey.isBlank() && p.start <= cursor && p.stop > cursor))
+                val live = p.start <= now && p.stop > now
+
+                Box(
+                    Modifier.offset(x = maxWidth * left)
+                        .width((maxWidth * (right - left) - 2.dp).coerceAtLeast(2.dp))
+                        .fillMaxHeight()
+                        .background(
+                            when {
+                                active -> Mint
+                                live -> Soft
+                                selected -> Panel2
+                                else -> Panel
+                            },
+                            RoundedCornerShape(4.dp)
+                        )
+                        .padding(horizontal = 9.dp, vertical = 5.dp)
+                ) {
+                    Column(Modifier.align(Alignment.CenterStart)) {
+                        Text(
+                            p.title,
+                            color = if (active) Ink else White,
+                            fontSize = 11.sp,
+                            fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        if (live) {
+                            val progress = ((now - p.start).toFloat() / (p.stop - p.start).coerceAtLeast(1L))
+                                .coerceIn(0f, 1f)
+                            Box(
+                                Modifier.fillMaxWidth().height(2.dp)
+                                    .background(if (active) Ink.copy(alpha = .2f) else Dim.copy(alpha = .4f))
+                            ) {
+                                Box(
+                                    Modifier.fillMaxWidth(progress).fillMaxHeight()
+                                        .background(if (active) Ink else Mint)
+                                )
                             }
                         }
                     }
                 }
             }
-        } else {
-            GuideScreen(model,onWatch,onOptions)
+
+            if (now in window..end) {
+                Box(
+                    Modifier.offset(x = maxWidth * ((now - window).toFloat() / WINDOW))
+                        .width(1.dp).fillMaxHeight()
+                        .background(LiveRed.copy(alpha = .9f))
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()->Unit) {
-    val rows = model.rows()
-    val selected = model.selected()
-    val programme = model.highlighted()
-    val categoryState = rememberLazyListState()
-    val groups = model.groups()
-    LaunchedEffect(model.group,groups.size) {
-        categoryState.animateScrollToItem((groups.indexOf(model.group)-2).coerceAtLeast(0))
+private fun GuideFooter(model: TvModel, rowCount: Int) {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        val hint = when (model.guideZone) {
+            GuideZone.CATEGORIES -> "↑↓ Category   → Channels   BACK Live/Exit"
+            GuideZone.CHANNELS -> "↑↓ Channel   ← Categories   → Programmes   OK Preview   HOLD OK Sources"
+            GuideZone.PROGRAMMES -> "↑↓ Channel   ←→ Programme   OK Preview/Full screen   BACK Channel list   HOLD OK Sources"
+        }
+        Text(hint, color = Muted, fontSize = 9.5.sp, modifier = Modifier.weight(1f))
+        Text(
+            "MENU  ★ Favourite / options",
+            color = Gold,
+            fontSize = 9.5.sp
+        )
+        Spacer(Modifier.width(16.dp))
+        Text(
+            "$rowCount rows  ·  ${model.snapshot?.descriptions ?: 0} synopses",
+            color = Mint,
+            fontSize = 9.5.sp
+        )
     }
-    Column(Modifier.fillMaxSize().background(Ink).padding(horizontal=26.dp,vertical=15.dp)) {
-        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-            Box(Modifier.size(8.dp).background(Mint,RoundedCornerShape(4.dp)))
-            Spacer(Modifier.width(10.dp))
-            Text("UK TELEVISION",color=White,fontSize=19.sp,fontWeight=FontWeight.Bold,letterSpacing=2.sp)
-            Spacer(Modifier.weight(1f))
-            Text("${model.profile} · ${model.privacyMode.label}  ·  LOCAL TIME  ",color=Muted,fontSize=11.sp)
-            Text(SimpleDateFormat("EEE d MMM  HH:mm",Locale.UK).format(Date(model.clock)),color=White,fontSize=13.sp)
-            Spacer(Modifier.width(18.dp))
-            Text("MENU",Modifier.clickable(onClick=onOptions).border(1.dp,Soft,RoundedCornerShape(5.dp)).padding(horizontal=10.dp,vertical=5.dp),color=Mint,fontSize=11.sp)
+    val stale = model.snapshot?.let { it.guideEnd < model.clock } ?: false
+    Text(
+        if (stale) "Guide is out of date — MENU → Refresh. Cached channels remain available."
+        else model.message,
+        color = if (stale || model.message.startsWith("Refresh failed")) Gold else Dim,
+        fontSize = 9.sp,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+    )
+}
+
+@Composable
+private fun LiveScreen(
+    model: TvModel,
+    engine: PlaybackEngine,
+    youtubeSource: StreamSource?,
+    overlay: LiveOverlay,
+    quickGuideKey: String,
+    resizeMode: Int
+) {
+    Box(Modifier.fillMaxSize().background(Color.Black)) {
+        MediaSurface(
+            model, engine, youtubeSource,
+            Modifier.fillMaxSize(),
+            resizeMode,
+            interactiveYoutube = false
+        )
+
+        when (overlay) {
+            LiveOverlay.NONE -> Unit
+            LiveOverlay.INFO -> LiveInfoOverlay(model, engine, youtubeSource)
+            LiveOverlay.QUICK_GUIDE -> QuickGuideOverlay(model, quickGuideKey)
         }
-        Spacer(Modifier.height(12.dp))
-        Row(Modifier.fillMaxWidth().height(164.dp).background(Brush.horizontalGradient(listOf(Panel,Ink)),RoundedCornerShape(12.dp)).padding(16.dp),verticalAlignment=Alignment.Top) {
-            Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp),model.privacyMode)
-            Spacer(Modifier.width(18.dp))
+
+        if (engine.failed && youtubeSource == null) {
+            Column(
+                Modifier.align(Alignment.Center)
+                    .widthIn(max = 620.dp)
+                    .background(Ink.copy(alpha = .95f), RoundedCornerShape(14.dp))
+                    .border(1.dp, Gold.copy(alpha = .45f), RoundedCornerShape(14.dp))
+                    .padding(28.dp)
+            ) {
+                Text("This source is not playing", color = White, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.height(8.dp))
+                Text(engine.status, color = Muted, fontSize = 14.sp, lineHeight = 19.sp)
+                Spacer(Modifier.height(14.dp))
+                Text("HOLD OK  Sources     BACK  Guide", color = Mint, fontSize = 11.sp)
+            }
+        }
+    }
+}
+
+@Composable
+private fun LiveInfoOverlay(
+    model: TvModel,
+    engine: PlaybackEngine,
+    youtubeSource: StreamSource?
+) {
+    val row = model.playingRow ?: return
+    val current = GuideRules.at(model.schedule[row.station.id].orEmpty(), model.clock)
+    val next = model.schedule[row.station.id].orEmpty().firstOrNull {
+        current != null && it.start >= current.stop
+    }
+
+    Column(
+        Modifier.fillMaxWidth().align(Alignment.BottomCenter)
+            .background(
+                Brush.verticalGradient(
+                    listOf(Color.Transparent, Ink.copy(alpha = .84f), Ink.copy(alpha = .98f))
+                )
+            )
+            .padding(start = 34.dp, end = 34.dp, top = 64.dp, bottom = 24.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Logo(row.station.logo, row.station.name, Modifier.size(54.dp), model.privacyMode)
+            Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                val time = programme?.let { "${SimpleDateFormat("EEE d MMM",Locale.UK).format(Date(it.start))}  ${formatTime(it.start)}–${formatTime(it.stop)}" }.orEmpty()
-                Text("${selected?.station?.name ?: "Your television"}  $time",color=Mint,fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-                Text(programme?.title ?: if (rows.isEmpty()) "Loading / choose a category" else "No listings supplied",color=White,fontSize=25.sp,fontWeight=FontWeight.SemiBold,maxLines=1,overflow=TextOverflow.Ellipsis)
-                if (!programme?.subtitle.isNullOrBlank()) Text(programme!!.subtitle,color=Gold,fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-                Text(programme?.description?.ifBlank { "No synopsis supplied for this programme. Hold OK for stream choices; MENU for full details." }
-                    ?: if(model.group=="FAVOURITES") "Add channels to favourites with MENU. Your choices stay on this Firestick."
-                    else "The channel may still play. Programme data and the video stream are separate.",
-                    color=White,fontSize=13.sp,lineHeight=18.sp,maxLines=3,overflow=TextOverflow.Ellipsis)
-                if (!programme?.details.isNullOrBlank()) Text(programme!!.details,color=Muted,fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-            }
-            val context = LocalContext.current
-            val programmeArtwork = remember(programme?.artwork, model.privacyMode) {
-                ArtworkStore.model(context, programme?.artwork.orEmpty(), model.privacyMode)
-            }
-            if(programmeArtwork != null) {
-                Spacer(Modifier.width(16.dp))
-                AsyncImage(model=programmeArtwork,contentDescription=null,modifier=Modifier.width(164.dp).fillMaxHeight().clip(RoundedCornerShape(6.dp)),contentScale=ContentScale.Crop)
-            }
-        }
-        Spacer(Modifier.height(12.dp))
-        Row(Modifier.weight(1f).fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-            LazyColumn(Modifier.width(145.dp).fillMaxHeight(),state=categoryState,verticalArrangement=Arrangement.spacedBy(3.dp)) {
-                items(groups,key={it}) { group ->
-                    val active = group == model.group
-                    val label = group.replace(Regex("^\\d+\\s+"),"")
-                    Text(label,Modifier.fillMaxWidth().background(if(active) (if(model.railSelected) Mint else Soft) else Color.Transparent,RoundedCornerShape(6.dp))
-                        .clickable { model.selectGroup(group); model.railSelected=false }
-                        .padding(horizontal=10.dp,vertical=8.dp),
-                        color=if(active && model.railSelected) Ink else if(active) White else Muted,fontSize=11.sp,
-                        fontWeight=if(active) FontWeight.Bold else FontWeight.Normal,maxLines=2,overflow=TextOverflow.Ellipsis)
+                Text(row.station.name, color = Mint, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                Text(
+                    current?.title ?: "Live television",
+                    color = White,
+                    fontSize = 27.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (!current?.subtitle.isNullOrBlank()) {
+                    Text(current!!.subtitle, color = Gold, fontSize = 12.sp)
                 }
             }
-            Column(Modifier.weight(1f)) {
-                Row(Modifier.fillMaxWidth().height(25.dp)) {
-                    Text("CHANNEL",Modifier.width(175.dp),color=Muted,fontSize=10.sp,letterSpacing=1.sp)
-                    repeat(5) { i ->
-                        Text(formatTime(model.windowStart+i*HALF_HOUR),Modifier.weight(1f),color=Muted,fontSize=11.sp)
-                    }
+            Text(
+                SimpleDateFormat("HH:mm", Locale.UK).format(Date(model.clock)),
+                color = White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+
+        if (current != null) {
+            Spacer(Modifier.height(8.dp))
+            val progress = ((model.clock - current.start).toFloat() /
+                (current.stop - current.start).coerceAtLeast(1L)).coerceIn(0f, 1f)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(formatTime(current.start), color = Muted, fontSize = 10.sp)
+                Spacer(Modifier.width(8.dp))
+                Box(Modifier.weight(1f).height(3.dp).background(White.copy(alpha = .18f))) {
+                    Box(Modifier.fillMaxWidth(progress).fillMaxHeight().background(Mint))
                 }
-                BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
-                    val visible = (maxHeight.value/45f).toInt().coerceIn(3,12)
-                    val rowHeight = maxHeight/visible
-                    val index = rows.indexOfFirst { it.key == selected?.key }.coerceAtLeast(0)
-                    val first = (index-2).coerceIn(0,(rows.size-visible).coerceAtLeast(0))
-                    Column(Modifier.fillMaxSize()) {
-                        if(rows.isEmpty()) Text(if(model.refreshing) model.message else "No channels in this category",Modifier.padding(20.dp),color=Muted,fontSize=17.sp)
-                        rows.drop(first).take(visible).forEach { row ->
-                            ChannelLine(row,model.schedule[row.station.id].orEmpty(),row.key==selected?.key && !model.railSelected,
-                                model.windowStart,model.cursor,model.clock,Modifier.fillMaxWidth().height(rowHeight),
-                                favourite=row.station.id in model.favourites,
-                                privacyMode=model.privacyMode,
-                                onSelect={model.selectedKey=row.key;model.railSelected=false},
-                                onProgramme={p -> model.selectedKey=row.key;model.railSelected=false;model.cursor=maxOf(p.start,model.windowStart)},
-                                onWatch={onWatch(row)})
+                Spacer(Modifier.width(8.dp))
+                Text(formatTime(current.stop), color = Muted, fontSize = 10.sp)
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                current.description.ifBlank { "No synopsis supplied." },
+                color = White.copy(alpha = .9f),
+                fontSize = 12.sp,
+                lineHeight = 17.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        if (next != null) {
+            Spacer(Modifier.height(7.dp))
+            Text(
+                "NEXT  ${formatTime(next.start)}  ${next.title}",
+                color = Muted,
+                fontSize = 10.5.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Spacer(Modifier.height(8.dp))
+        val source = if (youtubeSource != null) "Official YouTube" else engine.source?.host.orEmpty()
+        Text(
+            "↑↓ Quick guide   INFO/OK Hide   HOLD OK Sources   BACK Full guide" +
+                if (source.isNotBlank()) "   ·   $source" else "",
+            color = Dim,
+            fontSize = 9.5.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun QuickGuideOverlay(model: TvModel, quickGuideKey: String) {
+    val rows = model.channelRows()
+    if (rows.isEmpty()) return
+    val index = rows.indexOfFirst { it.station.id == quickGuideKey }.coerceAtLeast(0)
+    val first = (index - 3).coerceIn(0, (rows.size - 7).coerceAtLeast(0))
+    val visible = rows.drop(first).take(7)
+
+    Row(
+        Modifier.fillMaxWidth().align(Alignment.BottomCenter)
+            .background(
+                Brush.verticalGradient(
+                    listOf(Color.Transparent, Ink.copy(alpha = .88f), Ink.copy(alpha = .98f))
+                )
+            )
+            .padding(start = 28.dp, end = 28.dp, top = 74.dp, bottom = 22.dp)
+    ) {
+        Column(
+            Modifier.width(620.dp)
+                .background(Deep.copy(alpha = .94f), RoundedCornerShape(12.dp))
+                .border(1.dp, Soft, RoundedCornerShape(12.dp))
+                .padding(10.dp)
+        ) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text("QUICK GUIDE", color = White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.weight(1f))
+                Text("↑↓ Browse   OK Tune   BACK Close", color = Muted, fontSize = 9.sp)
+            }
+            Spacer(Modifier.height(7.dp))
+            visible.forEach { row ->
+                val selected = row.station.id == quickGuideKey
+                val current = GuideRules.at(model.schedule[row.station.id].orEmpty(), model.clock)
+                val next = current?.let { c ->
+                    model.schedule[row.station.id].orEmpty().firstOrNull { it.start >= c.stop }
+                }
+
+                Row(
+                    Modifier.fillMaxWidth().height(47.dp)
+                        .background(if (selected) Mint else Panel, RoundedCornerShape(6.dp))
+                        .padding(horizontal = 9.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Logo(row.station.logo, row.station.name, Modifier.size(29.dp), model.privacyMode)
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        (if (row.station.id in model.favourites) "★  " else "") + row.station.name,
+                        color = if (selected) Ink else White,
+                        fontSize = 10.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.width(155.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            current?.title ?: "No programme information",
+                            color = if (selected) Ink else White,
+                            fontSize = 11.sp,
+                            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        if (next != null) {
+                            Text(
+                                "Next  ${formatTime(next.start)}  ${next.title}",
+                                color = if (selected) Ink.copy(alpha = .65f) else Dim,
+                                fontSize = 8.5.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
                 }
+                Spacer(Modifier.height(3.dp))
             }
         }
-        Spacer(Modifier.height(8.dp))
-        Row(Modifier.fillMaxWidth()) {
-            Text("↑↓ Channels   ←→ Programmes   OK Watch   Hold OK Sources   MENU Options   ⏩ +6h",color=Muted,fontSize=10.sp,modifier=Modifier.weight(1f))
-            Text("${rows.size} rows · ${model.snapshot?.descriptions ?: 0} synopses",color=Mint,fontSize=10.sp)
-        }
-        val stale = model.snapshot?.let { it.guideEnd < model.clock } ?: false
-        Text(if(stale) "Guide is out of date — use MENU → Refresh. Cached channels remain available." else model.message,
-            color=if(stale || model.message.startsWith("Refresh failed")) Gold else Muted,fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-    }
-}
 
-@Composable
-private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Boolean,
-    window: Long, cursor: Long, now: Long, modifier: Modifier, favourite: Boolean,
-    privacyMode: PrivacyMode,
-    onSelect:()->Unit,onProgramme:(Programme)->Unit,onWatch:()->Unit) {
-    Row(modifier.padding(bottom=3.dp)) {
-        Row(Modifier.width(175.dp).fillMaxHeight().background(if(selected) Soft else Panel,RoundedCornerShape(topStart=5.dp,bottomStart=5.dp))
-            .clickable { if(selected) onWatch() else onSelect() }.padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
-            Logo(row.station.logo,row.station.name,Modifier.size(32.dp),privacyMode)
-            Spacer(Modifier.width(8.dp))
-            Text((if(favourite) "★ " else "")+row.label,color=if(selected) White else Muted,fontSize=11.sp,maxLines=2,overflow=TextOverflow.Ellipsis,lineHeight=14.sp)
-        }
-        BoxWithConstraints(Modifier.weight(1f).fillMaxHeight().clipToBounds().background(Panel.copy(alpha=.65f))) {
-            val available = GuideRules.inWindow(programmes,window,window+WINDOW)
-            if(available.isEmpty()) Text("No programme information",Modifier.align(Alignment.CenterStart).padding(start=12.dp).clickable(onClick=onSelect),color=Muted,fontSize=12.sp)
-            available.forEach { p ->
-                val left = ((p.start-window).toDouble()/WINDOW).coerceIn(0.0,1.0).toFloat()
-                val right = ((p.stop-window).toDouble()/WINDOW).coerceIn(0.0,1.0).toFloat()
-                val active = selected && p.start <= cursor && p.stop > cursor
-                val live = p.start<=now && p.stop>now
-                Box(Modifier.offset(x=maxWidth*left).width((maxWidth*(right-left)-2.dp).coerceAtLeast(1.dp)).fillMaxHeight()
-                    .background(if(active) Mint else if(live) Soft else Panel,RoundedCornerShape(4.dp))
-                    .clickable { onProgramme(p) }.padding(horizontal=9.dp,vertical=5.dp)) {
-                    Text(p.title,color=if(active) Ink else White,fontSize=12.sp,fontWeight=if(active) FontWeight.SemiBold else FontWeight.Normal,
-                        maxLines=2,overflow=TextOverflow.Ellipsis,lineHeight=16.sp,modifier=Modifier.align(Alignment.CenterStart))
-                }
-            }
-            if(now in window..(window+WINDOW)) {
-                Box(Modifier.offset(x=maxWidth*((now-window).toFloat()/WINDOW)).width(1.dp).fillMaxHeight().background(Gold.copy(alpha=.65f)))
-            }
+        Spacer(Modifier.width(18.dp))
+        val highlighted = visible.firstOrNull { it.station.id == quickGuideKey }
+        val p = highlighted?.let { GuideRules.at(model.schedule[it.station.id].orEmpty(), model.clock) }
+        Column(
+            Modifier.weight(1f).heightIn(min = 180.dp)
+                .background(Ink.copy(alpha = .82f), RoundedCornerShape(12.dp))
+                .padding(18.dp)
+        ) {
+            Text(highlighted?.station?.name.orEmpty(), color = Mint, fontSize = 11.sp)
+            Text(
+                p?.title ?: "Live television",
+                color = White,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(7.dp))
+            Text(
+                p?.description?.ifBlank { "No synopsis supplied." } ?: "",
+                color = White.copy(alpha = .86f),
+                fontSize = 11.5.sp,
+                lineHeight = 16.sp,
+                maxLines = 5,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }
 
 @Composable
-private fun Logo(url:String,name:String,modifier:Modifier,privacyMode: PrivacyMode) {
+private fun Logo(
+    url: String,
+    name: String,
+    modifier: Modifier,
+    privacyMode: PrivacyMode
+) {
     val context = LocalContext.current
-    val image = remember(url, privacyMode) { ArtworkStore.model(context, url, privacyMode) }
-    Box(modifier.background(White.copy(alpha=.05f),RoundedCornerShape(6.dp)).padding(4.dp),contentAlignment=Alignment.Center) {
-        Text(name.take(2).uppercase(Locale.UK),color=Muted.copy(alpha=.35f),fontSize=14.sp,fontWeight=FontWeight.Bold)
-        if(image != null) AsyncImage(model=image,contentDescription="$name logo",modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
+    val image = remember(url, privacyMode) {
+        ArtworkStore.model(context, url, privacyMode)
+    }
+    Box(
+        modifier.background(White.copy(alpha = .06f), RoundedCornerShape(7.dp)).padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            name.take(2).uppercase(Locale.UK),
+            color = Muted.copy(alpha = .34f),
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold
+        )
+        if (image != null) {
+            AsyncImage(
+                model = image,
+                contentDescription = "$name logo",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit
+            )
+        }
     }
 }
