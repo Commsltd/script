@@ -28,10 +28,10 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 - Cache-first startup using a real guide snapshot bundled at build time.
 - Transactional guide refresh that retains favourites and stream preferences and rejects invalid/truncated data.
 - Automatic six-hour background refresh where Android permits it, plus refresh on launch and from the menu.
-- First-class external-source support. Official YouTube/web fallbacks can sit beside direct HLS/DASH sources; they open the official player/site rather than scraping temporary YouTube media URLs.
+- First-class in-app YouTube support. Official YouTube fallbacks sit beside direct HLS/DASH sources and play inside UK Television through the official embedded player; the app does not extract temporary YouTube CDN URLs and does not launch the YouTube app or a browser.
 - Multiple additional M3U playlists can be added from Settings. Exact matching tvg-id entries extend an existing channel's source pool; new channels remain grouped under their playlist.
 
-**An available stream URL is not a guarantee of playback.** This app cannot revive a dead feed, remove geographic restrictions or supply rights/authentication for provider-only services. YouTube is not an invisible automatic fallback. LiveNOW from FOX is not Fox News Channel, and STV is not the London ITV1 schedule.
+**An available stream URL is not a guarantee of playback.** This app cannot revive a dead feed, remove geographic restrictions or supply rights/authentication for provider-only services. For configured services, direct feeds are tried first and the official in-app YouTube player can be the final same-service fallback. LiveNOW from FOX is not Fox News Channel, and STV is not the London ITV1 schedule.
 
 ## Remote
 
@@ -77,7 +77,7 @@ For private, repeatable release signing, provide GitHub Actions secrets `TV_KEYS
 
 ## Deliberately not included yet
 
-DVR, persistent timeshift, cloud accounts, provider-login/DRM integrations, scraped/embedded YouTube playback, an automatic app installer, and production signing-key provisioning. The supported update process today is native-data refresh plus manual installation of a new APK.
+DVR, persistent timeshift, cloud accounts, provider-login/DRM integrations, scraped YouTube media URLs, an automatic app installer, and production signing-key provisioning. Official YouTube embeds are supported inside the app. The supported update process today is native-data refresh plus manual installation of a new APK.
 
 ## Technical sources
 
