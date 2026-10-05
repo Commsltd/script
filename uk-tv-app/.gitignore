@@ -1,0 +1,7 @@
+.gradle/
+**/build/
+local.properties
+.idea/
+*.jks
+*.keystore
+app/src/main/assets/catalogue.json.gz

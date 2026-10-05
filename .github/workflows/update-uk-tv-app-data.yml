@@ -1,0 +1,46 @@
+name: Update UK Television native catalogue
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Update UK TV EPG']
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - 'uk-tv-app/tools/export_manifest.py'
+      - 'uk-tv-app/tools/test_manifest.py'
+      - '.github/workflows/update-uk-tv-app-data.yml'
+  schedule:
+    - cron: '47 0,6,12,18 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: uk-television-native-catalogue
+  cancel-in-progress: false
+jobs:
+  export:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test exporter
+        working-directory: uk-tv-app/tools
+        run: python3 -m unittest -v test_manifest.py
+      - name: Convert an immutable copy of the existing outputs
+        run: |
+          git clone --depth 1 --single-branch --branch uk-tv-epg-output https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
+          revision=$(git -C "$RUNNER_TEMP/tv-feed" rev-parse HEAD)
+          python3 uk-tv-app/tools/export_manifest.py --source "$RUNNER_TEMP/tv-feed" --revision "$revision" --output "$RUNNER_TEMP/native/catalogue.json.gz"
+      - name: Publish only to the separate app-data branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan uk-television-data-publish
+          git rm -rf . >/dev/null
+          cp "$RUNNER_TEMP/native/catalogue.json.gz" .
+          cp "$RUNNER_TEMP/native/status.json" .
+          printf '%s\n' 'UK Television native catalogue, schema 1. Derived from the existing M3U/XMLTV outputs; this branch does not alter those feeds.' > README.txt
+          git add catalogue.json.gz status.json README.txt
+          git commit -m 'Update UK Television native catalogue'
+          git push --force origin HEAD:uk-tv-app-data
