@@ -492,7 +492,16 @@ def enrich_guide(guide_path: str, source_gzip_path: str) -> None:
     source_programmes = {}
     source_programme_count = 0
 
-    for elem in source_root.findall("programme"):
+    all_source_programmes = source_root.findall("programme")
+    all_source_programme_channels = sorted({
+        p.get("channel", "") for p in all_source_programmes if p.get("channel")
+    })
+    print(f"EPGshare total programmes: {len(all_source_programmes)}")
+    print(f"EPGshare programme channel IDs: {len(all_source_programme_channels)}")
+    print("EPGshare programme channel ID sample: " + ", ".join(all_source_programme_channels[:40]))
+    print("EPGshare wanted channel ID sample: " + ", ".join(sorted(wanted_sources)[:40]))
+
+    for elem in all_source_programmes:
         source_channel = elem.get("channel", "")
         if source_channel not in wanted_sources:
             continue
