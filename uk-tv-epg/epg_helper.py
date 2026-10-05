@@ -1332,8 +1332,33 @@ def build_playlist(
     ]
 
     def news_rank(e: dict) -> int:
-        hay = " ".join([e.get("name", ""), e.get("id", "")]).casefold()
-        for i, token in enumerate(news_order):
+        cid = e.get("id", "").casefold()
+        name = e.get("name", "").casefold()
+
+        # Exact headline services first; language/weather variants later.
+        if cid.startswith("bbcnews.uk@"):
+            return 0
+        if cid.startswith("skynews.uk@"):
+            return 1
+        if cid.startswith("gbnews.uk@"):
+            return 2
+        if "bloomberg" in cid or "bloomberg" in name:
+            return 3
+        if "euronews" in cid or "euronews" in name:
+            return 4
+        if "abcnewslive" in cid:
+            return 5
+        if "cbsnews247" in cid:
+            return 6
+        if "nbcnewsnow" in cid:
+            return 7
+        if "livenowfromfox" in cid:
+            return 8
+        if "newsmax" in cid:
+            return 9
+
+        hay = " ".join([name, cid])
+        for i, token in enumerate(news_order, start=20):
             if token in hay:
                 return i
         return 999
