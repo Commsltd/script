@@ -39,7 +39,6 @@ class PlaybackEngine(
     private var profile = ""
 
     fun play(row: GuideRow, forceSource: Boolean = false) {
-        model.markPlaying(row)
         generation++; val token = generation
         request?.cancel(); stopPlayer()
         station = row.station; failed = false; tried.clear(); attempt = 0
