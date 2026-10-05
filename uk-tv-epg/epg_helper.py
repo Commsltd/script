@@ -775,6 +775,26 @@ def stream_score(entry: dict) -> int:
     if "short.gy" in url:
         score -= 2
 
+    # Prefer broadcaster/CDN-backed feeds when multiple candidates exist.
+    if any(token in url for token in [
+        "vs-hls-push", "bbc.co.uk", "bbci.co.uk",
+        "skycdp.com", "yospace.com", "cbsnews.com",
+        "nbcuni.com", "bloomberg.com"
+    ]):
+        score += 1200
+
+    # These source families have been confirmed not to play on the user's
+    # Fire TV/VPN route. Keep them as fallbacks, but do not prefer them.
+    if any(token in url for token in [
+        "netplus.zappr.stream",
+        "viamotionhsi.netplus.ch",
+        "xemzi.short.gy",
+        "92.114.85.72",
+        "188.138.29.131",
+        "45.14.84.37"
+    ]):
+        score -= 1500
+
     return score
 
 
@@ -950,7 +970,8 @@ def classify(entry: dict, main_entry_ids: set[int]) -> str:
     if any(x in hay for x in [
         "bbcnews", "skynews", "gbnews", "newsmax", "aljazeera", "al jazeera",
         "france24", "france 24", "euronews", "bloomberg", "cnbc", "iraninternational",
-        "afghanistaninternational", "talktv"
+        "afghanistaninternational", "talktv", "abc news", "cbs news", "nbc news",
+        "livenow", "live now", "newsmax"
     ]):
         return "02 NEWS"
 
@@ -1041,6 +1062,9 @@ def canonicalise_carrier_entry(entry: dict) -> dict | None:
 
 EXTERNAL_ID_MAP = {
     "itv1.uk": ("ITV1.uk@London", "ITV1"),
+    "bbcfour.uk": ("BBCFour.uk@OfficialHD", "BBC Four HD"),
+    "skynews.uk": ("SkyNews.uk@HD", "Sky News"),
+    "stv.uk": ("ITV1.uk@STV", "STV (ITV Scotland)"),
 }
 
 
@@ -1077,6 +1101,71 @@ def is_plus1_entry(entry: dict) -> bool:
 
 def logical_channel_key(entry: dict) -> tuple[str, bool]:
     return (entry.get("base", "").casefold(), is_plus1_entry(entry))
+
+
+PUBLIC_NEWS_STREAMS = [
+    {
+        "id": "BloombergTV.us@Europe",
+        "name": "Bloomberg TV Europe",
+        "url": "https://bloomberg.com/media-manifest/streams/eu.m3u8",
+        "logo": "",
+    },
+    {
+        "id": "EuronewsEnglish.fr@SD",
+        "name": "Euronews English",
+        "url": "https://streams.sofast.tv/euronewsen/live/eds/euronews-en/25017/euronews-en.m3u8",
+        "logo": "",
+    },
+    {
+        "id": "ABCNewsLive.us@SD",
+        "name": "ABC News Live",
+        "url": "https://aegis-cloudfront-1.tubi.video/d6cbb0de-68e4-4f3b-82f9-bf5d526e0bde/index.m3u8",
+        "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/misc/media/abc-news-live.png",
+    },
+    {
+        "id": "CBSNews247.us@SD",
+        "name": "CBS News 24/7",
+        "url": "https://cbsn-us.cbsnstream.cbsnews.com/out/v1/55a8648e8f134e82a470f83d562deeca/master.m3u8",
+        "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-news-us.png",
+    },
+    {
+        "id": "NBCNewsNOW.us@SD",
+        "name": "NBC News NOW",
+        "url": "https://xumo-drct-nbcnn-ir8ze.fast.nbcuni.com/live/master.m3u8",
+        "logo": "",
+    },
+    {
+        "id": "LiveNOWfromFOX.us@SD",
+        "name": "LiveNOW from FOX",
+        "url": "https://fox-foxnewsnow-vizio.amagi.tv/playlist.m3u8",
+        "logo": "",
+    },
+    {
+        "id": "Newsmax2.us@SD",
+        "name": "Newsmax 2",
+        "url": "https://newsmax-vizio.amagi.tv/playlist.m3u8",
+        "logo": "",
+    },
+]
+
+
+def make_synthetic_entry(cid: str, name: str, url: str, logo: str = "") -> dict:
+    extinf = f'#EXTINF:-1 tvg-id="{cid}"'
+    if logo:
+        extinf += f' tvg-logo="{logo}"'
+    extinf += f',{name}'
+    base, variant = split_id(cid)
+    return {
+        "block": [extinf, url],
+        "extinf": extinf,
+        "attrs": {"tvg-id": cid, "tvg-logo": logo},
+        "name": name,
+        "url": url,
+        "id": cid,
+        "base": base,
+        "variant": variant,
+        "synthetic": True,
+    }
 
 
 def build_playlist(
@@ -1138,12 +1227,26 @@ def build_playlist(
             continue
 
         key = logical_channel_key(e)
-        if key not in existing_keys:
+        trusted_variant = e["variant"].casefold() in {"officialhd", "hd", "stv"}
+        if key not in existing_keys or trusted_variant:
             primaries.append(e)
             added_external_primaries.append(e)
             existing_keys.add(key)
         else:
             external_alternatives.append(e)
+
+    # Add public live-news channels. These are separate from the Freeview
+    # schedule and therefore may not have UK EPG data, but they remain useful
+    # live services in the NEWS group.
+    existing_ids = {e["id"] for e in primaries if e["id"]}
+    for item in PUBLIC_NEWS_STREAMS:
+        if item["id"] in existing_ids:
+            continue
+        e = make_synthetic_entry(
+            item["id"], item["name"], item["url"], item.get("logo", "")
+        )
+        primaries.append(e)
+        existing_ids.add(item["id"])
 
     # Choose the Freeview-like headline set only after supplemental sources
     # have been merged, so missing C4/C5/ITV3/ITV4/etc can be promoted.
@@ -1210,26 +1313,64 @@ def build_playlist(
         group_entries[group].append(e)
 
     for e in alternatives:
-        group_entries["90 ALTERNATIVE STREAMS"].append(e)
+        parent = primary_by_id.get(e["id"])
+        if parent is None:
+            continue
+        e["is_alt"] = True
+        e["parent_base"] = parent["base"].casefold()
+        group = classify(parent, main_entry_ids)
+        group_entries[group].append(e)
 
     family_rank = {
         base.casefold(): i for i, base in enumerate(MAIN_BASES)
     }
 
-    def normal_sort_key(e: dict):
-        if id(e) in main_entry_rank:
-            return (0, main_entry_rank[id(e)], 0, e["name"].casefold())
+    news_order = [
+        "bbc news", "sky news", "gb news", "bloomberg", "euronews",
+        "abc news", "cbs news", "nbc news", "livenow", "newsmax",
+        "al jazeera", "france 24", "cnbc"
+    ]
 
-        base_key = e["base"].casefold()
-        if classify(e, main_entry_ids) == "01 MAIN UK" and base_key in family_rank:
+    def news_rank(e: dict) -> int:
+        hay = " ".join([e.get("name", ""), e.get("id", "")]).casefold()
+        for i, token in enumerate(news_order):
+            if token in hay:
+                return i
+        return 999
+
+    def normal_sort_key(e: dict):
+        group = classify(e, main_entry_ids)
+        base_key = e.get("parent_base") or e["base"].casefold()
+
+        if group == "01 MAIN UK" and base_key in family_rank:
+            selected = 0 if id(e) in main_entry_rank else 1
+            alt = 1 if e.get("is_alt") else 0
             return (
-                1,
+                0,
                 family_rank[base_key],
+                selected,
+                alt,
+                -stream_score(e),
                 -preferred_variant_score(e),
                 e["name"].casefold(),
             )
 
-        return (2, e["name"].casefold(), e["id"].casefold(), -stream_score(e))
+        if group == "02 NEWS":
+            return (
+                1,
+                news_rank(e),
+                1 if e.get("is_alt") else 0,
+                -stream_score(e),
+                e["name"].casefold(),
+            )
+
+        return (
+            2,
+            e["name"].casefold(),
+            1 if e.get("is_alt") else 0,
+            e["id"].casefold(),
+            -stream_score(e),
+        )
 
     header = set_m3u_attr(
         header,
@@ -1249,7 +1390,7 @@ def build_playlist(
             extinf = set_m3u_attr(extinf, "group-title", group)
             extinf = set_m3u_attr(extinf, "tvg-chno", str(channel_number))
 
-            if group == "90 ALTERNATIVE STREAMS":
+            if e.get("is_alt"):
                 alt_n = e.get("alt_number", 1)
                 if not e["attrs"].get("tvg-logo") and e.get("primary_logo"):
                     extinf = set_m3u_attr(extinf, "tvg-logo", e["primary_logo"])
