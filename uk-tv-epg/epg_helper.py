@@ -451,19 +451,21 @@ def enrich_guide(guide_path: str, source_gzip_path: str) -> None:
         if cid:
             target_channel_names[cid] = names
 
-    source_channel_names = {}
+    # UK1 is modest enough to parse in memory and this preserves child
+    # nodes (title/desc/category) until the parent programme is processed.
     with gzip.open(source_path, "rb") as fh:
-        for _, elem in ET.iterparse(fh, events=("end",)):
-            if elem.tag == "channel":
-                cid = elem.get("id", "")
-                names = [
-                    (n.text or "").strip()
-                    for n in elem.findall("display-name")
-                    if (n.text or "").strip()
-                ]
-                if cid:
-                    source_channel_names[cid] = names
-            elem.clear()
+        source_root = ET.parse(fh).getroot()
+
+    source_channel_names = {}
+    for elem in source_root.findall("channel"):
+        cid = elem.get("id", "")
+        names = [
+            (n.text or "").strip()
+            for n in elem.findall("display-name")
+            if (n.text or "").strip()
+        ]
+        if cid:
+            source_channel_names[cid] = names
 
     normalised_source_names = {}
     for cid, names in source_channel_names.items():
@@ -488,28 +490,25 @@ def enrich_guide(guide_path: str, source_gzip_path: str) -> None:
 
     wanted_sources = set(target_to_source.values())
     source_programmes = {}
+    source_programme_count = 0
 
-    with gzip.open(source_path, "rb") as fh:
-        for _, elem in ET.iterparse(fh, events=("end",)):
-            if elem.tag != "programme":
-                elem.clear()
-                continue
+    for elem in source_root.findall("programme"):
+        source_channel = elem.get("channel", "")
+        if source_channel not in wanted_sources:
+            continue
 
-            source_channel = elem.get("channel", "")
-            if source_channel not in wanted_sources:
-                elem.clear()
-                continue
+        start = xmltv_timestamp(elem.get("start", ""))
+        title_node = elem.find("title")
+        title = normalise_programme_title(
+            title_node.text if title_node is not None else ""
+        )
+        if start is not None and title:
+            source_programmes.setdefault(source_channel, {}).setdefault(
+                start // 60, []
+            ).append(elem)
+            source_programme_count += 1
 
-            start = xmltv_timestamp(elem.get("start", ""))
-            title_node = elem.find("title")
-            title = normalise_programme_title(
-                title_node.text if title_node is not None else ""
-            )
-            if start is not None and title:
-                source_programmes.setdefault(source_channel, {}).setdefault(
-                    start // 60, []
-                ).append(copy.deepcopy(elem))
-            elem.clear()
+    print(f"EPGshare source programmes indexed: {source_programme_count}")
 
     copy_tags = {
         "desc", "sub-title", "category", "episode-num", "date",
