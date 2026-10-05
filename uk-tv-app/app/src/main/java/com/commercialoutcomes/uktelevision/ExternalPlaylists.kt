@@ -16,7 +16,7 @@ data class UserPlaylist(val name: String, val url: String)
 data class PlaylistRefresh(val stations: List<Station>, val warnings: List<String>)
 
 object PlaylistImport {
-    private val attr = Regex("""([\\w-]+)="([^"]*)"""")
+    private val attr = Regex("""([\w-]+)="([^"]*)"""")
     private const val KEY = "userPlaylists"
     private const val MAX_PLAYLIST_BYTES = 8 * 1024 * 1024
 
