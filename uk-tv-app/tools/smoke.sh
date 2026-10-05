@@ -6,17 +6,31 @@ ffmpeg -hide_banner -loglevel error -f lavfi -i 'testsrc2=size=640x360:rate=25' 
 python3 -m http.server 8765 --bind 0.0.0.0 --directory delivery/player-fixture >delivery/fixture-server.log 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-adb shell wm size 1920x1080
-adb shell wm density 240
-adb shell settings put system accelerometer_rotation 0
-adb shell settings put system user_rotation 0
+# Keep the TV hardware profile's native landscape geometry. The phone-profile
+# rotation override used previously distorted the surface and screenshots.
+adb shell wm size reset
+adb shell wm density reset
+# This changes only the disposable test emulator. Prevent Android's one-off
+# fullscreen tutorial from stealing remote keys from the app under test.
+adb shell settings put secure immersive_mode_confirmations confirmed
+adb shell settings put global device_provisioned 1
+adb shell settings put secure user_setup_complete 1
+adb shell input keyevent KEYCODE_WAKEUP
+adb shell input keyevent KEYCODE_HOME
 adb install -r delivery/UK-Television-0.1.0-preview.apk
 adb install -r delivery/uk-tv-tests.apk
 adb logcat -c
+set +e
 adb shell am instrument -w -r com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
+instrument_status=${PIPESTATUS[0]}
 adb logcat -d -s AndroidRuntime:E > delivery/android-crashes.log
-adb pull /sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/guide.png delivery/guide.png
-adb pull /sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/options.png delivery/options.png
-adb pull /sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/playback-test.png delivery/playback-test.png
+for name in guide options playback-test; do
+  adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
+done
+adb shell uiautomator dump /sdcard/final-ui.xml
+adb pull /sdcard/final-ui.xml delivery/final-ui.xml
+adb exec-out screencap -p > delivery/final-screen.png
+set -e
+[ "$instrument_status" -eq 0 ]
 grep -E 'OK \([0-9]+ test' delivery/instrumentation.log
 if grep -q 'FATAL EXCEPTION' delivery/android-crashes.log; then exit 1; fi

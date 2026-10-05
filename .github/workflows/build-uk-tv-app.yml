@@ -101,13 +101,15 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Launch app and exercise remote navigation
+      - name: Launch TV app and exercise remote navigation
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 28
-          arch: x86_64
-          target: default
-          profile: pixel_2
+          arch: x86
+          target: android-tv
+          profile: tv_1080p
+          ram-size: 2048M
+          heap-size: 256M
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           script: bash uk-tv-app/tools/smoke.sh
@@ -118,6 +120,7 @@ jobs:
           path: |
             delivery/*.png
             delivery/*.log
+            delivery/*.xml
           retention-days: 30
   publish:
     needs: [build, smoke]
@@ -136,4 +139,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="uk-tv-v0.1.0-preview-${{ github.run_number }}"
-          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "UK Television 0.1.0 preview (build ${{ github.run_number }})" --notes-file delivery/README.md delivery/UK-Television-0.1.0-preview.apk delivery/UK-Television-source.zip delivery/SHA256SUMS.txt delivery/apk-signature.txt delivery/catalogue-status.json smoke/guide.png smoke/options.png
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "UK Television 0.1.0 preview (build ${{ github.run_number }})" --notes-file delivery/README.md delivery/UK-Television-0.1.0-preview.apk delivery/UK-Television-source.zip delivery/SHA256SUMS.txt delivery/apk-signature.txt delivery/catalogue-status.json smoke/guide.png smoke/options.png smoke/playback-test.png
