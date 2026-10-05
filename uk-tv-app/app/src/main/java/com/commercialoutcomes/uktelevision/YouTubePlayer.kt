@@ -9,7 +9,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -20,35 +19,58 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import androidx.webkit.WebViewMediaIntegrityApiStatusConfig
 
-private fun youtubeEmbedUrl(raw: String, strict: Boolean): String? {
+private fun youtubeVideoId(raw: String): String? {
     val uri = runCatching { Uri.parse(raw) }.getOrNull() ?: return null
     val host = uri.host?.lowercase().orEmpty()
-    val base = when {
-        host == "youtu.be" -> {
-            val id = uri.pathSegments.firstOrNull() ?: return null
-            "https://www.youtube.com/embed/$id?autoplay=1&controls=1&playsinline=1&rel=0"
-        }
-        host.endsWith("youtube.com") && uri.path == "/watch" -> {
-            val id = uri.getQueryParameter("v") ?: return null
-            "https://www.youtube.com/embed/$id?autoplay=1&controls=1&playsinline=1&rel=0"
-        }
-        host.endsWith("youtube.com") && uri.path?.startsWith("/embed/") == true -> raw
+    return when {
+        host == "youtu.be" -> uri.pathSegments.firstOrNull()
+        host.endsWith("youtube.com") && uri.path == "/watch" -> uri.getQueryParameter("v")
+        host.endsWith("youtube.com") && uri.path?.startsWith("/embed/") == true ->
+            uri.pathSegments.getOrNull(1)
         else -> null
-    } ?: return null
-    return if (strict) base.replace("://www.youtube.com/", "://www.youtube-nocookie.com/") else base
+    }?.takeIf { it.matches(Regex("^[A-Za-z0-9_-]{6,20}$")) }
+}
+
+private fun youtubeHtml(videoId: String, strict: Boolean): String {
+    val host = if (strict) "www.youtube-nocookie.com" else "www.youtube.com"
+    val src = "https://$host/embed/$videoId?autoplay=1&controls=0&playsinline=1&rel=0&modestbranding=1"
+    return """
+        <!doctype html>
+        <html>
+        <head>
+          <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+          <style>
+            html,body,#frame { margin:0; width:100%; height:100%; background:#000; overflow:hidden; }
+            iframe { width:100%; height:100%; border:0; display:block; }
+          </style>
+        </head>
+        <body>
+          <iframe id="frame"
+            src="$src"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </body>
+        </html>
+    """.trimIndent()
 }
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean) {
+fun EmbeddedYouTubePlayer(
+    source: StreamSource,
+    strict: Boolean,
+    modifier: Modifier = Modifier,
+    interactive: Boolean = false
+) {
     val context = LocalContext.current
-    val url = remember(source.url, strict) { youtubeEmbedUrl(source.url, strict) }
+    val videoId = remember(source.url) { youtubeVideoId(source.url) }
 
-    val webView = remember(url) {
+    val webView = remember(videoId, strict, interactive) {
         WebView(context).apply {
             setBackgroundColor(Color.BLACK)
-            isFocusable = true
-            isFocusableInTouchMode = true
+            isFocusable = interactive
+            isFocusableInTouchMode = interactive
             keepScreenOn = true
 
             settings.javaScriptEnabled = true
@@ -72,12 +94,7 @@ fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean) {
                 override fun shouldOverrideUrlLoading(
                     view: WebView,
                     request: android.webkit.WebResourceRequest
-                ): Boolean {
-                    if (!request.isForMainFrame) return false
-                    val target = request.url
-                    val h = target.host?.lowercase().orEmpty()
-                    return !(h.endsWith("youtube.com") || h.endsWith("youtube-nocookie.com"))
-                }
+                ): Boolean = request.isForMainFrame
 
                 override fun onRenderProcessGone(
                     view: WebView,
@@ -88,16 +105,21 @@ fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean) {
                 }
             }
 
-            if (url != null) {
-                loadUrl(
-                    url,
-                    mapOf("Referer" to "https://commsltd.github.io/uk-television/")
+            if (videoId != null) {
+                loadDataWithBaseURL(
+                    "https://commsltd.github.io/uk-television/",
+                    youtubeHtml(videoId, strict),
+                    "text/html",
+                    "UTF-8",
+                    null
                 )
             } else {
-                loadData(
-                    "<html><body style='background:#000;color:#fff;font-family:sans-serif'><h2>This YouTube URL cannot be embedded safely.</h2></body></html>",
+                loadDataWithBaseURL(
+                    "https://commsltd.github.io/uk-television/",
+                    "<html><body style='background:#000;color:#fff;font-family:sans-serif'><h2>Official live video is temporarily unavailable.</h2></body></html>",
                     "text/html",
-                    "UTF-8"
+                    "UTF-8",
+                    null
                 )
             }
         }
@@ -115,6 +137,6 @@ fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean) {
 
     AndroidView(
         factory = { webView },
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     )
 }
