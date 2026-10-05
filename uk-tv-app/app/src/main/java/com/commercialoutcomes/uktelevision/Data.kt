@@ -123,7 +123,8 @@ object CatalogueParser {
             require(sources.length() > 0) { "Channel has no sources" }
             parseSources(sources).forEach { require(it.url.startsWith("https://") || it.url.startsWith("http://")) }
             Station(c.getString("id"), c.getString("name"), c.getString("family"),
-                c.getString("group"), c.getInt("order"), c.optString("logo"),
+                c.getString("group"), c.getInt("order"),
+                c.optString("privacyLogo").ifBlank { c.optString("logo") },
                 c.optString("variant"), sources.toString(), c.optString("officialUrl"))
         }
         require(stations.isNotEmpty() && stations.size <= 10000) { "Empty or oversized channel list" }
@@ -135,7 +136,8 @@ object CatalogueParser {
             val p = ps.getJSONObject(n)
             Programme(p.getString("key"), p.getString("channelId"), p.getLong("start"),
                 p.getLong("stop"), p.getString("title"), p.optString("subtitle"),
-                p.optString("description"), p.optString("details"), p.optString("artwork"))
+                p.optString("description"), p.optString("details"),
+                p.optString("privacyArtwork").ifBlank { p.optString("artwork") })
         }
         require(programmes.all { it.channelId in ids && it.stop > it.start && it.title.isNotBlank() }) { "Invalid programme data" }
         val now = System.currentTimeMillis()

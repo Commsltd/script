@@ -137,15 +137,19 @@ def main() -> None:
     for channel in data.get("channels", []):
         old = channel.get("logo", "")
         if old in mirrored:
-            channel["logo"] = mirrored[old]
+            channel["privacyLogo"] = mirrored[old]
             channel_mirrors += 1
+        else:
+            channel.pop("privacyLogo", None)
 
     programme_mirrors = 0
     for programme in data.get("programmes", []):
         old = programme.get("artwork", "")
         if old in mirrored:
-            programme["artwork"] = mirrored[old]
+            programme["privacyArtwork"] = mirrored[old]
             programme_mirrors += 1
+        else:
+            programme.pop("privacyArtwork", None)
 
     args.catalogue.write_bytes(gzip.compress(
         json.dumps(data, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
