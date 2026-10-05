@@ -52,10 +52,15 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(youtube[0]['url'], 'https://www.youtube.com/watch?v=abcDEF12345')
         self.assertEqual(d['youtubeLiveSources'], 1)
 
-    def test_broken_channel_live_embed_is_not_published(self):
+    def test_sky_has_known_official_fixed_youtube_fallback_without_ci_resolution(self):
         p = '#EXTM3U\n#EXTINF:-1 tvg-id="SkyNews.uk@HD",Sky News\nhttps://stream.example/sky.m3u8\n'
         d = build(p, b'<tv/>')
-        self.assertFalse(any(s['kind'] == 'youtube' for s in d['channels'][0]['sources']))
+        youtube = [s for s in d['channels'][0]['sources'] if s['kind'] == 'youtube']
+        self.assertEqual(len(youtube), 1)
+        self.assertEqual(
+            youtube[0]['url'],
+            'https://www.youtube.com/watch?v=XOacA3RYrXk'
+        )
 
     def test_drm_not_silently_treated_as_unprotected(self):
         p = '#EXTINF:-1 tvg-id="A.uk",A\n#KODIPROP:inputstream.adaptive.license_type=widevine\nhttps://s/a.mpd\n'

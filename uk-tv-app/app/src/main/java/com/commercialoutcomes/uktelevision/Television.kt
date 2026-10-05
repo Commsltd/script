@@ -79,6 +79,7 @@ fun Television(
     }
 }
 
+@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun MediaSurface(
     model: TvModel,

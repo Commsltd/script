@@ -13,6 +13,15 @@ from urllib.parse import urlsplit, parse_qsl
 
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
+STATIC_OFFICIAL_YOUTUBE = {
+    # Verified official Sky News YouTube live video identity.  This is a
+    # YouTube watch/video ID only; no temporary media/CDN URL is extracted.
+    'SkyNews.uk': {
+        'videoId': 'XOacA3RYrXk',
+        'url': 'https://www.youtube.com/watch?v=XOacA3RYrXk',
+    },
+}
+
 YOUTUBE_LABELS = {
     'SkyNews.uk': 'Sky News official YouTube',
     'EuronewsEnglish.fr': 'Euronews official YouTube',
@@ -110,7 +119,7 @@ def build(playlist, xml_bytes, revision='unknown', youtube_live=None):
     youtube_count = 0
     for channel in channels.values():
         base = channel['id'].partition('@')[0]
-        resolved = youtube_live.get(base) or {}
+        resolved = youtube_live.get(base) or STATIC_OFFICIAL_YOUTUBE.get(base) or {}
         url = str(resolved.get('url') or '')
         video_id = str(resolved.get('videoId') or '')
         parsed = urlsplit(url)
