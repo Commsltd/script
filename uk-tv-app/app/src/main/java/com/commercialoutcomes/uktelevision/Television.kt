@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -115,7 +116,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
         }
         Spacer(Modifier.height(12.dp))
         Row(Modifier.fillMaxWidth().height(164.dp).background(Brush.horizontalGradient(listOf(Panel,Ink)),RoundedCornerShape(12.dp)).padding(16.dp),verticalAlignment=Alignment.Top) {
-            Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp),model.allowRemoteArtwork)
+            Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp),model.privacyMode)
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
                 val time = programme?.let { "${SimpleDateFormat("EEE d MMM",Locale.UK).format(Date(it.start))}  ${formatTime(it.start)}–${formatTime(it.stop)}" }.orEmpty()
@@ -128,9 +129,13 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
                     color=White,fontSize=13.sp,lineHeight=18.sp,maxLines=3,overflow=TextOverflow.Ellipsis)
                 if (!programme?.details.isNullOrBlank()) Text(programme!!.details,color=Muted,fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             }
-            if(model.allowRemoteArtwork && !programme?.artwork.isNullOrBlank()) {
+            val context = LocalContext.current
+            val programmeArtwork = remember(programme?.artwork, model.privacyMode) {
+                ArtworkStore.model(context, programme?.artwork.orEmpty(), model.privacyMode)
+            }
+            if(programmeArtwork != null) {
                 Spacer(Modifier.width(16.dp))
-                AsyncImage(model=programme!!.artwork,contentDescription=null,modifier=Modifier.width(164.dp).fillMaxHeight().clip(RoundedCornerShape(6.dp)),contentScale=ContentScale.Crop)
+                AsyncImage(model=programmeArtwork,contentDescription=null,modifier=Modifier.width(164.dp).fillMaxHeight().clip(RoundedCornerShape(6.dp)),contentScale=ContentScale.Crop)
             }
         }
         Spacer(Modifier.height(12.dp))
@@ -164,7 +169,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
                             ChannelLine(row,model.schedule[row.station.id].orEmpty(),row.key==selected?.key && !model.railSelected,
                                 model.windowStart,model.cursor,model.clock,Modifier.fillMaxWidth().height(rowHeight),
                                 favourite=row.station.id in model.favourites,
-                                allowRemoteArtwork=model.allowRemoteArtwork,
+                                privacyMode=model.privacyMode,
                                 onSelect={model.selectedKey=row.key;model.railSelected=false},
                                 onProgramme={p -> model.selectedKey=row.key;model.railSelected=false;model.cursor=maxOf(p.start,model.windowStart)},
                                 onWatch={onWatch(row)})
@@ -187,12 +192,12 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
 @Composable
 private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Boolean,
     window: Long, cursor: Long, now: Long, modifier: Modifier, favourite: Boolean,
-    allowRemoteArtwork: Boolean,
+    privacyMode: PrivacyMode,
     onSelect:()->Unit,onProgramme:(Programme)->Unit,onWatch:()->Unit) {
     Row(modifier.padding(bottom=3.dp)) {
         Row(Modifier.width(175.dp).fillMaxHeight().background(if(selected) Soft else Panel,RoundedCornerShape(topStart=5.dp,bottomStart=5.dp))
             .clickable { if(selected) onWatch() else onSelect() }.padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
-            Logo(row.station.logo,row.station.name,Modifier.size(32.dp),allowRemoteArtwork)
+            Logo(row.station.logo,row.station.name,Modifier.size(32.dp),privacyMode)
             Spacer(Modifier.width(8.dp))
             Text((if(favourite) "★ " else "")+row.label,color=if(selected) White else Muted,fontSize=11.sp,maxLines=2,overflow=TextOverflow.Ellipsis,lineHeight=14.sp)
         }
@@ -219,9 +224,11 @@ private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Bo
 }
 
 @Composable
-private fun Logo(url:String,name:String,modifier:Modifier,allowRemote:Boolean) {
+private fun Logo(url:String,name:String,modifier:Modifier,privacyMode: PrivacyMode) {
+    val context = LocalContext.current
+    val image = remember(url, privacyMode) { ArtworkStore.model(context, url, privacyMode) }
     Box(modifier.background(White.copy(alpha=.05f),RoundedCornerShape(6.dp)).padding(4.dp),contentAlignment=Alignment.Center) {
         Text(name.take(2).uppercase(Locale.UK),color=Muted.copy(alpha=.35f),fontSize=14.sp,fontWeight=FontWeight.Bold)
-        if(allowRemote && url.isNotBlank()) AsyncImage(model=url,contentDescription="$name logo",modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
+        if(image != null) AsyncImage(model=image,contentDescription="$name logo",modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
     }
 }
