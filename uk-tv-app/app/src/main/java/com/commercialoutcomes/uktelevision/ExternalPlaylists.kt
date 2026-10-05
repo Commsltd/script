@@ -1,6 +1,9 @@
 package com.commercialoutcomes.uktelevision
 
 import android.content.SharedPreferences
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -10,18 +13,68 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
+import java.security.KeyStore
 import java.security.MessageDigest
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
 
 data class UserPlaylist(val name: String, val url: String)
 data class PlaylistRefresh(val stations: List<Station>, val warnings: List<String>)
 
+private object LocalSecretBox {
+    private const val ALIAS = "uk_television_local_secrets_v1"
+
+    private fun key(): SecretKey {
+        val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        val existing = store.getKey(ALIAS, null) as? SecretKey
+        if (existing != null) return existing
+        val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+        generator.init(
+            KeyGenParameterSpec.Builder(
+                ALIAS,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setRandomizedEncryptionRequired(true)
+                .build()
+        )
+        return generator.generateKey()
+    }
+
+    fun seal(value: String): String {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, key())
+        val iv = Base64.encodeToString(cipher.iv, Base64.NO_WRAP)
+        val encrypted = Base64.encodeToString(cipher.doFinal(value.toByteArray(Charsets.UTF_8)), Base64.NO_WRAP)
+        return "v1:$iv:$encrypted"
+    }
+
+    fun open(value: String): String {
+        val parts = value.split(':', limit = 3)
+        require(parts.size == 3 && parts[0] == "v1")
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(
+            Cipher.DECRYPT_MODE,
+            key(),
+            GCMParameterSpec(128, Base64.decode(parts[1], Base64.NO_WRAP))
+        )
+        return String(cipher.doFinal(Base64.decode(parts[2], Base64.NO_WRAP)), Charsets.UTF_8)
+    }
+}
+
 object PlaylistImport {
     private val attr = Regex("""([\w-]+)="([^"]*)"""")
-    private const val KEY = "userPlaylists"
+    private const val KEY = "userPlaylistsEncrypted"
+    private const val LEGACY_KEY = "userPlaylists"
     private const val MAX_PLAYLIST_BYTES = 8 * 1024 * 1024
 
     fun load(prefs: SharedPreferences): List<UserPlaylist> = runCatching {
-        val array = JSONArray(prefs.getString(KEY, "[]") ?: "[]")
+        val encrypted = prefs.getString(KEY, null)
+        val raw = if (encrypted != null) LocalSecretBox.open(encrypted)
+            else prefs.getString(LEGACY_KEY, "[]") ?: "[]"
+        val array = JSONArray(raw)
         (0 until array.length()).mapNotNull { i ->
             val o = array.optJSONObject(i) ?: return@mapNotNull null
             val url = o.optString("url").trim()
@@ -33,7 +86,10 @@ object PlaylistImport {
     fun save(prefs: SharedPreferences, playlists: List<UserPlaylist>) {
         val array = JSONArray()
         playlists.forEach { p -> array.put(JSONObject().put("name", p.name).put("url", p.url)) }
-        prefs.edit().putString(KEY, array.toString()).apply()
+        prefs.edit()
+            .putString(KEY, LocalSecretBox.seal(array.toString()))
+            .remove(LEGACY_KEY)
+            .apply()
     }
 
     suspend fun refresh(playlists: List<UserPlaylist>, strict: Boolean): PlaylistRefresh =

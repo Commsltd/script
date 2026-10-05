@@ -13,7 +13,6 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
-import androidx.media3.session.MediaSession
 import kotlinx.coroutines.*
 
 @androidx.annotation.OptIn(UnstableApi::class)
@@ -23,7 +22,6 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
     var source by mutableStateOf<StreamSource?>(null); private set
     var failed by mutableStateOf(false); private set
     private var station: Station? = null
-    private var session: MediaSession? = null
     private var generation = 0
     private var attempt = 0
     private var request: Job? = null
@@ -94,7 +92,6 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
         player = exo
         exo.setAudioAttributes(androidx.media3.common.AudioAttributes.Builder().setUsage(C.USAGE_MEDIA).setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(), true)
         exo.setHandleAudioBecomingNoisy(true)
-        session = MediaSession.Builder(context, exo).build()
         fun current() = generation == token && attempt == thisAttempt && player === exo
         exo.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
@@ -159,7 +156,6 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
     }
     fun stopPlayer() {
         watchdog?.cancel(); success?.cancel()
-        session?.release(); session = null
         val old = player; player = null
         old?.release()
     }
