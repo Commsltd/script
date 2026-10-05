@@ -20,7 +20,8 @@ concurrency:
 env:
   PLAYLIST_URL: https://iptv-org.github.io/iptv/countries/uk.m3u
   ALT_STREAMS_URL: https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk.m3u
-  CARRIER_STREAMS_URL: https://raw.githubusercontent.com/iptv-ch/iptv-ch.github.io/master/netplus.m3u8
+  CARRIER_STREAMS_URL: https://raw.githubusercontent.com/iptv-ch/iptv-ch.github.io/master/netplus-zappr.m3u8
+  EXTERNAL_UK_STREAMS_URL: https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_uk.m3u8
 
 jobs:
   build:
@@ -49,6 +50,7 @@ jobs:
             "$PLAYLIST_URL" \
             "$ALT_STREAMS_URL" \
             "$CARRIER_STREAMS_URL" \
+            "$EXTERNAL_UK_STREAMS_URL" \
             "$RUNNER_TEMP/playlist.m3u"
 
       - name: Select Freeview channels matching the merged playlist
