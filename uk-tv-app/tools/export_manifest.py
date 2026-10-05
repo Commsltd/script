@@ -17,8 +17,8 @@ STATIC_OFFICIAL_YOUTUBE = {
     # Verified official Sky News YouTube live video identity.  This is a
     # YouTube watch/video ID only; no temporary media/CDN URL is extracted.
     'SkyNews.uk': {
-        'videoId': 'XOacA3RYrXk',
-        'url': 'https://www.youtube.com/watch?v=XOacA3RYrXk',
+        'videoId': 'xDWQ3LkccY8',
+        'url': 'https://www.youtube.com/watch?v=xDWQ3LkccY8',
     },
 }
 
