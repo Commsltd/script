@@ -58,16 +58,16 @@ jobs:
       - name: Prepare deliverables
         run: |
           mkdir -p delivery
-          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk delivery/UK-Television-0.1.0-preview.apk
+          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk delivery/UK-Television-0.2.0-preview.apk
           cp uk-tv-app/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk delivery/uk-tv-tests.apk
           if [ -f uk-tv-app/app/build/outputs/apk/release/app-release.apk ]; then
-            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk delivery/UK-Television-0.1.0.apk
+            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk delivery/UK-Television-0.2.0.apk
           fi
           cp uk-tv-app/app/src/main/assets/status.json delivery/catalogue-status.json
           cp uk-tv-app/README.md delivery/README.md
           git archive --format=zip HEAD uk-tv-app .github/workflows/build-uk-tv-app.yml .github/workflows/update-uk-tv-app-data.yml > delivery/UK-Television-source.zip
           sha256sum delivery/*.apk > delivery/SHA256SUMS.txt
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs delivery/UK-Television-0.1.0-preview.apk > delivery/apk-signature.txt
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs delivery/UK-Television-0.2.0-preview.apk > delivery/apk-signature.txt
       - uses: actions/upload-artifact@v4
         with:
           name: UK-Television-build
@@ -140,5 +140,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="uk-tv-v0.1.0-preview-${{ github.run_number }}"
-          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "UK Television 0.1.0 preview (build ${{ github.run_number }})" --notes-file delivery/README.md delivery/UK-Television-0.1.0-preview.apk delivery/UK-Television-source.zip delivery/SHA256SUMS.txt delivery/apk-signature.txt delivery/catalogue-status.json smoke/guide.png smoke/options.png smoke/playback-test.png
+          tag="uk-tv-v0.2.0-preview-${{ github.run_number }}"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "UK Television 0.2.0 preview (build ${{ github.run_number }})" --notes-file delivery/README.md delivery/UK-Television-0.2.0-preview.apk delivery/UK-Television-source.zip delivery/SHA256SUMS.txt delivery/apk-signature.txt delivery/catalogue-status.json smoke/guide.png smoke/options.png smoke/playback-test.png

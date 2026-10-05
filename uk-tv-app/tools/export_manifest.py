@@ -14,6 +14,13 @@ from urllib.parse import urlsplit, parse_qsl
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
 OFFICIAL_SOURCES = {
+    'BloombergTV.us': [
+        {'kind': 'web', 'url': 'https://www.bloomberg.com/live/europe', 'label': 'Bloomberg official live'},
+    ],
+    'EuronewsEnglish.fr': [
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/@euronews/live', 'label': 'Official YouTube'},
+        {'kind': 'web', 'url': 'https://www.euronews.com/live', 'label': 'Euronews website'},
+    ],
     'SkyNews.uk': [
         {'kind': 'youtube', 'url': 'https://www.youtube.com/@SkyNews/live', 'label': 'Official YouTube'},
         {'kind': 'web', 'url': 'https://news.sky.com/watch-live', 'label': 'Sky News website'},

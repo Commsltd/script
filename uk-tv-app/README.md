@@ -1,4 +1,4 @@
-# UK Television — 0.1.0 preview
+# UK Television — 0.2.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.1.0-preview.apk
+adb install -r UK-Television-0.2.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -53,7 +53,7 @@ The app uses `https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/c
 
 A separate export workflow runs after a successful original EPG update and has a six-hour schedule as a safety net. Data conversion does not refresh the underlying broadcaster schedules more frequently than the original EPG job.
 
-Favourites, source preferences and playback results stay in the app's private local storage. There are no analytics or cloud-account SDKs. GitHub, image hosts and stream providers necessarily see the connections made to their servers. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video, remote programme/channel artwork and external-app handoffs at runtime. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
+Favourites, source preferences and playback results stay in the app's private local storage. Additional-playlist URLs (which may contain provider credentials or tokens) are encrypted at rest with a non-exportable AES key held by Android Keystore. There are no analytics or cloud-account SDKs. The app deliberately does not create an Android MediaSession, reducing the playback metadata exposed through the normal OS media-session surface; Fire OS itself still cannot be made blind to an app running on Fire hardware. GitHub, image hosts and stream providers necessarily see the connections made to their servers. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video, remote programme/channel artwork and external-app handoffs at runtime. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
 
 Programme descriptions are displayed when supplied, with an explicit missing-synopsis message otherwise. No descriptions or programme schedules are invented. The exporter deliberately refuses the old ITV1/London EPG assignment for the separately labelled STV stream.
 
