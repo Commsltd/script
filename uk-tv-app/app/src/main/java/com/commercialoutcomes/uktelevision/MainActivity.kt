@@ -2,6 +2,7 @@ package com.commercialoutcomes.uktelevision
 
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,13 +10,15 @@ import android.os.Handler
 import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
-import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.C
@@ -28,6 +31,13 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+/** Intercept remote keys through the public View API, not AndroidX's restricted activity shim. */
+private class RemoteKeyLayout(context: Context) : FrameLayout(context) {
+    var onRemoteKey: ((KeyEvent) -> Boolean)? = null
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        onRemoteKey?.invoke(event) == true || super.dispatchKeyEvent(event)
+}
 
 @androidx.annotation.OptIn(UnstableApi::class)
 class MainActivity : ComponentActivity() {
@@ -49,10 +59,16 @@ class MainActivity : ComponentActivity() {
         model = ViewModelProvider(this)[TvModel::class.java]
         engine = PlaybackEngine(this, model, lifecycleScope)
         onBackPressedDispatcher.addCallback(this) { back() }
-        setContent {
-            Television(model, engine, hud, resizeMode,
-                onWatch = { watch(it) }, onOptions = { showOptions() }, onBack = { back() })
+        val compose = ComposeView(this).apply {
+            setContent {
+                Television(model, engine, hud, resizeMode,
+                    onWatch = { watch(it) }, onOptions = { showOptions() }, onBack = { back() })
+            }
         }
+        setContentView(RemoteKeyLayout(this).apply {
+            onRemoteKey = ::handleRemoteKey
+            addView(compose, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        })
     }
     override fun onStart() {
         super.onStart()
@@ -84,8 +100,8 @@ class MainActivity : ComponentActivity() {
         present(AlertDialog.Builder(this).setTitle("Leave UK Television?")
             .setPositiveButton("Exit") { _, _ -> finish() }.setNegativeButton("Keep watching", null))
     }
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (!::model.isInitialized || dialogOpen) return super.dispatchKeyEvent(event)
+    private fun handleRemoteKey(event: KeyEvent): Boolean {
+        if (!::model.isInitialized || dialogOpen) return false
         val key = event.keyCode
         if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER) {
             if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
@@ -109,7 +125,7 @@ class MainActivity : ComponentActivity() {
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE,
             KeyEvent.KEYCODE_MEDIA_PREVIOUS, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
             KeyEvent.KEYCODE_CHANNEL_UP, KeyEvent.KEYCODE_CHANNEL_DOWN, KeyEvent.KEYCODE_INFO)
-        if (key !in handled) return super.dispatchKeyEvent(event)
+        if (key !in handled) return false
         if (event.action != KeyEvent.ACTION_DOWN) return true
         when (key) {
             KeyEvent.KEYCODE_MENU -> showOptions()
@@ -191,7 +207,7 @@ class MainActivity : ComponentActivity() {
         val row = activeRow() ?: return
         val p = if (model.isPlayer) GuideRules.at(model.schedule[row.station.id].orEmpty(), System.currentTimeMillis()) else model.highlighted()
         val text = if (p == null) "No programme listings were supplied for this channel. Playback and listings are separate."
-        else listOf(formatTime(p.start) + "–" + formatTime(p.stop), p.subtitle, p.description.ifBlank { "No synopsis supplied for this programme." }, p.details,
+        else listOf(SimpleDateFormat("EEE d MMM",Locale.UK).format(Date(p.start))+"  "+formatTime(p.start) + "–" + formatTime(p.stop), p.subtitle, p.description.ifBlank { "No synopsis supplied for this programme." }, p.details,
             if (p.start > System.currentTimeMillis() || p.stop <= System.currentTimeMillis()) "This is a listing only. Watch live opens the current broadcast, not this past/future programme." else "")
             .filter { it.isNotBlank() }.joinToString("\n\n")
         present(AlertDialog.Builder(this).setTitle(p?.title ?: row.station.name).setMessage(text)

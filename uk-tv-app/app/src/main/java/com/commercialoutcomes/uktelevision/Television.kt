@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -87,6 +88,11 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
     val rows = model.rows()
     val selected = model.selected()
     val programme = model.highlighted()
+    val categoryState = rememberLazyListState()
+    val groups = model.groups()
+    LaunchedEffect(model.group,groups.size) {
+        categoryState.animateScrollToItem((groups.indexOf(model.group)-2).coerceAtLeast(0))
+    }
     Column(Modifier.fillMaxSize().background(Ink).padding(horizontal=26.dp,vertical=15.dp)) {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
             Box(Modifier.size(8.dp).background(Mint,RoundedCornerShape(4.dp)))
@@ -99,11 +105,11 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
             Text("MENU",Modifier.clickable(onClick=onOptions).border(1.dp,Soft,RoundedCornerShape(5.dp)).padding(horizontal=10.dp,vertical=5.dp),color=Mint,fontSize=11.sp)
         }
         Spacer(Modifier.height(12.dp))
-        Row(Modifier.fillMaxWidth().height(146.dp).background(Brush.horizontalGradient(listOf(Panel,Ink)),RoundedCornerShape(12.dp)).padding(16.dp),verticalAlignment=Alignment.Top) {
+        Row(Modifier.fillMaxWidth().height(164.dp).background(Brush.horizontalGradient(listOf(Panel,Ink)),RoundedCornerShape(12.dp)).padding(16.dp),verticalAlignment=Alignment.Top) {
             Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp))
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
-                val time = programme?.let { "${formatTime(it.start)}–${formatTime(it.stop)}" }.orEmpty()
+                val time = programme?.let { "${SimpleDateFormat("EEE d MMM",Locale.UK).format(Date(it.start))}  ${formatTime(it.start)}–${formatTime(it.stop)}" }.orEmpty()
                 Text("${selected?.station?.name ?: "Your television"}  $time",color=Mint,fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
                 Text(programme?.title ?: if (rows.isEmpty()) "Loading / choose a category" else "No listings supplied",color=White,fontSize=25.sp,fontWeight=FontWeight.SemiBold,maxLines=1,overflow=TextOverflow.Ellipsis)
                 if (!programme?.subtitle.isNullOrBlank()) Text(programme!!.subtitle,color=Gold,fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
@@ -120,8 +126,8 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
         }
         Spacer(Modifier.height(12.dp))
         Row(Modifier.weight(1f).fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-            LazyColumn(Modifier.width(145.dp).fillMaxHeight(),verticalArrangement=Arrangement.spacedBy(3.dp)) {
-                items(model.groups(),key={it}) { group ->
+            LazyColumn(Modifier.width(145.dp).fillMaxHeight(),state=categoryState,verticalArrangement=Arrangement.spacedBy(3.dp)) {
+                items(groups,key={it}) { group ->
                     val active = group == model.group
                     val label = group.replace(Regex("^\\d+\\s+"),"")
                     Text(label,Modifier.fillMaxWidth().background(if(active) (if(model.railSelected) Mint else Soft) else Color.Transparent,RoundedCornerShape(6.dp))
@@ -149,7 +155,9 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
                             ChannelLine(row,model.schedule[row.station.id].orEmpty(),row.key==selected?.key && !model.railSelected,
                                 model.windowStart,model.cursor,model.clock,Modifier.fillMaxWidth().height(rowHeight),
                                 favourite=row.station.id in model.favourites,
-                                onSelect={model.selectedKey=row.key;model.railSelected=false},onWatch={onWatch(row)})
+                                onSelect={model.selectedKey=row.key;model.railSelected=false},
+                                onProgramme={p -> model.selectedKey=row.key;model.railSelected=false;model.cursor=maxOf(p.start,model.windowStart)},
+                                onWatch={onWatch(row)})
                         }
                     }
                 }
@@ -169,7 +177,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
 @Composable
 private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Boolean,
     window: Long, cursor: Long, now: Long, modifier: Modifier, favourite: Boolean,
-    onSelect:()->Unit,onWatch:()->Unit) {
+    onSelect:()->Unit,onProgramme:(Programme)->Unit,onWatch:()->Unit) {
     Row(modifier.padding(bottom=3.dp)) {
         Row(Modifier.width(175.dp).fillMaxHeight().background(if(selected) Soft else Panel,RoundedCornerShape(topStart=5.dp,bottomStart=5.dp))
             .clickable { if(selected) onWatch() else onSelect() }.padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
@@ -187,7 +195,7 @@ private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Bo
                 val live = p.start<=now && p.stop>now
                 Box(Modifier.offset(x=maxWidth*left).width((maxWidth*(right-left)-2.dp).coerceAtLeast(1.dp)).fillMaxHeight()
                     .background(if(active) Mint else if(live) Soft else Panel,RoundedCornerShape(4.dp))
-                    .clickable { onSelect() }.padding(horizontal=9.dp,vertical=5.dp)) {
+                    .clickable { onProgramme(p) }.padding(horizontal=9.dp,vertical=5.dp)) {
                     Text(p.title,color=if(active) Ink else White,fontSize=12.sp,fontWeight=if(active) FontWeight.SemiBold else FontWeight.Normal,
                         maxLines=2,overflow=TextOverflow.Ellipsis,lineHeight=16.sp,modifier=Modifier.align(Alignment.CenterStart))
                 }
