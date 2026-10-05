@@ -304,7 +304,7 @@ class MainActivity : ComponentActivity() {
     private fun showPrivacy() {
         val labels = arrayOf(
             "Hardened compatibility — preserve HTTP-only TV streams when required",
-            "Strict privacy — HTTPS direct streams, no remote artwork; YouTube remains in-app"
+            "Strict privacy — HTTPS-only direct streams; mirrored artwork stays local; YouTube remains in-app"
         )
         present(AlertDialog.Builder(this).setTitle("Privacy mode").setSingleChoiceItems(
             labels,
@@ -317,9 +317,16 @@ class MainActivity : ComponentActivity() {
         }.setNegativeButton("Cancel", null))
     }
 
+    private fun safePlaylistUrl(value: String): String {
+        val uri = runCatching { Uri.parse(value) }.getOrNull() ?: return "Saved playlist"
+        val host = uri.host ?: return "Saved playlist"
+        val path = uri.path.orEmpty().take(80)
+        return "${uri.scheme ?: "https"}://$host$path" + if (!uri.query.isNullOrBlank()) "?…" else ""
+    }
+
     private fun showPlaylists() {
         val labels = mutableListOf("+ Add playlist", "Refresh all")
-        labels += model.userPlaylists.map { "${it.name}\n${it.url}" }
+        labels += model.userPlaylists.map { "${it.name}\n${safePlaylistUrl(it.url)}" }
         present(AlertDialog.Builder(this).setTitle("Additional playlists").setItems(labels.toTypedArray()) { _, which ->
             when (which) {
                 0 -> handler.post { addPlaylistDialog() }
@@ -328,7 +335,7 @@ class MainActivity : ComponentActivity() {
                     val item = model.userPlaylists[which - 2]
                     handler.post {
                         present(AlertDialog.Builder(this).setTitle(item.name)
-                            .setMessage(item.url)
+                            .setMessage(safePlaylistUrl(item.url))
                             .setPositiveButton("Remove") { _, _ -> model.removePlaylist(item.url) }
                             .setNegativeButton("Keep", null))
                     }

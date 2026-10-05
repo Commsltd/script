@@ -26,6 +26,17 @@ class GuideRulesTest {
     @Test fun failuresAffectPreferenceNotGlobalDeletion() {
         assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100)) < GuideRules.healthScore(null))
     }
+    @Test fun strictPrivacyRejectsHttpDirectButHardenedKeepsIt() {
+        val http = StreamSource("a","http://example/live.m3u8","A","example","application/x-mpegURL", emptyMap(), false)
+        val https = StreamSource("b","https://example/live.m3u8","B","example","application/x-mpegURL", emptyMap(), false)
+        assertFalse(GuideRules.canUseDirectSource(http, PrivacyMode.STRICT))
+        assertTrue(GuideRules.canUseDirectSource(http, PrivacyMode.HARDENED))
+        assertTrue(GuideRules.canUseDirectSource(https, PrivacyMode.STRICT))
+    }
+    @Test fun youtubeIsNotMistakenForDirectPlayback() {
+        val youtube = StreamSource("y","https://www.youtube.com/embed/x","YouTube","youtube.com","application/x-external", emptyMap(), false, "youtube")
+        assertFalse(GuideRules.canUseDirectSource(youtube, PrivacyMode.HARDENED))
+    }
     @Test fun windowIncludesPartialProgramme() {
         assertEquals(1,GuideRules.inWindow(listOf(programme(50,150)),100,200).size)
         assertEquals(0,GuideRules.inWindow(listOf(programme(50,100)),100,200).size)

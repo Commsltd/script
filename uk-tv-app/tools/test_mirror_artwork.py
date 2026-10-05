@@ -14,10 +14,15 @@ class MirrorArtworkTests(unittest.TestCase):
         self.assertEqual(mirror_artwork.key(url), mirror_artwork.key(url))
         self.assertNotIn("secret", mirror_artwork.key(url))
 
-    def test_mirror_prefix_is_single_origin(self):
-        self.assertTrue(mirror_artwork.MIRROR_PREFIX.startswith(
-            "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork/"
-        ))
+    def test_mirror_prefix_is_local_bundle_reference(self):
+        self.assertEqual("artwork://", mirror_artwork.MIRROR_PREFIX)
+
+    def test_convert_rejects_active_svg(self):
+        with tempfile.TemporaryDirectory() as td:
+            bad = b'<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>'
+            with mock.patch.object(mirror_artwork, "fetch", return_value=(bad, "image/svg+xml")):
+                with self.assertRaises(ValueError):
+                    mirror_artwork.convert("https://example.invalid/bad.svg", "logo", Path(td))
 
     def test_convert_rejects_non_image(self):
         with tempfile.TemporaryDirectory() as td:
