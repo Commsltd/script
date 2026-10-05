@@ -49,8 +49,7 @@ class PlaybackEngine(
             val pin = model.prefs.getString("pin:$profile:${row.station.id}", "")
             val forced = if (forceSource || row.sourceIndex > 0) row.source.id else null
             candidates = row.station.sources()
-                .filter { it.kind == "direct" && !it.unsupportedDrm }
-                .filter { model.allowCleartextVideo || it.url.startsWith("https://") }
+                .filter { GuideRules.canUseDirectSource(it, model.privacyMode) }
                 .sortedWith(
                 compareByDescending<StreamSource> { it.id == forced }
                     .thenByDescending { it.id == pin }
@@ -106,9 +105,9 @@ class PlaybackEngine(
         attempt++; val thisAttempt = attempt
         stopPlayer(); tried.add(next.id); source = next; firstFrame = false; markedSuccess = false
         status = "Connecting · ${next.host} · ${tried.size}/${minOf(limit, candidates.size)}"
-        val http = DefaultHttpDataSource.Factory().setUserAgent("UKTelevision/0.1")
+        val http = DefaultHttpDataSource.Factory().setUserAgent("UKTelevision/0.2")
             .setDefaultRequestProperties(next.headers).setConnectTimeoutMs(10000).setReadTimeoutMs(12000)
-            .setAllowCrossProtocolRedirects(true)
+            .setAllowCrossProtocolRedirects(model.allowCleartextVideo)
         val media = DefaultMediaSourceFactory(DefaultDataSource.Factory(context, http))
             .createMediaSource(MediaItem.Builder().setUri(next.url).setMimeType(next.mime).build())
         val exo = ExoPlayer.Builder(context, DefaultRenderersFactory(context).setEnableDecoderFallback(true)).build()

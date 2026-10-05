@@ -162,6 +162,7 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
     }
     suspend fun seed() = withContext(Dispatchers.IO) {
         lock.withLock {
+            ArtworkStore.seed(context)
             if (db.dao().stationCount() == 0) {
                 replace(BundledCatalogue.read(context))
             }
@@ -173,10 +174,15 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
                 val connection = URL(FEED).openConnection() as java.net.HttpURLConnection
                 connection.connectTimeout = 15000
                 connection.readTimeout = 30000
-                connection.setRequestProperty("User-Agent", "UKTelevision/0.1")
+                connection.instanceFollowRedirects = true
+                connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
                 try {
                     if (connection.responseCode != 200) throw IOException("Guide server returned HTTP ${connection.responseCode}")
+                    if (connection.url.protocol.lowercase() != "https") {
+                        throw IOException("Guide download downgraded from HTTPS")
+                    }
                     val data = connection.inputStream.use { CatalogueParser.parse(it) }
+                    ArtworkStore.refresh(context)
                     val previous = db.dao().currentSnapshot()
                     require(previous == null || data.snapshot.guideEnd >= previous.guideEnd - 86400000L) { "Older guide rejected; keeping the cached guide" }
                     require(previous == null || data.stations.size >= db.dao().stationCount() / 2) { "Truncated channel list rejected" }

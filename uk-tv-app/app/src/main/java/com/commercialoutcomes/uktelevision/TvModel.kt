@@ -26,6 +26,9 @@ data class GuideRow(val station: Station, val source: StreamSource, val sourceIn
 
 object GuideRules {
     fun at(shows: List<Programme>, time: Long): Programme? = shows.firstOrNull { it.start <= time && it.stop > time }
+    fun canUseDirectSource(source: StreamSource, mode: PrivacyMode): Boolean =
+        source.kind == "direct" && !source.unsupportedDrm &&
+            (mode != PrivacyMode.STRICT || source.url.startsWith("https://"))
     fun canAutoFallback(a: Station, b: Station): Boolean = a.id == b.id
     fun inWindow(shows: List<Programme>, start: Long, end: Long) = shows.filter { it.stop > start && it.start < end }
     fun healthScore(h: StreamHealth?): Long {
@@ -64,8 +67,6 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         runCatching { PrivacyMode.valueOf(prefs.getString("privacyMode", PrivacyMode.HARDENED.name)!!) }
             .getOrDefault(PrivacyMode.HARDENED)
     ); private set
-    val allowRemoteArtwork: Boolean get() = privacyMode != PrivacyMode.STRICT
-    val allowExternalApps: Boolean get() = privacyMode != PrivacyMode.STRICT
     val allowCleartextVideo: Boolean get() = privacyMode != PrivacyMode.STRICT
     var userPlaylists by mutableStateOf(PlaylistImport.load(prefs)); private set
 

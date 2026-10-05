@@ -101,7 +101,7 @@ object PlaylistImport {
                     if (strict && !config.url.startsWith("https://")) {
                         warnings += "${config.name}: HTTP playlist blocked by Strict Privacy"
                     } else {
-                        stations += parse(config, download(config.url), strict)
+                        stations += parse(config, download(config.url, strict), strict)
                     }
                 } catch (e: Exception) {
                     warnings += "${config.name}: ${e.javaClass.simpleName}"
@@ -110,28 +110,43 @@ object PlaylistImport {
             PlaylistRefresh(stations, warnings)
         }
 
-    private fun download(url: String): String {
-        val connection = URL(url).openConnection() as HttpURLConnection
-        connection.connectTimeout = 12000
-        connection.readTimeout = 20000
-        connection.instanceFollowRedirects = true
-        connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
-        try {
-            if (connection.responseCode !in 200..299) throw IOException("HTTP ${connection.responseCode}")
-            val out = ByteArrayOutputStream()
-            val buffer = ByteArray(32768)
-            connection.inputStream.use { input ->
-                while (true) {
-                    val n = input.read(buffer)
-                    if (n < 0) break
-                    if (out.size() + n > MAX_PLAYLIST_BYTES) throw IOException("Playlist exceeds 8 MB safety limit")
-                    out.write(buffer, 0, n)
+    private fun download(url: String, strict: Boolean): String {
+        var current = URL(url)
+        repeat(6) {
+            if (current.protocol !in setOf("http", "https")) throw IOException("Unsupported playlist scheme")
+            if (strict && current.protocol != "https") throw IOException("Strict Privacy blocked HTTP playlist")
+            val connection = current.openConnection() as HttpURLConnection
+            connection.connectTimeout = 12000
+            connection.readTimeout = 20000
+            connection.instanceFollowRedirects = false
+            connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
+            try {
+                val code = connection.responseCode
+                if (code in 300..399) {
+                    val location = connection.getHeaderField("Location") ?: throw IOException("Redirect without Location")
+                    val next = URL(current, location)
+                    if (strict && next.protocol != "https") throw IOException("Playlist redirect downgraded from HTTPS")
+                    current = next
+                    return@repeat
                 }
+                if (code !in 200..299) throw IOException("HTTP $code")
+                if (strict && connection.url.protocol != "https") throw IOException("Playlist transport downgraded")
+                val out = ByteArrayOutputStream()
+                val buffer = ByteArray(32768)
+                connection.inputStream.use { input ->
+                    while (true) {
+                        val n = input.read(buffer)
+                        if (n < 0) break
+                        if (out.size() + n > MAX_PLAYLIST_BYTES) throw IOException("Playlist exceeds 8 MB safety limit")
+                        out.write(buffer, 0, n)
+                    }
+                }
+                return out.toString(Charsets.UTF_8.name())
+            } finally {
+                connection.disconnect()
             }
-            return out.toString(Charsets.UTF_8.name())
-        } finally {
-            connection.disconnect()
         }
+        throw IOException("Too many playlist redirects")
     }
 
     fun parse(config: UserPlaylist, text: String, strict: Boolean): List<Station> {
