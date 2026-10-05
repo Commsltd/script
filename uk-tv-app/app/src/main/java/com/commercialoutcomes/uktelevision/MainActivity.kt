@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
     private var hudJob: Job? = null
     private var hud by mutableStateOf(true)
     private var resizeMode by mutableIntStateOf(AspectRatioFrameLayout.RESIZE_MODE_FIT)
+    private var youtubeSource by mutableStateOf<StreamSource?>(null)
     private val holdAction = Runnable { held = true; showSources() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +58,13 @@ class MainActivity : ComponentActivity() {
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         model = ViewModelProvider(this)[TvModel::class.java]
-        engine = PlaybackEngine(this, model, lifecycleScope)
+        engine = PlaybackEngine(this, model, lifecycleScope) { source ->
+            enterYouTubeFallback(source)
+        }
         onBackPressedDispatcher.addCallback(this) { back() }
         val compose = ComposeView(this).apply {
             setContent {
-                Television(model, engine, hud, resizeMode,
+                Television(model, engine, youtubeSource, hud, resizeMode,
                     onWatch = { watch(it) }, onOptions = { showOptions() }, onBack = { back() })
             }
         }
@@ -76,7 +79,9 @@ class MainActivity : ComponentActivity() {
     }
     override fun onStop() {
         handler.removeCallbacks(holdAction)
+        youtubeSource = null
         if (::engine.isInitialized) engine.close()
+        if (::model.isInitialized && model.isPlayer) model.isPlayer = false
         super.onStop()
     }
     private fun toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
@@ -91,16 +96,37 @@ class MainActivity : ComponentActivity() {
         hudJob = lifecycleScope.launch { delay(7000); hud = false }
     }
     private fun watch(row: GuideRow, force: Boolean = false) {
-        if (row.source.kind != "direct") {
-            openExternalSource(row.source)
-            return
+        when (row.source.kind) {
+            "youtube" -> {
+                engine.close()
+                model.markPlaying(row)
+                youtubeSource = row.source
+            }
+            "direct" -> {
+                youtubeSource = null
+                showHud()
+                engine.play(row, force)
+            }
+            else -> toast("This source is not integrated into the TV player.")
         }
-        showHud()
-        engine.play(row, force)
+    }
+
+    private fun enterYouTubeFallback(source: StreamSource) {
+        val current = model.playingRow ?: return
+        val sources = current.station.sources()
+        val index = sources.indexOfFirst { it.id == source.id }.coerceAtLeast(0)
+        model.markPlaying(GuideRow(current.station, source, index))
+        youtubeSource = source
     }
     private fun activeRow() = if (model.isPlayer) model.playingRow else model.selected()
     private fun back() {
-        if (model.isPlayer) { engine.close(); model.isPlayer = false; model.playingRow?.let { model.focus(it.station) }; return }
+        if (model.isPlayer) {
+            youtubeSource = null
+            engine.close()
+            model.isPlayer = false
+            model.playingRow?.let { model.focus(it.station) }
+            return
+        }
         if (model.railSelected) { model.railSelected = false; return }
         present(AlertDialog.Builder(this).setTitle("Leave UK Television?")
             .setPositiveButton("Exit") { _, _ -> finish() }.setNegativeButton("Keep watching", null))
@@ -108,6 +134,10 @@ class MainActivity : ComponentActivity() {
     private fun handleRemoteKey(event: KeyEvent): Boolean {
         if (!::model.isInitialized || dialogOpen) return false
         val key = event.keyCode
+        if (youtubeSource != null && model.isPlayer &&
+            (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER)) {
+            return false
+        }
         if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER) {
             if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
                 held = false; handler.postDelayed(holdAction, 650)
@@ -169,8 +199,8 @@ class MainActivity : ComponentActivity() {
         val row = activeRow()
         val labels = mutableListOf("Programme details", "Stream sources", "Search", "Categories", "Back to now", "Refresh guide", "Settings")
         if (row != null) labels.add(0, if (row.station.id in model.favourites) "Remove favourite" else "Add favourite")
-        if (model.isPlayer) labels.addAll(listOf("Audio tracks", "Subtitles", "Aspect ratio", "Prefer this source", "Previous channel"))
-        if (!row?.station?.officialUrl.isNullOrBlank()) labels.add("Open official YouTube stream")
+        if (model.isPlayer && youtubeSource == null) labels.addAll(listOf("Audio tracks", "Subtitles", "Aspect ratio", "Prefer this source"))
+        if (model.isPlayer) labels.add("Previous channel")
         present(AlertDialog.Builder(this).setTitle("Television options").setItems(labels.toTypedArray()) { _, which ->
             when (labels[which]) {
                 "Add favourite", "Remove favourite" -> row?.let { model.toggleFavourite(it.station) }
@@ -186,7 +216,6 @@ class MainActivity : ComponentActivity() {
                 "Aspect ratio" -> handler.post { chooseAspect() }
                 "Prefer this source" -> { engine.pinCurrent(); toast("Preferred for ${model.profile}") }
                 "Previous channel" -> model.previousRow?.let { watch(it) }
-                "Open official YouTube stream" -> row?.station?.officialUrl?.let { openOfficial(it) }
             }
         })
     }
@@ -198,7 +227,8 @@ class MainActivity : ComponentActivity() {
             val labels = streams.map { s ->
                 val h = health[s.id]
                 val state = when {
-                    s.kind != "direct" -> "Official external source · opens another app/site"
+                    s.kind == "youtube" -> "Official YouTube · plays inside UK Television"
+                    s.kind != "direct" -> "Not integrated into the TV player"
                     s.unsupportedDrm -> "Provider authentication required"
                     model.privacyMode == PrivacyMode.STRICT && s.url.startsWith("http://") ->
                         "Blocked by Strict Privacy: unencrypted HTTP"
@@ -274,7 +304,7 @@ class MainActivity : ComponentActivity() {
     private fun showPrivacy() {
         val labels = arrayOf(
             "Hardened compatibility — preserve HTTP-only TV streams when required",
-            "Strict privacy — HTTPS direct streams only; remote artwork and external-app handoff blocked"
+            "Strict privacy — HTTPS direct streams, no remote artwork; YouTube remains in-app"
         )
         present(AlertDialog.Builder(this).setTitle("Privacy mode").setSingleChoiceItems(
             labels,
@@ -329,19 +359,6 @@ class MainActivity : ComponentActivity() {
             }.setNegativeButton("Cancel", null))
     }
 
-    private fun openExternalSource(source: StreamSource) {
-        if (!model.allowExternalApps) {
-            present(AlertDialog.Builder(this).setTitle("Blocked by Strict Privacy")
-                .setMessage("This source would hand playback to ${source.host}, which lets that service observe the connection. Switch to Hardened compatibility if you want to open it.")
-                .setPositiveButton("Close", null))
-            return
-        }
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(source.url)))
-        } catch (_: ActivityNotFoundException) {
-            toast("No compatible app or browser is installed for this official source")
-        }
-    }
     private fun showTracks(type: Int) {
         val player = engine.player ?: return
         val tracks = player.currentTracks.groups.filter { it.type == type }.flatMap { group ->
@@ -365,13 +382,6 @@ class MainActivity : ComponentActivity() {
         .setItems(arrayOf("Fit — preserve picture", "Zoom — crop edges", "Fill — stretch")) { _, index ->
             resizeMode = arrayOf(AspectRatioFrameLayout.RESIZE_MODE_FIT,AspectRatioFrameLayout.RESIZE_MODE_ZOOM,AspectRatioFrameLayout.RESIZE_MODE_FILL)[index]
         })
-    private fun openOfficial(url: String) {
-        openExternalSource(StreamSource(
-            "official", url, "Official source", Uri.parse(url).host.orEmpty(),
-            "application/x-external", emptyMap(), false,
-            if (url.contains("youtube.com")) "youtube" else "web"
-        ))
-    }
 }
 
 fun formatTime(time: Long): String = SimpleDateFormat("HH:mm", Locale.UK).format(Date(time))

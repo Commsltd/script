@@ -5,6 +5,7 @@
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <application android:name=".TvApplication" android:label="UK Television" android:icon="@drawable/tv_icon" android:banner="@drawable/tv_banner" android:theme="@style/AppTheme" android:allowBackup="false" android:fullBackupContent="false" android:allowAudioPlaybackCapture="false" android:supportsRtl="true" android:usesCleartextTraffic="true">
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
         <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" android:resizeableActivity="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

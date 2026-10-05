@@ -50,6 +50,7 @@ dependencies {
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("androidx.work:work-runtime-ktx:2.10.1")
     implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("androidx.webkit:webkit:1.15.0")
     implementation("androidx.media3:media3-exoplayer:1.8.0")
     implementation("androidx.media3:media3-exoplayer-hls:1.8.0")
     implementation("androidx.media3:media3-exoplayer-dash:1.8.0")

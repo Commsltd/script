@@ -14,29 +14,25 @@ from urllib.parse import urlsplit, parse_qsl
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
 OFFICIAL_SOURCES = {
-    'BloombergTV.us': [
-        {'kind': 'web', 'url': 'https://www.bloomberg.com/live/europe', 'label': 'Bloomberg official live'},
-    ],
+    # Official YouTube players are embedded inside UK Television.  These are
+    # player URLs, not extracted/temporary video-CDN URLs.
     'EuronewsEnglish.fr': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@euronews/live', 'label': 'Official YouTube'},
-        {'kind': 'web', 'url': 'https://www.euronews.com/live', 'label': 'Euronews website'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCSrZ3UV4jOidv8ppoVuvW9Q&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
     'SkyNews.uk': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@SkyNews/live', 'label': 'Official YouTube'},
-        {'kind': 'web', 'url': 'https://news.sky.com/watch-live', 'label': 'Sky News website'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCoMdktPbSTixAyNGwb-UYkQ&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
     'ABCNewsLive.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@ABCNews/live', 'label': 'Official YouTube'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCBi2mrWuNuyYy4gbM6fU18Q&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
     'CBSNews247.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@CBSNews/live', 'label': 'Official YouTube'},
-        {'kind': 'web', 'url': 'https://www.cbsnews.com/live/', 'label': 'CBS News website'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UC8p1vwvWtl6T73JiExfWs1g&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
     'NBCNewsNOW.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@NBCNews/live', 'label': 'Official YouTube'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCeY0bbntWzzVIaj2z3QigXg&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
     'LiveNOWfromFOX.us': [
-        {'kind': 'youtube', 'url': 'https://www.youtube.com/@LiveNOWFOX/live', 'label': 'Official YouTube'},
+        {'kind': 'youtube', 'url': 'https://www.youtube.com/embed/live_stream?channel=UCJg9wBPyKMNA5sRDnvzmkdg&autoplay=1&controls=1&playsinline=1&rel=0', 'label': 'Official YouTube'},
     ],
 }
 

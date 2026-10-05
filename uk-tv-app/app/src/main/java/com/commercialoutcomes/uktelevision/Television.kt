@@ -41,38 +41,47 @@ private val Gold = Color(0xFFFFD483)
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
-fun Television(model: TvModel, engine: PlaybackEngine, hud: Boolean, resizeMode: Int,
+fun Television(model: TvModel, engine: PlaybackEngine, youtubeSource: StreamSource?, hud: Boolean, resizeMode: Int,
     onWatch: (GuideRow) -> Unit, onOptions: () -> Unit, onBack: () -> Unit) {
     LaunchedEffect(Unit) { while (true) { model.clock = System.currentTimeMillis(); delay(30000) } }
     MaterialTheme {
         if (model.isPlayer) {
-            Box(Modifier.fillMaxSize().background(Color.Black)) {
-                AndroidView(factory = { context -> PlayerView(context).apply { useController = false; keepScreenOn = true } },
-                    modifier = Modifier.fillMaxSize(), update = { it.player = engine.player; it.resizeMode = resizeMode })
-                val row = model.playingRow
-                val p = row?.let { GuideRules.at(model.schedule[it.station.id].orEmpty(), model.clock) }
-                val showHud = hud || engine.failed || !engine.status.startsWith("Playing")
-                if (showHud) {
-                    Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter)
-                        .background(Brush.verticalGradient(listOf(Color.Transparent, Ink.copy(alpha=.97f))))
-                        .padding(horizontal=32.dp, vertical=22.dp)) {
-                        Text(row?.station?.name.orEmpty(), color=Mint, fontSize=15.sp, fontWeight=FontWeight.SemiBold)
-                        Text(p?.title ?: "Live television", color=White, fontSize=26.sp, maxLines=1, overflow=TextOverflow.Ellipsis)
-                        Text(p?.description?.ifBlank { "No synopsis supplied." } ?: "No programme listings supplied.", color=White, fontSize=14.sp, maxLines=2, overflow=TextOverflow.Ellipsis)
-                        Spacer(Modifier.height(8.dp))
-                        Text(engine.status, color=if(engine.failed) Gold else Muted, fontSize=12.sp)
-                        Text("↑↓ Channel   •   OK Pause / retry   •   Hold OK Sources   •   MENU Options   •   Back Guide", color=Muted, fontSize=11.sp)
-                    }
+            if (youtubeSource != null) {
+                Box(Modifier.fillMaxSize().background(Color.Black)) {
+                    EmbeddedYouTubePlayer(
+                        source = youtubeSource,
+                        strict = model.privacyMode == PrivacyMode.STRICT
+                    )
                 }
-                if (engine.failed) {
-                    Column(Modifier.align(Alignment.Center).widthIn(max=580.dp).background(Panel,RoundedCornerShape(14.dp)).padding(28.dp)) {
-                        Text("This source is not playing",color=White,fontSize=25.sp,fontWeight=FontWeight.SemiBold)
-                        Spacer(Modifier.height(10.dp))
-                        Text(engine.status,color=Muted,fontSize=16.sp)
-                        Spacer(Modifier.height(16.dp))
-                        Row(horizontalArrangement=Arrangement.spacedBy(20.dp)) {
-                            Text("SOURCES / OPTIONS",Modifier.clickable(onClick=onOptions).padding(8.dp),color=Mint,fontSize=14.sp)
-                            Text("BACK TO GUIDE",Modifier.clickable(onClick=onBack).padding(8.dp),color=White,fontSize=14.sp)
+            } else {
+                Box(Modifier.fillMaxSize().background(Color.Black)) {
+                    AndroidView(factory = { context -> PlayerView(context).apply { useController = false; keepScreenOn = true } },
+                        modifier = Modifier.fillMaxSize(), update = { it.player = engine.player; it.resizeMode = resizeMode })
+                    val row = model.playingRow
+                    val p = row?.let { GuideRules.at(model.schedule[it.station.id].orEmpty(), model.clock) }
+                    val showHud = hud || engine.failed || !engine.status.startsWith("Playing")
+                    if (showHud) {
+                        Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter)
+                            .background(Brush.verticalGradient(listOf(Color.Transparent, Ink.copy(alpha=.97f))))
+                            .padding(horizontal=32.dp, vertical=22.dp)) {
+                            Text(row?.station?.name.orEmpty(), color=Mint, fontSize=15.sp, fontWeight=FontWeight.SemiBold)
+                            Text(p?.title ?: "Live television", color=White, fontSize=26.sp, maxLines=1, overflow=TextOverflow.Ellipsis)
+                            Text(p?.description?.ifBlank { "No synopsis supplied." } ?: "No programme listings supplied.", color=White, fontSize=14.sp, maxLines=2, overflow=TextOverflow.Ellipsis)
+                            Spacer(Modifier.height(8.dp))
+                            Text(engine.status, color=if(engine.failed) Gold else Muted, fontSize=12.sp)
+                            Text("↑↓ Channel   •   OK Pause / retry   •   Hold OK Sources   •   MENU Options   •   Back Guide", color=Muted, fontSize=11.sp)
+                        }
+                    }
+                    if (engine.failed) {
+                        Column(Modifier.align(Alignment.Center).widthIn(max=580.dp).background(Panel,RoundedCornerShape(14.dp)).padding(28.dp)) {
+                            Text("This source is not playing",color=White,fontSize=25.sp,fontWeight=FontWeight.SemiBold)
+                            Spacer(Modifier.height(10.dp))
+                            Text(engine.status,color=Muted,fontSize=16.sp)
+                            Spacer(Modifier.height(16.dp))
+                            Row(horizontalArrangement=Arrangement.spacedBy(20.dp)) {
+                                Text("SOURCES / OPTIONS",Modifier.clickable(onClick=onOptions).padding(8.dp),color=Mint,fontSize=14.sp)
+                                Text("BACK TO GUIDE",Modifier.clickable(onClick=onBack).padding(8.dp),color=White,fontSize=14.sp)
+                            }
                         }
                     }
                 }

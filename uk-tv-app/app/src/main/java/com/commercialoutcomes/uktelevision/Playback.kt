@@ -16,7 +16,12 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import kotlinx.coroutines.*
 
 @androidx.annotation.OptIn(UnstableApi::class)
-class PlaybackEngine(private val context: Context, private val model: TvModel, private val scope: CoroutineScope) {
+class PlaybackEngine(
+    private val context: Context,
+    private val model: TvModel,
+    private val scope: CoroutineScope,
+    private val onIntegratedFallback: (StreamSource) -> Unit = {}
+) {
     var player by mutableStateOf<ExoPlayer?>(null); private set
     var status by mutableStateOf(""); private set
     var source by mutableStateOf<StreamSource?>(null); private set
@@ -53,16 +58,22 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
             )
             if (token != generation) return@launch
             if (candidates.isEmpty()) {
+                val youtube = row.station.sources().firstOrNull { it.kind == "youtube" }
+                if (model.autoFallback && youtube != null) {
+                    failed = false
+                    status = "Switching to official YouTube…"
+                    onIntegratedFallback(youtube)
+                    return@launch
+                }
                 failed = true
-                val hasExternal = row.station.sources().any { it.kind != "direct" }
                 val hasHttp = row.station.sources().any { it.kind == "direct" && it.url.startsWith("http://") }
                 status = when {
                     model.privacyMode == PrivacyMode.STRICT && hasHttp ->
                         "Strict Privacy blocked this channel's unencrypted HTTP source. Hold OK for other sources."
-                    hasExternal ->
-                        "No direct stream is available. Hold OK for an official external source."
+                    youtube != null ->
+                        "An official YouTube source is available. Hold OK for sources."
                     else ->
-                        "No supported direct stream is available for this service."
+                        "No supported in-app stream is available for this service."
                 }
             } else startNext(token)
         }
@@ -76,9 +87,21 @@ class PlaybackEngine(private val context: Context, private val model: TvModel, p
         val next = candidates.firstOrNull { it.id !in tried }
         val limit = if (model.autoFallback) candidates.size else 1
         if (next == null || tried.size >= limit) {
+            val youtube = station?.sources()?.firstOrNull { it.kind == "youtube" }
+            if (model.autoFallback && youtube != null) {
+                failed = false
+                status = "Direct feeds failed; switching to official YouTube…"
+                stopPlayer()
+                onIntegratedFallback(youtube)
+                return
+            }
             failed = true
-            status = "No available source played. Hold OK for sources or Back for the guide."
-            stopPlayer(); return
+            status = if (youtube != null)
+                "Direct feeds failed. Hold OK and choose the official YouTube source."
+            else
+                "No available source played. Hold OK for sources or Back for the guide."
+            stopPlayer()
+            return
         }
         attempt++; val thisAttempt = attempt
         stopPlayer(); tried.add(next.id); source = next; firstFrame = false; markedSuccess = false
