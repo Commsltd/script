@@ -7,7 +7,7 @@ on:
       - 'uk-tv-app/**'
       - '.github/workflows/build-uk-tv-app.yml'
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: uk-television-build
   cancel-in-progress: true
@@ -125,6 +125,8 @@ jobs:
   publish:
     needs: [build, smoke]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/download-artifact@v4
         with:

@@ -23,12 +23,13 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 - Existing channel names, logos, categories and inline regional/source variants.
 - Favourites, guide search (including synopses), previous channel and now/next information.
 - Media3 HLS, DASH and supported transport-stream playback, subtitles, audio tracks and aspect-ratio controls.
-- Source selector and bounded automatic fallback between sources of the **same service only**.
+- Source selector and automatic fallback across **all usable direct sources of the same service only**, ordered by locally observed reliability.
 - Local playback success/failure history, recorded separately for manually selected connection profiles.
 - Cache-first startup using a real guide snapshot bundled at build time.
 - Transactional guide refresh that retains favourites and stream preferences and rejects invalid/truncated data.
 - Automatic six-hour background refresh where Android permits it, plus refresh on launch and from the menu.
-- An explicit official YouTube option for Sky News. It opens the official player; it does not disguise a webpage as an HLS URL or extract temporary YouTube URLs.
+- First-class external-source support. Official YouTube/web fallbacks can sit beside direct HLS/DASH sources; they open the official player/site rather than scraping temporary YouTube media URLs.
+- Multiple additional M3U playlists can be added from Settings. Exact matching tvg-id entries extend an existing channel's source pool; new channels remain grouped under their playlist.
 
 **An available stream URL is not a guarantee of playback.** This app cannot revive a dead feed, remove geographic restrictions or supply rights/authentication for provider-only services. YouTube is not an invisible automatic fallback. LiveNOW from FOX is not Fox News Channel, and STV is not the London ITV1 schedule.
 
@@ -52,7 +53,7 @@ The app uses `https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/c
 
 A separate export workflow runs after a successful original EPG update and has a six-hour schedule as a safety net. Data conversion does not refresh the underlying broadcaster schedules more frequently than the original EPG job.
 
-Favourites, source preferences and playback results stay in the app's private local storage. There are no analytics or cloud-account SDKs. GitHub, image hosts and stream providers necessarily see the connections made to their servers. Existing HTTP video URLs remain supported; the catalogue itself is fetched over HTTPS.
+Favourites, source preferences and playback results stay in the app's private local storage. There are no analytics or cloud-account SDKs. GitHub, image hosts and stream providers necessarily see the connections made to their servers. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video, remote programme/channel artwork and external-app handoffs at runtime. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
 
 Programme descriptions are displayed when supplied, with an explicit missing-synopsis message otherwise. No descriptions or programme schedules are invented. The exporter deliberately refuses the old ITV1/London EPG assignment for the separately labelled STV stream.
 
@@ -76,7 +77,7 @@ For private, repeatable release signing, provide GitHub Actions secrets `TV_KEYS
 
 ## Deliberately not included yet
 
-DVR, persistent timeshift, cloud accounts, provider-login/DRM integrations, embedded YouTube playback, an automatic app installer, and production signing-key provisioning. The supported update process today is native-data refresh plus manual installation of a new APK.
+DVR, persistent timeshift, cloud accounts, provider-login/DRM integrations, scraped/embedded YouTube playback, an automatic app installer, and production signing-key provisioning. The supported update process today is native-data refresh plus manual installation of a new APK.
 
 ## Technical sources
 

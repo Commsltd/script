@@ -91,7 +91,12 @@ class MainActivity : ComponentActivity() {
         hudJob = lifecycleScope.launch { delay(7000); hud = false }
     }
     private fun watch(row: GuideRow, force: Boolean = false) {
-        showHud(); engine.play(row, force)
+        if (row.source.kind != "direct") {
+            openExternalSource(row.source)
+            return
+        }
+        showHud()
+        engine.play(row, force)
     }
     private fun activeRow() = if (model.isPlayer) model.playingRow else model.selected()
     private fun back() {
@@ -192,11 +197,16 @@ class MainActivity : ComponentActivity() {
             val streams = row.station.sources()
             val labels = streams.map { s ->
                 val h = health[s.id]
-                val state = when { s.unsupportedDrm -> "Provider authentication required"
+                val state = when {
+                    s.kind != "direct" -> "Official external source · opens another app/site"
+                    s.unsupportedDrm -> "Provider authentication required"
+                    model.privacyMode == PrivacyMode.STRICT && s.url.startsWith("http://") ->
+                        "Blocked by Strict Privacy: unencrypted HTTP"
                     h == null -> "Not tested on this profile"
                     h.lastOk > h.lastFailure -> "Last playback succeeded"
-                    else -> "Last attempt failed: ${h.lastError}" }
-                "${s.label}\n${s.host} · $state"
+                    else -> "Last attempt failed: ${h.lastError}"
+                }
+                "${s.label.ifBlank { s.kind }}\n${s.host} · $state"
             }
             present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — sources")
                 .setItems(labels.toTypedArray()) { _, which -> watch(GuideRow(row.station, streams[which], which), true) }
@@ -229,26 +239,108 @@ class MainActivity : ComponentActivity() {
             }.setNegativeButton("Cancel", null))
     }
     private fun showSettings() {
-        val entries = arrayOf("Inline source variants: ${if (model.inlineSources) "ON" else "OFF"}",
-            "Automatic same-channel fallback: ${if (model.autoFallback) "ON" else "OFF"}",
-            "Connection profile: ${model.profile}", "About and diagnostics")
+        val entries = arrayOf(
+            "Privacy: ${model.privacyMode.label}",
+            "Additional playlists: ${model.userPlaylists.size}",
+            "Inline source variants: ${if (model.inlineSources) "ON" else "OFF"}",
+            "Automatic same-channel fallback: ${if (model.autoFallback) "ALL SOURCES" else "OFF"}",
+            "Connection profile: ${model.profile}",
+            "About and diagnostics"
+        )
         present(AlertDialog.Builder(this).setTitle("Settings").setItems(entries) { _, n ->
             when (n) {
-                0 -> model.setInline(!model.inlineSources)
-                1 -> model.setFailover(!model.autoFallback)
-                2 -> handler.post { present(AlertDialog.Builder(this).setTitle("Playback history profile — not a VPN switch")
-                    .setItems(arrayOf("UK VPN", "Spain / no VPN", "Other route")) { _, i ->
-                        engine.close(); model.isPlayer = false
-                        model.setProfile(arrayOf("UK VPN", "Spain / no VPN", "Other route")[i])
-                    }) }
-                3 -> handler.post {
+                0 -> handler.post { showPrivacy() }
+                1 -> handler.post { showPlaylists() }
+                2 -> model.setInline(!model.inlineSources)
+                3 -> model.setFailover(!model.autoFallback)
+                4 -> handler.post {
+                    present(AlertDialog.Builder(this)
+                        .setTitle("Playback history profile — not a VPN switch")
+                        .setItems(arrayOf("UK VPN", "Spain / no VPN", "Other route")) { _, i ->
+                            engine.close(); model.isPlayer = false
+                            model.setProfile(arrayOf("UK VPN", "Spain / no VPN", "Other route")[i])
+                        })
+                }
+                5 -> handler.post {
                     val s = model.snapshot
                     present(AlertDialog.Builder(this).setTitle("UK Television ${BuildConfig.VERSION_NAME}")
-                        .setMessage("${model.stations.size} services\n${s?.programmeCount ?: 0} programme entries\n${s?.descriptions ?: 0} descriptions\n\nGuide through: ${s?.guideEnd?.let { Date(it).toString() } ?: "not loaded"}\nSource revision: ${s?.revision?.take(12) ?: "unknown"}\n\nTimes use the Firestick's time zone. Profiles keep stream results separate; they do not operate your VPN.\n\nViewing preferences and reliability history stay on this device. No analytics SDK.\n\n${s?.warnings.orEmpty()}\n\nPreview build: external stream availability is not guaranteed.")
+                        .setMessage("${model.stations.size} services\n${s?.programmeCount ?: 0} programme entries\n${s?.descriptions ?: 0} descriptions\n${model.userPlaylists.size} additional playlists\n\nPrivacy mode: ${model.privacyMode.label}\nGuide through: ${s?.guideEnd?.let { Date(it).toString() } ?: "not loaded"}\nSource revision: ${s?.revision?.take(12) ?: "unknown"}\n\nThe app contains no analytics, advertising or account SDK. Favourites and stream-health data remain local. Fire OS itself can still observe that this app runs; no app can make itself invisible to the operating system.\n\n${s?.warnings.orEmpty()}\n\nPreview build: external stream availability is not guaranteed.")
                         .setPositiveButton("Close", null))
                 }
             }
         })
+    }
+
+    private fun showPrivacy() {
+        val labels = arrayOf(
+            "Hardened compatibility — preserve HTTP-only TV streams when required",
+            "Strict privacy — HTTPS direct streams only; remote artwork and external-app handoff blocked"
+        )
+        present(AlertDialog.Builder(this).setTitle("Privacy mode").setSingleChoiceItems(
+            labels,
+            if (model.privacyMode == PrivacyMode.STRICT) 1 else 0
+        ) { dialog, which ->
+            engine.close()
+            model.isPlayer = false
+            model.setPrivacyMode(if (which == 1) PrivacyMode.STRICT else PrivacyMode.HARDENED)
+            dialog.dismiss()
+        }.setNegativeButton("Cancel", null))
+    }
+
+    private fun showPlaylists() {
+        val labels = mutableListOf("+ Add playlist", "Refresh all")
+        labels += model.userPlaylists.map { "${it.name}\n${it.url}" }
+        present(AlertDialog.Builder(this).setTitle("Additional playlists").setItems(labels.toTypedArray()) { _, which ->
+            when (which) {
+                0 -> handler.post { addPlaylistDialog() }
+                1 -> model.refreshUserPlaylists()
+                else -> {
+                    val item = model.userPlaylists[which - 2]
+                    handler.post {
+                        present(AlertDialog.Builder(this).setTitle(item.name)
+                            .setMessage(item.url)
+                            .setPositiveButton("Remove") { _, _ -> model.removePlaylist(item.url) }
+                            .setNegativeButton("Keep", null))
+                    }
+                }
+            }
+        }.setNegativeButton("Close", null))
+    }
+
+    private fun addPlaylistDialog() {
+        val name = EditText(this).apply {
+            hint = "Playlist name"
+            setSingleLine(true)
+            setPadding(24, 16, 24, 16)
+        }
+        present(AlertDialog.Builder(this).setTitle("Add playlist").setView(name)
+            .setPositiveButton("Next") { _, _ ->
+                val chosen = name.text.toString()
+                handler.post {
+                    val url = EditText(this).apply {
+                        hint = "https://example.com/playlist.m3u"
+                        setSingleLine(true)
+                        setPadding(24, 16, 24, 16)
+                    }
+                    present(AlertDialog.Builder(this).setTitle(chosen.ifBlank { "Playlist URL" }).setView(url)
+                        .setPositiveButton("Add") { _, _ -> model.addPlaylist(chosen, url.text.toString()) }
+                        .setNegativeButton("Cancel", null))
+                }
+            }.setNegativeButton("Cancel", null))
+    }
+
+    private fun openExternalSource(source: StreamSource) {
+        if (!model.allowExternalApps) {
+            present(AlertDialog.Builder(this).setTitle("Blocked by Strict Privacy")
+                .setMessage("This source would hand playback to ${source.host}, which lets that service observe the connection. Switch to Hardened compatibility if you want to open it.")
+                .setPositiveButton("Close", null))
+            return
+        }
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(source.url)))
+        } catch (_: ActivityNotFoundException) {
+            toast("No compatible app or browser is installed for this official source")
+        }
     }
     private fun showTracks(type: Int) {
         val player = engine.player ?: return
@@ -274,9 +366,11 @@ class MainActivity : ComponentActivity() {
             resizeMode = arrayOf(AspectRatioFrameLayout.RESIZE_MODE_FIT,AspectRatioFrameLayout.RESIZE_MODE_ZOOM,AspectRatioFrameLayout.RESIZE_MODE_FILL)[index]
         })
     private fun openOfficial(url: String) {
-        if (!url.startsWith("https://www.youtube.com/")) return
-        try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
-        catch (_: ActivityNotFoundException) { toast("Install YouTube or a browser to open this official feed") }
+        openExternalSource(StreamSource(
+            "official", url, "Official source", Uri.parse(url).host.orEmpty(),
+            "application/x-external", emptyMap(), false,
+            if (url.contains("youtube.com")) "youtube" else "web"
+        ))
     }
 }
 

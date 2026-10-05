@@ -99,14 +99,14 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
             Spacer(Modifier.width(10.dp))
             Text("UK TELEVISION",color=White,fontSize=19.sp,fontWeight=FontWeight.Bold,letterSpacing=2.sp)
             Spacer(Modifier.weight(1f))
-            Text("${model.profile} profile  ·  LOCAL TIME  ",color=Muted,fontSize=11.sp)
+            Text("${model.profile} · ${model.privacyMode.label}  ·  LOCAL TIME  ",color=Muted,fontSize=11.sp)
             Text(SimpleDateFormat("EEE d MMM  HH:mm",Locale.UK).format(Date(model.clock)),color=White,fontSize=13.sp)
             Spacer(Modifier.width(18.dp))
             Text("MENU",Modifier.clickable(onClick=onOptions).border(1.dp,Soft,RoundedCornerShape(5.dp)).padding(horizontal=10.dp,vertical=5.dp),color=Mint,fontSize=11.sp)
         }
         Spacer(Modifier.height(12.dp))
         Row(Modifier.fillMaxWidth().height(164.dp).background(Brush.horizontalGradient(listOf(Panel,Ink)),RoundedCornerShape(12.dp)).padding(16.dp),verticalAlignment=Alignment.Top) {
-            Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp))
+            Logo(selected?.station?.logo.orEmpty(),selected?.station?.name.orEmpty(),Modifier.size(78.dp),model.allowRemoteArtwork)
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
                 val time = programme?.let { "${SimpleDateFormat("EEE d MMM",Locale.UK).format(Date(it.start))}  ${formatTime(it.start)}–${formatTime(it.stop)}" }.orEmpty()
@@ -119,7 +119,7 @@ private fun GuideScreen(model: TvModel, onWatch: (GuideRow)->Unit, onOptions:()-
                     color=White,fontSize=13.sp,lineHeight=18.sp,maxLines=3,overflow=TextOverflow.Ellipsis)
                 if (!programme?.details.isNullOrBlank()) Text(programme!!.details,color=Muted,fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
             }
-            if(!programme?.artwork.isNullOrBlank()) {
+            if(model.allowRemoteArtwork && !programme?.artwork.isNullOrBlank()) {
                 Spacer(Modifier.width(16.dp))
                 AsyncImage(model=programme!!.artwork,contentDescription=null,modifier=Modifier.width(164.dp).fillMaxHeight().clip(RoundedCornerShape(6.dp)),contentScale=ContentScale.Crop)
             }
@@ -181,7 +181,7 @@ private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Bo
     Row(modifier.padding(bottom=3.dp)) {
         Row(Modifier.width(175.dp).fillMaxHeight().background(if(selected) Soft else Panel,RoundedCornerShape(topStart=5.dp,bottomStart=5.dp))
             .clickable { if(selected) onWatch() else onSelect() }.padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
-            Logo(row.station.logo,row.station.name,Modifier.size(32.dp))
+            Logo(row.station.logo,row.station.name,Modifier.size(32.dp),allowRemoteArtwork)
             Spacer(Modifier.width(8.dp))
             Text((if(favourite) "★ " else "")+row.label,color=if(selected) White else Muted,fontSize=11.sp,maxLines=2,overflow=TextOverflow.Ellipsis,lineHeight=14.sp)
         }
@@ -208,9 +208,9 @@ private fun ChannelLine(row: GuideRow, programmes: List<Programme>, selected: Bo
 }
 
 @Composable
-private fun Logo(url:String,name:String,modifier:Modifier) {
+private fun Logo(url:String,name:String,modifier:Modifier,allowRemote:Boolean) {
     Box(modifier.background(White.copy(alpha=.05f),RoundedCornerShape(6.dp)).padding(4.dp),contentAlignment=Alignment.Center) {
         Text(name.take(2).uppercase(Locale.UK),color=Muted.copy(alpha=.35f),fontSize=14.sp,fontWeight=FontWeight.Bold)
-        if(url.isNotBlank()) AsyncImage(model=url,contentDescription="$name logo",modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
+        if(allowRemote && url.isNotBlank()) AsyncImage(model=url,contentDescription="$name logo",modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
     }
 }
