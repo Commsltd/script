@@ -273,7 +273,7 @@ def apply_aliases(guide_path: str, aliases_path: str, playlist_source: str, gzip
 def xmltv_timestamp(value: str) -> int | None:
     if not value:
         return None
-    m = re.match(r"^(\\d{14})(?:\\s+([+-]\\d{4}))?", value.strip())
+    m = re.match(r"^(\d{14})(?:\s+([+-]\d{4}))?", value.strip())
     if not m:
         return None
     try:
@@ -296,7 +296,7 @@ def normalise_programme_title(value: str) -> str:
     value = (value or "").casefold()
     value = value.replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\\s+", " ", value).strip()
+    return re.sub(r"\s+", " ", value).strip()
 
 
 def normalise_channel_name(value: str) -> str:
@@ -323,8 +323,8 @@ def normalise_channel_name(value: str) -> str:
     }
     for old, new in replacements.items():
         value = value.replace(old, new)
-    value = re.sub(r"\\b(hd|sd|uk|united kingdom)\\b", " ", value)
-    return re.sub(r"\\s+", " ", value).strip()
+    value = re.sub(r"\b(hd|sd|uk|united kingdom)\b", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
 
 
 def epgshare_source_id(target_id: str) -> str | None:
