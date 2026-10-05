@@ -43,13 +43,15 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     var clock by mutableLongStateOf(System.currentTimeMillis())
     var inlineSources by mutableStateOf(prefs.getBoolean("inlineSources", true)); private set
     var autoFallback by mutableStateOf(prefs.getBoolean("autoFallback", true)); private set
-    var profile by mutableStateOf(prefs.getString("profile", "UK VPN") ?: "UK VPN"); private set
+    private var connectionProfile by mutableStateOf(prefs.getString("profile", "UK VPN") ?: "UK VPN")
+    val profile: String get() = connectionProfile
     var isPlayer by mutableStateOf(false)
     var playingRow by mutableStateOf<GuideRow?>(null)
     var previousRow: GuideRow? = null
+    private var sourceCache = emptyMap<String, List<StreamSource>>()
 
     init {
-        viewModelScope.launch { dao.stations().collect { stations = it; ensureSelection() } }
+        viewModelScope.launch { dao.stations().collect { stations = it; sourceCache = it.associate { s -> s.id to s.sources() }; ensureSelection() } }
         viewModelScope.launch { dao.programmes().collect { schedule = it.groupBy { p -> p.channelId } } }
         viewModelScope.launch { dao.favourites().collect { favourites = it.map { f -> f.channelId }.toSet(); ensureSelection() } }
         viewModelScope.launch { dao.snapshot().collect { snapshot = it } }
@@ -62,7 +64,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     fun rows(): List<GuideRow> {
         val filtered = stations.filter { group == "ALL CHANNELS" || (group == "FAVOURITES" && it.id in favourites) || it.groupName == group }
         return filtered.flatMap { station ->
-            val all = station.sources()
+            val all = sourceCache[station.id] ?: station.sources()
             (if (inlineSources) all else all.take(1)).mapIndexed { index, source -> GuideRow(station, source, index) }
         }
     }
@@ -104,7 +106,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     }
     fun setInline(enabled: Boolean) { inlineSources = enabled; prefs.edit().putBoolean("inlineSources", enabled).apply(); ensureSelection() }
     fun setFailover(enabled: Boolean) { autoFallback = enabled; prefs.edit().putBoolean("autoFallback", enabled).apply() }
-    fun setProfile(value: String) { profile = value; prefs.edit().putString("profile", value).apply() }
+    fun setProfile(value: String) { connectionProfile = value; prefs.edit().putString("profile", value).apply() }
     fun refresh() {
         if (refreshing) return
         refreshing = true; message = "Refreshing programme guide…"
