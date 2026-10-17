@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "e7e47a1b0ed9c275b2da0bd8b745a96d86c08fa7",
+  "youtubeLiveSources": 1,
+  "builtAt": 1792241616359,
+  "guideStart": 1792195200000,
+  "guideEnd": 1792818000000,
+  "descriptionCount": 15453,
+  "warnings": [
+    "STV kept beside ITV1 but London EPG deliberately not copied to it."
+  ],
+  "channels": 315,
+  "programmes": 15723,
+  "bytes": 1509338
+}
