@@ -28,19 +28,13 @@ class ResolverTests(unittest.TestCase):
         )
         self.assertIsNone(resolve_youtube_live.resolve("https://example.invalid"))
 
-    @mock.patch("resolve_youtube_live.resolve")
-    def test_known_sky_fallback_is_attempted(self, resolve):
-        resolve.side_effect = [
-            None,
-            {
-                "videoId": "XOacA3RYrXk",
-                "url": "https://www.youtube.com/watch?v=XOacA3RYrXk",
-                "title": "Sky News live",
-                "channel": "Sky News",
-                "liveStatus": "is_live",
-            },
-        ]
-        self.assertIn("SkyNews.uk", resolve_youtube_live.KNOWN_OFFICIAL_FALLBACKS)
+    @mock.patch("resolve_youtube_live.from_live_page")
+    @mock.patch("resolve_youtube_live.subprocess.run")
+    def test_failed_extractor_uses_public_live_page(self, run, page):
+        run.return_value = mock.Mock(returncode=1, stdout="", stderr="unavailable")
+        page.return_value = {"videoId": "abcDEF12345"}
+        self.assertEqual({"videoId": "abcDEF12345"}, resolve_youtube_live.resolve("https://www.youtube.com/@SkyNews/live"))
+        page.assert_called_once()
 
 if __name__ == "__main__":
     unittest.main()
