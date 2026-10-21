@@ -95,7 +95,6 @@ class YouTubeController {
     var videoId by mutableStateOf(""); private set
     var retryGeneration by mutableIntStateOf(0); private set
     private var view: WebView? = null
-    var nativeToggle: (() -> Unit)? = null
     fun stopTimer() { timeout?.let(handler::removeCallbacks); timeout = null }
     private val handler = Handler(Looper.getMainLooper())
     private var timeout: Runnable? = null
@@ -142,7 +141,6 @@ class YouTubeController {
     fun retry() { retryGeneration++ }
     fun pauseOrPlay() {
         if (failed) { retry(); return }
-        nativeToggle?.let { it(); return }
         view?.evaluateJavascript("if(window.player){window.player.${if (playing) "pauseVideo" else "playVideo"}();}", null)
     }
 }
@@ -151,10 +149,6 @@ class YouTubeController {
 @Composable
 fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean, controller: YouTubeController,
     modifier: Modifier = Modifier, interactive: Boolean = false) {
-    if (android.os.Build.MANUFACTURER.equals("Amazon", ignoreCase = true)) {
-        GeckoYouTubePlayer(source, strict, controller, modifier, interactive)
-        return
-    }
     val context = LocalContext.current
     val handler = remember { Handler(Looper.getMainLooper()) }
     val retry = controller.retryGeneration
@@ -184,6 +178,10 @@ fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean, controller: You
                 }
             }
             webViewClient = object : WebViewClient() {
+                override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                    controller.error("The YouTube player stopped. Press OK to retry.")
+                    return true
+                }
                 override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest) = request.isForMainFrame
                 override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
                     if (request.isForMainFrame) controller.error("YouTube could not connect. Press OK to retry.")

@@ -33,7 +33,7 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '9.6.0'
+          gradle-version: '8.14.3'
 
       - uses: android-actions/setup-android@v4
         with:
@@ -41,7 +41,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
 
       - name: Install Android SDK
-        run: sdkmanager 'platforms;android-37.2' 'build-tools;35.0.0'
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
 
       - name: Install catalogue tooling
         run: |
@@ -156,8 +156,8 @@ jobs:
       - name: Launch TV app and exercise real remote interaction
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 36
-          arch: x86_64
+          api-level: 28
+          arch: x86
           target: android-tv
           profile: tv_1080p
           ram-size: 2048M

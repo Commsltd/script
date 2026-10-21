@@ -2,13 +2,13 @@
 
 ## Released guide improvement
 
-PR https://github.com/Commsltd/script/pull/11 was merged. Native catalogue run https://github.com/Commsltd/script/actions/runs/39687208815 succeeded. The published feed has 308 channel entries, 21,891 programmes and 167 entries with guide information, compared with 76 previously. All 167 had current programmes when checked. The additions are UK1 14, Open EPG 23, epg.pw 1, Pluto 44 and Samsung 9. All 29 Python tests passed. Original XMLTV/M3U outputs are unchanged; optional guide failures preserve the primary data. Server refresh is hourly.
+PR https://github.com/Commsltd/script/pull/11 was merged. Native catalogue run https://github.com/Commsltd/script/actions/runs/39687208815 succeeded. The published feed has 308 channel entries, 21,891 programmes and 167 entries with guide information, compared with 76 previously. The original installed 0.3.0 app was refreshed and its database checked independently: it contains the same 308 / 21,891 / 167 counts and published source revision. No app reinstall was required. All 167 had current programmes when checked. The additions are UK1 14, Open EPG 23, epg.pw 1, Pluto 44 and Samsung 9. All 29 Python tests passed. Original XMLTV/M3U outputs are unchanged; optional guide failures preserve the primary data. Server refresh is hourly.
 
 ## Player candidate — not released
 
 The original 0.3.0 app and data remain intact. A separate `com.commercialoutcomes.uktelevision.candidate` was used on AFTSS / Android 9 / 32-bit ARM with the user's VPN active. The source adds bounded reconnects, live-window recovery, temporary failure penalties, explicit diagnostics and current YouTube video identity resolution. No external viewing application is launched.
 
-Earlier device fixture tests passed direct HTTP 404 fallback, recorded successful playback, guide navigation, preview, favourites, source selection and full-screen/quick-guide/back controls. The extended pause/resume and single-source HTTP 503 tests still require final validation. Kotlin unit tests and Android lint passed before the last renderer configuration changes.
+All three final Firestick fixture tests passed: direct HTTP 404 fallback with recorded success; pause for 21 seconds then resume for 21 seconds without a false stall timeout; single-source recovery after four HTTP 503 responses; and guide navigation, preview, favourites, source selection and full-screen/quick-guide/back controls. These generated video fixtures validate recovery and UI behaviour, not every live internet feed. The final lightweight build passes all 25 Kotlin unit tests and Android lint. GeckoView and its larger toolchain have been removed from the normal candidate and preserved on the local `codex/uk-tv-gecko-investigation` branch.
 
 ## YouTube investigation
 

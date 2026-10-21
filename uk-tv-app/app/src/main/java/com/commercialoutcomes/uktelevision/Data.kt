@@ -82,12 +82,6 @@ class TvApplication : Application() {
     val repository: TvRepository by lazy { TvRepository(this, database) }
     override fun onCreate() {
         super.onCreate()
-        // GeckoView has isolated renderer/helper processes. WorkManager is only
-        // initialised in the main app process and must never run in those helpers.
-        val process = if (android.os.Build.VERSION.SDK_INT >= 28) getProcessName() else
-            (getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager)
-                .runningAppProcesses?.firstOrNull { it.pid == android.os.Process.myPid() }?.processName
-        if (process != packageName) return
         val job = PeriodicWorkRequestBuilder<GuideWorker>(1, TimeUnit.HOURS)
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.MINUTES).build()
