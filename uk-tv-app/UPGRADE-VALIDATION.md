@@ -4,6 +4,10 @@
 
 PR https://github.com/Commsltd/script/pull/11 was merged. Native catalogue run https://github.com/Commsltd/script/actions/runs/39687208815 succeeded. The published feed has 308 channel entries, 21,891 programmes and 167 entries with guide information, compared with 76 previously. The original installed 0.3.0 app was refreshed and its database checked independently: it contains the same 308 / 21,891 / 167 counts and published source revision. No app reinstall was required. All 167 had current programmes when checked. The additions are UK1 14, Open EPG 23, epg.pw 1, Pluto 44 and Samsung 9. All 29 Python tests passed. Original XMLTV/M3U outputs are unchanged; optional guide failures preserve the primary data. Server refresh is hourly.
 
+## Released channel grouping
+
+PR https://github.com/Commsltd/script/pull/13 was merged. Publication https://github.com/Commsltd/script/actions/runs/39689802870 and the normal app build/emulator smoke run https://github.com/Commsltd/script/actions/runs/39689802878 both succeeded. All 36 Python checks pass. The original installed 0.3 app was restarted with user approval and its stable database copy checked: all 308 channel identities, category assignments and sort orders match the published feed exactly. There are 16 viewing groups, including 16 Main UK entries (previously 49), and no current services in Other. Programme coverage remains 167 entries, with 21,884 current programme records. The catalogue snapshot builtAt is 1792623293302. Existing favourites were unchanged. The new category rail was also verified visually on the Firestick. No APK reinstall was needed; the original source M3U/XMLTV outputs remain unchanged. See `CHANNEL-GROUPS.md` for classification rules.
+
 ## Player candidate — not released
 
 The original 0.3.0 app and data remain intact. A separate `com.commercialoutcomes.uktelevision.candidate` was used on AFTSS / Android 9 / 32-bit ARM with the user's VPN active. The source adds bounded reconnects, live-window recovery, temporary failure penalties, explicit diagnostics and current YouTube video identity resolution. No external viewing application is launched.

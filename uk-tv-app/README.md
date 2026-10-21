@@ -19,7 +19,7 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 
 ## Upgrade status
 
-The expanded guide is live in the existing app. The separate 0.4 player candidate is being validated on the AFTSS Firestick; it has not replaced the original installation. See `UPGRADE-VALIDATION.md` for current device evidence and unresolved channels. An APK building successfully does not establish live-channel playback.
+The expanded guide and 16 clearer viewing categories are live in the existing app. See `CHANNEL-GROUPS.md` for the grouping rules and source assessment. The separate 0.4 player candidate is being validated on the AFTSS Firestick; it has not replaced the original installation. See `UPGRADE-VALIDATION.md` for current device evidence and unresolved channels. An APK building successfully does not establish live-channel playback.
 
 The upgrade adds three bounded reconnect attempts for temporary interruptions, live-window recovery, expiring failure penalties, explicit source checks, guide-coverage diagnostics, and fresh official YouTube live identities. Additional XMLTV schedules are added only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
 
@@ -28,7 +28,7 @@ All viewing stays inside UK Television. The normal candidate uses the official Y
 ## Included
 
 - Proper horizontal programme grid; descriptions, episode titles and supplied metadata appear above it.
-- Existing channel names, logos, categories and inline regional/source variants.
+- Existing channel names and logos, 16 genre/regional categories, and optional inline source variants.
 - Favourites, guide search (including synopses), previous channel and now/next information.
 - Media3 HLS, DASH and supported transport-stream playback, subtitles, audio tracks and aspect-ratio controls.
 - Source selector and automatic fallback across **all usable direct sources of the same service only**, ordered by locally observed reliability.
