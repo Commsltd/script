@@ -43,7 +43,8 @@ data class Snapshot(@PrimaryKey val id: Int = 1, val revision: String, val built
 
 data class StreamSource(val id: String, val url: String, val label: String, val host: String,
     val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean,
-    val kind: String = "direct", val livePage: String = "")
+    val kind: String = "direct", val livePage: String = "", val region: String = "",
+    val guideChannelId: String = "", val priority: Int = 0)
 
 fun Station.sources(): List<StreamSource> = parseSources(JSONArray(sourcesJson))
 fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()).map { index ->
@@ -52,7 +53,8 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
     StreamSource(obj.getString("id"), obj.getString("url"), obj.optString("label"),
         obj.optString("host"), obj.optString("mime", "application/x-mpegURL"),
         headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"),
-        obj.optString("kind", "direct"), obj.optString("livePage"))
+        obj.optString("kind", "direct"), obj.optString("livePage"), obj.optString("region"),
+        obj.optString("guideChannelId"), obj.optInt("priority"))
 }
 
 @Dao
@@ -70,6 +72,8 @@ interface TvDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun putSnapshot(snapshot: Snapshot)
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun addFavourite(favourite: Favourite)
     @Query("DELETE FROM favourites WHERE channelId=:id") suspend fun removeFavourite(id: String)
+    @Query("UPDATE OR REPLACE favourites SET channelId=:replacement WHERE channelId=:old")
+    suspend fun migrateFavourite(old: String, replacement: String)
     @Query("SELECT * FROM stream_health WHERE profile=:profile") suspend fun health(profile: String): List<StreamHealth>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun putHealth(health: StreamHealth)
 }
@@ -96,7 +100,8 @@ class GuideWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
     }
 }
 
-data class Catalogue(val stations: List<Station>, val programmes: List<Programme>, val snapshot: Snapshot)
+data class Catalogue(val stations: List<Station>, val programmes: List<Programme>, val snapshot: Snapshot,
+    val aliases: Map<String, String> = emptyMap())
 
 object CatalogueParser {
     fun parse(input: InputStream): Catalogue {
@@ -136,7 +141,12 @@ object CatalogueParser {
         require(stations.isNotEmpty() && stations.size <= 10000) { "Empty or oversized channel list" }
         require(stations.map { it.id }.distinct().size == stations.size) { "Duplicate channel identities" }
         val ids = stations.map { it.id }.toSet()
+        val aliasJson = root.optJSONObject("channelAliases") ?: JSONObject()
+        val aliases = aliasJson.keys().asSequence().associateWith { aliasJson.getString(it) }.filterValues { it in ids }
+        val guideIds = ids + aliases.keys + stations.flatMap { it.sources() }.map { it.guideChannelId }.filter { it.isNotBlank() }
         val ps = root.getJSONArray("programmes")
+        val regional = root.optJSONArray("regionalProgrammes") ?: JSONArray()
+        for (n in 0 until regional.length()) ps.put(regional.getJSONObject(n))
         require(ps.length() in 1..300000) { "Empty or oversized guide" }
         val programmes = (0 until ps.length()).map { n ->
             val p = ps.getJSONObject(n)
@@ -145,12 +155,12 @@ object CatalogueParser {
                 p.optString("description"), p.optString("details"),
                 p.optString("privacyArtwork").ifBlank { p.optString("artwork") })
         }
-        require(programmes.all { it.channelId in ids && it.stop > it.start && it.title.isNotBlank() }) { "Invalid programme data" }
+        require(programmes.all { it.channelId in guideIds && it.stop > it.start && it.title.isNotBlank() }) { "Invalid programme data" }
         val now = System.currentTimeMillis()
         return Catalogue(stations, programmes, Snapshot(revision = root.optString("sourceRevision"),
             builtAt = root.getLong("builtAt"), fetchedAt = now, guideStart = programmes.minOf { it.start },
             guideEnd = programmes.maxOf { it.stop }, descriptions = programmes.count { it.description.isNotBlank() },
-            programmeCount = programmes.size, warnings = root.optJSONArray("warnings")?.join("\n") ?: ""))
+            programmeCount = programmes.size, warnings = root.optJSONArray("warnings")?.join("\n") ?: ""), aliases)
     }
 }
 
@@ -166,7 +176,10 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
             db.dao().putStations(data.stations)
             data.programmes.chunked(500).forEach { db.dao().putProgrammes(it) }
             db.dao().putSnapshot(data.snapshot)
+            data.aliases.forEach { (old, replacement) -> db.dao().migrateFavourite(old, replacement) }
         }
+        val prefs = context.getSharedPreferences("preferences", 0)
+        data.aliases[prefs.getString("lastChannel", "")]?.let { prefs.edit().putString("lastChannel", it).apply() }
     }
     suspend fun seed() = withContext(Dispatchers.IO) {
         lock.withLock {

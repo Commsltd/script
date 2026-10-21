@@ -46,6 +46,7 @@ object GuideRules {
         if (h == null) return 0
         val recentFailure = h.lastFailure > h.lastOk && now - h.lastFailure < FAILURE_PENALTY_WINDOW
         val recentSuccess = h.lastOk > 0 && now - h.lastOk < 7 * 86400000L
+        if (recentFailure) return -1000L - h.failures.coerceAtMost(30) * 5L
         return (if (recentSuccess) 1000L else 0L) +
             (if (recentSuccess) h.successes.coerceAtMost(30) * 10L else 0L) -
             (if (recentFailure) 700L + h.failures.coerceAtMost(30) * 5L else 0L)
@@ -126,6 +127,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     private fun rebuildStations() {
         stations = PlaylistImport.merge(baseStations, importedStations)
         sourceCache = stations.associate { it.id to it.sources() }
+        if (group !in groups()) group = stations.firstOrNull()?.groupName ?: "01 MAIN UK"
         ensureSelection()
     }
 
@@ -149,7 +151,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         }
         return filtered.flatMap { station ->
             val all = sourceCache[station.id] ?: station.sources()
-            (if (inlineSources) all else all.take(1)).mapIndexed { index, source ->
+            (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->
                 GuideRow(station, source, index)
             }
         }
@@ -196,6 +198,12 @@ class TvModel(application: Application) : AndroidViewModel(application) {
 
     fun nowProgramme(row: GuideRow? = selected()): Programme? =
         row?.let { GuideRules.at(schedule[it.station.id].orEmpty(), clock) }
+
+    fun playingSchedule(source: StreamSource?): List<Programme> {
+        val id = if (!source?.region.isNullOrBlank()) source?.guideChannelId
+            else playingRow?.station?.id
+        return schedule[id].orEmpty()
+    }
 
     fun nextProgramme(row: GuideRow? = selected()): Programme? {
         val current = nowProgramme(row)

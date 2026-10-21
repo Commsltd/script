@@ -32,6 +32,9 @@ class GuideRulesTest {
     @Test fun failuresAffectPreferenceNotGlobalDeletion() {
         assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100), now=101) < GuideRules.healthScore(null))
     }
+    @Test fun latestFailureOutranksAnOlderSuccess() {
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100,lastFailure=200), now=201) < 0)
+    }
     @Test fun strictPrivacyRejectsHttpDirectButHardenedKeepsIt() {
         val http = StreamSource("a","http://example/live.m3u8","A","example","application/x-mpegURL", emptyMap(), false)
         val https = StreamSource("b","https://example/live.m3u8","B","example","application/x-mpegURL", emptyMap(), false)

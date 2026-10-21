@@ -250,7 +250,8 @@ private fun GuideScreen(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            "LIVE PREVIEW  ·  ${playing.station.name}",
+                            "LIVE PREVIEW  ·  ${playing.station.name}" +
+                                (engine.source?.region?.takeIf { it.isNotBlank() }?.let { " · $it" } ?: ""),
                             color = White,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold
@@ -666,8 +667,9 @@ private fun BoxScope.LiveInfoOverlay(
     youtubeSource: StreamSource?
 ) {
     val row = model.playingRow ?: return
-    val current = GuideRules.at(model.schedule[row.station.id].orEmpty(), model.clock)
-    val next = model.schedule[row.station.id].orEmpty().firstOrNull {
+    val schedule = model.playingSchedule(engine.source)
+    val current = GuideRules.at(schedule, model.clock)
+    val next = schedule.firstOrNull {
         current != null && it.start >= current.stop
     }
 
@@ -684,7 +686,7 @@ private fun BoxScope.LiveInfoOverlay(
             Logo(row.station.logo, row.station.name, Modifier.size(54.dp), model.privacyMode)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                Text(row.station.name, color = Mint, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                Text(row.station.name + (engine.source?.region?.takeIf { it.isNotBlank() }?.let { " · $it" } ?: ""), color = Mint, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                 Text(
                     current?.title ?: "Live television",
                     color = White,

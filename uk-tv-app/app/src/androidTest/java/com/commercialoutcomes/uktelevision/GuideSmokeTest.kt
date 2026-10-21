@@ -77,9 +77,9 @@ class GuideSmokeTest {
             scenario.onActivity {
                 val now = System.currentTimeMillis()
                 val current = model.schedule.values.flatten().firstOrNull {
-                    it.start <= now && it.stop > now && it.description.isNotBlank()
+                    it.start <= now && it.stop > now && it.description.isNotBlank() && model.stations.any { s -> s.id == it.channelId }
                 } ?: model.schedule.values.flatten().first {
-                    it.description.isNotBlank()
+                    it.description.isNotBlank() && model.stations.any { s -> s.id == it.channelId }
                 }
                 val station = model.stations.first { it.id == current.channelId }
                 stationId = station.id
@@ -289,6 +289,39 @@ class GuideSmokeTest {
             val health=runBlocking { model.dao.health("Recovery fixture") }.first { it.streamId=="fixture-recovery" }
             assertEquals("HTTP_503",health.lastError)
             scenario.onActivity { assertEquals("fixture-recovery",engine.source?.id);assertFalse(engine.failed) }
+        }
+    }
+
+    @Test fun temporaryErrorsSwitchThroughAllRegionsBeforeRetryingTheBrokenFeed() {
+        val host = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
+        (java.net.URL("http://$host:8765/reset-flaky").openConnection() as java.net.HttpURLConnection).run {
+            assertEquals(204,responseCode); disconnect()
+        }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            lateinit var engine: PlaybackEngine
+            lateinit var model: TvModel
+            val start = System.currentTimeMillis()
+            scenario.onActivity { a ->
+                model = ViewModelProvider(a)[TvModel::class.java]
+                model.setProfile("Regional fallback fixture"); model.setFailover(true)
+                engine = MainActivity::class.java.getDeclaredField("engine").apply { isAccessible=true }.get(a) as PlaybackEngine
+                val station = Station("BBCOne.uk@Test","BBC One","BBCOne.uk","TEST",0,"","",
+                    """[{"id":"regional-default","url":"http://$host:8765/flaky.m3u8","region":"Default","priority":0},
+                    {"id":"regional-missing","url":"http://$host:8765/missing.m3u8","region":"Region A","priority":1},
+                    {"id":"regional-working","url":"http://$host:8765/stream.m3u8","region":"Region B","priority":1}]""","")
+                val row = GuideRow(station,station.sources()[0],0)
+                model.markPlaying(row);engine.play(row,true)
+            }
+            eventually(12000) {
+                var ready=false
+                scenario.onActivity { ready=engine.source?.id=="regional-working" && engine.player?.isPlaying==true }
+                ready
+            }
+            assertTrue("Fallback took too long",System.currentTimeMillis()-start < 12000)
+            val health=runBlocking { model.dao.health("Regional fallback fixture") }
+            assertTrue(health.any { it.streamId=="regional-default" && it.lastError=="HTTP_503" })
+            assertTrue(health.any { it.streamId=="regional-missing" && it.lastError=="HTTP_404" })
+            scenario.onActivity { assertEquals("Playing · Region B",engine.status) }
         }
     }
 

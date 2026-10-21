@@ -95,3 +95,7 @@ DVR, persistent timeshift, cloud accounts, provider-login/DRM integrations, scra
 - https://developer.android.com/develop/background-work/background-tasks/persistent-work
 - https://developer.amazon.com/docs/fire-tv/connecting-adb-to-device.html
 - https://developer.android.com/studio/publish/app-signing
+
+### BBC recovery update (22 October 2026)
+
+BBC One and BBC Two each appear once, with all previous regional alternatives retained in their source pool. The current inventory is 51 BBC One and 16 BBC Two source links, including additional official URLs. These are source candidates, not independent providers or a guarantee every URL works. Default feeds precede regional editions. The 0.4 preview switches to another source before retrying a failed one, and identifies the region and corresponding schedule during live playback. See `UPGRADE-VALIDATION.md` for installed-device evidence and rollback details.
