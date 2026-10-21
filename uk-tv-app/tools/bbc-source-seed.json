@@ -1,0 +1,714 @@
+{
+  "source": "https://iptv-org.github.io/api/streams.json",
+  "checked": "2026-10-22",
+  "streams": [
+    {
+      "channel": "BBCOne.uk",
+      "feed": "ChannelIslands",
+      "title": "BBC One Channel Islands",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_channel_islands/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "ChannelIslands",
+      "title": "BBC One Channel Islands (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_channel_islands/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "East",
+      "title": "BBC One East",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "East",
+      "title": "BBC One East (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "EastMidlands",
+      "title": "BBC One East Midlands",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east_midlands/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "EastMidlandsHD",
+      "title": "BBC One East Midlands (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east_midlands/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "London",
+      "title": "BBC One London",
+      "url": "https://vs-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_london/iptv_hd_abr_v1.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "London",
+      "title": "BBC One London",
+      "url": "https://vs-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_london/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "London",
+      "title": "BBC One London",
+      "url": "https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_london/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "London",
+      "title": "BBC One London",
+      "url": "https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_london/mobile_wifi_main_sd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "London",
+      "title": "BBC One London (1080p) (HEVC)",
+      "url": "https://vs-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_london/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthEastCumbria",
+      "title": "BBC One North East",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_north_east/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthEastCumbria",
+      "title": "BBC One North East",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_north_east/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthEastCumbriaHD",
+      "title": "BBC One North East (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_north_east/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthernIreland",
+      "title": "BBC One Northern Ireland HD",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_northern_ireland_hd/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthernIreland",
+      "title": "BBC One Northern Ireland HD",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_northern_ireland_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthernIrelandHD",
+      "title": "BBC One Northern Ireland HD (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_northern_ireland_hd/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthWest",
+      "title": "BBC One North West",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_north_west/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "NorthWestHD",
+      "title": "BBC One North West (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_north_west/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Scotland",
+      "title": "BBC One Scotland",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_scotland_hd/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "ScotlandHD",
+      "title": "BBC One Scotland HD",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_scotland_hd/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "ScotlandHD",
+      "title": "BBC One Scotland HD",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_scotland_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "ScotlandHD",
+      "title": "BBC One Scotland HD (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_scotland_hd/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "South",
+      "title": "BBC One South",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "South",
+      "title": "BBC One South",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "South",
+      "title": "BBC One South (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthEast",
+      "title": "BBC One South East",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_east/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthEast",
+      "title": "BBC One South East",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_east/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthEast",
+      "title": "BBC One South East (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_east/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthWest",
+      "title": "BBC One South West",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_west/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthWest",
+      "title": "BBC One South West",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_west/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "SouthWest",
+      "title": "BBC One South West (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_south_west/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Wales",
+      "title": "BBC One Wales",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_wales_hd/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Wales",
+      "title": "BBC One Wales",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_wales_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Wales",
+      "title": "BBC One Wales",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_wales_hd/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Wales",
+      "title": "BBC One Wales (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_wales_hd/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "West",
+      "title": "BBC One West",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "West",
+      "title": "BBC One West",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "West",
+      "title": "BBC One West (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "WestMidlands",
+      "title": "BBC One West Midlands",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west_midlands/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "WestMidlands",
+      "title": "BBC One West Midlands",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west_midlands/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "WestMidlands",
+      "title": "BBC One West Midlands (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_west_midlands/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Yorkshire",
+      "title": "BBC One East Yorkshire",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east_yorkshire/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Yorkshire",
+      "title": "BBC One Yorks",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_yorks/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "Yorkshire",
+      "title": "BBC One Yorks",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_yorks/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "YorkshireHD",
+      "title": "BBC One East",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east_yorkshire/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "YorkshireHD",
+      "title": "BBC One East Yorkshire (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_east_yorkshire/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCOne.uk",
+      "feed": "YorkshireHD",
+      "title": "BBC One Yorks (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_yorks/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "HD",
+      "title": "BBC Two HD",
+      "url": "https://vs-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_hd/iptv_hd_abr_v1.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "HD",
+      "title": "BBC Two HD",
+      "url": "https://vs-cmaf-push-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_two_hd/pc_hd_abr_v2.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "HD",
+      "title": "BBC Two HD",
+      "url": "https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "HD",
+      "title": "BBC Two HD",
+      "url": "https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_hd/mobile_wifi_main_sd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "HD",
+      "title": "BBC Two HD (1080p) (HEVC)",
+      "url": "https://vs-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_hd/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "NorthernIreland",
+      "title": "BBC Two Northern Ireland",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_northern_ireland_hd/pc_hd_abr_v2.m3u8",
+      "quality": "540p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "NorthernIrelandHD",
+      "title": "BBC Two Northern Ireland HD",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_northern_ireland_hd/iptv_hd_abr_v1.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "NorthernIrelandHD",
+      "title": "BBC Two Northern Ireland HD",
+      "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_northern_ireland_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "NorthernIrelandHD",
+      "title": "BBC Two Northern Ireland HD (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_northern_ireland_hd/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "Wales",
+      "title": "BBC Two Wales",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_wales_digital/iptv_hd_abr_v1.mpd",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BBCTwo.uk",
+      "feed": "Wales",
+      "title": "BBC Two Wales (1080p) (HEVC)",
+      "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_wales_digital/hevc_iptv_mse_v0.mpd",
+      "quality": null,
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    }
+  ]
+}
