@@ -18,7 +18,9 @@ class ExportTests(unittest.TestCase):
         p = '#EXTM3U\n#EXTINF:-1 tvg-id="BBCOne.uk@London",BBC One London\nhttps://s/l.m3u8\n#EXTINF:-1 tvg-id="BBCOne.uk@Wales",BBC One Wales\nhttps://s/w.m3u8\n'
         x = b'<tv><programme channel="BBCOne.uk@London" start="20261005090000 +0100" stop="20261005100000 +0100"><title>A &amp; B</title><desc>Full synopsis.</desc><sub-title>Episode title</sub-title><episode-num system="xmltv_ns">1.2.</episode-num></programme></tv>'
         d = build(p, x)
-        self.assertEqual(len(d['channels']), 2)
+        self.assertEqual(len(d['channels']), 1)
+        self.assertEqual(len(d['channels'][0]['sources']), 2)
+        self.assertEqual(d['channels'][0]['sources'][1]['region'], 'Wales')
         self.assertEqual(len(d['programmes']), 1)
         self.assertEqual(d['programmes'][0]['description'], 'Full synopsis.')
         self.assertIn('Series 2 Episode 3', d['programmes'][0]['details'])
@@ -147,11 +149,35 @@ class ChannelGroupTests(unittest.TestCase):
             f'stop="20261021100000 +0000"><title>Schedule {i}</title></programme>'
             for i, cid in enumerate(ids)) + '</tv>').encode()
         data = build(playlist, guide)
-        self.assertEqual({c['id'] for c in data['channels']}, set(ids))
-        self.assertEqual({p['channelId']: p['title'] for p in data['programmes']},
+        self.assertEqual({c['id'] for c in data['channels']}, set(ids) - {'BBCOne.uk@Wales'})
+        self.assertEqual({p['channelId']: p['title'] for p in data['programmes'] + data['regionalProgrammes']},
                          {cid: f'Schedule {i}' for i, cid in enumerate(ids)})
         for c in data['channels']:
             self.assertEqual(c['sources'][0]['url'], f'https://example.org/{ids.index(c["id"])}.m3u8')
+
+    def test_bbc_backups_are_complete_ordered_and_do_not_mix_other_channels(self):
+        ids = ['BBCOne.uk@Wales', 'BBCOne.uk@LondonHD', 'BBCOne.uk@London',
+               'BBCTwo.uk@HD', 'BBCTwo.uk@Wales', 'BBCNews.uk@UKHD', 'ITV1.uk@LondonPlus1']
+        playlist = '\n'.join(f'#EXTINF:-1 tvg-id="{cid}",Channel\nhttps://example.org/{i}.m3u8'
+                             for i, cid in enumerate(ids))
+        data = build(playlist, b'<tv/>')
+        rows = {c['id']: c for c in data['channels']}
+        self.assertEqual(len(rows), 4)
+        one = rows['BBCOne.uk@LondonHD']['sources']
+        self.assertEqual([s['priority'] for s in one], [0, 0, 1])
+        self.assertEqual({s['url'] for s in one}, {f'https://example.org/{i}.m3u8' for i in range(3)})
+        self.assertEqual(len(rows['BBCTwo.uk@HD']['sources']), 2)
+        self.assertEqual(data['channelAliases']['BBCOne.uk@Wales'], 'BBCOne.uk@LondonHD')
+
+    def test_bbc_source_dedup_keeps_ids_and_exact_regional_guides(self):
+        playlist = '#EXTINF:-1 tvg-id="BBCOne.uk@LondonHD",BBC One\nhttps://example.org/main.m3u8\n'
+        playlist += '#EXTINF:-1 tvg-id="BBCOne.uk@Wales",BBC One Wales\nhttps://example.org/wales.m3u8\n' * 2
+        guide = b'<tv><programme channel="BBCOne.uk@Wales" start="20261021090000 +0000" stop="20261021100000 +0000"><title>Wales news</title></programme></tv>'
+        data = build(playlist, guide)
+        self.assertEqual(len(data['channels'][0]['sources']), 2)
+        self.assertEqual(data['channels'][0]['sources'][1]['guideChannelId'], 'BBCOne.uk@Wales')
+        self.assertEqual(data['programmes'], [])
+        self.assertEqual(data['regionalProgrammes'][0]['title'], 'Wales news')
 
 if __name__ == '__main__':
     unittest.main()

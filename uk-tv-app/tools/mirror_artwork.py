@@ -95,7 +95,7 @@ def main() -> None:
             logo_urls.append(url)
 
     programme_refs = []
-    for programme in sorted(data.get("programmes", []), key=lambda p: p.get("start", 0)):
+    for programme in sorted((data.get("programmes", []) + data.get("regionalProgrammes", [])), key=lambda p: p.get("start", 0)):
         url = programme.get("artwork", "")
         if url.startswith(("http://", "https://")) and not url.startswith(MIRROR_PREFIX):
             programme_refs.append(url)
@@ -143,7 +143,7 @@ def main() -> None:
             channel.pop("privacyLogo", None)
 
     programme_mirrors = 0
-    for programme in data.get("programmes", []):
+    for programme in (data.get("programmes", []) + data.get("regionalProgrammes", [])):
         old = programme.get("artwork", "")
         if old in mirrored:
             programme["privacyArtwork"] = mirrored[old]

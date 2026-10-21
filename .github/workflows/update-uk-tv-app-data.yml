@@ -10,6 +10,8 @@ on:
     paths:
       - 'uk-tv-app/tools/export_manifest.py'
       - 'uk-tv-app/tools/channel_groups.py'
+      - 'uk-tv-app/tools/bbc_sources.py'
+      - 'uk-tv-app/tools/bbc-source-seed.json'
       - 'uk-tv-app/tools/guide_supplements.py'
       - 'uk-tv-app/tools/test_guide_supplements.py'
       - 'uk-tv-app/tools/test_manifest.py'
