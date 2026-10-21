@@ -1,4 +1,6 @@
 import unittest
+import copy
+from channel_groups import arrange_channels
 from export_manifest import build, parse_playlist, stamp
 
 class ExportTests(unittest.TestCase):
@@ -80,6 +82,76 @@ class SupplementTests(unittest.TestCase):
     def test_supplement_rejects_entities(self):
         with self.assertRaises(ValueError):
             build('',b'<tv/>',supplemental_xml=b'<!DOCTYPE tv [<!ENTITY x "hello">]><tv/>')
+
+class ChannelGroupTests(unittest.TestCase):
+    def channel(self, cid, group='95 OTHER / ODDITIES', name='Example'):
+        return {'id': cid, 'group': group, 'name': name, 'order': 100,
+                'epgId': cid, 'family': cid.partition('@')[0],
+                'sources': [{'id': 'keep-me', 'url': 'https://example.org/live.m3u8'}]}
+
+    def test_known_misfiled_channels_move_by_genre(self):
+        rows = arrange_channels([
+            self.channel('Now70s.uk@SD'), self.channel('MUTV.uk@SD', '07 LOCAL & REGIONAL'),
+            self.channel('BBCParliament.uk@SD'), self.channel('GemsTV.uk@SD', '07 LOCAL & REGIONAL'),
+        ])
+        groups = {c['id']: c['group'] for c in rows}
+        self.assertEqual(groups['Now70s.uk@SD'], '11 MUSIC')
+        self.assertEqual(groups['MUTV.uk@SD'], '10 SPORT')
+        self.assertEqual(groups['BBCParliament.uk@SD'], '02 NEWS & POLITICS')
+        self.assertEqual(groups['GemsTV.uk@SD'], '15 SHOPPING')
+
+    def test_scripted_crime_and_adult_animation_are_not_true_crime_or_kids(self):
+        rows = arrange_channels([self.channel(cid, '08 INTERNATIONAL') for cid in
+            ('CSICrimeSceneInvestigation.de@GB', 'SouthPark.de@GB', 'DeadlyWomen.us@UK', 'Avatar.de@GB')])
+        groups = {c['id']: c['group'] for c in rows}
+        self.assertEqual(groups['CSICrimeSceneInvestigation.de@GB'], '04 DRAMA & COMEDY')
+        self.assertEqual(groups['SouthPark.de@GB'], '04 DRAMA & COMEDY')
+        self.assertEqual(groups['DeadlyWomen.us@UK'], '07 CRIME & MYSTERY')
+        self.assertEqual(groups['Avatar.de@GB'], '09 KIDS')
+
+    def test_regional_and_main_identities_survive_reordering(self):
+        rows = [self.channel(cid, '01 MAIN UK') for cid in
+                ('BBCOne.uk@Wales', 'BBCOne.uk@LondonHD', 'BBCTwo.uk@HD', 'STV.uk@Unspecified')]
+        before = {c['id']: copy.deepcopy(c) for c in rows}
+        after = arrange_channels(rows)
+        self.assertEqual([c['id'] for c in after[:2]], ['BBCOne.uk@LondonHD', 'BBCTwo.uk@HD'])
+        for c in after:
+            self.assertEqual(c['group'], '01 MAIN UK' if c['id'] in
+                {'BBCOne.uk@LondonHD', 'BBCTwo.uk@HD'} else '12 REGIONAL & LOCAL')
+            self.assertEqual({k: v for k, v in c.items() if k not in {'group', 'order'}},
+                             {k: v for k, v in before[c['id']].items() if k not in {'group', 'order'}})
+
+    def test_intermittent_broadcasts_are_not_a_reliability_category(self):
+        row = self.channel('V2BEATTV.uk@SD', '99 EXPERIMENTAL / UNRELIABLE', 'V2BEAT TV [Not 24/7]')
+        self.assertEqual(arrange_channels([row])[0]['group'], '11 MUSIC')
+
+    def test_events_sort_numerically_and_arrangement_is_idempotent(self):
+        rows = arrange_channels([self.channel(f'BBCRedButton{n}.uk@SD') for n in (10, 2, 1)])
+        self.assertEqual([c['id'] for c in rows], [f'BBCRedButton{n}.uk@SD' for n in (1, 2, 10)])
+        expected = copy.deepcopy(rows)
+        self.assertEqual(arrange_channels(list(reversed(rows))), expected)
+        self.assertEqual([c['order'] for c in rows], [0, 1, 2])
+
+    def test_unknown_channels_are_retained_without_guessing_from_name_or_country(self):
+        rows = arrange_channels([self.channel('Unknown.us@UK', name='News about film crimes'),
+                                 self.channel('NewMusic.uk@HD', group='05 MUSIC')])
+        self.assertEqual({c['id']: c['group'] for c in rows},
+                         {'NewMusic.uk@HD': '11 MUSIC', 'Unknown.us@UK': '99 MORE CHANNELS'})
+        self.assertEqual(arrange_channels(copy.deepcopy(rows)), rows)
+
+    def test_export_preserves_distinct_regions_plus_one_streams_and_schedules(self):
+        ids = ['BBCOne.uk@Wales', 'BBCOne.uk@LondonHD', 'TinyPop.uk@SD', 'TinyPop.uk@Plus1']
+        playlist = '\n'.join(f'#EXTINF:-1 tvg-id="{cid}",Name {i}\nhttps://example.org/{i}.m3u8'
+                             for i, cid in enumerate(ids))
+        guide = ('<tv>' + ''.join(f'<programme channel="{cid}" start="20261021090000 +0000" '
+            f'stop="20261021100000 +0000"><title>Schedule {i}</title></programme>'
+            for i, cid in enumerate(ids)) + '</tv>').encode()
+        data = build(playlist, guide)
+        self.assertEqual({c['id'] for c in data['channels']}, set(ids))
+        self.assertEqual({p['channelId']: p['title'] for p in data['programmes']},
+                         {cid: f'Schedule {i}' for i, cid in enumerate(ids)})
+        for c in data['channels']:
+            self.assertEqual(c['sources'][0]['url'], f'https://example.org/{ids.index(c["id"])}.m3u8')
 
 if __name__ == '__main__':
     unittest.main()
