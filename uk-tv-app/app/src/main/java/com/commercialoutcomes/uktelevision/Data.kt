@@ -43,7 +43,7 @@ data class Snapshot(@PrimaryKey val id: Int = 1, val revision: String, val built
 
 data class StreamSource(val id: String, val url: String, val label: String, val host: String,
     val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean,
-    val kind: String = "direct")
+    val kind: String = "direct", val livePage: String = "")
 
 fun Station.sources(): List<StreamSource> = parseSources(JSONArray(sourcesJson))
 fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()).map { index ->
@@ -52,7 +52,7 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
     StreamSource(obj.getString("id"), obj.getString("url"), obj.optString("label"),
         obj.optString("host"), obj.optString("mime", "application/x-mpegURL"),
         headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"),
-        obj.optString("kind", "direct"))
+        obj.optString("kind", "direct"), obj.optString("livePage"))
 }
 
 @Dao
@@ -82,10 +82,16 @@ class TvApplication : Application() {
     val repository: TvRepository by lazy { TvRepository(this, database) }
     override fun onCreate() {
         super.onCreate()
-        val job = PeriodicWorkRequestBuilder<GuideWorker>(6, TimeUnit.HOURS)
+        // GeckoView has isolated renderer/helper processes. WorkManager is only
+        // initialised in the main app process and must never run in those helpers.
+        val process = if (android.os.Build.VERSION.SDK_INT >= 28) getProcessName() else
+            (getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager)
+                .runningAppProcesses?.firstOrNull { it.pid == android.os.Process.myPid() }?.processName
+        if (process != packageName) return
+        val job = PeriodicWorkRequestBuilder<GuideWorker>(1, TimeUnit.HOURS)
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.MINUTES).build()
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("tv-guide-refresh", ExistingPeriodicWorkPolicy.KEEP, job)
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("tv-guide-refresh", ExistingPeriodicWorkPolicy.UPDATE, job)
     }
 }
 
@@ -120,6 +126,12 @@ object CatalogueParser {
         val stations = (0 until cs.length()).map { n ->
             val c = cs.getJSONObject(n)
             val sources = c.getJSONArray("sources")
+            val livePage = c.optString("youtubeLivePage")
+            if (livePage.isNotBlank() && parseSources(sources).none { it.kind == "youtube" }) {
+                sources.put(JSONObject().put("id",c.getString("youtubeSourceId"))
+                    .put("url",livePage).put("livePage",livePage).put("kind","youtube")
+                    .put("label",c.optString("youtubeLabel")).put("host","www.youtube.com"))
+            }
             require(sources.length() > 0) { "Channel has no sources" }
             parseSources(sources).forEach { require(it.url.startsWith("https://") || it.url.startsWith("http://")) }
             Station(c.getString("id"), c.getString("name"), c.getString("family"),
@@ -177,7 +189,7 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
                 connection.connectTimeout = 15000
                 connection.readTimeout = 30000
                 connection.instanceFollowRedirects = true
-                connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
+                connection.setRequestProperty("User-Agent", "UKTelevision/0.4.0")
                 try {
                     if (connection.responseCode != 200) throw IOException("Guide server returned HTTP ${connection.responseCode}")
                     if (connection.url.protocol.lowercase() != "https") {

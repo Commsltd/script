@@ -37,11 +37,27 @@ class PlaybackEngine(
     private var markedSuccess = false
     private var firstFrame = false
     private var profile = ""
+    private var recovery: Job? = null
+    private val retries = mutableMapOf<String, Int>()
+    private var paused = false
+    var lastProblem by mutableStateOf(""); private set
+    val youtube = YouTubeController()
+
+    private fun errorReason(error: PlaybackException): String {
+        var cause: Throwable? = error
+        while (cause != null) {
+            if (cause is androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException) return "HTTP_${cause.responseCode}"
+            if (cause is java.net.UnknownHostException) return "DNS_UNAVAILABLE"
+            cause = cause.cause
+        }
+        return error.errorCodeName
+    }
 
     fun play(row: GuideRow, forceSource: Boolean = false) {
         generation++; val token = generation
-        request?.cancel(); stopPlayer()
-        station = row.station; failed = false; tried.clear(); attempt = 0
+        request?.cancel(); recovery?.cancel(); stopPlayer()
+        station = row.station; failed = false; tried.clear(); retries.clear(); attempt = 0
+        paused = false; lastProblem = ""
         status = "Selecting a stream…"; profile = model.profile
         request = scope.launch {
             val health = model.dao.health(profile).associateBy { it.streamId }
@@ -80,11 +96,11 @@ class PlaybackEngine(
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetwork != null
     }
-    private fun startNext(token: Int) {
+    private fun startNext(token: Int, retry: StreamSource? = null) {
         if (token != generation) return
-        val next = candidates.firstOrNull { it.id !in tried }
+        val next = retry ?: candidates.firstOrNull { it.id !in tried }
         val limit = if (model.autoFallback) candidates.size else 1
-        if (next == null || tried.size >= limit) {
+        if (next == null || (retry == null && tried.size >= limit)) {
             val youtube = station?.sources()?.firstOrNull { it.kind == "youtube" }
             if (model.autoFallback && youtube != null) {
                 failed = false
@@ -97,14 +113,14 @@ class PlaybackEngine(
             status = if (youtube != null)
                 "Direct feeds failed. Hold OK and choose the official YouTube source."
             else
-                "No available source played. Hold OK for sources or Back for the guide."
+                "${lastProblem.ifBlank { "No available source played." }} Press OK to retry or hold OK for sources."
             stopPlayer()
             return
         }
         attempt++; val thisAttempt = attempt
         stopPlayer(); tried.add(next.id); source = next; firstFrame = false; markedSuccess = false
         status = "Connecting · ${next.host} · ${tried.size}/${minOf(limit, candidates.size)}"
-        val http = DefaultHttpDataSource.Factory().setUserAgent("UKTelevision/0.2")
+        val http = DefaultHttpDataSource.Factory().setUserAgent("UKTelevision/${BuildConfig.VERSION_NAME}")
             .setDefaultRequestProperties(next.headers).setConnectTimeoutMs(10000).setReadTimeoutMs(12000)
             .setAllowCrossProtocolRedirects(model.allowCleartextVideo)
         val media = DefaultMediaSourceFactory(DefaultDataSource.Factory(context, http))
@@ -116,7 +132,14 @@ class PlaybackEngine(
         fun current() = generation == token && attempt == thisAttempt && player === exo
         exo.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
-                if (current()) failure(token, thisAttempt, error.errorCodeName)
+                if (!current()) return
+                if (error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW &&
+                    (retries[next.id] ?: 0) < 3) {
+                    retries[next.id] = (retries[next.id] ?: 0) + 1
+                    status = "Returning to live…"
+                    armWatchdog(token, thisAttempt, 20000)
+                    exo.seekToDefaultPosition(); exo.prepare(); exo.play()
+                } else failure(token, thisAttempt, errorReason(error))
             }
             override fun onRenderedFirstFrame() {
                 if (!current()) return
@@ -126,14 +149,20 @@ class PlaybackEngine(
                     delay(12000)
                     if (current() && exo.isPlaying && !markedSuccess) {
                         markedSuccess = true
+                        retries[next.id] = 0
                         val old = model.dao.health(profile).firstOrNull { it.streamId == next.id } ?: StreamHealth(next.id, profile)
                         model.dao.putHealth(old.copy(successes = old.successes + 1, lastOk = System.currentTimeMillis()))
                     }
                 }
             }
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (current() && isPlaying && firstFrame) {
+                    watchdog?.cancel(); status = "Playing · ${next.host}"
+                }
+            }
             override fun onPlaybackStateChanged(state: Int) {
                 if (!current()) return
-                if (state == Player.STATE_BUFFERING && firstFrame) {
+                if (state == Player.STATE_BUFFERING && firstFrame && !paused) {
                     status = "Buffering · ${next.host}"
                     armWatchdog(token, thisAttempt, 20000)
                 } else if (state == Player.STATE_READY && firstFrame) {
@@ -149,26 +178,53 @@ class PlaybackEngine(
         watchdog = scope.launch { delay(delayMs); failure(token, currentAttempt, "START_OR_BUFFER_TIMEOUT") }
     }
     private fun failure(token: Int, currentAttempt: Int, reason: String) {
-        if (token != generation || currentAttempt != attempt || failed) return
-        attempt++ // Invalidate any duplicate callbacks immediately.
-        watchdog?.cancel(); success?.cancel()
+        if (token != generation || currentAttempt != attempt || failed || paused) return
+        attempt++
+        watchdog?.cancel(); success?.cancel(); recovery?.cancel()
         val failedSource = source ?: return
-        if (!connected()) {
-            failed = true; status = "Network unavailable. Reconnect Wi-Fi/VPN, then press OK to retry."
-            stopPlayer(); return
-        }
-        status = "Source failed; trying the next source…"
-        scope.launch {
-            val old = model.dao.health(profile).firstOrNull { it.streamId == failedSource.id } ?: StreamHealth(failedSource.id, profile)
-            model.dao.putHealth(old.copy(failures = old.failures + 1, lastFailure = System.currentTimeMillis(), lastError = reason))
-            if (token == generation) startNext(token)
+        lastProblem = RecoveryRules.explain(reason)
+        stopPlayer()
+        recovery = scope.launch {
+            if (!connected()) {
+                lastProblem = RecoveryRules.explain("NETWORK_UNAVAILABLE")
+                status = "Connection lost · waiting to reconnect…"
+                repeat(30) {
+                    delay(2000)
+                    if (token != generation) return@launch
+                    if (connected()) {
+                        startNext(token, failedSource)
+                        return@launch
+                    }
+                }
+                if (token == generation) {
+                    failed = true; status = "$lastProblem Press OK to retry."
+                }
+                return@launch
+            }
+            if (token != generation) return@launch
+            val old = model.dao.health(profile).firstOrNull { it.streamId == failedSource.id }
+                ?: StreamHealth(failedSource.id, profile)
+            if (token != generation) return@launch
+            model.dao.putHealth(old.copy(failures = old.failures + 1,
+                lastFailure = System.currentTimeMillis(), lastError = reason))
+            val count = (retries[failedSource.id] ?: 0)
+            val wait = RecoveryRules.retryDelay(count)
+            if (RecoveryRules.retryable(reason) && wait != null) {
+                retries[failedSource.id] = count + 1
+                status = "Reconnecting · attempt ${count + 1}/3"
+                delay(wait)
+                if (token == generation && !paused) startNext(token, failedSource)
+            } else if (token == generation) {
+                status = "$lastProblem Trying another source…"
+                startNext(token)
+            }
         }
     }
     fun pauseOrPlay() {
         val current = player
         if (failed || current == null) { model.playingRow?.let { play(it) }; return }
-        if (current.playWhenReady) { current.pause(); watchdog?.cancel(); status = "Paused" }
-        else { current.play(); status = "Playing · ${source?.host.orEmpty()}" }
+        if (current.playWhenReady) { paused = true; current.pause(); watchdog?.cancel(); recovery?.cancel(); status = "Paused" }
+        else { paused = false; if (current.isCurrentMediaItemLive) current.seekToDefaultPosition(); status = "Resuming live…"; armWatchdog(generation, attempt, 20000); current.play() }
     }
     fun pinCurrent() {
         val current = source ?: return
@@ -180,5 +236,5 @@ class PlaybackEngine(
         val old = player; player = null
         old?.release()
     }
-    fun close() { generation++; request?.cancel(); stopPlayer(); status = "" }
+    fun close() { generation++; request?.cancel(); recovery?.cancel(); stopPlayer(); status = "" }
 }

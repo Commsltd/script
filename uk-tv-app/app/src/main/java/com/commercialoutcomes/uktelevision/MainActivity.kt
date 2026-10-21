@@ -239,6 +239,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shortSelect() {
+        if (youtubeSource != null && engine.youtube.failed) { engine.youtube.retry(); return }
+        if (youtubeSource == null && engine.failed) { engine.pauseOrPlay(); return }
         when (surface) {
             TvSurface.LIVE -> when (liveOverlay) {
                 LiveOverlay.QUICK_GUIDE -> confirmQuickGuide()
@@ -333,8 +335,8 @@ class MainActivity : ComponentActivity() {
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
             KeyEvent.KEYCODE_MEDIA_PLAY,
             KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-                if (surface == TvSurface.LIVE && youtubeSource == null) {
-                    engine.pauseOrPlay()
+                if (surface == TvSurface.LIVE) {
+                    if (youtubeSource != null) engine.youtube.pauseOrPlay() else engine.pauseOrPlay()
                     showInfo()
                 } else if (surface == TvSurface.GUIDE) {
                     model.selected()?.let { startPlayback(it, fullscreen = true) }
@@ -399,6 +401,8 @@ class MainActivity : ComponentActivity() {
                 add("Preview channel")
                 add("Watch fullscreen")
                 add("Stream sources")
+                add("Test this channel")
+                add("Playback diagnostics")
                 add("Programme details")
                 add("Search")
                 add("Categories")
@@ -413,6 +417,8 @@ class MainActivity : ComponentActivity() {
                 add("Programme info")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Stream sources")
+                add("Test this channel")
+                add("Playback diagnostics")
                 if (model.previousRow != null) add("Previous channel")
                 if (youtubeSource == null) {
                     add("Audio tracks")
@@ -436,6 +442,8 @@ class MainActivity : ComponentActivity() {
                         "Preview channel" -> row?.let { startPlayback(it, fullscreen = false) }
                         "Watch fullscreen" -> row?.let { startPlayback(it, fullscreen = true) }
                         "Stream sources" -> handler.post { showSources() }
+                        "Test this channel" -> handler.post { testChannel() }
+                        "Playback diagnostics" -> handler.post { showDiagnostics() }
                         "Programme details", "Programme info" -> handler.post { showDetails() }
                         "Search" -> handler.post { showSearch() }
                         "Categories" -> model.chooseGuideZone(GuideZone.CATEGORIES)
@@ -464,6 +472,46 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private fun showDiagnostics() {
+        val row = activeRow() ?: return
+        lifecycleScope.launch {
+            val health = model.dao.health(model.profile).associateBy { it.streamId }
+            val programmes = model.schedule[row.station.id].orEmpty()
+            val guide = when {
+                programmes.isEmpty() -> "No programme data supplied for this channel."
+                programmes.maxOf { it.stop } < System.currentTimeMillis() -> "Programme data has expired."
+                GuideRules.at(programmes, System.currentTimeMillis()) == null -> "Programme data has a gap at this time."
+                else -> "Programme data available (${programmes.size} listings)."
+            }
+            val lines = row.station.sources().map { source ->
+                val h = health[source.id]
+                "${source.label} · ${source.host}\n" + if (h == null) "No recorded playback test."
+                else "${h.successes} successful starts · ${h.failures} failures\n" +
+                    (if (h.lastError.isBlank()) "" else RecoveryRules.explain(h.lastError))
+            }
+            present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — diagnostics")
+                .setMessage(listOf("UK Television ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                    ChannelDiagnostics.network(this@MainActivity), "History profile: ${model.profile}", guide,
+                    if (youtubeSource != null) engine.youtube.status else engine.status,
+                    lines.joinToString("\n\n")).filter { it.isNotBlank() }.joinToString("\n\n"))
+                .setPositiveButton("Close", null))
+        }
+    }
+
+    private fun testChannel() {
+        val row = activeRow() ?: return
+        toast("Checking ${row.station.name}…")
+        lifecycleScope.launch {
+            val results = row.station.sources().map { source ->
+                "${source.label}\n" + if (model.privacyMode == PrivacyMode.STRICT && source.url.startsWith("http://"))
+                    "Blocked by Strict Privacy." else ChannelDiagnostics.check(source)
+            }
+            present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — source check")
+                .setMessage(ChannelDiagnostics.network(this@MainActivity) + "\n\n" + results.joinToString("\n\n"))
+                .setPositiveButton("Close", null))
+        }
+    }
+
     private fun showSources() {
         val row = activeRow() ?: return
         lifecycleScope.launch {
@@ -479,7 +527,7 @@ class MainActivity : ComponentActivity() {
                         "Blocked in Strict Privacy"
                     h == null -> "Not tested on this route"
                     h.lastOk > h.lastFailure -> "Last playback succeeded"
-                    else -> "Last attempt failed · ${h.lastError}"
+                    else -> "Last attempt failed · ${RecoveryRules.explain(h.lastError)}"
                 }
                 "${s.label.ifBlank { s.kind }}\n${s.host} · $state"
             }

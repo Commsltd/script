@@ -27,10 +27,10 @@ class GuideRulesTest {
         assertTrue(GuideRules.canAutoFallback(station("BBCOne.uk@London"), station("BBCOne.uk@London")))
     }
     @Test fun recentlyWorkingSourceOutranksNeverTestedSource() {
-        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100)) > GuideRules.healthScore(null))
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100), now=101) > GuideRules.healthScore(null))
     }
     @Test fun failuresAffectPreferenceNotGlobalDeletion() {
-        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100)) < GuideRules.healthScore(null))
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100), now=101) < GuideRules.healthScore(null))
     }
     @Test fun strictPrivacyRejectsHttpDirectButHardenedKeepsIt() {
         val http = StreamSource("a","http://example/live.m3u8","A","example","application/x-mpegURL", emptyMap(), false)

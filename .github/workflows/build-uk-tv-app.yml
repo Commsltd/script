@@ -33,7 +33,7 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '8.13'
+          gradle-version: '9.6.0'
 
       - uses: android-actions/setup-android@v4
         with:
@@ -41,7 +41,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
 
       - name: Install Android SDK
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+        run: sdkmanager 'platforms;android-37.2' 'build-tools;35.0.0'
 
       - name: Install catalogue tooling
         run: |
@@ -50,7 +50,7 @@ jobs:
       - name: Test catalogue, artwork and YouTube resolvers
         working-directory: uk-tv-app/tools
         run: |
-          python3 -m unittest -v             test_manifest.py             test_mirror_artwork.py             test_youtube_resolver.py
+          python3 -m unittest -v             test_manifest.py             test_guide_supplements.py             test_mirror_artwork.py             test_youtube_resolver.py
 
       - name: Resolve current official YouTube live videos
         run: |
@@ -62,8 +62,8 @@ jobs:
         run: |
           git clone --depth 1 --single-branch --branch uk-tv-epg-output             https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
           revision=$(git -C "$RUNNER_TEMP/tv-feed" rev-parse HEAD)
-
-          python3 uk-tv-app/tools/export_manifest.py             --source "$RUNNER_TEMP/tv-feed"             --revision "$revision"             --youtube-live "$RUNNER_TEMP/youtube-live.json"             --output uk-tv-app/app/src/main/assets/catalogue.json.gz
+          python3 uk-tv-app/tools/guide_supplements.py --output-dir "$RUNNER_TEMP/guides"
+          python3 uk-tv-app/tools/export_manifest.py             --source "$RUNNER_TEMP/tv-feed"             --revision "$revision"             --guides-dir "$RUNNER_TEMP/guides"             --youtube-live "$RUNNER_TEMP/youtube-live.json"             --output uk-tv-app/app/src/main/assets/catalogue.json.gz
 
           mkdir -p "$RUNNER_TEMP/build-artwork"
           curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork.zip"             -o "$RUNNER_TEMP/previous-artwork.zip" || true
@@ -96,11 +96,11 @@ jobs:
       - name: Prepare deliverables
         run: |
           mkdir -p delivery
-          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk             delivery/UK-Television-0.3.0-preview.apk
+          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk             delivery/UK-Television-0.4.0-preview.apk
           cp uk-tv-app/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk             delivery/uk-tv-tests.apk
 
           if [ -f uk-tv-app/app/build/outputs/apk/release/app-release.apk ]; then
-            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk               delivery/UK-Television-0.3.0.apk
+            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk               delivery/UK-Television-0.4.0.apk
           fi
 
           cp uk-tv-app/app/src/main/assets/status.json             delivery/catalogue-status.json
@@ -111,7 +111,7 @@ jobs:
           git archive --format=zip HEAD             uk-tv-app             .github/workflows/build-uk-tv-app.yml             .github/workflows/update-uk-tv-app-data.yml             > delivery/UK-Television-source.zip
 
           sha256sum delivery/*.apk > delivery/SHA256SUMS.txt
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify             --verbose             --print-certs             delivery/UK-Television-0.3.0-preview.apk             > delivery/apk-signature.txt
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify             --verbose             --print-certs             delivery/UK-Television-0.4.0-preview.apk             > delivery/apk-signature.txt
 
       - uses: actions/upload-artifact@v7
         with:
@@ -156,8 +156,8 @@ jobs:
       - name: Launch TV app and exercise real remote interaction
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 28
-          arch: x86
+          api-level: 36
+          arch: x86_64
           target: android-tv
           profile: tv_1080p
           ram-size: 2048M
@@ -203,9 +203,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="uk-tv-v0.3.0-preview-${{ github.run_number }}"
+          tag="uk-tv-v0.4.0-preview-${{ github.run_number }}"
           assets=(
-            delivery/UK-Television-0.3.0-preview.apk
+            delivery/UK-Television-0.4.0-preview.apk
             delivery/UK-Television-source.zip
             delivery/SHA256SUMS.txt
             delivery/apk-signature.txt
@@ -218,8 +218,8 @@ jobs:
           if [ -f smoke/quick-guide.png ]; then
             assets+=(smoke/quick-guide.png)
           fi
-          if [ -f delivery/UK-Television-0.3.0.apk ]; then
-            assets+=(delivery/UK-Television-0.3.0.apk)
+          if [ -f delivery/UK-Television-0.4.0.apk ]; then
+            assets+=(delivery/UK-Television-0.4.0.apk)
           fi
 
-          gh release create "$tag"             --repo "$GITHUB_REPOSITORY"             --target "$GITHUB_SHA"             --prerelease             --title "UK Television 0.3.0 preview (build ${{ github.run_number }})"             --notes-file delivery/README.md             "${assets[@]}"
+          gh release create "$tag"             --repo "$GITHUB_REPOSITORY"             --target "$GITHUB_SHA"             --prerelease             --title "UK Television 0.4.0 preview (build ${{ github.run_number }})"             --notes-file delivery/README.md             "${assets[@]}"

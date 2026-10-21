@@ -41,14 +41,16 @@ object GuideRules {
     fun inWindow(shows: List<Programme>, start: Long, end: Long) =
         shows.filter { it.stop > start && it.start < end }
 
-    fun healthScore(h: StreamHealth?): Long {
+    const val FAILURE_PENALTY_WINDOW = 30 * 60 * 1000L
+    fun healthScore(h: StreamHealth?, now: Long = System.currentTimeMillis()): Long {
         if (h == null) return 0
-        val recentFailure = h.lastFailure > h.lastOk
-        return (if (h.lastOk > 0) 1000L else 0L) +
-            h.successes.coerceAtMost(30) * 10L -
-            h.failures.coerceAtMost(30) * 5L -
-            (if (recentFailure) 700L else 0L)
+        val recentFailure = h.lastFailure > h.lastOk && now - h.lastFailure < FAILURE_PENALTY_WINDOW
+        val recentSuccess = h.lastOk > 0 && now - h.lastOk < 7 * 86400000L
+        return (if (recentSuccess) 1000L else 0L) +
+            (if (recentSuccess) h.successes.coerceAtMost(30) * 10L else 0L) -
+            (if (recentFailure) 700L + h.failures.coerceAtMost(30) * 5L else 0L)
     }
+
 }
 
 class TvModel(application: Application) : AndroidViewModel(application) {
@@ -75,7 +77,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     var cursor by mutableLongStateOf(System.currentTimeMillis())
     var clock by mutableLongStateOf(System.currentTimeMillis())
 
-    var inlineSources by mutableStateOf(prefs.getBoolean("inlineSources", true)); private set
+    var inlineSources by mutableStateOf(prefs.getBoolean("inlineSources", false)); private set
     var autoFallback by mutableStateOf(prefs.getBoolean("autoFallback", true)); private set
     private var connectionProfile by mutableStateOf(prefs.getString("profile", "UK VPN") ?: "UK VPN")
     val profile: String get() = connectionProfile

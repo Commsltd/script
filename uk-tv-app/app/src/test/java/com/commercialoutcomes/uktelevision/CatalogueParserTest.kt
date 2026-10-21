@@ -51,4 +51,15 @@ class CatalogueParserTest {
         val json = fixture(); json.getJSONArray("channels").getJSONObject(0).getJSONArray("sources").getJSONObject(0).put("url","file:///private/a")
         parse(json)
     }
+    @Test fun unresolvedYoutubePageIsAddedOnlyByTheNewParser() {
+        val json=fixture()
+        val channel=json.getJSONArray("channels").getJSONObject(0)
+        channel.put("youtubeLivePage","https://www.youtube.com/@SkyNews/live")
+            .put("youtubeLabel","Sky News official YouTube").put("youtubeSourceId","sky-current")
+        val sources=parse(json).stations.single().sources()
+        assertEquals(2,sources.size)
+        assertEquals("youtube",sources.last().kind)
+        assertEquals("https://www.youtube.com/@SkyNews/live",sources.last().livePage)
+    }
+
 }

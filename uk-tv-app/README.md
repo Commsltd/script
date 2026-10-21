@@ -1,4 +1,4 @@
-# UK Television — 0.2.0 preview
+# UK Television — 0.4.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,12 +10,20 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.2.0-preview.apk
+adb install -r UK-Television-0.4.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
 
-Compatibility target: Android 6 / API 23 or newer, including Android-based Fire OS 6, 7 and 8. It is not a Vega OS application. Real Firestick hardware/network playback still needs device testing even when the Android emulator checks pass.
+Compatibility target: Android 8 / API 26 or newer, including Android-based Fire OS 7 and 8. It is not a Vega OS application. Real Firestick hardware/network playback still needs device testing even when the Android emulator checks pass.
+
+## Upgrade status
+
+Version 0.4 is being validated on the AFTSS Firestick. See `UPGRADE-VALIDATION.md` for current device evidence and unresolved channels. An APK building successfully does not establish live-channel playback.
+
+The upgrade adds three bounded reconnect attempts for temporary interruptions, live-window recovery, expiring failure penalties, explicit source checks, guide-coverage diagnostics, and fresh official YouTube live identities. Additional XMLTV schedules are added only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
+
+All viewing stays inside UK Television. On Amazon devices the candidate uses a bundled GeckoView renderer for the official YouTube embed, to test an alternative to the system WebView rendering failure under investigation. Other Android devices retain the system embedded player. No external viewing apps are launched. GeckoView is distributed under MPL 2.0; its source revision and licence are available from [Mozilla's published artefact](https://maven.mozilla.org/maven2/org/mozilla/geckoview/geckoview/158.0.20261021001945/geckoview-158.0.20261021001945.pom). Browser sessions use private mode and telemetry upload preferences are disabled.
 
 ## Included
 
@@ -27,7 +35,7 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 - Local playback success/failure history, recorded separately for manually selected connection profiles.
 - Cache-first startup using a real guide snapshot bundled at build time.
 - Transactional guide refresh that retains favourites and stream preferences and rejects invalid/truncated data.
-- Automatic six-hour background refresh where Android permits it, plus refresh on launch and from the menu.
+- Automatic hourly background refresh where Android permits it, plus refresh on launch and from the menu.
 - First-class in-app YouTube support. Official YouTube fallbacks sit beside direct HLS/DASH sources and play inside UK Television through the official embedded player; the app does not extract temporary YouTube CDN URLs and does not launch the YouTube app or a browser.
 - Multiple additional M3U playlists can be added from Settings. Exact matching tvg-id entries extend an existing channel's source pool; new channels remain grouped under their playlist.
 
@@ -51,17 +59,17 @@ Guide times follow the Firestick's own time zone. Connection profiles distinguis
 
 The app uses `https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/catalogue.json.gz`. This native JSON is generated from an immutable copy of `uk-tv-epg-output/playlist.m3u` and `guide.xml.gz`. The original EPG workflow and output branch remain unchanged.
 
-A separate export workflow runs after a successful original EPG update and has a six-hour schedule as a safety net. Data conversion does not refresh the underlying broadcaster schedules more frequently than the original EPG job.
+A separate export workflow runs after a successful original EPG update and has an hourly schedule for short-horizon FAST guides. Data conversion does not refresh the underlying broadcaster schedules more frequently than the original EPG job.
 
-Favourites, source preferences and playback results stay in the app's private local storage. Additional-playlist URLs (which may contain provider credentials or tokens) are encrypted at rest with a non-exportable AES key held by Android Keystore. There are no analytics or cloud-account SDKs. The app deliberately does not create an Android MediaSession, reducing the playback metadata exposed through the normal OS media-session surface; Fire OS itself still cannot be made blind to an app running on Fire hardware. GitHub and stream providers necessarily see the connections made to their servers. Curated image hosts are contacted by the GitHub build pipeline rather than by the Firestick once their artwork has been mirrored. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video and direct third-party artwork requests. Curated channel/programme artwork is mirrored by the data pipeline, delivered as one validated bundle, and rendered from local Fire TV storage; official YouTube fallbacks remain inside UK Television. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
+Favourites, source preferences and playback results stay in the app's private local storage. Additional-playlist URLs (which may contain provider credentials or tokens) are encrypted at rest with a non-exportable AES key held by Android Keystore. The app does not send usage analytics or provide cloud accounts. The embedded GeckoView engine includes Mozilla telemetry components; upload preferences are disabled at runtime. The app deliberately does not create an Android MediaSession, reducing the playback metadata exposed through the normal OS media-session surface; Fire OS itself still cannot be made blind to an app running on Fire hardware. GitHub and stream providers necessarily see the connections made to their servers. Curated image hosts are contacted by the GitHub build pipeline rather than by the Firestick once their artwork has been mirrored. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video and direct third-party artwork requests. Curated channel/programme artwork is mirrored by the data pipeline, delivered as one validated bundle, and rendered from local Fire TV storage; official YouTube fallbacks remain inside UK Television. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
 
 Programme descriptions are displayed when supplied, with an explicit missing-synopsis message otherwise. No descriptions or programme schedules are invented. The exporter deliberately refuses the old ITV1/London EPG assignment for the separately labelled STV stream.
 
 ## Build and tests
 
-Pinned toolchain: JDK 17, Gradle 8.13, Android SDK 35, AGP 8.9.2, Kotlin 2.1.20, Media3 1.8.0. CI performs Python exporter tests, Kotlin unit tests, Android lint, APK-signature validation and Android API 28 emulator smoke tests (launch, guide, remote navigation and options). Screenshots and reports are attached to the workflow. These are not a claim that all internet channels play.
+Pinned toolchain: JDK 17+, Gradle 9.6.0, Android SDK 37.2, AGP 9.4.0, Kotlin 2.4.21, Media3 1.11.1 and GeckoView 158.0.20261021001945. CI performs Python exporter tests, Kotlin unit tests, Android lint, APK-signature validation and Android API 36 TV emulator smoke tests (launch, guide, remote navigation and options). Screenshots and reports are attached to the workflow. These are not a claim that all internet channels play.
 
-For a local build, install JDK 17, Gradle 8.13 and Android SDK 35, then:
+For a local build, install JDK 17+, Gradle 9.6.0 and Android SDK 37.2, then:
 
 ```sh
 git clone --depth 1 --branch uk-tv-epg-output https://github.com/Commsltd/script.git /tmp/uk-tv-feed

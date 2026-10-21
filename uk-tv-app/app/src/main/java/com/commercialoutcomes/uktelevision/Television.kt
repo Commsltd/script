@@ -65,15 +65,23 @@ fun Television(
         }
     }
 
+    val currentYoutube by rememberUpdatedState(youtubeSource)
+    val currentResize by rememberUpdatedState(resizeMode)
+    // Move the same renderer between preview and full screen: changing layout
+    // must not reload the channel or start another YouTube advertising session.
+    val media = remember(model, engine) { movableContentOf {
+        MediaSurface(model, engine, currentYoutube, Modifier.fillMaxSize(), currentResize, false)
+    } }
+
     MaterialTheme {
         Box(Modifier.fillMaxSize().background(Ink)) {
             if (surface == TvSurface.LIVE) {
                 LiveScreen(
                     model, engine, youtubeSource, liveOverlay,
-                    quickGuideKey, resizeMode
+                    quickGuideKey, media
                 )
             } else {
-                GuideScreen(model, engine, youtubeSource, resizeMode)
+                GuideScreen(model, engine, youtubeSource, media)
             }
         }
     }
@@ -93,6 +101,7 @@ private fun MediaSurface(
         if (youtubeSource != null) {
             EmbeddedYouTubePlayer(
                 source = youtubeSource,
+                controller = engine.youtube,
                 strict = model.privacyMode == PrivacyMode.STRICT,
                 modifier = Modifier.fillMaxSize(),
                 interactive = interactiveYoutube
@@ -121,7 +130,7 @@ private fun GuideScreen(
     model: TvModel,
     engine: PlaybackEngine,
     youtubeSource: StreamSource?,
-    resizeMode: Int
+    media: @Composable () -> Unit
 ) {
     val rows = model.rows()
     val selected = model.selected()
@@ -233,12 +242,7 @@ private fun GuideScreen(
                     .border(1.dp, if (playing != null) Mint.copy(alpha = .6f) else Soft, RoundedCornerShape(12.dp))
             ) {
                 if (playing != null) {
-                    MediaSurface(
-                        model, engine, youtubeSource,
-                        Modifier.fillMaxSize(),
-                        resizeMode,
-                        interactiveYoutube = false
-                    )
+                    media()
                     Box(
                         Modifier.align(Alignment.TopStart)
                             .padding(10.dp)
@@ -626,15 +630,10 @@ private fun LiveScreen(
     youtubeSource: StreamSource?,
     overlay: LiveOverlay,
     quickGuideKey: String,
-    resizeMode: Int
+    media: @Composable () -> Unit
 ) {
     Box(Modifier.fillMaxSize().background(Color.Black)) {
-        MediaSurface(
-            model, engine, youtubeSource,
-            Modifier.fillMaxSize(),
-            resizeMode,
-            interactiveYoutube = false
-        )
+        media()
 
         when (overlay) {
             LiveOverlay.NONE -> Unit

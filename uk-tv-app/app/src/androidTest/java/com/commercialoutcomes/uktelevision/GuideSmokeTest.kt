@@ -201,10 +201,11 @@ class GuideSmokeTest {
                     .get(activity) as PlaybackEngine
                 model.setProfile("Instrumentation fixture")
                 model.setFailover(true)
+                val fixtureHost = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
                 val station = Station(
                     "TestHLS.local", "Playback test fixture", "TestHLS.local", "TEST", 0, "", "",
-                    """[{"id":"fixture-missing","url":"http://10.0.2.2:8765/missing.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Deliberate HTTP 404"},
-                    {"id":"fixture-working","url":"http://10.0.2.2:8765/stream.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Generated HLS test video"}]""",
+                    """[{"id":"fixture-missing","url":"http://$fixtureHost:8765/missing.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Deliberate HTTP 404"},
+                    {"id":"fixture-working","url":"http://$fixtureHost:8765/stream.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Generated HLS test video"}]""",
                     ""
                 )
                 model.markPlaying(GuideRow(station, station.sources()[0], 0))
@@ -235,6 +236,19 @@ class GuideSmokeTest {
                         .any { it.streamId == "fixture-working" && it.successes > 0 }
                 }
             }
+            // Pausing longer than the stall timeout must not punish a healthy stream.
+            scenario.onActivity { engine.pauseOrPlay() }
+            Thread.sleep(21000)
+            scenario.onActivity {
+                assertFalse(engine.failed)
+                assertEquals("Paused", engine.status)
+                engine.pauseOrPlay()
+            }
+            Thread.sleep(21000)
+            scenario.onActivity {
+                assertFalse("Resumed stream incorrectly timed out",engine.failed)
+                assertTrue("Playback did not resume",engine.player?.isPlaying == true)
+            }
             val health = runBlocking { model.dao.health("Instrumentation fixture") }
             assertTrue(
                 "Failed source was not recorded",
@@ -246,4 +260,36 @@ class GuideSmokeTest {
             )
         }
     }
+    @Test
+    fun oneSourceReconnectsAfterTemporaryProviderFailure() {
+        val host = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
+        (java.net.URL("http://$host:8765/reset-flaky").openConnection() as java.net.HttpURLConnection).run {
+            assertEquals(204,responseCode); disconnect()
+        }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            lateinit var engine: PlaybackEngine
+            lateinit var model: TvModel
+            scenario.onActivity { a ->
+                model = ViewModelProvider(a)[TvModel::class.java]
+                engine = MainActivity::class.java.getDeclaredField("engine").apply { isAccessible=true }.get(a) as PlaybackEngine
+                model.setProfile("Recovery fixture")
+                val station = Station("Recovery.local","Recovery fixture","Recovery.local","TEST",0,"","",
+                    """[{"id":"fixture-recovery","url":"http://$host:8765/flaky.m3u8","host":"fixture","mime":"application/x-mpegURL"}]""","")
+                val row = GuideRow(station,station.sources()[0],0)
+                model.markPlaying(row);engine.play(row)
+            }
+            eventually(60000) {
+                var ready=false
+                scenario.onActivity { ready=engine.player?.isPlaying==true && engine.status.startsWith("Playing") }
+                ready
+            }
+            eventually(20000) {
+                runBlocking { model.dao.health("Recovery fixture").any { it.streamId=="fixture-recovery" && it.failures>0 && it.successes>0 } }
+            }
+            val health=runBlocking { model.dao.health("Recovery fixture") }.first { it.streamId=="fixture-recovery" }
+            assertEquals("HTTP_503",health.lastError)
+            scenario.onActivity { assertEquals("fixture-recovery",engine.source?.id);assertFalse(engine.failed) }
+        }
+    }
+
 }
