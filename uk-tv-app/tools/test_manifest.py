@@ -52,19 +52,34 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(youtube[0]['url'], 'https://www.youtube.com/watch?v=abcDEF12345')
         self.assertEqual(d['youtubeLiveSources'], 1)
 
-    def test_sky_has_known_official_fixed_youtube_fallback_without_ci_resolution(self):
+    def test_sky_keeps_live_page_instead_of_stale_video_without_resolution(self):
         p = '#EXTM3U\n#EXTINF:-1 tvg-id="SkyNews.uk@HD",Sky News\nhttps://stream.example/sky.m3u8\n'
         d = build(p, b'<tv/>')
         youtube = [s for s in d['channels'][0]['sources'] if s['kind'] == 'youtube']
-        self.assertEqual(len(youtube), 1)
-        self.assertEqual(
-            youtube[0]['url'],
-            'https://www.youtube.com/watch?v=xDWQ3LkccY8'
-        )
+        self.assertEqual(len(youtube), 0)  # 0.3 must never receive an unplayable /live source.
+        self.assertEqual(d['channels'][0]['youtubeLivePage'], 'https://www.youtube.com/@SkyNews/live')
 
     def test_drm_not_silently_treated_as_unprotected(self):
         p = '#EXTINF:-1 tvg-id="A.uk",A\n#KODIPROP:inputstream.adaptive.license_type=widevine\nhttps://s/a.mpd\n'
         self.assertTrue(build(p,b'<tv/>')['channels'][0]['sources'][0]['unsupportedDrm'])
+
+class SupplementTests(unittest.TestCase):
+    def test_supplement_fills_missing_exact_service_only(self):
+        p = '#EXTINF:-1 tvg-id="CNBCUK.uk@SD",CNBC UK\nhttps://s/c\n#EXTINF:-1 tvg-id="CNBCUK.uk@Plus1",CNBC +1\nhttps://s/p\n'
+        x = b'<tv><programme channel="CNBC.HD.uk" start="20261021090000 +0000" stop="20261021100000 +0000"><title>News</title><desc>Business news</desc></programme></tv>'
+        d = build(p,b'<tv/>',supplemental_xml=x)
+        self.assertEqual([p['channelId'] for p in d['programmes']],['CNBCUK.uk@SD'])
+        self.assertEqual(d['channelsWithGuide'],1)
+        self.assertEqual(d['supplementedChannels'],['CNBCUK.uk@SD'])
+    def test_supplement_never_overwrites_existing_schedule(self):
+        p = '#EXTINF:-1 tvg-id="CNBCUK.uk@SD",CNBC UK\nhttps://s/c\n'
+        x = b'<tv><programme channel="CNBCUK.uk@SD" start="20261021090000 +0000" stop="20261021100000 +0000"><title>Original</title></programme></tv>'
+        d = build(p,x,supplemental_xml=x.replace(b'CNBCUK.uk@SD',b'CNBC.HD.uk'))
+        self.assertEqual(len(d['programmes']),1)
+        self.assertEqual(d['supplementedChannels'],[])
+    def test_supplement_rejects_entities(self):
+        with self.assertRaises(ValueError):
+            build('',b'<tv/>',supplemental_xml=b'<!DOCTYPE tv [<!ENTITY x "hello">]><tv/>')
 
 if __name__ == '__main__':
     unittest.main()
