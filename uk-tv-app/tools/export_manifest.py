@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qsl
 from guide_supplements import load_guide, mappings, parse_xml
+from channel_groups import arrange_channels
 
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
@@ -249,6 +250,7 @@ def build(playlist, xml_bytes, revision='unknown', youtube_live=None, supplement
                 details.extend(f'{c.tag.title()}: {c.text}' for c in credits if c.text)
             programmes.append({'key': key, 'channelId': cid, 'start': start, 'stop': stop, 'title': title, 'subtitle': (p.findtext('sub-title') or '').strip(), 'description': (p.findtext('desc') or '').strip(), 'details': ' · '.join(dict.fromkeys(details)), 'artwork': p.find('icon').get('src', '') if p.find('icon') is not None else ''})
     programmes.sort(key=lambda p: (p['channelId'], p['start'], p['stop']))
+    channels = {channel['id']: channel for channel in arrange_channels(channels.values())}
     return {'schemaVersion': 1, 'sourceRevision': revision, 'supplementedChannels': supplemented, 'supplementalGuideSources': guide_sources, 'channelsWithGuide': len({p['channelId'] for p in programmes}), 'youtubeLiveSources': youtube_count, 'builtAt': int(datetime.now(timezone.utc).timestamp() * 1000), 'guideStart': min((p['start'] for p in programmes), default=0), 'guideEnd': max((p['stop'] for p in programmes), default=0), 'descriptionCount': sum(bool(p['description']) for p in programmes), 'warnings': sorted(set(warnings)), 'channels': list(channels.values()), 'programmes': programmes}
 
 def main():
