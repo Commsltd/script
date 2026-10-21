@@ -40,3 +40,7 @@ On this VPN-connected Firestick the current ITV1 source terminates unexpectedly;
 ## Local evidence
 
 `.local/reports/` contains build, Python, lint and device test logs; `.local/backups/` contains the original installed APK and data backup. Do not commit these private/device artefacts. The original 0.3 APK's signing certificate differs from the local build certificate. The later BBC correction used the verified backup/reinstall/restore procedure described above. Additional playlist secrets would need special care across any uninstall because their Android Keystore keys are non-exportable.
+
+## Hosted emulator check caveat
+
+Run 39693255105 completed all five app instrumentation tests successfully, but its final broad crash-log check failed on the unrelated emulator system package `com.android.tv` (`AsyncDvrDbTask`, missing `failed_reason` column). The gate now identifies UK TV process crashes while retaining the complete system crash log. Checked against the actual unrelated crash log and a synthetic UK TV process crash. The hosted workflow has not been rerun with this gate correction; device playback, local build/lint and fixture results above are independently verified.

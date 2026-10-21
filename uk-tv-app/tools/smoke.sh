@@ -33,4 +33,6 @@ adb exec-out screencap -p > delivery/final-screen.png
 set -e
 [ "$instrument_status" -eq 0 ]
 grep -E 'OK \([0-9]+ test' delivery/instrumentation.log
-if grep -q 'FATAL EXCEPTION' delivery/android-crashes.log; then exit 1; fi
+# Keep the full system log as evidence, but unrelated emulator applications
+# (for example com.android.tv's broken DVR database) are not UK TV crashes.
+if grep -Eq 'Process: com\.commercialoutcomes\.uktelevision([.:,]|$)' delivery/android-crashes.log; then exit 1; fi
