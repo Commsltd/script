@@ -96,11 +96,11 @@ jobs:
       - name: Prepare deliverables
         run: |
           mkdir -p delivery
-          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk             delivery/UK-Television-0.5.0-preview.apk
+          cp uk-tv-app/app/build/outputs/apk/debug/app-debug.apk             delivery/UK-Television-0.6.0-preview.apk
           cp uk-tv-app/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk             delivery/uk-tv-tests.apk
 
           if [ -f uk-tv-app/app/build/outputs/apk/release/app-release.apk ]; then
-            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk               delivery/UK-Television-0.5.0.apk
+            cp uk-tv-app/app/build/outputs/apk/release/app-release.apk               delivery/UK-Television-0.6.0.apk
           fi
 
           cp uk-tv-app/app/src/main/assets/status.json             delivery/catalogue-status.json
@@ -111,7 +111,7 @@ jobs:
           git archive --format=zip HEAD             uk-tv-app             .github/workflows/build-uk-tv-app.yml             .github/workflows/update-uk-tv-app-data.yml             > delivery/UK-Television-source.zip
 
           sha256sum delivery/*.apk > delivery/SHA256SUMS.txt
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify             --verbose             --print-certs             delivery/UK-Television-0.5.0-preview.apk             > delivery/apk-signature.txt
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify             --verbose             --print-certs             delivery/UK-Television-0.6.0-preview.apk             > delivery/apk-signature.txt
 
       - uses: actions/upload-artifact@v7
         with:
@@ -203,9 +203,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="uk-tv-v0.5.0-preview-${{ github.run_number }}"
+          tag="uk-tv-v0.6.0-preview-${{ github.run_number }}"
           assets=(
-            delivery/UK-Television-0.5.0-preview.apk
+            delivery/UK-Television-0.6.0-preview.apk
             delivery/UK-Television-source.zip
             delivery/SHA256SUMS.txt
             delivery/apk-signature.txt
@@ -218,8 +218,8 @@ jobs:
           if [ -f smoke/quick-guide.png ]; then
             assets+=(smoke/quick-guide.png)
           fi
-          if [ -f delivery/UK-Television-0.5.0.apk ]; then
-            assets+=(delivery/UK-Television-0.5.0.apk)
+          if [ -f delivery/UK-Television-0.6.0.apk ]; then
+            assets+=(delivery/UK-Television-0.6.0.apk)
           fi
 
-          gh release create "$tag"             --repo "$GITHUB_REPOSITORY"             --target "$GITHUB_SHA"             --prerelease             --title "UK Television 0.5.0 preview (build ${{ github.run_number }})"             --notes-file delivery/README.md             "${assets[@]}"
+          gh release create "$tag"             --repo "$GITHUB_REPOSITORY"             --target "$GITHUB_SHA"             --prerelease             --title "UK Television 0.6.0 preview (build ${{ github.run_number }})"             --notes-file delivery/README.md             "${assets[@]}"

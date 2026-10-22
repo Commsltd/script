@@ -1,5 +1,14 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.6 VOD browsing and saved library
+
+Adds combinable genre, exact release year/decade, film/series and provider filters; Featured, title A–Z/Z–A, newest and oldest sorting; Favourites; and named lists with create/rename/delete and multiple membership. Saved metadata and provider alternatives remain available when titles leave the current provider catalogue. Lists and favourites use private on-device storage. Genre fields come from provider metadata and explicit genre collections; missing genres/years are not guessed and remain under All/Unknown.
+
+Validation: 45 Kotlin tests and Android lint pass. Regression checks cover intersecting filters, chronological ordering with unknown years last, genre merging, list/favourite persistence through serialization, duplicate-name rejection, list rename/removal without affecting other lists, and saved alternative preservation when refreshed metadata changes a title's year. Build output is 0.6.0-preview, code 6; the supplied app icon and existing in-app players are retained. Browsing/search remain scoped to loaded and saved titles; provider playback limitations documented below remain.
+
+The final Firestick UI test passed in 135.47 seconds: selected Drama plus exact year 2026, verified descending release-year order, added a title to favourites and a new named list, recreated the library and verified both saved views. The test used the separate candidate package and restored its previous saved data afterwards. Earlier harness attempts were corrected to scroll off-screen dialog choices and wait for dialog animations. The normal package is now updated in place to **0.6.0-preview, code 6**; its previous 0.5 APK/data backup is retained in `.local/backups/before-vod-0.6-2026-10-22/`.
+
+
 ## 0.5 VOD, source restoration and artwork update
 
 Candidate validation on the same AFTSS Firestick (API 28, user VPN active): 43 Python tests, 38 Kotlin unit tests and Android lint passed. The 0.5 native library gathers Movy, Plex, Pluto and Tubi titles and keeps provider playback inside UK TV. Permanent player toolbar removed. The supplied 768px JPEG is retained byte-for-byte as the app icon; the Fire TV banner centres the complete image without stretching or cropping it.

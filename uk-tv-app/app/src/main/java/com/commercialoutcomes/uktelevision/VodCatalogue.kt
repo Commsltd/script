@@ -22,7 +22,7 @@ enum class VodProvider(val label: String, val home: String, val domain: String) 
 }
 data class VodSource(val provider: VodProvider, val url: String)
 data class VodTitle(val title: String, val year: Int?, val kind: String, val poster: String,
-    val description: String = "", val sources: List<VodSource>) {
+    val description: String = "", val sources: List<VodSource>, val genres: List<String> = emptyList()) {
     val key: String get() = if (year != null) "$kind:$year:${normalTitle(title)}" else sources.first().url
     val subtitle: String get() = listOfNotNull(year?.toString(), if(kind=="show") "TV series" else "Film", sources.joinToString(" · ") { it.provider.label }).joinToString("  ·  ")
 }
@@ -34,7 +34,8 @@ object VodCatalogue {
     fun merge(rows: List<VodTitle>): List<VodTitle> = rows.groupBy { it.key }.values.map { matches ->
         matches.first().copy(sources=matches.flatMap { it.sources }.distinctBy { it.url },
             poster=matches.firstOrNull { it.poster.isNotBlank() }?.poster.orEmpty(),
-            description=matches.firstOrNull { it.description.isNotBlank() }?.description.orEmpty())
+            description=matches.firstOrNull { it.description.isNotBlank() }?.description.orEmpty(),
+            genres=matches.flatMap { it.genres }.distinct().sorted())
     }
     fun collections(provider: VodProvider, doc: Document): List<String> = doc.select("a[href]").map { it.absUrl("href") }.filter { url ->
         provider.owns(url) && when(provider) {
@@ -63,6 +64,18 @@ object VodCatalogue {
         VodResult(merged,previous.statuses.mapValues { (p,old) ->
             val count=merged.count { t->t.sources.any { it.provider==p } };if(count>0)"$count titles loaded" else old },
             results.associate { it.first to it.third })
+    }
+    suspend fun forGenre(previous: VodResult, genre: String): VodResult = supervisorScope {
+        // Use only genre collections already linked by the provider itself.
+        val selected=previous.nextPages.mapValues { (_,urls) -> urls.filter { url ->
+            VodGenres.normalise(URL(url).path.trimEnd('/').substringAfterLast('/').replace('-', ' ')).any { it.equals(genre,true) } ||
+                (genre=="Sci-Fi" && URL(url).path.trimEnd('/').endsWith("/sci-fi"))
+        }.take(2) }
+        val additions=selected.map { (provider,urls) -> async(Dispatchers.IO) { urls.flatMap { runCatching { parse(provider,fetch(it)) }.getOrDefault(emptyList()) } } }.flatMap { it.await() }
+        val merged=merge(previous.titles+additions)
+        previous.copy(titles=merged,statuses=previous.statuses.mapValues { (p,old) ->
+            val count=merged.count { title->title.sources.any { it.provider==p } };if(count>0)"$count titles loaded" else old
+        })
     }
     fun fetch(url: String): Document {
         val connection=URL(url).openConnection() as HttpURLConnection
@@ -114,10 +127,16 @@ object VodCatalogue {
             if(provider==VodProvider.PLEX && !a.attr("data-id").startsWith("tv.plex.provider.vod-"))continue
             val poster=img?.absUrl("src").orEmpty().takeIf { it.startsWith("https://") }.orEmpty()
             rows.add(VodTitle(title,year?.takeIf { it in 1880..2100 },kind,poster,
-                metadata?.optString("description").orEmpty(),listOf(VodSource(provider,url))))
+                metadata?.optString("description").orEmpty(),listOf(VodSource(provider,url)),
+                when(provider) {
+                    VodProvider.PLUTO -> VodGenres.normalise(metadata?.optString("genre").orEmpty())
+                    VodProvider.TUBI -> VodGenres.normalise(card.selectFirst(".web-content-tile__tags")?.text().orEmpty())
+                    VodProvider.PLEX -> VodGenres.category(doc)
+                    else -> emptyList()
+                }))
         }
         if(rows.isEmpty() && SourceAdvice.geoMessage(doc.text()))throw IllegalStateException("Provider reports a location restriction. The required country was not supplied.")
-        return rows.distinctBy { it.sources.first().url }
+        return merge(rows)
     }
     private fun parseMovy(doc: Document): List<VodTitle> {
         val rows=mutableListOf<VodTitle>()
@@ -130,14 +149,14 @@ object VodCatalogue {
                     val kind=if(slug.startsWith("/tv/"))"show" else "movie"
                     val year=value.optString("release_date").take(4).toIntOrNull()
                     rows.add(VodTitle(title,year,kind,value.optString("poster").takeIf { it.startsWith("https://") }.orEmpty(),
-                        value.optString("description").takeUnless { it=="null" }.orEmpty(),listOf(VodSource(VodProvider.MOVY,URL(URL(doc.location()),slug).toString()))))
+                        value.optString("description").takeUnless { it=="null" }.orEmpty(),listOf(VodSource(VodProvider.MOVY,URL(URL(doc.location()),slug).toString())),VodGenres.ids(value.optJSONArray("genre_ids"))))
                 }
                 value.keys().forEach { if(it!="messages")walk(value.opt(it)) }
             }
             is JSONArray -> (0 until value.length()).forEach { walk(value.opt(it)) }
         } }
         walk(json)
-        return rows.distinctBy { it.sources.first().url }
+        return merge(rows)
     }
     suspend fun playbackPage(source: VodSource): String = withContext(Dispatchers.IO) {
         require(source.provider.owns(source.url))

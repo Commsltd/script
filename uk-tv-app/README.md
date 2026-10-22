@@ -1,4 +1,4 @@
-# UK Television — 0.5.0 preview
+# UK Television — 0.6.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.5.0-preview.apk
+adb install -r UK-Television-0.6.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -28,6 +28,10 @@ Two official Sky News feeds sustained playback on the Firestick. The official Yo
 The expanded guide and 16 viewing categories remain available. Optional XMLTV schedules are used only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
 
 ## On Demand
+
+Version 0.6 adds combinable genre, exact release year/decade, format and provider filters, plus Featured, title A–Z/Z–A and newest/oldest sorting. Use the visible filter row or **Menu**. **Clear filters** resets the view; **More titles** expands the loaded catalogues. Years and genres come from provider metadata/labelled genre collections; missing values remain under All and can be selected as Unknown. These controls apply to the loaded library rather than every title on the internet.
+
+Open a title and choose **Add to favourites** or **Save to lists**. The **Favourites** and **My lists** tabs show saved items, including when absent from the latest provider home page. Lists can be created from the menu or while saving a title; a title may belong to several lists. Open a list and use **Menu → Manage this list** to rename or delete it. Details let you remove a title from the current list. Saved title metadata, provider links and membership remain in private local app storage across relaunches; no provider account is needed. Playback availability is still checked by the provider when opened.
 
 The native library gathers public provider catalogues through the Firestick's current connection and expands beyond home-page highlights. **More titles** loads further discovered collections; **Search** filters titles already loaded, not every film available online. Select a title to choose a provider. Matching title, year and format combine available provider links without merging remakes. Series open native season/episode lists where the provider supplies usable metadata.
 
