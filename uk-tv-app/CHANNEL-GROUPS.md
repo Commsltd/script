@@ -52,3 +52,13 @@ The explicit mapping is in `tools/channel_groups.py`; it requires no additional 
 ## BBC regional fallback correction — 22 October 2026
 
 BBC One and BBC Two each have one visible entry. The default service is tried first, followed by every retained regional/alternative source. Regional editions are no longer isolated from the main entry. This explicit exception does not merge ITV regions, +1 services, BBC News international editions or other channels. Source labels identify the region; the catalogue retains each regional schedule separately for players that support it. Older players display the default guide. The stream inventory is refreshed from exact BBC One/Two records in iptv-org and keeps the shipped backup list if that lookup fails; URLs are candidates, not claims of working playback.
+
+## Country shelves — 0.7.0
+
+Trinidad & Tobago, Ireland, USA, Canada, Australia and New Zealand have their own shelves. The app also shows existing channels in their country shelf without moving them out of genre groups or duplicating their IDs, favourites or source health. Explicit UK editions stay in their UK genre.
+
+The curated additions use exact iptv-org service identities and public broadcaster/CDN streams. CBC Television, ABC TV Australia and Channel 9 retain all listed regional alternatives behind one national entry, with Toronto, NSW and Sydney first respectively. +1 editions are excluded from these fallback pools. Existing UK sources are untouched. The directory is refreshed by the existing hourly catalogue workflow, and a checked-in seed protects against directory outages.
+
+TTT and CCN TV6 use their broadcaster's embedded player inside UK TV, including its own session and advertising. Back returns to the guide. CNC3 currently rejects the checked public page; it has not been represented by an unrelated stream. RTÉ One/Two, Virgin Media Ireland, CTV, Global, Seven, the main Network Ten feed and Three NZ still need usable sources. USA includes the networks' explicitly named news services and PBS; news feeds are not labelled as the full ABC/CBS/NBC entertainment channels.
+
+New channels do not receive invented programme schedules. Availability can depend on the current VPN route. A manifest responding on the build machine is not evidence of Firestick playback.
