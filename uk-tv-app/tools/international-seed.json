@@ -269,6 +269,145 @@
       "name": "Whakaata Maori",
       "country": "NZ",
       "website": "https://www.maoritelevision.com/live"
+    },
+    {
+      "id": "BounceXL.us",
+      "name": "Bounce XL",
+      "alt_names": [],
+      "network": "Pluto TV",
+      "owners": [
+        "The E.W. Scripps Company"
+      ],
+      "country": "US",
+      "categories": [
+        "entertainment"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://pluto.tv/en/live-tv/bounce-xl"
+    },
+    {
+      "id": "ClassicArtsShowcase.us",
+      "name": "Classic Arts Showcase",
+      "alt_names": [],
+      "network": null,
+      "owners": [
+        "Lloyd E. Rigler-Lawrence E. Deutsch Foundation"
+      ],
+      "country": "US",
+      "categories": [
+        "culture",
+        "education"
+      ],
+      "is_nsfw": false,
+      "launched": "1994-05-03",
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://www.classicartsshowcase.org/"
+    },
+    {
+      "id": "DoveChannel.us",
+      "name": "Dove Channel",
+      "alt_names": [],
+      "network": null,
+      "owners": [
+        "World Dove Media"
+      ],
+      "country": "US",
+      "categories": [
+        "family"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://www.dovechannel.com/privacy-policy"
+    },
+    {
+      "id": "FilmRiseClassicTV.us",
+      "name": "FilmRise Classic TV",
+      "alt_names": [],
+      "network": null,
+      "owners": [
+        "Fisher Klingenstein Ventures"
+      ],
+      "country": "US",
+      "categories": [
+        "classic"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://filmrise.com/"
+    },
+    {
+      "id": "FilmRiseWestern.us",
+      "name": "FilmRise Western",
+      "alt_names": [],
+      "network": null,
+      "owners": [
+        "Fisher Klingenstein Ventures"
+      ],
+      "country": "US",
+      "categories": [
+        "movies"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://filmrise.com/"
+    },
+    {
+      "id": "ShoutFactoryTV.us",
+      "name": "Shout! Factory TV",
+      "alt_names": [],
+      "network": "Pluto TV",
+      "owners": [],
+      "country": "US",
+      "categories": [
+        "general"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://pluto.tv/en/live-tv/shout-factory-tv"
+    },
+    {
+      "id": "TheBobRossChannel.us",
+      "name": "The Bob Ross Channel",
+      "alt_names": [],
+      "network": "Pluto TV",
+      "owners": [],
+      "country": "US",
+      "categories": [
+        "series"
+      ],
+      "is_nsfw": false,
+      "launched": null,
+      "closed": null,
+      "replaced_by": null,
+      "website": "https://pluto.tv/en/live-tv/the-bob-ross-channel"
+    },
+    {
+      "id": "TheFilmDetective.us",
+      "name": "The Film Detective",
+      "alt_names": [],
+      "network": null,
+      "owners": [],
+      "country": "US",
+      "categories": [
+        "movies"
+      ],
+      "is_nsfw": false,
+      "launched": "2013-01-01",
+      "closed": null,
+      "replaced_by": null,
+      "website": null
     }
   ],
   "streams": [
@@ -1264,6 +1403,140 @@
       "title": "Whakaata Maori",
       "url": "https://i.mjh.nz/.r/maori-tv.m3u8",
       "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BounceXL.us",
+      "feed": "SD",
+      "title": "Bounce XL",
+      "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01438-ewscrippscompan-bouncexl-tablo/playlist.m3u8",
+      "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BounceXL.us",
+      "feed": "SD",
+      "title": "Bounce XL",
+      "url": "https://jmp2.uk/plu-6176fd25e83a5f0007a464c9.m3u8",
+      "quality": null,
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "BounceXL.us",
+      "feed": "SD",
+      "title": "Bounce XL",
+      "url": "https://pb-xp0ozx9lyqeiv.akamaized.net/BounceXL_US.m3u8",
+      "quality": "1080p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "ClassicArtsShowcase.us",
+      "feed": "SD",
+      "title": "Classic Arts Showcase",
+      "url": "https://classicarts.akamaized.net/hls/live/1024257/CAS/master.m3u8",
+      "quality": "720p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "DoveChannel.us",
+      "feed": "SD",
+      "title": "Dove Channel",
+      "url": "https://linear-896.frequency.stream/dist/cineverse/896/hls/master/playlist.m3u8",
+      "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "DoveChannel.us",
+      "feed": "SD",
+      "title": "Dove Channel",
+      "url": "https://d2v2e5kw14egus.cloudfront.net/playlist.m3u8",
+      "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "DoveChannel.us",
+      "feed": "SD",
+      "title": "Dove Channel",
+      "url": "https://linear-896.frequency.stream/dist/xumo/896/hls/master/playlist.m3u8",
+      "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "FilmRiseClassicTV.us",
+      "feed": "SD",
+      "title": "FilmRise Classic TV",
+      "url": "https://d2tv4k5moji5m7.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-lu4pzh9l4b57p/master.m3u8",
+      "quality": "720p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "FilmRiseWestern.us",
+      "feed": "SD",
+      "title": "FilmRise Westerns",
+      "url": "https://dz05z8iljgvbe.cloudfront.net/master.m3u8",
+      "quality": "720p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "ShoutFactoryTV.us",
+      "feed": "SD",
+      "title": "Shout! TV",
+      "url": "https://d1s1wrpgemt9re.cloudfront.net/Shout_TV.m3u8",
+      "quality": "1080p",
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "TheBobRossChannel.us",
+      "feed": "SD",
+      "title": "The Bob Ross Channel",
+      "url": "https://jmp2.uk/plu-5f36d726234ce10007784f2a.m3u8",
+      "quality": null,
+      "labels": [],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "TheBobRossChannel.us",
+      "feed": "SD",
+      "title": "The Bob Ross Channel",
+      "url": "https://pb-yxyesssss0re7.akamaized.net/v1/cinedigm_entertainment_corp_thebobrosschannel_1/samsungheadend_us/latest/main/hls/playlist.m3u8",
+      "quality": "720p",
+      "labels": [
+        "Geo-blocked"
+      ],
+      "user_agent": null,
+      "referrer": null
+    },
+    {
+      "channel": "TheFilmDetective.us",
+      "feed": "SD",
+      "title": "The Film Detective",
+      "url": "https://cinedigm-entertainment-corp-thefilmdetective-1-us.ono.wurl.tv/playlist.m3u8",
+      "quality": "720p",
       "labels": [],
       "user_agent": null,
       "referrer": null

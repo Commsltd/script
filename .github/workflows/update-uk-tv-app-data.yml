@@ -11,6 +11,7 @@ on:
       - 'uk-tv-app/tools/export_manifest.py'
       - 'uk-tv-app/tools/channel_groups.py'
       - 'uk-tv-app/tools/international_channels.py'
+      - 'uk-tv-app/tools/international_guides.py'
       - 'uk-tv-app/tools/international-seed.json'
       - 'uk-tv-app/tools/test_international_channels.py'
       - 'uk-tv-app/tools/stream_sources.py'
