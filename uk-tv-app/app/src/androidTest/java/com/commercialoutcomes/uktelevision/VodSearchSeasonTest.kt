@@ -59,7 +59,10 @@ class VodSearchSeasonTest {
     }
     @Test fun duloSelectedEpisodeActuallyPlays(){
         optIn()
-        val intent=Intent(inst.targetContext,VodPlayerActivity::class.java).putExtra("provider","DULO").putExtra("url","https://dulo.mov/tv/watch/tv/1396?s=3&e=1").putExtra("title","Breaking Bad S3E1")
+        val args=InstrumentationRegistry.getArguments()
+        val series=args.getString("seriesId","1396");val season=args.getString("season","3");val episode=args.getString("episode","1")
+        require(listOf(series,season,episode).all { it.matches(Regex("[0-9]+")) })
+        val intent=Intent(inst.targetContext,VodPlayerActivity::class.java).putExtra("provider","DULO").putExtra("url","https://dulo.mov/tv/watch/tv/$series?s=$season&e=$episode").putExtra("title",args.getString("title","Breaking Bad S3E1"))
         ActivityScenario.launch<VodPlayerActivity>(intent).use { scenario ->
             var report=JSONObject()
             fun sample(){
@@ -71,7 +74,7 @@ class VodSearchSeasonTest {
                 }
                 latch.await(5,java.util.concurrent.TimeUnit.SECONDS)
             }
-            val deadline=System.currentTimeMillis()+100000
+            val deadline=System.currentTimeMillis()+args.getString("startupTimeoutMs","100000").toLong().coerceIn(10000,100000)
             while(System.currentTimeMillis()<deadline){sample();if(report.optBoolean("playing")&&report.optInt("frames")>120)break;Thread.sleep(1000)}
             File(inst.targetContext.getExternalFilesDir(null),"dulo-playback.json").writeText(report.toString(2))
             assertTrue(report.toString(),report.optBoolean("playing")&&report.optInt("frames")>120)

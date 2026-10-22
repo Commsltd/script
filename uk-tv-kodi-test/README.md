@@ -2,17 +2,17 @@
 
 ## 0.2.0 catalogue bridge / UK TV 0.9.0
 
-**Prepared locally, not deployed or verified on the Firestick.** The user is watching; no device connection was made during this update.
+**Bridge 0.2.0 deployed with UK TV 0.9.1 after viewing finished and the user authorised the update.** The actual TV directory returned 17 category folders. Porridge live search returned no rows (none were skipped by the parser), so title-search and successful episode playback are not established. The device test for that title search failed and is retained in the validation report.
 
 The new UK TV **Browse The Crew** screen calls the installed Crew add-on's own directories through [Kodi Files.GetDirectory](https://kodi.wiki/view/JSON-RPC_API/v12#Files.GetDirectory). Films, series, supported category pages and returned next-page links are rendered in a native remote-controlled grid. Search invokes `movieSearchterm` or `tvSearchterm` with the user's text. It does not run a Kodi instance on the Mac, copy a provider API key, or present the unrelated Movy discovery feed as Crew's catalogue.
 
 The authenticated loopback API adds `POST /catalogue` and advertises `catalogue-v1` in `/status`. Requests accept a movie/TV section, a query or an opaque folder handle returned by an earlier page. Only returned, allowlisted Crew catalogue directories are traversed. Playback, settings and external plugin paths cannot be requested through this endpoint. Film/series metadata is returned with canonical title IDs; provider URLs stay inside Kodi. Requests run asynchronously so `/status` and `/quit` remain responsive. Handles expire with the engine. The Android app has a bounded recent-title cache, while live navigation follows provider pages. Menu items requiring Kodi's own interactive tools, personal-account workflows or unsupported episode/calendar views are omitted.
 
-### Deployment when viewing has finished
+### Deployment procedure
 
-Update **both** the normal UK Television package to the staged 0.9.0-preview APK **and** the existing `service.uktelevision.crewtest` add-on to the supplied 0.2.0 ZIP. Do not clear data, replace Kodi/Crew, change the VPN, or overwrite the private bridge token. Back up the installed APK, app preferences and existing bridge directory first. Kodi must be stopped while replacing this bridge; install/update its ZIP through Kodi's add-on mechanism or the existing authorised deployment process, then restart it for the new service to load. The APK alone cannot add catalogue support to the old 0.1.0 bridge. The application detects that mismatch explicitly.
+Update **both** the normal UK Television package to the 0.9.1-preview APK **and** the existing `service.uktelevision.crewtest` add-on to the supplied 0.2.0 ZIP. Do not clear data, replace Kodi/Crew, change the VPN, or overwrite the private bridge token. Back up the installed APK, app preferences and existing bridge directory first. Kodi must be stopped while replacing this bridge; install/update its ZIP through Kodi's add-on mechanism or the existing authorised deployment process, then restart it for the new service to load. The APK alone cannot add catalogue support to the old 0.1.0 bridge. The application detects that mismatch explicitly.
 
-Pending device checks: Crew Films/TV menus, genres/years, next pages and search; selecting a title into normal details; provider multi-selection and persistence after reopening; exclusion of Crew without starting Kodi; starting/stopping the engine and returning to UK TV. Existing successful-source playback has not been established. No successful end-to-end catalogue or source playback is claimed from the local unit tests.
+Remaining device checks: Crew Films menus, genres/years, next pages and search; selecting a title into normal details; provider multi-selection and persistence after reopening; exclusion of Crew without starting Kodi; starting/stopping the engine and returning to UK TV. Existing successful-source playback has not been established. No successful end-to-end catalogue or source playback is claimed from the local unit tests.
 
 ## Earlier 0.1.0 source-only experiment
 

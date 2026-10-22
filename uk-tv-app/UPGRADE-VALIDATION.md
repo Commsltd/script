@@ -1,5 +1,20 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.9.1 installation and bounded device checks
+
+Installed on the user's AFTSS Firestick after explicit permission to interrupt viewing. Final package is `com.commercialoutcomes.uktelevision.preview`, version `0.9.1-preview`, code 13, **non-debuggable**. The existing approved APK/signing identity and icon are retained. The temporary instrumentation package was removed. The existing Crew bridge code was updated to 0.2.0 without replacing the per-device token, Kodi or Crew. No VPN setting was changed.
+
+Backups include the former 0.8.1 APK, old bridge and private preferences/database archive. Semantic checks confirm saved VOD favourites/lists, provider selection, bridge token and live favourites are unchanged after checks. The normal build was relaunched after installation.
+
+Device results:
+
+- **PASS — Pluto Movies GB and Pluto Animation:** 104 and 101 rendered frames respectively in guide preview, then another 148 and 131 frames over four seconds after switching the same player to full screen. Screenshots were inspected; actual pictures were visible. This covers those two channels for a short interval, not every Pluto service or sustained playback.
+- **PASS — VOD synopsis and provider persistence:** online Porridge search returned the original 1974 series and its synopsis. Remote focus displayed the matching highlighted-title description in the side panel. A two-provider selection survived activity recreation and hid Browse The Crew. The original user selection was restored; saved-library content was unchanged. Screenshot and JSON evidence retained.
+- **PARTIAL — Crew catalogue:** bridge 0.2.0 started and the actual TV directory returned 17 category folders. The Porridge search returned zero rows, with no skipped rows or bridge error. The native Crew search assertion therefore failed; this is not a successful title-search or playable-source result. No successful Crew episode playback is claimed.
+- **PASS — actual original Porridge S1E1 via Dulo:** selected the native app's episode route for series ID 2292, season 1, episode 1. Its embedded video played at 360p; final sample was 15.65 seconds and 395 decoded video frames, with playback advancing by more than six seconds during the further ten-second check. This is a bounded episode-start check, not full-episode completion, HD quality or proof of all seasons/titles. The player remained inside UK Television; Media3 was not active for this sample.
+
+The three-check upgrade run finished with two passes and one Crew-search failure in 66 seconds. The separate actual-episode check passed in 46 seconds. Both successful and failing outputs are retained under the local 0.9.1 device-evidence directory. The initial episode command had an argument-quoting error before instrumentation started; it was corrected and the bounded test then ran successfully.
+
 ## 0.9.1 preview selection, VOD descriptions and classics — local build only
 
 The Firestick was not connected to, inspected, restarted, installed to or otherwise operated. The public feed was read but not changed. The user is watching; 0.8.1 remains the last installed release. Version code 13 is staged for later alongside the unchanged Crew bridge 0.2.0.
