@@ -27,6 +27,13 @@ class VodLiveTest {
             }
         }
     }
+    @Test fun duloCatalogueHasBrowsableTitles() {
+        optIn()
+        val doc=VodCatalogue.fetch(VodProvider.DULO.home)
+        File(context.getExternalFilesDir(null),"dulo-catalogue-page.html").writeText(doc.outerHtml())
+        val rows=VodCatalogue.parse(VodProvider.DULO,doc)
+        assertTrue("${doc.title()} · ${doc.outerHtml().length} bytes · ${doc.location()}",rows.isNotEmpty())
+    }
     @Test fun nativeLibraryLoadsSeveralProvidersOnDevice() {
         optIn()
         ActivityScenario.launch(OnDemandActivity::class.java).use { scenario ->
@@ -45,11 +52,13 @@ class VodLiveTest {
             Thread.sleep(3500)
             UiDevice.getInstance(instrumentation).takeScreenshot(File(context.getExternalFilesDir(null),"vod-library.png"))
             assertTrue(json.toString(),catalogue.titles.flatMap { it.sources }.map { it.provider }.distinct().size>=2)
+            assertTrue("Dulo titles must appear in the native library",catalogue.titles.any { t->t.sources.any { it.provider==VodProvider.DULO } })
         }
     }
     @Test fun selectedPlexFilmPlaysInsideUkTv() = verifyFilm(VodSource(VodProvider.PLEX,"https://watch.plex.tv/en-GB/movie/the-man-from-earth"), "The Man from Earth")
     @Test fun selectedPlutoFilmPlaysInsideUkTv() = verifyFilm(VodSource(VodProvider.PLUTO,"https://pluto.tv/gb_ie/movies/6876361c63893d441e24e420/"), "The Last Witch Hunter")
     @Test fun selectedTubiFilmPlaysInsideUkTv() = verifyFilm(VodSource(VodProvider.TUBI,"https://tubitv.com/movies/467588/the-man-from-earth"), "The Man from Earth")
+    @Test fun selectedDuloFilmPlaysInsideUkTv() = verifyFilm(VodSource(VodProvider.DULO,"https://dulo.mov/title/movie/278/"), "The Shawshank Redemption")
     @Test fun selectedMovyFilmPlaysInsideUkTv() = verifyFilm(VodSource(VodProvider.MOVY,"https://www.movy.sx/movie/278"), "The Shawshank Redemption")
     @Test fun nativeSeriesSelectionPlaysTheChosenMovyEpisode() {
         optIn()

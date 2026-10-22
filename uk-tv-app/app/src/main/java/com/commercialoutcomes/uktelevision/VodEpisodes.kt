@@ -46,7 +46,7 @@ object VodEpisodes {
                 }
                 VodProvider.TUBI -> if(Regex("^/tv-shows/\\d+/").containsMatchIn(path))"episode" else null
                 VodProvider.PLUTO -> if(path.startsWith("$seriesPath/episode/") || path.startsWith("$seriesPath/episodes/"))"episode" else null
-                VodProvider.MOVY -> null
+                VodProvider.MOVY, VodProvider.DULO -> null
             } ?: continue
             val name=a.attr("aria-label").ifBlank { a.text() }.ifBlank { a.selectFirst("img")?.attr("alt").orEmpty() }
             if(name.isBlank())continue

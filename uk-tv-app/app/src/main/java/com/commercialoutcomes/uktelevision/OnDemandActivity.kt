@@ -51,6 +51,7 @@ class OnDemandActivity : ComponentActivity() {
     private val shelfLabel get()=when(shelf) { "browse"->"Browse";"favourites"->"Favourites";else->saved.lists.firstOrNull { it.id==shelf }?.name ?: "My list" }
     private var loading by mutableStateOf(false)
     private val expandedGenres=mutableSetOf<String>()
+    private val checkedAlternatives=mutableSetOf<String>()
     private val strictPrivacy get()=getSharedPreferences("preferences",MODE_PRIVATE).getString("privacyMode","")==PrivacyMode.STRICT.name
     val isLoading: Boolean get() = loading
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,14 +70,14 @@ class OnDemandActivity : ComponentActivity() {
         message="Loading free films and TV series through your current connection…"
         lifecycleScope.launch {
             catalogue=VodCatalogue.load()
-            if(catalogue.titles.none { t->t.sources.any { it.provider==VodProvider.TUBI } }) {
-                message="Loading Tubi’s catalogue…"
-                runCatching { VodWebCatalogue.fetch(this@OnDemandActivity,VodProvider.TUBI) }.onSuccess { doc ->
-                    val extra=VodCatalogue.parse(VodProvider.TUBI,doc)
+            for(provider in listOf(VodProvider.TUBI,VodProvider.DULO))if(catalogue.titles.none { t->t.sources.any { it.provider==provider } }) {
+                message="Loading ${provider.label}’s catalogue…"
+                runCatching { VodWebCatalogue.fetch(this@OnDemandActivity,provider) }.onSuccess { doc ->
+                    val extra=VodCatalogue.parse(provider,doc)
                     catalogue=catalogue.copy(titles=VodCatalogue.merge(catalogue.titles+extra),
-                        statuses=catalogue.statuses+(VodProvider.TUBI to "${extra.size} titles loaded"),
-                        nextPages=catalogue.nextPages+(VodProvider.TUBI to VodCatalogue.collections(VodProvider.TUBI,doc)))
-                }.onFailure { catalogue=catalogue.copy(statuses=catalogue.statuses+(VodProvider.TUBI to (it.message ?: "Catalogue unavailable"))) }
+                        statuses=catalogue.statuses+(provider to "${extra.size} titles loaded"),
+                        nextPages=catalogue.nextPages+(provider to VodCatalogue.collections(provider,doc)))
+                }.onFailure { catalogue=catalogue.copy(statuses=catalogue.statuses+(provider to (it.message ?: "Catalogue unavailable"))) }
             }
             // Expand beyond provider home-page highlights while keeping the
             // native library visible and usable as each batch arrives.
@@ -178,13 +179,24 @@ class OnDemandActivity : ComponentActivity() {
             "More titles"->more();"Refresh"->refresh();"Manage this list"->manageList();else->status()
         } }
     }
-    private fun details(title: VodTitle) {
+    private fun details(title: VodTitle, checked: Boolean = false) {
+        if(!checked && title.key !in checkedAlternatives) {
+            message="Checking alternative sources for ${title.title}…"
+            lifecycleScope.launch {
+                val enriched=VodCatalogue.alternatives(title)
+                checkedAlternatives.add(title.key)
+                catalogue=catalogue.copy(titles=VodCatalogue.merge(catalogue.titles+enriched))
+                details(enriched,true)
+                message="${catalogue.titles.size} titles · MENU during playback to change stream"
+            }
+            return
+        }
         val sources=title.sources
-        val actions=sources.map { "${if(title.kind=="show") "Episodes" else "Watch"} · ${it.provider.label}" }+
+        val actions=sources.map { "${if(title.kind=="show") "Choose episode" else "Watch"} · ${it.provider.label}" }+
             listOf(if(saved.isFavourite(title))"★ Remove from favourites" else "☆ Add to favourites","Save to lists","About this title")+
             if(saved.lists.any { it.id==shelf })listOf("Remove from this list") else emptyList()
         AlertDialog.Builder(this).setTitle(title.title).setItems(actions.toTypedArray()) { _,i -> when {
-            i<sources.size->if(title.kind=="show")showEpisodes(title,sources[i]) else play(title,sources[i])
+            i<sources.size->if(title.kind=="show" && sources[i].provider!=VodProvider.DULO)showEpisodes(title,sources[i]) else play(title,sources[i])
             i==sources.size->save(saved.toggleFavourite(title))
             i==sources.size+1->addToLists(title)
             i==sources.size+2->AlertDialog.Builder(this).setTitle(title.title).setMessage(title.subtitle+"\n"+title.genres.joinToString(" · ").ifBlank { "Genre not supplied" }+"\n\n"+title.description.ifBlank { "Choose a source to see its current availability." }).setPositiveButton("Back",null).show()
@@ -210,7 +222,9 @@ class OnDemandActivity : ComponentActivity() {
             runCatching { VodCatalogue.playbackPage(source) }.onSuccess { url ->
                 pendingTitle=title
                 playerLauncher.launch(Intent(this@OnDemandActivity,VodPlayerActivity::class.java)
-                    .putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",title.sources.size-1))
+                    .putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",title.sources.size-1)
+                    .putExtra("sourceUrls",title.sources.map { it.url }.toTypedArray()).putExtra("sourceProviders",title.sources.map { it.provider.name }.toTypedArray())
+                    .putExtra("sourceIndex",title.sources.indexOf(source)))
             }.onFailure { failure(it.message.orEmpty()) }
             message="${catalogue.titles.size} titles · Free with adverts"
         }

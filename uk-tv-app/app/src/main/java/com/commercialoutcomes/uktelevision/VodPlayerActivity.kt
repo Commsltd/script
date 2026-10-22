@@ -1,7 +1,13 @@
 package com.commercialoutcomes.uktelevision
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewFeature
+import kotlinx.coroutines.launch
+import android.widget.Toast
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
@@ -13,22 +19,31 @@ import android.webkit.*
 import android.widget.FrameLayout
 
 /** Official provider players stay in this activity, including their ads and consent controls. */
-class VodPlayerActivity : Activity() {
+class VodPlayerActivity : ComponentActivity() {
     private lateinit var root: FrameLayout
     lateinit var web: WebView; private set
     private var custom: View? = null
     private var customCallback: WebChromeClient.CustomViewCallback? = null
     private lateinit var provider: VodProvider
+    private var streamControls: VodStreamControls? = null
+    private var sources=emptyList<VodSource>()
+    private var sourceIndex=0
+    private lateinit var defaultAgent: String
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this) { closeFullscreen();finish() }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         provider = runCatching { VodProvider.valueOf(intent.getStringExtra("provider").orEmpty()) }.getOrElse { finish(); return }
         val target = intent.getStringExtra("url").orEmpty()
+        val urls=intent.getStringArrayExtra("sourceUrls").orEmpty()
+        val providers=intent.getStringArrayExtra("sourceProviders").orEmpty()
+        sources=urls.mapIndexedNotNull { i,url -> runCatching { val p=VodProvider.valueOf(providers[i]);if(p.owns(url))VodSource(p,url) else null }.getOrNull() }
+        sourceIndex=intent.getIntExtra("sourceIndex",0).coerceIn(0,(sources.size-1).coerceAtLeast(0))
         if(!provider.owns(target)) { finish(); return }
         root = FrameLayout(this)
         web = WebView(this).apply {
@@ -40,9 +55,16 @@ class VodPlayerActivity : Activity() {
             settings.allowContentAccess = false
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
             settings.setSupportMultipleWindows(false)
+            setOnKeyListener { _, code, event ->
+                if(code==KeyEvent.KEYCODE_MENU) {
+                    if(event.action==KeyEvent.ACTION_DOWN && event.repeatCount==0)showServices()
+                    true
+                } else false
+            }
             // Full desktop layouts expose playback controls on TV-sized screens.
             settings.useWideViewPort = true
             settings.loadWithOverviewMode = true
+            defaultAgent=settings.userAgentString
             if(provider==VodProvider.TUBI) {
                 // Tubi's mobile site serves a preview and an app-install link.
                 // Request its desktop web player, retaining this engine's version.
@@ -57,9 +79,11 @@ class VodPlayerActivity : Activity() {
                 override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
                     request.isForMainFrame && !provider.owns(request.url.toString())
                 override fun onPageFinished(view: WebView, url: String) {
+                    if(!provider.owns(url))return
                     if(provider==VodProvider.MOVY) fitMovyViewport()
                     if(provider==VodProvider.PLUTO) startChosenPlutoTitle()
                     if(provider==VodProvider.TUBI) enterTubiFullscreen()
+                    if(provider==VodProvider.DULO) web.evaluateJavascript("""(()=>{const style=document.createElement('style');style.textContent='video{object-fit:contain!important}';document.head.appendChild(style)})()""",null)
                 }
                 override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
                     AlertDialog.Builder(this@VodPlayerActivity).setMessage("The provider player stopped. Please reopen On Demand.").setPositiveButton("Return to library") { _, _ -> finish() }.show()
@@ -78,7 +102,17 @@ class VodPlayerActivity : Activity() {
         root.setBackgroundColor(Color.BLACK)
         root.addView(web, FrameLayout.LayoutParams(-1,-1))
         setContentView(root)
+        // Apply the provider's own TV quality preference before its early
+        // player starts. Unbounded 4K playback exhausts a 1 GB Firestick.
+        if(WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+            val memory=android.app.ActivityManager.MemoryInfo()
+            (getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager).getMemoryInfo(memory)
+            val quality=if(memory.totalMem<=1536L*1024*1024)"720p" else "1080p"
+            WebViewCompat.addDocumentStartJavaScript(web,"""try{const key='dulo_tv_preferences_v1';const p=JSON.parse(localStorage.getItem(key)||'{}');if(p.preferredQuality!=='720p')p.preferredQuality='$quality';localStorage.setItem(key,JSON.stringify(p))}catch(e){}""",setOf("https://dulo.mov"))
+        }
         web.loadUrl(target)
+        web.requestFocus()
+        Toast.makeText(this,"Press MENU to change stream or provider",Toast.LENGTH_LONG).show()
     }
     private fun fitMovyViewport() {
         // Movy's TV detection sets a 1280px layout at scale 1, but this
@@ -133,18 +167,68 @@ class VodPlayerActivity : Activity() {
         custom?.let(root::removeView); custom = null
         customCallback?.onCustomViewHidden(); customCallback = null
     }
+    private fun changeStream() {
+        if(provider !in setOf(VodProvider.MOVY,VodProvider.DULO)) { chooseProvider();return }
+        streamControls?.close()
+        val controls=VodStreamControls(web,provider);streamControls=controls
+        controls.list { choices ->
+            if(isFinishing || isDestroyed)return@list
+            if(choices.isEmpty()) {
+                AlertDialog.Builder(this).setTitle("Streams not ready")
+                    .setMessage("${provider.label} has not exposed its server choices yet. Wait for the player to load, then try again.")
+                    .setPositiveButton("Try again") { _,_->changeStream() }
+                    .setNeutralButton("Other providers") { _,_->chooseProvider() }.setNegativeButton("Back",null).show()
+            } else {
+                val labels=choices.map { (if(it.selected)"✓ " else "")+it.label }
+                AlertDialog.Builder(this).setTitle("Change stream · ${provider.label}")
+                    .setItems(labels.toTypedArray()) { _,i -> controls.choose(choices[i]) { changed ->
+                        Toast.makeText(this,if(changed)"Changing stream to ${choices[i].label}" else "Choices changed. Open Change stream again.",Toast.LENGTH_LONG).show()
+                        web.requestFocus()
+                    } }
+                    .setNeutralButton("Other providers") { _,_->chooseProvider() }.setNegativeButton("Back",null).show()
+            }
+        }
+    }
+    private fun chooseProvider() {
+        if(sources.size<2) {
+            AlertDialog.Builder(this).setTitle("Other providers").setMessage("No other provider is listed for this title yet. ${if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))"Use Change stream to try this provider’s other servers." else "You can reload this source or return to the library."}")
+                .setPositiveButton("Back",null).show();return
+        }
+        AlertDialog.Builder(this).setTitle("Choose provider · ${intent.getStringExtra("title")}")
+            .setSingleChoiceItems(sources.map { it.provider.label }.toTypedArray(),sourceIndex) { dialog,i ->
+                dialog.dismiss();if(i!=sourceIndex)switchProvider(i)
+            }.setNegativeButton("Back",null).show()
+    }
+    private fun switchProvider(index: Int) {
+        val source=sources[index]
+        Toast.makeText(this,"Opening ${source.provider.label}…",Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            runCatching { VodCatalogue.playbackPage(source) }.onSuccess { url ->
+                streamControls?.close();handler.removeCallbacksAndMessages(null);closeFullscreen()
+                web.stopLoading();provider=source.provider;sourceIndex=index
+                web.settings.userAgentString=if(provider==VodProvider.TUBI)defaultAgent.replaceFirst(Regex("\\([^)]*\\)"),"(X11; Linux x86_64)").replace(" Version/4.0","").replace(" Mobile","") else defaultAgent
+                web.loadUrl(url);web.requestFocus()
+            }.onFailure { AlertDialog.Builder(this@VodPlayerActivity).setTitle("Source unavailable").setMessage(it.message).setPositiveButton("Back",null).show() }
+        }
+    }
     private fun showServices() {
-        val labels=buildList { if(intent.getIntExtra("alternativeCount",0)>0)add("Choose another source");if(provider==VodProvider.TUBI)add("Full screen");add("Reload this source");add("Return to library") }
-        AlertDialog.Builder(this).setTitle("UK TV · On Demand")
+        val labels=buildList {
+            if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))add("Change stream · poor copy or buffering")
+            add("Choose another provider")
+            if(provider==VodProvider.TUBI)add("Full screen")
+            add("Reload this source");add("Return to library")
+        }
+        AlertDialog.Builder(this).setTitle("UK TV · ${provider.label}")
             .setItems(labels.toTypedArray()) { _, i -> when(labels[i]) {
-                "Choose another source" -> { setResult(RESULT_FIRST_USER);finish() }
+                "Change stream · poor copy or buffering" -> changeStream()
+                "Choose another provider" -> chooseProvider()
                 "Full screen" -> if(custom==null)sendPlayerKey(KeyEvent.KEYCODE_F)
-                "Reload this source" -> web.reload()
+                "Reload this source" -> { streamControls?.close();handler.removeCallbacksAndMessages(null);web.reload() }
                 else -> finish()
             } }.show()
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) { showServices(); return true }
+        if(keyCode==KeyEvent.KEYCODE_MENU) { if(event.repeatCount==0)showServices();return true }
         if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
             // Ask the provider player to toggle. Never resume a content video
             // that its advertising player deliberately paused.
@@ -153,11 +237,7 @@ class VodPlayerActivity : Activity() {
         }
         return super.onKeyDown(keyCode,event)
     }
-    @Deprecated("Legacy Fire OS back dispatch")
-    override fun onBackPressed() {
-        closeFullscreen();finish()
-    }
     override fun onPause() { if(::web.isInitialized)web.onPause(); super.onPause() }
     override fun onResume() { super.onResume(); if(::web.isInitialized)web.onResume() }
-    override fun onDestroy() { handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
+    override fun onDestroy() { streamControls?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
 }

@@ -100,7 +100,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         val filtered = stations.filter {
             group == "ALL CHANNELS" ||
                 (group == "FAVOURITES" && it.id in favourites) ||
-                it.groupName == group
+                it.groupName == group || CountryGroups.group(it.id)==group
         }
         filtered.flatMap { station ->
             val all = sourceCache[station.id] ?: station.sources()
@@ -114,7 +114,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
 
     private val visibleChannels by derivedStateOf { visibleRows.distinctBy { it.station.id } }
     private val visibleGroups by derivedStateOf {
-        listOf("FAVOURITES", "ALL CHANNELS") + stations.map { it.groupName }.distinct()
+        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { it.groupName } + stations.mapNotNull { CountryGroups.group(it.id) }).distinct().sorted()
     }
 
     /** One row per service/variant, for the fast live overlay. */

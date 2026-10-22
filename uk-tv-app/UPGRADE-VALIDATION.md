@@ -1,5 +1,26 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.7.0 VOD stream choices and country shelves
+
+Adds Dulo to the native VOD library and a remote MENU stream chooser for Dulo and Movy. The chooser operates each provider's own server controls inside UK TV. Verified matching title identities can also switch between providers without launching another app. A server's advertised HD/4K label does not establish copy quality; cam detection and automatic VOD server failover are not claimed.
+
+Dulo initially selected 4K on the 1 GB AFTSS and the app process was killed during testing. This was not a device reboot. Dulo now uses its TV player and its own quality preference is set before page scripts run: 720p on devices with at most 1.5 GB RAM, 1080p otherwise, retaining an existing 720p choice. The provider can still return a fixed 1080p source when a lower rendition is unavailable. The picture fits without cropping. Dulo's slashless catalogue address redirected HTTPS to HTTP; using the canonical HTTPS `/movies/` fixes catalogue loading without permitting insecure navigation.
+
+Final local validation passes 52 Kotlin unit tests, both debug and tvPreview Android lint, debug/tvPreview APK builds, instrumentation build, and 47 Python feed/guide/artwork/resolver checks. Both workflow files parse and `git diff --check` passes. The normal-runtime APK is version 0.7.0-preview, code 8; it uses the same preview package and certificate. Its embedded icon bytes match the user-approved artwork exactly.
+
+Firestick verification on AFTSS/API 28, with the existing VPN route:
+
+- Dulo: remote MENU opened the native chooser and changed Shawshank from Pickle to Prime. Initial playback was 1280 pixels wide; the replacement rendered at 1920 pixels. It advanced from 24.16 to 69.64 seconds over a further 45 seconds, with zero stalled one-second samples. Full source-switch scenario passed in 112.98 seconds.
+- Movy: native chooser changed the server, then playback advanced from 5.24 to 50.72 seconds over 45 seconds, with zero stalled samples. Scenario passed in 90.96 seconds. These are bounded playback checks, not full-film guarantees.
+- Native library: final run loaded 664 merged titles, including Dulo 20, Movy 136, Plex 247, Pluto 106 and Tubi 180; 24 titles had multiple sources. Dulo's direct catalogue parse and the native-library assertion both passed (25.56 seconds). Counts are a point-in-time sample, not full catalogues.
+- Provider-control fixtures verified that the requested server button, and no other, is selected for both Dulo and Movy.
+- Country test passed in 59.37 seconds: all six shelves were present; GB News retained at least 11 alternatives, CBC 14 and ABC TV 8. Bizz TV, TG4, CityNews Toronto, ABC News Australia and Whakaata Maori each rendered at least 100 video frames.
+- TTT's broadcaster player rendered 331 frames and more than 15 seconds of advancing video full screen. TV6's broadcaster page and correctly sized embedded player load, but its player explicitly reported “Live stream off air” during the final check; live TV6 playback is not verified. Its published page lists selected morning/evening news windows, not a 24-hour stream.
+
+Country feed PRs 16 and 17 were merged; final catalogue run 39766708436 succeeded. The published snapshot has 326 channel entries and 715 sources. Comparing source IDs against the pre-update snapshot proves all 285 existing channels and every existing alternative are retained. Added shelves: Trinidad & Tobago, Ireland, USA, Canada, Australia and New Zealand. Current shelf sizes are 8, 2, 10, 11, 12 and 4 respectively, including existing services. Coverage gaps and absent programme data are documented in CHANNEL-GROUPS.md. No claim is made that all newly listed streams play on every VPN route.
+
+The 0.6.1 APK and app data were backed up before the in-place upgrade. Existing preference keys/values match the backup; no saved VOD-library file existed in that backup. No app data was cleared. Final installation and evidence are retained in the local 0.7.0 report folder.
+
 ## 0.6.1 picture recovery and responsiveness
 
 The user reported GB News audio without video and general sluggishness. Initial playback worked, but the final manual channel-change/full-screen check reproduced a black picture. A new generated-video regression then reproduced the exact transition failure: the changed channel rendered zero frames while its decoder and audio ran. Moving the native PlayerView with Compose movable content while replacing its player could leave the video surface detached. The fix creates and releases native views at each destination and each player change while retaining the playback engine. YouTube retains its movable page/session. Device logs also showed memory pressure and long UI frames; the old recovery watchdog stopped monitoring picture progress after the first rendered frame.

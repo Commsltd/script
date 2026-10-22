@@ -1,4 +1,4 @@
-# UK Television — 0.6.1 preview
+# UK Television — 0.7.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.6.1-preview.apk
+adb install -r UK-Television-0.7.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -19,7 +19,7 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 
 ## Upgrade status
 
-The preview includes a native On Demand library for Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Provider players stay inside UK Television, retain their adverts and consent controls, and use the full screen without a permanent UK TV toolbar. The supplied television artwork is used for the app icon and Fire TV tile.
+The preview includes a native On Demand library for Dulo, Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Provider players stay inside UK Television, retain their adverts and consent controls, and use the full screen without a permanent UK TV toolbar. The supplied television artwork is used for the app icon and Fire TV tile.
 
 Live-channel alternatives are retained without a three-source cap. The published catalogue includes 51 BBC One, 16 BBC Two and 11 GB News source candidates; these counts are alternatives, not guarantees of independent or working feeds. BBC national feeds precede regional fallbacks. Playback tries untried alternatives before retrying a failed source. Background reachability checks rotate through annotated built-in alternatives, up to three every five minutes after stable playback. User-added account playlists are not probed automatically.
 
@@ -29,6 +29,10 @@ The expanded guide and 16 viewing categories remain available. Optional XMLTV sc
 
 Version 0.6.1 fixes native video-surface attachment when changing channels and moving between preview and full screen. It also checks decoded video continuously, so a feed that continues playing audio after losing its picture can advance to another source. The six-second picture timeout pauses while playback is paused or buffering. After the initial default/pinned source, alternatives with recent successful playback are preferred; every retained source remains eligible. Live buffering is bounded to reduce memory pressure on the 1 GB Firestick. Guide grouping runs off the UI thread, guide/VOD result lists are cached until their inputs change, and recent or unchanged guide snapshots avoid repeated downloads and database replacement. Failed artwork downloads remain eligible for retry.
 
+## Country channels
+
+The guide adds **Trinidad & Tobago, Ireland, USA, Canada, Australia and New Zealand**. Existing stations retain their genre groups and appear in country shelves as well. New national entries keep all their listed regional alternatives. TTT/TV6 use broadcaster web players inside UK TV; Back returns to the guide. See [channel coverage and gaps](CHANNEL-GROUPS.md). New channels do not yet all have programme information.
+
 ## On Demand
 
 Version 0.6 adds combinable genre, exact release year/decade, format and provider filters, plus Featured, title A–Z/Z–A and newest/oldest sorting. Use the visible filter row or **Menu**. **Clear filters** resets the view; **More titles** expands the loaded catalogues. Years and genres come from provider metadata/labelled genre collections; missing values remain under All and can be selected as Unknown. These controls apply to the loaded library rather than every title on the internet.
@@ -37,7 +41,7 @@ Open a title and choose **Add to favourites** or **Save to lists**. The **Favour
 
 The native library gathers public provider catalogues through the Firestick's current connection and expands beyond home-page highlights. **More titles** loads further discovered collections; **Search** filters titles already loaded, not every film available online. Select a title to choose a provider. Matching title, year and format combine available provider links without merging remakes. Series open native season/episode lists where the provider supplies usable metadata.
 
-**Back** returns from playback to the library; **Menu** offers another listed source, reload or return. Tubi also has a full-screen command. Tubi requests the desktop web player to avoid its mobile preview/app-install screen. Movy's TV player is scaled to the actual WebView viewport so the right and bottom controls remain visible. Plex and Pluto use their own full-size web players. Catalogue availability, advertising, consent and stream behaviour depend on the provider and connection; a listed title is not proof that every source will play.
+**Back** returns from playback to the library. For a camera copy, poor picture or buffering on Movy/Dulo, press **Menu → Change stream · poor copy or buffering**, then choose another server. The app uses the provider’s own server controls without leaving playback. **Choose another provider** offers the same title elsewhere when a match is verified; it switches inside UK TV. HD/4K labels describe advertised resolution, not whether a copy is clean. Some servers may supply the same underlying copy. Reload and Return to library remain available. Dulo uses its remote-friendly TV player, with a 720p preference on devices with at most 1.5 GB RAM and a 1080p preference on larger devices. Lower existing 720p choices are retained. The whole picture fits without cropping. Tubi also has a full-screen command. Tubi requests the desktop web player to avoid its mobile preview/app-install screen. Movy's TV player is scaled to the actual WebView viewport so the right and bottom controls remain visible. Plex and Pluto use their own full-size web players. Catalogue availability, advertising, consent and stream behaviour depend on the provider and connection; a listed title is not proof that every source will play.
 
 The current library is a collection of discovered titles, not a complete provider catalogue. A failed provider is reported under **Menu → service status**; retry **Refresh** after changing connection. Automatic fallback during VOD playback, persistent watch history and cross-provider episode alternatives are not yet implemented. Live-TV failover is separate. A generic HTTP 403 is not labelled a proven geographic restriction. VOD does not yet infer a reliable VPN-country recommendation for every provider error.
 

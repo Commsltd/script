@@ -156,6 +156,12 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
+        if(row.source.kind=="web" && row.station.family in LiveWebActivity.pages) {
+            engine.close();youtubeSource=null;model.playingRow=null
+            surface=TvSurface.GUIDE;liveOverlay=LiveOverlay.NONE
+            startActivity(android.content.Intent(this,LiveWebActivity::class.java).putExtra("station",row.station.family).putExtra("title",row.station.name))
+            return
+        }
         model.markPlaying(row)
         quickGuideKey = row.station.id
         when (row.source.kind) {
@@ -524,6 +530,7 @@ class MainActivity : ComponentActivity() {
                 val h = health[s.id]
                 val state = when {
                     s.kind == "youtube" -> "Official YouTube · in-app fallback"
+                    s.kind == "web" -> "Broadcaster player · inside UK TV"
                     s.kind != "direct" -> "Not integrated"
                     s.unsupportedDrm -> "Provider authentication required"
                     model.privacyMode == PrivacyMode.STRICT && s.url.startsWith("http://") ->

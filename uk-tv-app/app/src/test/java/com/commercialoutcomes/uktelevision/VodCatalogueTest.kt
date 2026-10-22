@@ -56,4 +56,27 @@ class VodCatalogueTest {
         assertEquals(13,episodes.size);assertTrue(episodes.all { it.sources.single().url.startsWith("https://www.movy.sx/tv/1396/2/") })
         assertTrue(VodEpisodes.parse(VodSource(VodProvider.MOVY,"https://www.movy.sx/tv/1396/9"),doc).isEmpty())
     }
+    @Test fun duloCardsPreserveYearAndDoNotImportBareSeoLinks() {
+        val doc=Jsoup.parse("""<noscript><a href="/title/movie/999/">Unverified SEO link</a></noscript>
+            <div><a href="/title/movie/278/" aria-label="View details for The Shawshank Redemption"><img src="https://image.tmdb.org/p.jpg"></a><span>1994</span></div>
+            <div><a href="/title/tv/1396/" aria-label="View details for Breaking Bad"></a><span>2008</span></div>
+            <a href="https://other.example/title/movie/1/" aria-label="View details for Wrong"></a>""",VodProvider.DULO.home)
+        val rows=VodCatalogue.parse(VodProvider.DULO,doc)
+        assertEquals(2,rows.size);assertEquals(1994,rows[0].year);assertEquals("show",rows[1].kind)
+        val movy=rows[0].copy(sources=listOf(VodSource(VodProvider.MOVY,"https://www.movy.sx/movie/278")))
+        assertEquals(2,VodCatalogue.merge(rows+movy).first().sources.size)
+    }
+    @Test fun duloDetailPreservesIdentityGenresAndRejectsExternalCanonical() {
+        val html="""<link rel="canonical" href="https://dulo.mov/title/movie/278/"><script type="application/ld+json">{"@type":"Movie","name":"Example","datePublished":"1994","genre":["Drama","Crime"]}</script>"""
+        val row=VodCatalogue.parse(VodProvider.DULO,Jsoup.parse(html,VodProvider.DULO.home)).single()
+        assertEquals(setOf("Drama","Crime"),row.genres.toSet())
+        assertTrue(VodCatalogue.parse(VodProvider.DULO,Jsoup.parse(html.replace("https://dulo.mov/title","https://bad.example/title"),VodProvider.DULO.home)).isEmpty())
+    }
+    @Test fun countryViewsDoNotMisclassifyUkSpecificEditions() {
+        assertEquals("17 TRINIDAD & TOBAGO",CountryGroups.group("TTT.tt@National"))
+        assertEquals("19 USA",CountryGroups.group("ABCNewsLive.us@SD"))
+        assertNull(CountryGroups.group("SomeChannel.us@GB"))
+        assertNull(CountryGroups.group("BBCOne.uk@London"))
+    }
+
 }

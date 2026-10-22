@@ -17,7 +17,8 @@ enum class VodProvider(val label: String, val home: String, val domain: String) 
     PLEX("Plex", "https://watch.plex.tv/en-GB/on-demand", "watch.plex.tv"),
     PLUTO("Pluto TV", "https://pluto.tv/", "pluto.tv"),
     TUBI("Tubi", "https://tubitv.com/", "tubitv.com"),
-    MOVY("Movy", "https://www.movy.sx/", "www.movy.sx");
+    MOVY("Movy", "https://www.movy.sx/", "www.movy.sx"),
+    DULO("Dulo", "https://dulo.mov/movies/", "dulo.mov");
     fun owns(url: String): Boolean = runCatching { val u=URL(url); u.protocol=="https" && u.host==domain && u.userInfo==null }.getOrDefault(false)
 }
 data class VodSource(val provider: VodProvider, val url: String)
@@ -44,6 +45,7 @@ object VodCatalogue {
             VodProvider.PLUTO -> Regex("^/[^/]+/(movies|shows)/([^/]+/)?$").matches(URL(url).path)
             VodProvider.TUBI -> URL(url).path.startsWith("/category/")
             VodProvider.MOVY -> URL(url).path in setOf("/browse/movie","/browse/tv")
+            VodProvider.DULO -> URL(url).path.trimEnd('/') in setOf("/movies","/shows","/genres") || URL(url).path.startsWith("/genre/")
         }
     }.filter { it!=doc.location() }.distinct().take(60)
     suspend fun load(): VodResult = supervisorScope {
@@ -95,6 +97,7 @@ object VodCatalogue {
     }
     fun parse(provider: VodProvider, doc: Document): List<VodTitle> {
         if(provider==VodProvider.MOVY)return parseMovy(doc)
+        if(provider==VodProvider.DULO)return parseDulo(doc)
         val rows=mutableListOf<VodTitle>()
         val plutoMetadata=mutableMapOf<String,JSONObject>()
         if(provider==VodProvider.PLUTO) {
@@ -112,7 +115,7 @@ object VodCatalogue {
                 VodProvider.PLEX -> when { path.contains("/movie/") -> "movie";path.contains("/show/")->"show";else->null }
                 VodProvider.TUBI -> when { Regex("^/movies/\\d+/").containsMatchIn(path)->"movie";Regex("^/series/\\d+/").containsMatchIn(path)->"show";else->null }
                 VodProvider.PLUTO -> when { Regex("/movies/[^/]+/?$").containsMatchIn(path)->"movie";Regex("/(series|shows)/[^/]+/?$").containsMatchIn(path)->"show";else->null }
-                VodProvider.MOVY -> null
+                VodProvider.MOVY, VodProvider.DULO -> null
             } ?: continue
             val card=if(provider==VodProvider.TUBI) a.parents().firstOrNull { it.hasClass("web-content-tile") } ?: a else if(provider==VodProvider.PLEX) a.parent() ?: a else a
             val img=card.selectFirst("img")
@@ -159,9 +162,70 @@ object VodCatalogue {
         walk(json)
         return merge(rows)
     }
+    private fun parseDulo(doc: Document): List<VodTitle> {
+        val rows=mutableListOf<VodTitle>()
+        // Detail metadata is also used to verify cross-provider alternatives.
+        val canonical=doc.selectFirst("link[rel=canonical]")?.absUrl("href") ?: doc.location()
+        val detail=Regex("^/title/(movie|tv)/(\\d+)/?$").matchEntire(runCatching { URL(canonical).path }.getOrDefault(""))
+        if(detail!=null && VodProvider.DULO.owns(canonical))for(script in doc.select("script[type=application/ld+json]"))runCatching {
+            val j=JSONObject(script.data())
+            if(j.optString("@type") in setOf("Movie","TVSeries")) {
+                val genres=j.optJSONArray("genre")
+                rows.add(VodTitle(j.getString("name"),j.optString("datePublished").take(4).toIntOrNull(),if(detail.groupValues[1]=="tv")"show" else "movie",
+                    j.optString("image"),j.optString("description"),listOf(VodSource(VodProvider.DULO,canonical)),
+                    if(genres==null)emptyList() else (0 until genres.length()).flatMap { VodGenres.normalise(genres.optString(it)) }))
+            }
+        }
+        for(a in doc.select("a[href][aria-label^=View details for]")) {
+            val url=a.absUrl("href")
+            if(!VodProvider.DULO.owns(url))continue
+            val match=Regex("^/title/(movie|tv)/(\\d+)/?$").matchEntire(URL(url).path) ?: continue
+            val card=a.parent() ?: continue
+            val year=card.select("span").map { it.ownText() }.firstOrNull { Regex("(19|20)\\d{2}").matches(it) }?.toIntOrNull()
+            val name=a.attr("aria-label").removePrefix("View details for ").trim()
+            if(name.isBlank())continue
+            rows.add(VodTitle(name,year,if(match.groupValues[1]=="tv")"show" else "movie",card.selectFirst("img")?.absUrl("src").orEmpty(),
+                card.selectFirst("p.line-clamp-3")?.text().orEmpty(),listOf(VodSource(VodProvider.DULO,url))))
+        }
+        return merge(rows)
+    }
+    /** Both providers publish TMDB identities. Verify the target page before
+     * offering it; never guess matches from a title alone or merge remakes. */
+    suspend fun alternatives(title: VodTitle): VodTitle = withContext(Dispatchers.IO) {
+        val identity=title.sources.firstNotNullOfOrNull { source ->
+            val pattern=when(source.provider) {
+                VodProvider.MOVY -> Regex("^/(movie|tv)/(\\d+)/?$")
+                VodProvider.DULO -> Regex("^/title/(movie|tv)/(\\d+)/?$")
+                else -> null
+            }
+            pattern?.matchEntire(URL(source.url).path)?.groupValues?.drop(1)
+        } ?: return@withContext title
+        val candidates=listOf(VodSource(VodProvider.MOVY,"https://www.movy.sx/${identity[0]}/${identity[1]}"),
+            VodSource(VodProvider.DULO,"https://dulo.mov/title/${identity[0]}/${identity[1]}/"))
+        var result=title
+        for(candidate in candidates)if(result.sources.none { it.provider==candidate.provider })runCatching {
+            val found=parse(candidate.provider,fetch(candidate.url)).firstOrNull { row ->
+                row.sources.any { URL(it.url).path.trimEnd('/')==URL(candidate.url).path.trimEnd('/') } &&
+                    normalTitle(row.title)==normalTitle(title.title) && row.kind==title.kind &&
+                    (title.year==null || row.year==title.year)
+            }
+            if(found!=null)result=result.copy(sources=result.sources+candidate,genres=(result.genres+found.genres).distinct())
+        }
+        result
+    }
     suspend fun playbackPage(source: VodSource): String = withContext(Dispatchers.IO) {
         require(source.provider.owns(source.url))
         if(source.provider==VodProvider.MOVY)return@withContext source.url.substringBefore('?')+"?play=true"
+        if(source.provider==VodProvider.DULO) {
+            if(URL(source.url).path.startsWith("/tv/"))return@withContext source.url
+            if(URL(source.url).path.startsWith("/watch/") || URL(source.url).path.startsWith("/title/tv/"))return@withContext source.url.replace("https://dulo.mov/","https://dulo.mov/tv/")
+            val doc=fetch(source.url)
+            val watch=doc.select("a[href]").map { it.absUrl("href") }.firstOrNull {
+                source.provider.owns(it) && URL(it).path.startsWith("/watch/")
+            }
+            require(watch!=null) { "Dulo did not supply a playback link for this title." }
+            return@withContext watch.replace("https://dulo.mov/watch/","https://dulo.mov/tv/watch/")
+        }
         if(source.provider!=VodProvider.PLEX)return@withContext source.url
         val doc=fetch(source.url)
         val watch=doc.selectFirst("a[data-id=watch]")?.absUrl("href").orEmpty()
