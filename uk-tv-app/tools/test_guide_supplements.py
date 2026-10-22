@@ -40,4 +40,24 @@ class GuideSupplementTests(unittest.TestCase):
     def test_html_redirect_response_is_not_a_guide(self):
         with self.assertRaises(ValueError):parse_xml(b'<html><body>Download</body></html>')
 
+class InternationalGuideTests(unittest.TestCase):
+    def test_regional_fallback_uses_its_own_schedule_and_unmapped_region_stays_blank(self):
+        from international_channels import expand
+        from international_guides import add_guides
+        data=build('',b'<tv/>')
+        data['channels']=expand([])
+        xml=b'<tv><programme channel="ABCSydney.au" start="20261022100000 +0000" stop="20261022110000 +0000"><title>Sydney show</title></programme><programme channel="ABCPerth.au" start="20261022100000 +0000" stop="20261022110000 +0000"><title>Perth show</title></programme></tv>'
+        add_guides(data,{'au':xml})
+        abc=next(c for c in data['channels'] if c['family']=='ABCTV.au')
+        self.assertEqual(next(p for p in data['programmes'] if p['channelId']==abc['id'])['title'],'Sydney show')
+        perth=next(s for s in abc['sources'] if s['region']=='WA')
+        self.assertEqual(next(p for p in data['regionalProgrammes'] if p['channelId']==perth['guideChannelId'])['title'],'Perth show')
+        self.assertNotIn('guideChannelId',next(s for s in abc['sources'] if s['region']=='NT'))
+    def test_rakuten_uk_is_not_assigned_foreign_schedule(self):
+        playlist='#EXTINF:-1 tvg-id="RakutenTVActionMovies.es@UK",Action\nhttps://example.com/action.m3u8\n'
+        uk=GuideSupplementTests().guide('UK:.Action.Movies.-.Rakuten.TV.be')
+        wrong=GuideSupplementTests().guide('DE:.Actionfilme.-.Rakuten.TV.be')
+        self.assertEqual(build(playlist,b'<tv/>',extra_guides={'rakuten':uk})['channelsWithGuide'],1)
+        self.assertEqual(build(playlist,b'<tv/>',extra_guides={'rakuten':wrong})['channelsWithGuide'],0)
+
 if __name__=='__main__':unittest.main()
