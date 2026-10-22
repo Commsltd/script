@@ -18,8 +18,9 @@ enum class VodProvider(val label: String, val home: String, val domain: String) 
     PLUTO("Pluto TV", "https://pluto.tv/", "pluto.tv"),
     TUBI("Tubi", "https://tubitv.com/", "tubitv.com"),
     MOVY("Movy", "https://www.movy.sx/", "www.movy.sx"),
-    DULO("Dulo", "https://dulo.mov/movies/", "dulo.mov");
-    fun owns(url: String): Boolean = runCatching { val u=URL(url); u.protocol=="https" && u.host==domain && u.userInfo==null }.getOrDefault(false)
+    DULO("Dulo", "https://dulo.mov/movies/", "dulo.mov"),
+    CREW("The Crew", "crew://catalogue", "");
+    fun owns(url: String): Boolean = if(this==CREW) Regex("^crew://(movie|tv)/[1-9][0-9]*$").matches(url) else runCatching { val u=URL(url); u.protocol=="https" && u.host==domain && u.userInfo==null }.getOrDefault(false)
 }
 data class VodSource(val provider: VodProvider, val url: String)
 data class VodTitle(val title: String, val year: Int?, val kind: String, val poster: String,
@@ -45,6 +46,7 @@ object VodCatalogue {
             VodProvider.PLUTO -> Regex("^/[^/]+/(movies|shows)/([^/]+/)?$").matches(URL(url).path)
             VodProvider.TUBI -> URL(url).path.startsWith("/category/")
             VodProvider.MOVY -> URL(url).path in setOf("/browse/movie","/browse/tv")
+            VodProvider.CREW -> false
             VodProvider.DULO -> URL(url).path.trimEnd('/') in setOf("/movies","/shows","/genres") || URL(url).path.startsWith("/genre/")
         }
     }.map { url ->
@@ -52,20 +54,20 @@ object VodCatalogue {
         // through HTTP and were silently discarded by Android's fetcher.
         if(provider==VodProvider.DULO)URL(url).let { u -> "https://dulo.mov"+u.path.trimEnd('/')+"/"+(u.query?.let { "?$it" }?:"") } else url
     }.filter { it!=doc.location() }.distinct().take(60)
-    suspend fun load(): VodResult = supervisorScope {
-        val results=VodProvider.entries.map { provider -> async(Dispatchers.IO) {
+    suspend fun load(selected:Set<VodProvider> = VodProvider.entries.toSet()): VodResult = supervisorScope {
+        val results=selected.filter { it!=VodProvider.CREW }.map { provider -> async(Dispatchers.IO) {
             provider to runCatching { val doc=fetch(provider.home); parse(provider,doc) to collections(provider,doc) }
         } }.map { it.await() }
         val statuses=results.associate { (p,r) -> p to r.fold(
             { if(it.first.isEmpty()) "No catalogue returned on this connection" else "${it.first.size} titles loaded" },
             { it.message?.take(120) ?: "Could not connect" }) }
         VodResult(merge(results.flatMap { it.second.getOrNull()?.first.orEmpty() }),statuses,
-            results.associate { it.first to it.second.getOrNull()?.second.orEmpty() }, VodProvider.entries.map { it.home }.toSet())
+            results.associate { it.first to it.second.getOrNull()?.second.orEmpty() }, selected.filter { it!=VodProvider.CREW }.map { it.home }.toSet())
     }
-    suspend fun more(previous: VodResult, only: VodProvider?=null): VodResult = supervisorScope {
+    suspend fun more(previous: VodResult, selected: Set<VodProvider> = VodProvider.entries.toSet()): VodResult = supervisorScope {
         data class Batch(val provider:VodProvider,val titles:List<VodTitle>,val queued:List<String>,val loaded:Set<String>)
         val results=previous.nextPages.map { (provider,urls) -> async(Dispatchers.IO) {
-            if(only!=null && provider!=only)return@async Batch(provider,emptyList(),urls,emptySet())
+            if(provider !in selected || provider==VodProvider.CREW)return@async Batch(provider,emptyList(),urls,emptySet())
             val candidates=urls.filter { it !in previous.loadedPages }.take(2)
             val loaded=mutableSetOf<String>();val titles=mutableListOf<VodTitle>();val discovered=mutableListOf<String>()
             for(url in candidates)runCatching { fetch(url) }.onSuccess { doc ->
@@ -78,9 +80,9 @@ object VodCatalogue {
             val count=merged.count { t->t.sources.any { it.provider==p } };if(count>0)"$count titles loaded" else old },
             results.associate { it.provider to it.queued },previous.loadedPages+results.flatMap { it.loaded })
     }
-    suspend fun forGenre(previous: VodResult, genre: String): VodResult = supervisorScope {
+    suspend fun forGenre(previous: VodResult, genre: String, providers:Set<VodProvider> = VodProvider.entries.toSet()): VodResult = supervisorScope {
         // Use only genre collections already linked by the provider itself.
-        val selected=previous.nextPages.mapValues { (_,urls) -> urls.filter { url ->
+        val selected=previous.nextPages.filterKeys { it in providers && it!=VodProvider.CREW }.mapValues { (_,urls) -> urls.filter { url ->
             VodGenres.normalise(URL(url).path.trimEnd('/').substringAfterLast('/').replace('-', ' ')).any { it.equals(genre,true) } ||
                 (genre=="Sci-Fi" && URL(url).path.trimEnd('/').endsWith("/sci-fi"))
         }.take(2) }
@@ -125,7 +127,7 @@ object VodCatalogue {
                 VodProvider.PLEX -> when { path.contains("/movie/") -> "movie";path.contains("/show/")->"show";else->null }
                 VodProvider.TUBI -> when { Regex("^/movies/\\d+/").containsMatchIn(path)->"movie";Regex("^/series/\\d+/").containsMatchIn(path)->"show";else->null }
                 VodProvider.PLUTO -> when { Regex("/movies/[^/]+/?$").containsMatchIn(path)->"movie";Regex("/(series|shows)/[^/]+/?$").containsMatchIn(path)->"show";else->null }
-                VodProvider.MOVY, VodProvider.DULO -> null
+                VodProvider.MOVY, VodProvider.DULO, VodProvider.CREW -> null
             } ?: continue
             val card=if(provider==VodProvider.TUBI) a.parents().firstOrNull { it.hasClass("web-content-tile") } ?: a else if(provider==VodProvider.PLEX) a.parent() ?: a else a
             val img=card.selectFirst("img")
@@ -201,7 +203,7 @@ object VodCatalogue {
     }
     /** Both providers publish TMDB identities. Verify the target page before
      * offering it; never guess matches from a title alone or merge remakes. */
-    suspend fun alternatives(title: VodTitle): VodTitle = withContext(Dispatchers.IO) {
+    suspend fun alternatives(title: VodTitle, providers:Set<VodProvider> = VodProvider.entries.toSet()): VodTitle = withContext(Dispatchers.IO) {
         val identity=title.sources.firstNotNullOfOrNull { source ->
             val pattern=when(source.provider) {
                 VodProvider.MOVY -> Regex("^/(movie|tv)/(\\d+)/?$")
@@ -213,7 +215,7 @@ object VodCatalogue {
         val candidates=listOf(VodSource(VodProvider.MOVY,"https://www.movy.sx/${identity[0]}/${identity[1]}"),
             VodSource(VodProvider.DULO,"https://dulo.mov/title/${identity[0]}/${identity[1]}/"))
         var result=title
-        for(candidate in candidates)if(result.sources.none { it.provider==candidate.provider })runCatching {
+        for(candidate in candidates.filter { it.provider in providers })if(result.sources.none { it.provider==candidate.provider })runCatching {
             val found=parse(candidate.provider,fetch(candidate.url)).firstOrNull { row ->
                 row.sources.any { URL(it.url).path.trimEnd('/')==URL(candidate.url).path.trimEnd('/') } &&
                     normalTitle(row.title)==normalTitle(title.title) && row.kind==title.kind &&
@@ -225,6 +227,7 @@ object VodCatalogue {
     }
     suspend fun playbackPage(source: VodSource): String = withContext(Dispatchers.IO) {
         require(source.provider.owns(source.url))
+        require(source.provider!=VodProvider.CREW){"Open The Crew in the native source player."}
         if(source.provider==VodProvider.MOVY)return@withContext source.url.substringBefore('?')+"?play=true"
         if(source.provider==VodProvider.DULO) {
             if(URL(source.url).path.startsWith("/tv/"))return@withContext source.url

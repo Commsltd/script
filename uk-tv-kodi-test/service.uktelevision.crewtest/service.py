@@ -20,6 +20,8 @@ for addon in ['script.module.thecrew','script.module.requests','script.module.be
     root=xbmcaddon.Addon(addon).getAddonInfo('path')
     lib=os.path.join(root,'lib')
     if lib not in sys.path:sys.path.insert(0,lib)
+from catalogue import CrewCatalogue
+catalogue_reader=CrewCatalogue(xbmc.executeJSONRPC)
 state={'status':'idle','items':[],'engine':None,'error':'','job':'','last':time.monotonic()}
 lock=threading.Lock()
 def search(body):
@@ -33,6 +35,12 @@ def search(body):
         raw_count=len(rows)
         rows=[r for r in rows if isinstance(r,dict) and not r.get('debrid') and not r.get('debridonly')][:100]
         with lock:state.update(status='ready',items=rows,engine=engine,error='',rawCount=raw_count,providerCount=len(engine.sourceDict),resolverCount=len(engine.hostDict))
+    except Exception as e:
+        with lock:state.update(status='error',error=type(e).__name__+': '+str(e)[:200])
+def catalogue(body):
+    try:
+        page=catalogue_reader.directory(body)
+        with lock:state.update(status='catalogue-ready',catalogue=page,error='')
     except Exception as e:
         with lock:state.update(status='error',error=type(e).__name__+': '+str(e)[:200])
 def resolve(index):
@@ -59,6 +67,8 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/status':
                 with lock:
                     result={k:state[k] for k in ['status','error','job']}
+                    result['capabilities']=['catalogue-v1']
+                    if state['status']=='catalogue-ready':result['catalogue']=state.get('catalogue',{})
                     result.update(kodi=xbmc.getInfoLabel('System.BuildVersion'),crew=xbmcaddon.Addon('plugin.video.thecrew').getAddonInfo('version'),module=xbmcaddon.Addon('script.module.thecrew').getAddonInfo('version'))
                     result.update({k:state.get(k,0) for k in ['rawCount','providerCount','resolverCount']})
                     result['items']=[{'index':i,'provider':r.get('provider',''),'quality':r.get('quality',''),'host':r.get('source','')} for i,r in enumerate(state['items'])]
@@ -67,8 +77,11 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/quit':
                 self.reply(200,{'status':'stopping'});xbmc.executebuiltin('Quit');return
             with lock:
-                if state['status'] in ('searching','resolving'):return self.reply(409,{'error':'A source check is already running'})
-                if self.path=='/search':
+                if state['status'] in ('searching','resolving','cataloguing'):return self.reply(409,{'error':'A source check is already running'})
+                if self.path=='/catalogue':
+                    state.update(status='cataloguing',error='',catalogue={},job=str(time.time_ns()))
+                    threading.Thread(target=catalogue,args=(body,),daemon=True).start()
+                elif self.path=='/search':
                     if not isinstance(body.get('title'),str) or not 1<=len(body['title'])<=160:raise ValueError('Invalid title')
                     if not str(body.get('imdb','')).startswith('tt') or not str(body['imdb'])[2:].isdigit():raise ValueError('Invalid title identity')
                     if not 1880<=int(body['year'])<=2200:raise ValueError('Invalid year')

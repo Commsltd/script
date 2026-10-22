@@ -1,5 +1,15 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.9.0 Crew catalogue and multiple providers — local build only
+
+The Firestick was not connected to, inspected, restarted or installed to during this work, because the user is watching. Version code 12 is prepared separately; 0.8.1 remains the last installed release. No Kodi instance was started on the Mac or Firestick.
+
+Adds native Crew directory browsing via the separately updated 0.2.0 loopback bridge and Kodi Files.GetDirectory. Film/series menus, supported listing categories, genres/years and returned next-page entries stay in UK TV's UI. Search uses the Crew add-on's movie/series search routes. Actual returned title identities are stored as canonical Crew sources, imported into the normal library and supported by favourites/lists. Only catalogue directories are traversed; play/settings routes are not executed by the catalogue reader. Folder handles are opaque, session-bound and never expose upstream provider URLs to the Android app. Personal-account menus, interactive Kodi tools and episode/calendar rows are outside this movie/series catalogue adapter.
+
+Provider selection is a persisted set with union matching. Excluding Crew hides its browser entry and source actions, but retains a shared title when another selected provider offers it. Search and shelf changes preserve selection; Clear filters restores all; selecting none is distinct from selecting all. Main mixed search uses cached Crew entries and labels that limit; Crew-only search opens its live catalogue search.
+
+Local validation: 60 Kotlin tests passed, including source identity parsing, saved-library persistence, cross-provider merging, multiple-provider matching and exclusion. Five Python tests passed for actual JSON-RPC request shape, Crew search routing, returned next-page traversal, title metadata conversion, private URL containment, invalid/foreign/action route rejection and error/truncation handling. These use controlled responses, not live Kodi. APK and test APK compile; lint has zero errors. Live catalogue retrieval, remote focus, Kodi startup/return and source playback remain unverified until the user is finished watching and permits device work. Prior Crew no-source and process-memory failures remain open.
+
 ## 0.8.1 Tubi TV playback and remote controls
 
 Tubi previously displayed its desktop header, signup CTA and recommendation column beside a half-width player until an unreliable full-screen shortcut succeeded. Version code 11 keeps its actual provider video/ad/caption stage in the entire viewport with `object-fit: contain`. The surrounding webpage and optional signup CTA are hidden from playback. UK TV supplies a native control row for play/pause, rewind/forward, subtitles and options. D-pad actions are explicitly routed to that row; hidden controls allow direct left/right seeking. Back closes the menu or controls before leaving playback.

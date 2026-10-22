@@ -9,6 +9,7 @@
         <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
         <activity android:name=".LiveWebActivity" android:exported="false" android:screenOrientation="landscape" />
         <activity android:name=".VodPlayerActivity" android:exported="false" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" />
+        <activity android:name=".CrewCatalogueActivity" android:exported="false" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" />
         <activity android:name=".CrewTestActivity" android:exported="false" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" />
         <activity android:name=".OnDemandActivity" android:exported="false" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" />
         <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize" android:resizeableActivity="true">

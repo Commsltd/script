@@ -42,11 +42,11 @@ class CrewTestActivity:ComponentActivity() {
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         root=FrameLayout(this);setContentView(root)
         val panel=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setPadding(50,30,50,25);setBackgroundColor(0xff101820.toInt())}
-        status=TextView(this).apply{setTextColor(-1);textSize=20f;text="The Crew · Firestick test\n$title\n\nThe engine runs only for this test. Search and playback stay in UK TV. Initialising Kodi may briefly show its startup screen."}
+        status=TextView(this).apply{setTextColor(-1);textSize=20f;text="The Crew\n$title\n\nChoose a source to watch inside UK TV. Starting The Crew may briefly show Kodi."}
         panel.addView(status,LinearLayout.LayoutParams(-1,0,1f))
         fun button(label:String,action:()->Unit){panel.addView(Button(this).apply{isAllCaps=false;text=label;setOnClickListener{action()}},LinearLayout.LayoutParams(-1,(64*resources.displayMetrics.density).toInt()))}
         button(if(type=="tv")"Choose episode and check sources" else "Check sources"){if(type=="tv")chooseEpisode() else checkSources()}
-        button("Stop test and return"){stopEngine();finish()}
+        button("Return to On Demand"){stopEngine();finish()}
         root.addView(panel,FrameLayout.LayoutParams(-1,-1))
     }
     private suspend fun call(path:String,body:JSONObject=JSONObject()):JSONObject=withContext(Dispatchers.IO){
@@ -59,7 +59,7 @@ class CrewTestActivity:ComponentActivity() {
             val data=JSONObject(raw);require(code<400){data.optString("error","Engine unavailable")};data
         }finally{c.disconnect()}
     }
-    private fun task(block:suspend()->Unit){job?.cancel();job=lifecycleScope.launch{try{block()}catch(e:CancellationException){throw e}catch(e:Exception){stopEngine();val reason=if(e is java.io.IOException)"The local source engine has stopped or is unavailable. This Firestick may not have enough free memory to keep both apps running." else e.message.orEmpty();status.text="Crew test could not complete.\n$reason\n\nYou can continue with the existing VOD providers."}}}
+    private fun task(block:suspend()->Unit){job?.cancel();job=lifecycleScope.launch{try{block()}catch(e:CancellationException){throw e}catch(e:Exception){stopEngine();val reason=if(e is java.io.IOException)"The local source engine has stopped or is unavailable. This Firestick may not have enough free memory to keep both apps running." else e.message.orEmpty();status.text="The Crew could not complete the source search.\n$reason\n\nYou can continue with the existing VOD providers."}}}
     private suspend fun engine(){
         if(runCatching{call("/status")}.isSuccess)return
         status.text="Initialising the source engine on this Firestick…"
@@ -92,7 +92,7 @@ class CrewTestActivity:ComponentActivity() {
         result=poll("searching")
         val items=result.optJSONArray("items")
         if(items==null||items.length()==0){status.text="The Crew returned no free sources for $title.\n\nNo playable link was supplied. Your existing VOD providers remain available.";stopEngine();return@task}
-        status.text="${items.length()} sources returned. Choose a source to test playback."
+        status.text="${items.length()} sources returned. Choose a source to watch."
         AlertDialog.Builder(this@CrewTestActivity).setTitle("The Crew · sources")
             .setItems(Array(items.length()){i->val r=items.getJSONObject(i);"${r.optString("quality")} · ${r.optString("provider")} · ${r.optString("host")}"}){_,i->resolve(i)}.setNegativeButton("Back",null).show()
     }
@@ -118,7 +118,7 @@ class CrewTestActivity:ComponentActivity() {
     }
     private fun stopEngine(){keepalive?.cancel();keepalive=null;CoroutineScope(Dispatchers.IO).launch{runCatching{call("/quit")}}}
     override fun onKeyDown(keyCode:Int,event:KeyEvent?):Boolean {
-        if(keyCode==KeyEvent.KEYCODE_MENU){if(event?.repeatCount==0)AlertDialog.Builder(this).setItems(arrayOf("Check another source","Stop test and return")){_,i->if(i==0)checkSources() else {stopEngine();finish()}}.show();return true}
+        if(keyCode==KeyEvent.KEYCODE_MENU){if(event?.repeatCount==0)AlertDialog.Builder(this).setItems(arrayOf("Check another source","Return to On Demand")){_,i->if(i==0)checkSources() else {stopEngine();finish()}}.show();return true}
         return super.onKeyDown(keyCode,event)
     }
     override fun onPause(){player?.pause();super.onPause()}

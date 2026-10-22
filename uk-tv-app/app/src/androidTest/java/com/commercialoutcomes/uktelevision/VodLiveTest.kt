@@ -21,7 +21,7 @@ class VodLiveTest {
     private fun optIn()=assumeTrue(InstrumentationRegistry.getArguments().getString("liveChecks")=="true")
     @Test fun inspectProviderPagesOnDevice() {
         optIn()
-        for(provider in VodProvider.entries) {
+        for(provider in VodProvider.entries.filter { it!=VodProvider.CREW }) {
             runCatching { VodCatalogue.fetch(provider.home) }.onSuccess {
                 File(context.getExternalFilesDir(null),"vod-${provider.name}.html").writeText(it.outerHtml())
             }

@@ -10,7 +10,7 @@ class VodLibraryTest {
         VodTitle(name,year,kind,"https://example.com/poster.jpg",sources=listOf(VodSource(provider,provider.home.trimEnd('/')+"/movie/"+name.replace(" ","-"))),genres=genres)
     @Test fun filtersIntersectWithoutReplacingTheSelectedProviderOrFormat() {
         val rows=listOf(movie("A",1994),movie("B",2004),movie("C",1994,provider=VodProvider.PLEX),movie("D",1994,listOf("Comedy")),movie("E",1994,kind="show"))
-        assertEquals(listOf("A"),VodBrowse(kind="movie",provider=VodProvider.MOVY,genre="Drama",fromYear=1990,toYear=1999).apply(rows).map { it.title })
+        assertEquals(listOf("A"),VodBrowse(kind="movie",providers=setOf(VodProvider.MOVY),genre="Drama",fromYear=1990,toYear=1999).apply(rows).map { it.title })
         assertEquals(listOf("B"),VodBrowse(fromYear=2004,toYear=2004).apply(rows).map { it.title })
     }
     @Test fun unknownMetadataIsKeptInAllAndSortedAfterKnownYears() {

@@ -37,6 +37,19 @@ class OnDemandActivity : ComponentActivity() {
     private val playerLauncher=registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
         if(result.resultCode==RESULT_FIRST_USER)pendingTitle?.let { details(it) }
     }
+    private val crewLauncher=registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
+        val cached=crewTitles()
+        shelf="browse";browse=browse.copy(query="")
+        catalogue=catalogue.copy(titles=VodCatalogue.merge(catalogue.titles+cached),statuses=catalogue.statuses+(VodProvider.CREW to "${cached.size} cached titles · Browse The Crew for its live catalogue"))
+        cacheCatalogue()
+        if(result.resultCode==RESULT_OK)VodSavedCodec.decode(result.data?.getStringExtra("title").orEmpty()).titles.firstOrNull()?.let { details(it) }
+    }
+    private fun crewTitles()=VodSavedCodec.decode(libraryPreferences.getString("crew-catalogue-cache","").orEmpty()).titles
+    private fun openCrew(query:String="") {
+        if(VodProvider.CREW !in browse.providers)return
+        cancelWork()
+        crewLauncher.launch(Intent(this,CrewCatalogueActivity::class.java).putExtra("query",query).putExtra("kind",browse.kind))
+    }
     private var browse by mutableStateOf(VodBrowse())
     private var onlineRows by mutableStateOf<List<VodTitle>>(emptyList())
     private var searchPage=0
@@ -61,7 +74,7 @@ class OnDemandActivity : ComponentActivity() {
         (if(shelf=="browse"&&browse.query.isNotBlank())browse.copy(query="") else browse).apply(rows.filter { keys==null || saved.keyFor(it) in keys })
     }
     private fun save(value: VodSaved) { saved=value;libraryPreferences.edit().putString("saved",VodSavedCodec.encode(value)).apply() }
-    private fun openShelf(value: String) { cancelWork();shelf=value;browse=VodBrowse(sort=browse.sort) }
+    private fun openShelf(value: String) { cancelWork();shelf=value;browse=VodBrowse(sort=browse.sort,providers=browse.providers) }
     private val shelfLabel get()=when(shelf) { "browse"->"Browse";"favourites"->"Favourites";else->saved.lists.firstOrNull { it.id==shelf }?.name ?: "My list" }
     private var loading by mutableStateOf(false)
     private val expandedGenres=mutableSetOf<String>()
@@ -74,8 +87,9 @@ class OnDemandActivity : ComponentActivity() {
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         saved=VodSavedCodec.decode(libraryPreferences.getString("saved","").orEmpty())
+        browse=browse.copy(providers=VodProviderSelection.decode(libraryPreferences.getString("providers",null)))
         setContent { Library() }
-        catalogue=VodResult(VodSavedCodec.decode(libraryPreferences.getString("catalogue-cache","").orEmpty()).titles,emptyMap())
+        catalogue=VodResult(VodCatalogue.merge(VodSavedCodec.decode(libraryPreferences.getString("catalogue-cache","").orEmpty()).titles+crewTitles()),mapOf(VodProvider.CREW to "Browse The Crew for its live catalogue"))
         if(catalogue.titles.isEmpty() || System.currentTimeMillis()-libraryPreferences.getLong("catalogue-time",0)>15*60*1000)refresh()
         else message="Browse cached titles or search online for any film or series"
     }
@@ -91,7 +105,8 @@ class OnDemandActivity : ComponentActivity() {
         expandedGenres.clear()
         message="Refreshing titles… Search is available immediately."
         runWork {
-            val highlights=coroutineScope {
+            val selected=browse.providers
+            val highlights=if(selected.none { it in setOf(VodProvider.MOVY,VodProvider.DULO) })emptyList() else coroutineScope {
                 suspend fun popular(kind:String)=try{VodDiscovery.popular(kind).titles}catch(e:CancellationException){throw e}catch(_:Exception){emptyList<VodTitle>()}
                 val movies=async { popular("movie") };val shows=async { popular("tv") }
                 movies.await()+shows.await()
@@ -99,23 +114,24 @@ class OnDemandActivity : ComponentActivity() {
             currentCoroutineContext().ensureActive()
             catalogue=catalogue.copy(titles=VodCatalogue.merge(highlights+catalogue.titles).take(500))
             message="Browse titles or search online for any film or series"
-            val providers=VodCatalogue.load()
+            val providers=VodCatalogue.load(selected)
             currentCoroutineContext().ensureActive()
-            catalogue=providers.copy(titles=VodCatalogue.merge(providers.titles+highlights))
+            catalogue=providers.copy(titles=VodCatalogue.merge(providers.titles+highlights+crewTitles()),statuses=providers.statuses+(VodProvider.CREW to "Browse The Crew for its live catalogue"))
             cacheCatalogue()
             message="Browse highlights · Search checks Movy / Dulo online"
         }
     }
     fun searchOnline(query:String,append:Boolean=false) {
         val q=query.trim()
+        if(q.length>=2&&browse.providers==setOf(VodProvider.CREW)){openCrew(q);return}
         if(q.length<2){cancelWork();browse=browse.copy(query="");message="Enter at least two characters to search online";return}
         val page=if(append)searchPage+1 else 1
         if(append&&page>searchPages){message="All results for this search are shown";return}
         shelf="browse"
-        if(!append){browse=VodBrowse(query=q);onlineRows=emptyList();searchPage=0;searchPages=0}
-        message="Searching Movy / Dulo online for ‘$q’…"
+        if(!append){browse=browse.copy(query=q);onlineRows=emptyList();searchPage=0;searchPages=0}
+        message=if(browse.providers.any { it in setOf(VodProvider.MOVY,VodProvider.DULO) })"Searching online for ‘$q’…" else "Searching cached titles for ‘$q’…"
         runWork {
-            val result=VodDiscovery.search(q,page)
+            val result=if(browse.providers.any { it in setOf(VodProvider.MOVY,VodProvider.DULO) })VodDiscovery.search(q,page) else VodDiscovery.Page(emptyList(),1,1)
             currentCoroutineContext().ensureActive()
             val knownOtherProviders=VodBrowse(query=q).apply(catalogue.titles.mapNotNull { title ->
                 val sources=title.sources.filter{it.provider !in setOf(VodProvider.MOVY,VodProvider.DULO)}
@@ -124,15 +140,16 @@ class OnDemandActivity : ComponentActivity() {
             onlineRows=VodCatalogue.merge((if(append)onlineRows else emptyList())+result.titles+knownOtherProviders)
             searchPage=result.page;searchPages=result.pages
             catalogue=catalogue.copy(titles=VodCatalogue.merge(catalogue.titles+result.titles))
-            message="${onlineRows.size} matches · Movy / Dulo searched online; other providers use loaded titles · Page $searchPage of ${searchPages.coerceAtLeast(1)} · Playback availability checked when opened"
+            message="${visibleTitles.size} matches · "+(if(browse.providers.any { it in setOf(VodProvider.MOVY,VodProvider.DULO) })"Movy / Dulo online; other providers use cached titles" else "Cached titles")+(if(VodProvider.CREW in browse.providers)" · Browse The Crew for live Crew search" else "")+" · Page $searchPage of ${searchPages.coerceAtLeast(1)}"
         }
     }
     private fun more() {
         if(browse.query.isNotBlank()){if(!loading)searchOnline(browse.query,true);return}
         if(loading)return
+        if(browse.providers==setOf(VodProvider.CREW)){openCrew();return}
         message="Loading more browse titles…"
         runWork {
-            val extra=VodCatalogue.more(catalogue,browse.provider)
+            val extra=VodCatalogue.more(catalogue,browse.providers)
             currentCoroutineContext().ensureActive();catalogue=extra;cacheCatalogue()
             message="${catalogue.titles.size} browse titles · Search online to find a specific title"
         }
@@ -150,7 +167,7 @@ class OnDemandActivity : ComponentActivity() {
         if(browse.query.isNotBlank() || loading || browse.genre.isBlank() || browse.genre=="Unknown genre" || browse.genre in expandedGenres)return
         val genre=browse.genre
         runWork {
-            val result=VodCatalogue.forGenre(catalogue,genre)
+            val result=VodCatalogue.forGenre(catalogue,genre,browse.providers)
             currentCoroutineContext().ensureActive()
             catalogue=result;expandedGenres.add(genre);cacheCatalogue()
             message="${catalogue.titles.size} titles loaded"
@@ -167,9 +184,22 @@ class OnDemandActivity : ComponentActivity() {
             else->{val start=decades[i-2];browse=browse.copy(fromYear=start,toYear=start+9,unknownYear=false)}
         } }
     }
+    private fun setProviders(values:Set<VodProvider>) {
+        cancelWork();checkedAlternatives.clear();browse=browse.copy(providers=values)
+        libraryPreferences.edit().putString("providers",VodProviderSelection.encode(values)).apply()
+        if(browse.query.isNotBlank())searchOnline(browse.query)
+    }
+    private fun clearFilters(){cancelWork();browse=VodBrowse();libraryPreferences.edit().remove("providers").apply()}
     private fun providers() {
-        val values=listOf("All providers")+VodProvider.entries.map { if(browse.query.isNotBlank()&&it !in setOf(VodProvider.MOVY,VodProvider.DULO))"${it.label} · loaded titles" else it.label }
-        choose("Provider",values,browse.provider?.ordinal?.plus(1) ?: 0) { i -> browse=browse.copy(provider=if(i==0)null else VodProvider.entries[i-1]) }
+        val values=VodProvider.entries
+        val checked=values.map { it in browse.providers }.toBooleanArray()
+        val dialog=AlertDialog.Builder(this).setTitle("Providers · choose any combination")
+            .setMultiChoiceItems(values.map { it.label }.toTypedArray(),checked){_,i,value->checked[i]=value}
+            .setPositiveButton("Apply"){_,_->setProviders(values.filterIndexed { i,_->checked[i] }.toSet())}
+            .setNeutralButton("Select all",null).setNegativeButton("Cancel",null).create()
+        dialog.setOnShowListener{dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener{
+            values.indices.forEach { checked[it]=true;dialog.listView.setItemChecked(it,true) }
+        }};dialog.show()
     }
     private fun sorting()=choose("Sort titles",VodSort.entries.map { it.label },browse.sort.ordinal) { browse=browse.copy(sort=VodSort.entries[it]) }
     private fun search() {
@@ -210,12 +240,13 @@ class OnDemandActivity : ComponentActivity() {
         }
     }
     private fun menu() {
-        val labels=mutableListOf("Genre","Release year","Provider","Sort titles","Search","Favourites","My lists","New list","Clear filters","More titles","Refresh","Service status")
+        val labels=mutableListOf("Genre","Release year","Providers","Sort titles","Search","Favourites","My lists","New list","Clear filters","More titles","Refresh","Service status")
+        if(VodProvider.CREW in browse.providers)labels.add("Browse The Crew")
         if(saved.lists.any { it.id==shelf })labels.add("Manage this list")
         choose("On Demand",labels) { i -> when(labels[i]) {
-            "Genre"->genres();"Release year"->years();"Provider"->providers();"Sort titles"->sorting();"Search"->search()
-            "Favourites"->openShelf("favourites");"My lists"->myLists();"New list"->nameList();"Clear filters"->{cancelWork();browse=VodBrowse()}
-            "More titles"->more();"Refresh"->refresh();"Manage this list"->manageList();else->status()
+            "Genre"->genres();"Release year"->years();"Providers"->providers();"Sort titles"->sorting();"Search"->search()
+            "Favourites"->openShelf("favourites");"My lists"->myLists();"New list"->nameList();"Clear filters"->clearFilters()
+            "Browse The Crew"->openCrew();"More titles"->more();"Refresh"->refresh();"Manage this list"->manageList();else->status()
         } }
     }
     private fun details(title: VodTitle, checked: Boolean = false) {
@@ -223,7 +254,7 @@ class OnDemandActivity : ComponentActivity() {
         if(!checked && title.key !in checkedAlternatives) {
             message="Checking alternative sources for ${title.title}…"
             runWork {
-                val enriched=VodCatalogue.alternatives(title)
+                val enriched=VodCatalogue.alternatives(title,browse.providers)
                 currentCoroutineContext().ensureActive()
                 checkedAlternatives.add(title.key)
                 catalogue=catalogue.copy(titles=VodCatalogue.merge(catalogue.titles+enriched))
@@ -232,19 +263,15 @@ class OnDemandActivity : ComponentActivity() {
             }
             return
         }
-        val sources=title.sources
-        val crewId=sources.firstNotNullOfOrNull { source ->
-            val path=runCatching{java.net.URI(source.url).path}.getOrDefault("")
-            Regex("^/(?:title/)?(movie|tv)/(\\d+)/?$").matchEntire(path)?.groupValues?.let{it[1] to it[2]}
-        }
-        val crewAvailable=crewId!=null && getSharedPreferences("crew-test",MODE_PRIVATE).getString("token","").orEmpty().length>=32
+        val sources=title.sources.filter { it.provider in browse.providers }
         val actions=sources.map { "${if(title.kind=="show") "Choose episode" else "Watch"} · ${it.provider.label}" }+
             listOf(if(saved.isFavourite(title))"★ Remove from favourites" else "☆ Add to favourites","Save to lists","About this title")+
-            (if(saved.lists.any { it.id==shelf })listOf("Remove from this list") else emptyList())+
-            if(crewAvailable)listOf("The Crew · Firestick test") else emptyList()
+            (if(saved.lists.any { it.id==shelf })listOf("Remove from this list") else emptyList())
         AlertDialog.Builder(this).setTitle(title.title).setItems(actions.toTypedArray()) { _,i -> when {
-            actions[i]=="The Crew · Firestick test"->startActivity(Intent(this,CrewTestActivity::class.java).putExtra("tmdb",crewId!!.second).putExtra("type",crewId.first).putExtra("title",title.title))
-            i<sources.size->if(title.kind=="show")showEpisodes(title,sources[i]) else play(title,sources[i])
+            i<sources.size->if(sources[i].provider==VodProvider.CREW) {
+                val uri=java.net.URI(sources[i].url)
+                startActivity(Intent(this,CrewTestActivity::class.java).putExtra("tmdb",uri.path.trim('/')).putExtra("type",uri.host).putExtra("title",title.title))
+            } else if(title.kind=="show")showEpisodes(title,sources[i]) else play(title,sources[i])
             i==sources.size->save(saved.toggleFavourite(title))
             i==sources.size+1->addToLists(title)
             i==sources.size+2->AlertDialog.Builder(this).setTitle(title.title).setMessage(title.subtitle+"\n"+title.genres.joinToString(" · ").ifBlank { "Genre not supplied" }+"\n\n"+title.description.ifBlank { "Choose a source to see its current availability." }).setPositiveButton("Back",null).show()
@@ -271,11 +298,12 @@ class OnDemandActivity : ComponentActivity() {
             val target=runCatching { VodCatalogue.playbackPage(source) }
             currentCoroutineContext().ensureActive()
             target.onSuccess { url ->
+                val alternatives=title.sources.filter { it.provider in browse.providers && it.provider!=VodProvider.CREW }
                 pendingTitle=title
                 playerLauncher.launch(Intent(this@OnDemandActivity,VodPlayerActivity::class.java)
-                    .putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",title.sources.size-1)
-                    .putExtra("sourceUrls",title.sources.map { it.url }.toTypedArray()).putExtra("sourceProviders",title.sources.map { it.provider.name }.toTypedArray())
-                    .putExtra("sourceIndex",title.sources.indexOf(source)).putExtra("seriesUrl",if(source.provider==VodProvider.DULO && title.kind=="episode") "https://dulo.mov/title/tv/"+java.net.URL(source.url).path.substringAfterLast('/')+"/" else ""))
+                    .putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",alternatives.size-1)
+                    .putExtra("sourceUrls",alternatives.map { it.url }.toTypedArray()).putExtra("sourceProviders",alternatives.map { it.provider.name }.toTypedArray())
+                    .putExtra("sourceIndex",alternatives.indexOf(source)).putExtra("seriesUrl",if(source.provider==VodProvider.DULO && title.kind=="episode") "https://dulo.mov/title/tv/"+java.net.URL(source.url).path.substringAfterLast('/')+"/" else ""))
             }.onFailure { failure(it.message.orEmpty()) }
             message="${catalogue.titles.size} titles · Free with adverts"
         }
@@ -323,23 +351,25 @@ class OnDemandActivity : ComponentActivity() {
             Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(7.dp)) {
                 LibraryButton("Genre: ${browse.genre.ifBlank { "All" }}",browse.genre.isNotBlank()) { genres() }
                 LibraryButton("Year: ${browse.yearLabel}",browse.fromYear!=null || browse.unknownYear) { years() }
-                LibraryButton("Provider: ${browse.provider?.label ?: "All"}",browse.provider!=null) { providers() }
+                LibraryButton("Providers: ${browse.providerLabel}",browse.providers.size!=VodProvider.entries.size) { providers() }
                 LibraryButton("Sort: ${browse.sort.label}",browse.sort!=VodSort.FEATURED) { sorting() }
-                LibraryButton("Clear filters") { cancelWork();browse=VodBrowse() }
+                LibraryButton("Clear filters") { clearFilters() }
+                if(VodProvider.CREW in browse.providers)LibraryButton("Browse The Crew") { openCrew() }
                 LibraryButton(if(browse.query.isNotBlank())"More results" else "More titles") { more() }
                 LibraryButton("Refresh") { refresh() }
             }
             val summary="$shelfLabel · ${rows.size} titles"+(if(browse.query.isNotBlank())" · ‘${browse.query}’" else "")+(if(loading)" · Loading…" else if(browse.query.isNotBlank())" · Online search" else " · Browse highlights")
             Text(summary,color=Color(0xFF9EADBC),fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis,modifier=Modifier.padding(vertical=9.dp))
-            if(rows.isEmpty())Text(if(loading)"Loading titles…" else if(shelf=="favourites")"Save a film or series from its details to see it here. Clear filters to see everything saved." else if(shelf!="browse")"This list has no matching titles. Save titles from their details, or clear your filters." else if(browse.query.isNotBlank())"No matching results. Try a different title or clear the filters." else "Search online for any film or series, or refresh the browse highlights.",color=Color.White,fontSize=15.sp)
+            if(rows.isEmpty())Text(if(loading)"Loading titles…" else if(browse.providers.isEmpty())"No providers selected. Open Providers to choose what to include." else if(browse.providers==setOf(VodProvider.CREW))"Open Browse The Crew for films, series, categories and live search." else if(shelf=="favourites")"Save a film or series from its details to see it here. Clear filters to see everything saved." else if(shelf!="browse")"This list has no matching titles. Save titles from their details, or clear your filters." else if(browse.query.isNotBlank())"No matching results. Try a different title or clear the filters." else "Search online for any film or series, or refresh the browse highlights.",color=Color.White,fontSize=15.sp)
             LazyVerticalGrid(columns=GridCells.Fixed(6),state=grid,verticalArrangement=Arrangement.spacedBy(15.dp),horizontalArrangement=Arrangement.spacedBy(15.dp),modifier=Modifier.weight(1f)) {
                 items(rows,key={it.key}) { title ->
+                    val availableSources=title.sources.filter { it.provider in browse.providers }
                     var focused by remember { mutableStateOf(false) }
                     Column(Modifier.onFocusChanged { focused=it.isFocused }.border(if(focused)3.dp else 0.dp,if(focused)mint else Color.Transparent,RoundedCornerShape(6.dp))
                         .background(Color(0xFF101F2E),RoundedCornerShape(6.dp)).clickable { details(title) }.padding(5.dp)) {
                         AsyncImage(model=if(strictPrivacy)null else title.poster,contentDescription=null,contentScale=ContentScale.Crop,modifier=Modifier.fillMaxWidth().aspectRatio(2f/3f).background(Color(0xFF223A50)))
                         Text((if(saved.isFavourite(title))"★ " else "")+title.title,color=Color.White,fontSize=14.sp,maxLines=2,overflow=TextOverflow.Ellipsis,modifier=Modifier.height(42.dp).padding(top=5.dp))
-                        Text(listOfNotNull(title.year?.toString(),if(title.sources.size>1)"${title.sources.size} sources" else title.sources.first().provider.label).joinToString(" · "),color=mint,fontSize=11.sp)
+                        Text(listOfNotNull(title.year?.toString(),if(availableSources.size>1)"${availableSources.size} sources" else availableSources.firstOrNull()?.provider?.label).joinToString(" · "),color=mint,fontSize=11.sp)
                         Text(title.genres.take(2).joinToString(" · ").ifBlank { "Genre not supplied" },color=Color(0xFF9EADBC),fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
                     }
                 }

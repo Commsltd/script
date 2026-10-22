@@ -5,9 +5,9 @@ import org.json.JSONObject
 import java.util.UUID
 
 enum class VodSort(val label: String) { FEATURED("Featured"), TITLE_ASC("Title A–Z"), TITLE_DESC("Title Z–A"), NEWEST("Newest first"), OLDEST("Oldest first") }
-data class VodBrowse(val kind: String = "", val provider: VodProvider? = null, val genre: String = "", val fromYear: Int? = null, val toYear: Int? = null, val unknownYear: Boolean = false, val sort: VodSort = VodSort.FEATURED, val query: String = "") {
+data class VodBrowse(val kind: String = "", val providers: Set<VodProvider> = VodProvider.entries.toSet(), val genre: String = "", val fromYear: Int? = null, val toYear: Int? = null, val unknownYear: Boolean = false, val sort: VodSort = VodSort.FEATURED, val query: String = "") {
     fun apply(titles: List<VodTitle>): List<VodTitle> {
-        val rows=titles.filter { t -> (kind.isBlank() || t.kind==kind) && (provider==null || t.sources.any { it.provider==provider }) &&
+        val rows=titles.filter { t -> (kind.isBlank() || t.kind==kind) && t.sources.any { it.provider in providers } &&
             (genre.isBlank() || if(genre=="Unknown genre")t.genres.isEmpty() else genre in t.genres) &&
             (if(unknownYear)t.year==null else (fromYear==null || t.year?.let { it>=fromYear }==true) && (toYear==null || t.year?.let { it<=toYear }==true)) &&
             (query.isBlank() || normalTitle(t.title).contains(normalTitle(query))) }
@@ -20,6 +20,7 @@ data class VodBrowse(val kind: String = "", val provider: VodProvider? = null, v
             VodSort.OLDEST -> rows.sortedWith(compareBy<VodTitle> { it.year==null }.thenBy { it.year }.then(name))
         }
     }
+    val providerLabel get()=when(providers.size){0->"None";VodProvider.entries.size->"All";1->providers.single().label;else->"${providers.size} selected"}
     val yearLabel get()=when { unknownYear->"Unknown year";fromYear==null->"All years";fromYear==toYear->fromYear.toString();else->"${fromYear}s" }
 }
 data class VodList(val id: String, val name: String, val keys: Set<String> = emptySet())
@@ -100,4 +101,10 @@ object VodGenres {
         val match=Regex("/on-demand/category/(action|animation|comedy|crime|documentary|drama|horror|music|romance|sci-fi|thriller|western)/?$").find(path) ?: return emptyList()
         val slug=match.groupValues[1];return listOf(if(slug=="sci-fi")"Sci-Fi" else slug.replaceFirstChar { it.uppercase() })
     }
+}
+
+/** Missing settings select all; an explicitly empty selection means none. */
+object VodProviderSelection {
+    fun encode(providers:Set<VodProvider>)=providers.sortedBy { it.ordinal }.joinToString(",") { it.name }
+    fun decode(raw:String?):Set<VodProvider> = if(raw==null)VodProvider.entries.toSet() else raw.split(',').mapNotNull { name->VodProvider.entries.firstOrNull { it.name==name } }.toSet()
 }
