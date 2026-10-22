@@ -44,7 +44,7 @@ data class Snapshot(@PrimaryKey val id: Int = 1, val revision: String, val built
 data class StreamSource(val id: String, val url: String, val label: String, val host: String,
     val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean,
     val kind: String = "direct", val livePage: String = "", val region: String = "",
-    val guideChannelId: String = "", val priority: Int = 0)
+    val guideChannelId: String = "", val priority: Int = 0, val backgroundCheck: Boolean = false)
 
 fun Station.sources(): List<StreamSource> = parseSources(JSONArray(sourcesJson))
 fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()).map { index ->
@@ -54,7 +54,7 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
         obj.optString("host"), obj.optString("mime", "application/x-mpegURL"),
         headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"),
         obj.optString("kind", "direct"), obj.optString("livePage"), obj.optString("region"),
-        obj.optString("guideChannelId"), obj.optInt("priority"))
+        obj.optString("guideChannelId"), obj.optInt("priority"), obj.optBoolean("backgroundCheck"))
 }
 
 @Dao

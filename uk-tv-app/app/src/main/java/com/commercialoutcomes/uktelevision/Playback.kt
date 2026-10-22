@@ -248,15 +248,22 @@ class PlaybackEngine(
     private fun checkBackups(token: Int) {
         if (checking?.isActive == true || station?.id?.startsWith("user.") == true) return
         // Only built-in public channels; account playlists may limit connections.
-        if (station?.sources()?.any { it.region.isNotBlank() } != true) return
+        if (station?.sources()?.any { (it.region.isNotBlank() || it.backgroundCheck) } != true) return
         checking = scope.launch {
+            var cursor = 0
             while (generation == token) {
                 val activeRoute = checks.route(profile)
-                if (activeRoute != route) { route = activeRoute; tried.clear(); source?.let { tried.add(it.id) } }
-                for (candidate in candidates.filter { it.region.isNotBlank() && it.id != source?.id && checks.cached(it, route) == null }.take(3)) {
+                if (activeRoute != route) { route = activeRoute; cursor = 0; tried.clear(); source?.let { tried.add(it.id) } }
+                val eligible = candidates.filter { (it.region.isNotBlank() || it.backgroundCheck) && it.id != source?.id }
+                var checked = 0
+                for (offset in eligible.indices) {
+                    val candidate = eligible[cursor % eligible.size]
+                    cursor = (cursor + 1) % eligible.size
+                    if (checks.cached(candidate, route) != null) continue
                     val result = checks.check(candidate, model.privacyMode == PrivacyMode.STRICT)
                     if (generation != token || checks.route(profile) != activeRoute) break
                     checks.remember(candidate, activeRoute, result)
+                    if (++checked >= 3) break
                 }
                 delay(300000)
             }

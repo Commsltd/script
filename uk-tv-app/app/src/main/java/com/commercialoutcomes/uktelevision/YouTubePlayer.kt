@@ -215,7 +215,7 @@ fun EmbeddedYouTubePlayer(source: StreamSource, strict: Boolean, controller: You
         webView.loadDataWithBaseURL("$origin/", html, "text/html", "UTF-8", null)
     }
     DisposableEffect(webView) {
-        onDispose { controller.detach(webView); webView.stopLoading(); webView.removeJavascriptInterface("TVPlayback"); webView.clearHistory(); CookieManager.getInstance().removeAllCookies(null); webView.destroy() }
+        onDispose { controller.detach(webView); webView.stopLoading(); webView.removeJavascriptInterface("TVPlayback"); webView.clearHistory(); webView.destroy() }
     }
     Box(modifier) {
         key(webView) { AndroidView(factory = { webView }, update = { it.isFocusable = interactive; it.isFocusableInTouchMode = interactive }, modifier = Modifier.fillMaxSize()) }

@@ -397,6 +397,7 @@ class MainActivity : ComponentActivity() {
 
         val labels = if (surface == TvSurface.GUIDE) {
             buildList {
+                add("On Demand")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Preview channel")
                 add("Watch fullscreen")
@@ -412,6 +413,7 @@ class MainActivity : ComponentActivity() {
             }
         } else {
             buildList {
+                add("On Demand")
                 add("Open full guide")
                 add("Quick guide")
                 add("Programme info")
@@ -466,6 +468,7 @@ class MainActivity : ComponentActivity() {
                             engine.pinCurrent()
                             toast("Preferred for ${model.profile}")
                         }
+                        "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
                         "Settings" -> handler.post { showSettings() }
                     }
                 }

@@ -1,4 +1,4 @@
-# UK Television — 0.4.0 preview
+# UK Television — 0.5.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.4.0-preview.apk
+adb install -r UK-Television-0.5.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -19,11 +19,23 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 
 ## Upgrade status
 
-The expanded guide and 16 clearer viewing categories are live in the existing app. See `CHANNEL-GROUPS.md` for the grouping rules and source assessment. The separate 0.4 player candidate is being validated on the AFTSS Firestick; it has not replaced the original installation. See `UPGRADE-VALIDATION.md` for current device evidence and unresolved channels. An APK building successfully does not establish live-channel playback.
+The 0.5 preview adds a native On Demand library for Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Provider players stay inside UK Television, retain their adverts and consent controls, and use the full screen without a permanent UK TV toolbar. The supplied television artwork is used for the app icon and Fire TV tile.
 
-The upgrade adds three bounded reconnect attempts for temporary interruptions, live-window recovery, expiring failure penalties, explicit source checks, guide-coverage diagnostics, and fresh official YouTube live identities. Additional XMLTV schedules are added only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
+Live-channel alternatives are retained without a three-source cap. The published catalogue includes 51 BBC One, 16 BBC Two and 11 GB News source candidates; these counts are alternatives, not guarantees of independent or working feeds. BBC national feeds precede regional fallbacks. Playback tries untried alternatives before retrying a failed source. Background reachability checks rotate through annotated built-in alternatives, up to three every five minutes after stable playback. User-added account playlists are not probed automatically.
 
-All viewing stays inside UK Television. The normal candidate uses the official YouTube embed in Android WebView, with fresh live identities and explicit startup/error handling. Live Sky News playback still fails on the tested Firestick; it is not claimed fixed. A GeckoView experiment was unsuitable for this device and is preserved separately on `codex/uk-tv-gecko-investigation`, excluded from the normal build.
+Two official Sky News feeds sustained playback on the Firestick. The official YouTube embed also passed playback and remote pause/resume checks, but took about 55 seconds to start in that run; fast startup is not established. ITV1, Channel 4 and Channel 5 remain unverified/unresolved on this connection. See `UPGRADE-VALIDATION.md` for current device evidence and limitations.
+
+The expanded guide and 16 viewing categories remain available. Optional XMLTV schedules are used only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
+
+## On Demand
+
+The native library gathers public provider catalogues through the Firestick's current connection and expands beyond home-page highlights. **More titles** loads further discovered collections; **Search** filters titles already loaded, not every film available online. Select a title to choose a provider. Matching title, year and format combine available provider links without merging remakes. Series open native season/episode lists where the provider supplies usable metadata.
+
+**Back** returns from playback to the library; **Menu** offers another listed source, reload or return. Tubi also has a full-screen command. Tubi requests the desktop web player to avoid its mobile preview/app-install screen. Movy's TV player is scaled to the actual WebView viewport so the right and bottom controls remain visible. Plex and Pluto use their own full-size web players. Catalogue availability, advertising, consent and stream behaviour depend on the provider and connection; a listed title is not proof that every source will play.
+
+The current library is a collection of discovered titles, not a complete provider catalogue. A failed provider is reported under **Menu → service status**; retry **Refresh** after changing connection. Automatic fallback during VOD playback, persistent watch history and cross-provider episode alternatives are not yet implemented. Live-TV failover is separate. A generic HTTP 403 is not labelled a proven geographic restriction. VOD does not yet infer a reliable VPN-country recommendation for every provider error.
+
+`myfreemovies.site` is excluded from playable sources: both inspected film players stopped at ten seconds for registration and did not establish full-film availability. No registration or subscription was created.
 
 ## Included
 
@@ -49,7 +61,7 @@ All viewing stays inside UK Television. The normal candidate uses the official Y
 | Left / right | Previous/next programme; left edge opens categories | Show programme overlay |
 | OK | Watch the live programme; show details for other times | Pause/resume or retry |
 | Hold OK | Source selector | Source selector |
-| Menu | Favourites, full details, search, categories, refresh, settings | Those options plus tracks, picture size and source preference |
+| Menu | On Demand, favourites, full details, search, categories, refresh, settings | Those options plus tracks, picture size and source preference |
 | Back | Categories back to guide, then exit confirmation | Return to guide |
 | Rewind / fast-forward | Move six hours | Previous channel / jump to live |
 
@@ -62,6 +74,8 @@ The app uses `https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/c
 A separate export workflow runs after a successful original EPG update and has an hourly schedule for short-horizon FAST guides. Data conversion does not refresh the underlying broadcaster schedules more frequently than the original EPG job.
 
 Favourites, source preferences and playback results stay in the app's private local storage. Additional-playlist URLs (which may contain provider credentials or tokens) are encrypted at rest with a non-exportable AES key held by Android Keystore. The app does not send usage analytics or provide cloud accounts. The app deliberately does not create an Android MediaSession, reducing the playback metadata exposed through the normal OS media-session surface; Fire OS itself still cannot be made blind to an app running on Fire hardware. GitHub and stream providers necessarily see the connections made to their servers. Curated image hosts are contacted by the GitHub build pipeline rather than by the Firestick once their artwork has been mirrored. The catalogue itself is fetched over HTTPS. **Hardened compatibility** preserves HTTP-only legacy video streams when required so existing channels do not silently disappear. **Strict Privacy** blocks HTTP video and direct third-party artwork requests. Curated channel/programme artwork is mirrored by the data pipeline, delivered as one validated bundle, and rendered from local Fire TV storage; official YouTube fallbacks remain inside UK Television. Cleartext support remains declared in the compatibility APK because Android's manifest/network policy cannot be toggled per user at runtime; Strict Privacy enforces the block in the app's source-selection layer.
+
+On Demand contacts provider catalogue, poster and player hosts directly. Strict Privacy disables remote VOD posters and additional third-party cookie acceptance; provider pages still make their own HTTPS requests. Provider cookies remain available across player switches so sessions and consent choices are not erased.
 
 Programme descriptions are displayed when supplied, with an explicit missing-synopsis message otherwise. No descriptions or programme schedules are invented. The exporter deliberately refuses the old ITV1/London EPG assignment for the separately labelled STV stream.
 
