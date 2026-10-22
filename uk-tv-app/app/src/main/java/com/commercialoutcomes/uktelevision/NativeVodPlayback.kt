@@ -16,7 +16,7 @@ import org.json.JSONTokener
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-/** Movy's normal player resolves the title. Hand off only its matching clear HLS
+/** The provider's normal player resolves the title. Hand off only its matching clear HLS
  * feature to Media3; credentials and media addresses are never saved or logged. */
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 class NativeVodPlayback(private val activity:ComponentActivity,private val root:FrameLayout,private val web:WebView) {
@@ -39,7 +39,7 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
                 delay(2000)
                 if(!enabled||player!=null)return@launch
                 val snapshot=suspendCancellableCoroutine<JSONObject?> { c ->
-                    web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(!v||v.paused||v.readyState<2||v.duration<600||v.videoHeight>720||window.ukTvQualityRestore)return null;return JSON.stringify({duration:v.duration,time:v.currentTime,urls:performance.getEntriesByType('resource').filter(r=>/[.]m3u8(?:[?]|$)/i.test(r.name)).map(r=>r.name).slice(-12)})})()"""){raw->
+                    web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(!v||v.paused||v.readyState<2||v.duration<600||v.videoHeight>720||window.ukTvQualityRestore)return null;return JSON.stringify({duration:v.duration,time:v.currentTime,urls:performance.getEntriesByType('resource').filter(r=>/[.]m3u8(?:[?]|$)/i.test(r.name)).map(r=>r.name).concat(v.currentSrc&&/^[hH][tT][tT][pP][sS]:/.test(v.currentSrc)?[v.currentSrc]:[]).slice(-12)})})()"""){raw->
                         if(c.isActive)c.resume(runCatching{JSONObject(JSONTokener(raw).nextValue().toString())}.getOrNull(),null)
                     }
                 } ?: return@repeat
@@ -107,7 +107,7 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
         if(exo!=null)web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(v){v.currentTime=${position/1000.0};${if(resume)"v.play().catch(()=>{})" else "v.pause()"}}})()""",null)
         web.requestFocus()
     }
-    fun pause(){resumeAfterPause=player?.isPlaying==true;player?.pause()}
-    fun resume(){if(resumeAfterPause)player?.play();resumeAfterPause=false}
+    fun pause(){job?.cancel();resumeAfterPause=player?.isPlaying==true;player?.pause()}
+    fun resume(){if(resumeAfterPause)player?.play();resumeAfterPause=false;if(enabled&&player==null)schedule()}
     fun close(){enabled=false;returnToWeb(false)}
 }

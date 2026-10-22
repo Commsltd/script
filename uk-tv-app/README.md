@@ -1,4 +1,4 @@
-# UK Television — 0.7.1 preview
+# UK Television — 0.8.0 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.7.1-preview.apk
+adb install -r UK-Television-0.8.0-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -18,6 +18,12 @@ Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the
 Compatibility target: Android 6 / API 23 or newer, including Android-based Fire OS 6, 7 and 8. It is not a Vega OS application. Real Firestick hardware/network playback still needs device testing even when the Android emulator checks pass.
 
 ## Upgrade status
+
+Version 0.8.0 adds online film/series search for Movy/Dulo, independent of the browse pages already loaded. Search returns matching titles with paginated results; other providers retain matching loaded catalogue entries, labelled as such. Metadata is not a guarantee that a playable source exists. Search and episode metadata use the public metadata endpoint used by Movy's own search, without copying a provider API key.
+
+Dulo series use native season/episode lists in UK TV. During a Dulo episode, press **MENU → Choose season / episode**. The selected episode opens the provider's TV player route, rather than its full details webpage. Matching clear HLS can hand off to the native player; other sources retain the embedded video player. The verified Breaking Bad S3E1 run used the embedded player at 720p and advanced normally.
+
+Catalogue browsing uses a small 15-minute cache and no automatic hidden-WebView expansion. Superseded searches and catalogue jobs are cancelled when leaving VOD. The optional **The Crew · Firestick test** action is separately provisioned and starts Kodi only for that experiment, entirely on the Firestick. Startup may briefly show Kodi before automatically returning to UK TV. The test returned no free sources for the two checked titles; no successful Crew playback is claimed. See [test scope and operation](../uk-tv-kodi-test/README.md).
 
 The preview includes a native On Demand library for Dulo, Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Playback stays inside UK Television without a permanent toolbar. Movy can hand a matching, complete, unencrypted film/episode HLS stream to the native player; trailers, protected media and advertising-marked playlists are excluded. Plex, Pluto and Tubi retain their provider players, adverts and consent controls. The supplied television artwork is used for the app icon and Fire TV tile.
 

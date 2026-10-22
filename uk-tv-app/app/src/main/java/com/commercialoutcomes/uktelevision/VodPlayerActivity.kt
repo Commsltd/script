@@ -126,10 +126,9 @@ class VodPlayerActivity : ComponentActivity() {
     private fun prepareProviderControls() {
         consentControls?.close();qualityControls?.close();nativePlayback?.close();nativePlayback=null
         if(provider==VodProvider.PLEX){consentControls=WebConsentControls(this,web).also{it.start()};startWithSound()}
-        if(provider==VodProvider.MOVY){
-            qualityControls=VodQualityControls(web).also{it.startAt720p()}
-            nativePlayback=NativeVodPlayback(this,root,web).also{it.start()}
-        }
+        if(provider==VodProvider.MOVY)qualityControls=VodQualityControls(web).also{it.startAt720p()}
+        if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))nativePlayback=NativeVodPlayback(this,root,web).also{it.start()}
+
     }
     private fun soundOn() {
         nativePlayback?.player?.volume=1f
@@ -217,7 +216,7 @@ class VodPlayerActivity : ComponentActivity() {
                     .setItems(labels.toTypedArray()) { _,i -> controls.choose(choices[i]) { changed ->
                         Toast.makeText(this,if(changed)"Changing stream to ${choices[i].label}" else "Choices changed. Open Change stream again.",Toast.LENGTH_LONG).show()
                         web.requestFocus()
-                        if(changed && provider==VodProvider.MOVY) { qualityControls?.startAt720p();nativePlayback?.start() }
+                        if(changed) { if(provider==VodProvider.MOVY)qualityControls?.startAt720p();nativePlayback?.start() }
                     } }
                     .setNeutralButton("Other providers") { _,_->chooseProvider() }.setNegativeButton("Back",null).show()
             }
@@ -258,11 +257,46 @@ class VodPlayerActivity : ComponentActivity() {
             }.onFailure { AlertDialog.Builder(this@VodPlayerActivity).setTitle("Source unavailable").setMessage(it.message).setPositiveButton("Back",null).show() }
         }
     }
+    private fun duloSeries():String? {
+        if(provider!=VodProvider.DULO)return null
+        val path=runCatching{java.net.URI(web.url.orEmpty()).path}.getOrDefault("")
+        val id=Regex("^/(?:tv/)?watch/tv/(\\d+)/?$").matchEntire(path)?.groupValues?.get(1) ?: return null
+        return "https://dulo.mov/title/tv/$id/"
+    }
+    private fun chooseEpisode(selectedSource:VodSource?=null) {
+        val source=selectedSource ?: VodSource(VodProvider.DULO,duloSeries()?:return)
+        val wait=AlertDialog.Builder(this).setMessage("Loading seasons and episodes…").setNegativeButton("Cancel",null).create()
+        val job=lifecycleScope.launch {
+            try {
+                val rows=VodEpisodes.load(source)
+                wait.dismiss()
+                if(rows.isEmpty())throw IllegalStateException("The provider did not supply episodes for this season.")
+                AlertDialog.Builder(this@VodPlayerActivity).setTitle(if(rows.first().kind=="season")"Choose season" else "Choose episode")
+                    .setItems(rows.map{it.title}.toTypedArray()){_,i->
+                        val selected=rows[i]
+                        if(selected.kind=="season")chooseEpisode(selected.sources.first()) else lifecycleScope.launch {
+                            try {
+                                val url=VodCatalogue.playbackPage(selected.sources.first())
+                                consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close()
+                                handler.removeCallbacksAndMessages(null);closeFullscreen();web.stopLoading()
+                                web.loadUrl(url);prepareProviderControls();web.requestFocus()
+                            } catch(e:kotlinx.coroutines.CancellationException){throw e}
+                            catch(e:Exception){AlertDialog.Builder(this@VodPlayerActivity).setTitle("Episode unavailable").setMessage(e.message).setPositiveButton("Back",null).show()}
+                        }
+                    }.setNegativeButton("Back",null).show()
+            }catch(e:kotlinx.coroutines.CancellationException){throw e}
+            catch(e:Exception){wait.dismiss();AlertDialog.Builder(this@VodPlayerActivity).setMessage(e.message).setPositiveButton("Back",null).show()}
+        }
+        wait.setOnCancelListener{job.cancel()}
+        wait.setOnShowListener{wait.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{job.cancel();wait.dismiss()}}
+        wait.show()
+    }
     private fun showServices() {
         if(webFailed||servicesDialog?.isShowing==true)return
         val labels=buildList {
             if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))add("Change stream · poor copy or buffering")
             if(provider==VodProvider.MOVY)add("Picture quality")
+            if(duloSeries()!=null)add("Choose season / episode")
             add("Sound on")
             add("Choose another provider")
             if(provider==VodProvider.PLEX)add("Consent choices")
@@ -274,6 +308,7 @@ class VodPlayerActivity : ComponentActivity() {
             .setItems(labels.toTypedArray()) { _, i -> when(labels[i]) {
                 "Change stream · poor copy or buffering" -> changeStream()
                 "Picture quality" -> changeQuality()
+                "Choose season / episode" -> chooseEpisode()
                 "Sound on" -> soundOn()
                 "Choose another provider" -> chooseProvider()
                 "Consent choices" -> consentControls?.check()

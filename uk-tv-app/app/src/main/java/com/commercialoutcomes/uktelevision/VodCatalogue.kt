@@ -228,7 +228,8 @@ object VodCatalogue {
         if(source.provider==VodProvider.MOVY)return@withContext source.url.substringBefore('?')+"?play=true"
         if(source.provider==VodProvider.DULO) {
             if(URL(source.url).path.startsWith("/tv/"))return@withContext source.url
-            if(URL(source.url).path.startsWith("/watch/") || URL(source.url).path.startsWith("/title/tv/"))return@withContext source.url.replace("https://dulo.mov/","https://dulo.mov/tv/")
+            require(!URL(source.url).path.startsWith("/title/tv/")) { "Choose a season and episode before playing this series." }
+            if(URL(source.url).path.startsWith("/watch/"))return@withContext source.url.replace("https://dulo.mov/","https://dulo.mov/tv/")
             val doc=fetch(source.url)
             val watch=doc.select("a[href]").map { it.absUrl("href") }.firstOrNull {
                 source.provider.owns(it) && URL(it).path.startsWith("/watch/")

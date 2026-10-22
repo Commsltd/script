@@ -1,5 +1,20 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.8.0 online search, Dulo seasons and local Crew experiment
+
+The same AFTSS Firestick and package are upgraded in place (version code 10), without clearing app data or changing the VPN. A fresh private app-data archive was captured before the first test launch.
+
+- Search now queries the online Movy/Dulo metadata catalogue rather than only filtering already loaded browse pages. The Firestick found seven Fawlty Towers matches in **1,482 ms**, without pressing More titles. Metadata does not establish source availability. Plex/Tubi/Pluto search still uses their loaded catalogue entries and is labelled accordingly.
+- Dulo uses native season and episode dialogs. Breaking Bad season 2 returned 13 correctly identified episodes; the remote menu switched from S2E2 to S3E1 and opened the matching `/tv/watch/tv/1396?s=3&e=1` route. Actual S3E1 playback reached 16.2 seconds at 720p with advancing time. That sample used the embedded video player, not a proven native handoff.
+- Automatic hidden-browser catalogue expansion is removed. Browse results use a balanced, bounded 300-title cache, fresh for 15 minutes; movies and series from each provider are prioritised. Searches, genre requests and catalogue jobs are cancelled when superseded or when leaving VOD. The cache reopening check passed with 273 titles, including 126 series, and no new catalogue job (6.179 seconds measured by the debug instrumentation harness, not a normal-runtime speed claim). The build passes 57 unit tests and tvPreview lint. Device startup/cache figures are individual observations, not a general speed guarantee.
+- The actual Crew 3.2.2 / module 3.2.26 runs in Kodi 21.3 ARMv7 **on the Firestick**, behind an authenticated loopback bridge. The Mac is only a development/deployment machine. The app's optional title action starts the engine, returns automatically to UK TV, and can resolve an indexed result for native playback. Runtime source concurrency is capped at four. Remote-media playback, no-source results, errors and leaving the test shut down Kodi; loopback-proxied playback retains it with a keepalive.
+- A complete UI test started Kodi from UK TV, returned to UK TV and displayed **no free sources** for The Shawshank Redemption, completing in 55.7 seconds. A separate actual engine check also returned no free sources for Breaking Bad S3E1. No successful Crew media playback is claimed. A final combined test passed search and cached reopening but failed the Crew lookup after Fire OS killed Kodi again. This repeat failure is retained, not reclassified as a passing integration. An earlier background attempt was also killed by Fire OS; Kodi alone used around 125–161 MB PSS during measured samples, plus swap. The experiment is not a reliable default provider and remains isolated from normal viewing.
+- The token is provisioned privately per device; the Android APK contains no token. Kodi's provisioning file is moved into its private files directory with mode 0600. The bridge exposes no remote listener or arbitrary execution API. Provider code and ZIP dependencies are not bundled into the app repository. See `../uk-tv-kodi-test/README.md`.
+
+The saved-library JSON (three favourites and no lists) is semantically identical to the pre-upgrade backup. Only provider-sync metadata changed, alongside the new cache/test configuration.
+
+Initial UI automation failures included a disconnected Android accessibility session and the Fire TV screensaver covering the test. The targeted search, native season menu, actual Dulo playback and Crew start/return/result checks subsequently passed. These bounded checks do not establish whole-film reliability, native playback for every provider, or availability of additional Crew sources.
+
 ## 0.7.1 programme guides and playback repair
 
 Device: AFTSS Firestick, Android 9/API 28, approximately 922 MB RAM, connected to the user's existing UK–East London ExpressVPN route. No VPN country or account setting was changed.

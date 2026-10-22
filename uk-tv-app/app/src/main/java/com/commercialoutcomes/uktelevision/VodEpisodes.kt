@@ -8,7 +8,7 @@ import java.net.URL
 object VodEpisodes {
     suspend fun load(source: VodSource): List<VodTitle> = withContext(Dispatchers.IO) {
         require(source.provider.owns(source.url))
-        parse(source,VodCatalogue.fetch(source.url))
+        if(source.provider==VodProvider.DULO)VodDiscovery.duloEpisodes(source) else parse(source,VodCatalogue.fetch(source.url))
     }
     fun parse(source: VodSource,doc: Document): List<VodTitle> {
         if(source.provider==VodProvider.MOVY) {
