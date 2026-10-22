@@ -29,6 +29,14 @@ data class GuideRow(val station: Station, val source: StreamSource, val sourceIn
 }
 
 object GuideRules {
+    // A failed player must not consume OK intended for a different guide row.
+    fun retryOnSelect(surface: TvSurface, failed: Boolean): Boolean =
+        surface == TvSurface.LIVE && failed
+
+    fun previewShowsDetails(zone: GuideZone, programme: Programme?, now: Long): Boolean =
+        zone == GuideZone.PROGRAMMES && programme != null &&
+            (programme.start > now || programme.stop <= now)
+
     fun at(shows: List<Programme>, time: Long): Programme? =
         shows.firstOrNull { it.start <= time && it.stop > time }
 

@@ -1,4 +1,4 @@
-# UK Television — 0.9.0 preview
+# UK Television — 0.9.1 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
@@ -10,7 +10,7 @@ On an Android-based Firestick, enable **Settings → My Fire TV → Developer op
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.9.0-preview.apk
+adb install -r UK-Television-0.9.1-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -19,11 +19,15 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 
 ## Upgrade status
 
-Version 0.9.0 is **built locally, not installed or device-validated yet**. On Demand → **Providers** is a checklist: select any combination, untick The Crew to exclude it, and choose Apply. The choice persists across reopening, searches and saved-library views. Shared titles stay visible through selected providers; excluded providers are hidden from title actions and playback alternatives. Clear filters restores all providers. An empty selection displays no titles.
+The staged 0.9.1 build adds a persistent synopsis panel beside the title grid. Highlighting a film or series shows its existing description, year and genres in both the main library and Crew browser, without starting network requests or video. Missing descriptions are labelled rather than invented. **British classics** offers searches for Open All Hours, Only Fools and Horses, 'Allo 'Allo!, New Tricks, Minder, Porridge and The Morecambe and Wise Show. It preserves provider exclusions, selects TV series and clears old year/genre filters. With Crew included, the chooser offers its live search separately. These are discovery shortcuts, not new licensed catalogues or promises of playable episodes. OFAH and common Morecambe and Wise spellings are recognised in the main search.
+
+Guide OK selection now acts on the selected channel even when the previous player failed. Selecting the failed channel again retries it; selecting a channel row is no longer blocked by a past/future programme entry. The preview displays connection/recovery status instead of leaving a silent black box. Pluto-specific rendering remains unverified on the Firestick: six sampled feeds returned manifests, AES-128 keys and media bytes from the Mac, which does not prove playback on the device's VPN route.
+
+Version 0.9.1 is **built locally, not installed or device-validated yet**. On Demand → **Providers** is a checklist: select any combination, untick The Crew to exclude it, and choose Apply. The choice persists across reopening, searches and saved-library views. Shared titles stay visible through selected providers; excluded providers are hidden from title actions and playback alternatives. Clear filters restores all providers. An empty selection displays no titles.
 
 **Browse The Crew** opens a native UK TV catalogue browser with Films, TV series, categories, provider-supplied next pages and live Crew search. It reads the actual installed add-on's directory through Kodi, rather than relabelling another provider's metadata. Selecting a title returns to its normal UK TV details with **Watch · The Crew** or **Choose episode · The Crew**, favourites and lists. The regular library includes up to 300 recently browsed Crew titles in its mixed-provider cache; the live Crew browser is not limited to that cache. With only The Crew selected, Search opens its live search. In mixed-provider search, Crew matches are from its cache; use Browse The Crew for live Crew searches.
 
-This requires both the 0.9.0 APK and **UK Television Crew bridge 0.2.0**, alongside the already installed Kodi/Crew. The app detects the older source-only bridge and explains that it needs updating. Browsing runs entirely on the Firestick and starts Kodi only on an explicit Browse The Crew request. Kodi may briefly appear at startup; the catalogue and title controls use UK TV's interface. Closing the Crew browser stops its engine; cached titles remain. Catalogue entries are not proof of playable sources. Crew source playback remains unproven on this device. See `../uk-tv-kodi-test/README.md` for the bridge package and pending verification.
+This requires both the 0.9.1 APK and **UK Television Crew bridge 0.2.0**, alongside the already installed Kodi/Crew. The app detects the older source-only bridge and explains that it needs updating. Browsing runs entirely on the Firestick and starts Kodi only on an explicit Browse The Crew request. Kodi may briefly appear at startup; the catalogue and title controls use UK TV's interface. Closing the Crew browser stops its engine; cached titles remain. Catalogue entries are not proof of playable sources. Crew source playback remains unproven on this device. See `../uk-tv-kodi-test/README.md` for the bridge package and pending verification.
 
 Version 0.8.1 gives Tubi a full-screen player with native TV controls. The website header and recommendation panels stay out of playback. **OK / Play-Pause** controls playback, **Up / Down** reveals the controls, and **Left / Right** seeks when they are hidden. **Back** hides the controls, then returns to the library. **MENU** offers playback controls, reload, other providers and return to library. Tubi retains its own streaming engine, advertising and access restrictions. Notices and their explicit choices are presented in a scrollable native remote dialogue.
 

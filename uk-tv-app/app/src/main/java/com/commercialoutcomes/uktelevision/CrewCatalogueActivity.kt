@@ -122,6 +122,7 @@ class CrewCatalogueActivity:ComponentActivity() {
     @Composable private fun Action(label:String,action:()->Unit){var focused by remember{mutableStateOf(false)};Text(label,color=if(focused)Color.Black else Color.White,fontSize=16.sp,modifier=Modifier.onFocusChanged{focused=it.isFocused}.background(if(focused)Color(0xFF64E7CB) else Color(0xFF223D50)).clickable(onClick=action).padding(12.dp))}
     @Composable private fun Browser(){
         val grid=rememberLazyGridState()
+        var highlightedKey by remember(page) { mutableStateOf<String?>(null) }
         LaunchedEffect(page){grid.scrollToItem(0)}
         Column(Modifier.fillMaxSize().background(Color(0xFF07131D)).padding(24.dp)){
             Text(heading,color=Color.White,fontSize=24.sp)
@@ -129,15 +130,19 @@ class CrewCatalogueActivity:ComponentActivity() {
                 Action("Films"){home("movie")};Action("TV series"){home("tv")};Action("Search The Crew"){search()};Action("Up"){up()};Action("On Demand"){finish()}
             }
             Text(message,color=Color(0xFFB9CAD8),fontSize=14.sp,modifier=Modifier.padding(bottom=12.dp))
-            if(!busy)LazyVerticalGrid(columns=GridCells.Fixed(5),state=grid,verticalArrangement=Arrangement.spacedBy(12.dp),horizontalArrangement=Arrangement.spacedBy(12.dp),modifier=Modifier.weight(1f)){
+            Row(Modifier.weight(1f).fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(16.dp)) {
+            if(!busy)LazyVerticalGrid(columns=GridCells.Fixed(5),state=grid,verticalArrangement=Arrangement.spacedBy(12.dp),horizontalArrangement=Arrangement.spacedBy(12.dp),modifier=Modifier.weight(1f).fillMaxHeight()){
                 items(page.folders,key={"folder:"+it.id}){folder->Action("▸ ${folder.label}"){load(JSONObject().put("folder",folder.id).put("section",section),folder.label)}}
                 items(page.titles,key={it.key}){title->var focused by remember{mutableStateOf(false)}
-                    Column(Modifier.onFocusChanged{focused=it.isFocused}.border(if(focused)3.dp else 0.dp,Color(0xFF64E7CB)).background(Color(0xFF132637)).clickable{select(title)}.padding(6.dp)){
+                    Column(Modifier.onFocusChanged{focused=it.isFocused;if(it.isFocused)highlightedKey=title.key}.border(if(focused)3.dp else 0.dp,Color(0xFF64E7CB)).background(Color(0xFF132637)).clickable{select(title)}.padding(6.dp)){
                         AsyncImage(model=if(strictPrivacy)null else title.poster,contentDescription=null,contentScale=ContentScale.Crop,modifier=Modifier.fillMaxWidth().aspectRatio(2f/3f))
                         Text(title.title,color=Color.White,fontSize=16.sp,maxLines=2,overflow=TextOverflow.Ellipsis)
                         Text(listOfNotNull(title.year?.toString(),if(title.kind=="show")"TV series" else "Film").joinToString(" · "),color=Color(0xFF64E7CB),fontSize=12.sp)
                     }
                 }
+            }
+            else Spacer(Modifier.weight(1f))
+            VodFocusDetails(if(busy)null else page.titles.firstOrNull { it.key==highlightedKey },Modifier.width(240.dp).fillMaxHeight())
             }
         }
     }

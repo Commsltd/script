@@ -1,5 +1,19 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.9.1 preview selection, VOD descriptions and classics — local build only
+
+The Firestick was not connected to, inspected, restarted, installed to or otherwise operated. The public feed was read but not changed. The user is watching; 0.8.1 remains the last installed release. Version code 13 is staged for later alongside the unchanged Crew bridge 0.2.0.
+
+- Corrects failed native/YouTube playback consuming OK before guide selection is handled. Full-screen OK retains its retry behaviour. Selecting a failed channel in the guide retries it instead of promoting the failed view. Selecting a channel row previews live TV even when its nearest schedule entry is past/future; selecting that programme cell still opens details. The native preview now shows connection/recovery/playing status.
+- Adds a fixed-width synopsis panel beside the VOD grid in both main and Crew browsers, showing loaded title/year/genre/description on focus. It does not request data or start playback on focus. Missing descriptions have an explicit fallback. The grid retains its vertical space for remote scrolling.
+- Adds British classics search shortcuts for the seven requested series, preserving provider selection and clearing irrelevant film/year/genre filters. Crew live search is offered when selected, and OFAH/common Morecambe and Wise spelling aliases are recognised. Results remain discovery metadata; playback availability is not asserted.
+
+Local validation: 63 Kotlin tests pass, including failed-player guide selection, channel-versus-programme selection and search aliases. Normal/test APK builds and tvPreview lint pass. No new device/UI playback test was run. The package, signer and approved icon are retained.
+
+Read-only network samples from the Mac: six Pluto channels returned HLS master/media playlists, 16-byte AES-128 keys (HTTP 200) and 4096-byte media samples (HTTP 206); complete bounded requests took roughly 3–5.4 seconds. The sampled channels were Cult Films, Family Movie Club, Fantasy & Horror, Movies GB, Westerns and Animation. These prove reachability from the Mac only, not decoding, continuous playback or Firestick/VPN availability. All 22 Pluto entries in the sampled published feed used jmp2.uk resolver links. No sources were removed or replaced. The specific reported Pluto black-preview cause remains unverified.
+
+Online metadata searches returned all seven requested names with synopses, including separate original/remake identities for Porridge and Minder. This is not episode playback evidence. Official ITVX pages list [Only Fools and Horses](https://www.itv.com/watch/only-fools-and-horses/2a7242), ['Allo 'Allo](https://www.itv.com/watch/allo-allo/10a0082/10a0082a0003) and [New Tricks](https://www.itv.com/watch/new-tricks/10a1333) as Premium; [Minder](https://www.itv.com/watch/minder/29175/811636) displays Watch Now. These listings do not establish an in-app integration or access from Spain. BBC iPlayer pages could not be verified through the research tool; availability for the other requested programmes is not asserted. No paid service was added.
+
 ## 0.9.0 Crew catalogue and multiple providers — local build only
 
 The Firestick was not connected to, inspected, restarted or installed to during this work, because the user is watching. Version code 12 is prepared separately; 0.8.1 remains the last installed release. No Kodi instance was started on the Mac or Firestick.

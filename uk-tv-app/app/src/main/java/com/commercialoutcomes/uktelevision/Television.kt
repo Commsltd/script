@@ -272,7 +272,8 @@ private fun GuideScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    if (engine.failed && youtubeSource == null && model.playingRow?.source?.kind!="web") {
+                    if (youtubeSource == null && model.playingRow?.source?.kind!="web" &&
+                        engine.status.isNotBlank()) {
                         Box(
                             Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                                 .background(Ink.copy(alpha = .88f))

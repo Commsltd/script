@@ -237,12 +237,17 @@ class MainActivity : ComponentActivity() {
         val row = model.selected() ?: return
         val now = System.currentTimeMillis()
         val programme = model.highlighted()
-        if (programme != null && (programme.start > now || programme.stop <= now)) {
+        if (GuideRules.previewShowsDetails(model.guideZone, programme, now)) {
             showDetails()
             return
         }
         val alreadyPlaying = model.playingRow?.station?.id == row.station.id
-        if (alreadyPlaying) {
+        val playbackFailed = when(row.source.kind) {
+            "youtube" -> engine.youtube.failed
+            "direct" -> engine.failed || (youtubeSource != null && engine.youtube.failed)
+            else -> false
+        }
+        if (alreadyPlaying && !playbackFailed) {
             surface = TvSurface.LIVE
             showInfo()
         } else {
@@ -251,8 +256,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shortSelect() {
-        if (youtubeSource != null && engine.youtube.failed) { engine.youtube.retry(); return }
-        if (liveWeb == null && youtubeSource == null && engine.failed) { engine.pauseOrPlay(); return }
+        if (youtubeSource != null && GuideRules.retryOnSelect(surface, engine.youtube.failed)) { engine.youtube.retry(); return }
+        if (liveWeb == null && youtubeSource == null && GuideRules.retryOnSelect(surface, engine.failed)) { engine.pauseOrPlay(); return }
         when (surface) {
             TvSurface.LIVE -> when (liveOverlay) {
                 LiveOverlay.QUICK_GUIDE -> confirmQuickGuide()

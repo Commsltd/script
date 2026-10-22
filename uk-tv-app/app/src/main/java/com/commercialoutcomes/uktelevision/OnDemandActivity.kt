@@ -122,7 +122,7 @@ class OnDemandActivity : ComponentActivity() {
         }
     }
     fun searchOnline(query:String,append:Boolean=false) {
-        val q=query.trim()
+        val q=BritishClassics.query(query)
         if(q.length>=2&&browse.providers==setOf(VodProvider.CREW)){openCrew(q);return}
         if(q.length<2){cancelWork();browse=browse.copy(query="");message="Enter at least two characters to search online";return}
         val page=if(append)searchPage+1 else 1
@@ -207,6 +207,25 @@ class OnDemandActivity : ComponentActivity() {
         AlertDialog.Builder(this).setTitle("Search online").setView(input)
             .setPositiveButton("Search") { _, _ -> searchOnline(input.text.toString()) }
             .setNeutralButton("Clear") { _, _ -> cancelWork();browse=browse.copy(query="") }.setNegativeButton("Cancel",null).show()
+    }
+    private fun classics() {
+        choose("British classics · find a series",BritishClassics.titles) { index ->
+            val query=BritishClassics.titles[index]
+            fun find(crew:Boolean) {
+                cancelWork()
+                // Retain provider exclusions, but do not let an old film/year
+                // filter hide the requested series or its original version.
+                browse=VodBrowse(kind="show",providers=browse.providers,sort=browse.sort)
+                if(crew)openCrew(query) else searchOnline(query)
+            }
+            if(VodProvider.CREW in browse.providers && browse.providers.size>1) {
+                AlertDialog.Builder(this).setTitle(query)
+                    .setMessage("Find catalogue entries; episode availability is checked when you choose to watch. Selected providers search Movy / Dulo online and other providers' cached titles. The Crew has its own live search.")
+                    .setPositiveButton("Selected providers"){_,_->find(false)}
+                    .setNeutralButton("The Crew live"){_,_->find(true)}
+                    .setNegativeButton("Back",null).show()
+            } else find(false)
+        }
     }
     private fun nameList(existing: VodList? = null, titleToAdd: VodTitle? = null) {
         val input=EditText(this).apply { setSingleLine(true);setText(existing?.name.orEmpty());hint="e.g. Weekend films";filters=arrayOf(android.text.InputFilter.LengthFilter(60)) }
@@ -330,6 +349,8 @@ class OnDemandActivity : ComponentActivity() {
         val rows=visibleTitles
         val initial=remember { FocusRequester() }
         val grid=rememberLazyGridState()
+        var highlightedKey by remember { mutableStateOf<String?>(null) }
+        val highlighted=rows.firstOrNull { it.key==highlightedKey }
         LaunchedEffect(browse,shelf) { grid.scrollToItem(0) }
         Column(Modifier.fillMaxSize().background(ink).padding(24.dp)) {
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
@@ -343,6 +364,7 @@ class OnDemandActivity : ComponentActivity() {
                 LibraryButton("All",browse.kind.isBlank()) { browse=browse.copy(kind="") }
                 LibraryButton("Films",browse.kind=="movie") { browse=browse.copy(kind="movie") }
                 LibraryButton("TV series",browse.kind=="show") { browse=browse.copy(kind="show") }
+                LibraryButton("British classics") { classics() }
                 LibraryButton("★ Favourites",shelf=="favourites") { openShelf("favourites") }
                 LibraryButton("My lists",saved.lists.any { it.id==shelf }) { myLists() }
                 LibraryButton("Search",browse.query.isNotBlank()) { search() }
@@ -361,11 +383,12 @@ class OnDemandActivity : ComponentActivity() {
             val summary="$shelfLabel · ${rows.size} titles"+(if(browse.query.isNotBlank())" · ‘${browse.query}’" else "")+(if(loading)" · Loading…" else if(browse.query.isNotBlank())" · Online search" else " · Browse highlights")
             Text(summary,color=Color(0xFF9EADBC),fontSize=12.sp,maxLines=1,overflow=TextOverflow.Ellipsis,modifier=Modifier.padding(vertical=9.dp))
             if(rows.isEmpty())Text(if(loading)"Loading titles…" else if(browse.providers.isEmpty())"No providers selected. Open Providers to choose what to include." else if(browse.providers==setOf(VodProvider.CREW))"Open Browse The Crew for films, series, categories and live search." else if(shelf=="favourites")"Save a film or series from its details to see it here. Clear filters to see everything saved." else if(shelf!="browse")"This list has no matching titles. Save titles from their details, or clear your filters." else if(browse.query.isNotBlank())"No matching results. Try a different title or clear the filters." else "Search online for any film or series, or refresh the browse highlights.",color=Color.White,fontSize=15.sp)
-            LazyVerticalGrid(columns=GridCells.Fixed(6),state=grid,verticalArrangement=Arrangement.spacedBy(15.dp),horizontalArrangement=Arrangement.spacedBy(15.dp),modifier=Modifier.weight(1f)) {
+            Row(Modifier.weight(1f).fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(16.dp)) {
+            LazyVerticalGrid(columns=GridCells.Fixed(5),state=grid,verticalArrangement=Arrangement.spacedBy(15.dp),horizontalArrangement=Arrangement.spacedBy(15.dp),modifier=Modifier.weight(1f).fillMaxHeight()) {
                 items(rows,key={it.key}) { title ->
                     val availableSources=title.sources.filter { it.provider in browse.providers }
                     var focused by remember { mutableStateOf(false) }
-                    Column(Modifier.onFocusChanged { focused=it.isFocused }.border(if(focused)3.dp else 0.dp,if(focused)mint else Color.Transparent,RoundedCornerShape(6.dp))
+                    Column(Modifier.onFocusChanged { focused=it.isFocused;if(it.isFocused)highlightedKey=title.key }.border(if(focused)3.dp else 0.dp,if(focused)mint else Color.Transparent,RoundedCornerShape(6.dp))
                         .background(Color(0xFF101F2E),RoundedCornerShape(6.dp)).clickable { details(title) }.padding(5.dp)) {
                         AsyncImage(model=if(strictPrivacy)null else title.poster,contentDescription=null,contentScale=ContentScale.Crop,modifier=Modifier.fillMaxWidth().aspectRatio(2f/3f).background(Color(0xFF223A50)))
                         Text((if(saved.isFavourite(title))"★ " else "")+title.title,color=Color.White,fontSize=14.sp,maxLines=2,overflow=TextOverflow.Ellipsis,modifier=Modifier.height(42.dp).padding(top=5.dp))
@@ -373,6 +396,8 @@ class OnDemandActivity : ComponentActivity() {
                         Text(title.genres.take(2).joinToString(" · ").ifBlank { "Genre not supplied" },color=Color(0xFF9EADBC),fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
                     }
                 }
+            }
+            VodFocusDetails(highlighted,Modifier.width(240.dp).fillMaxHeight())
             }
             Text(message,color=Color(0xFF9EADBC),fontSize=11.sp,maxLines=2)
             Text("↑↓←→ Browse    OK Play / save    MENU Filters & lists",color=Color(0xFF9EADBC),fontSize=12.sp,modifier=Modifier.padding(top=9.dp))

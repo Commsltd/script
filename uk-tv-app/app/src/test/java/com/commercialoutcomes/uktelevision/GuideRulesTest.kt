@@ -6,6 +6,21 @@ import org.junit.Test
 class GuideRulesTest {
     private fun programme(start: Long, stop: Long) = Programme("p$start", "a", start, stop, "Programme", "", "Synopsis", "", "")
     private fun station(id: String) = Station(id, id, "BBCOne.uk", "01 MAIN UK", 0, "", "", "[]", "")
+    @Test fun failedPlaybackDoesNotStealGuideSelection() {
+        assertFalse(GuideRules.retryOnSelect(TvSurface.GUIDE, true))
+        assertTrue(GuideRules.retryOnSelect(TvSurface.LIVE, true))
+        assertFalse(GuideRules.retryOnSelect(TvSurface.LIVE, false))
+    }
+    @Test fun channelSelectionPreviewsEvenWhenItsNearestProgrammeIsNotLive() {
+        val future=programme(300,400)
+        val past=programme(100,200)
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.CHANNELS,future,250))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.CHANNELS,past,250))
+        assertTrue(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,future,250))
+        assertTrue(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,past,250))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,past,150))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,null,250))
+    }
     @Test fun scheduleBoundsAreHalfOpen() {
         val p = programme(100, 200)
         assertEquals(p, GuideRules.at(listOf(p), 100))
