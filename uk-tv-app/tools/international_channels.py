@@ -16,16 +16,17 @@ COUNTRIES = {
     'US': ('19 USA', 'ABCNewsLive.us CBSNews247.us NBCNewsNOW.us LiveNOWfromFOX.us PBS.us FoxWeather.us CBSNewsNewYork.us CBSNewsLosAngeles.us'.split()),
     'CA': ('20 CANADA', 'CBCTelevision.ca CBCNewsNetwork.ca CityNewsToronto.ca CityNewsVancouver.ca CityNewsCalgary.ca CityNewsEdmonton.ca BNNBloomberg.ca CPACEnglish.ca TheWeatherNetwork.ca KnowledgeNetwork.ca NTV.ca'.split()),
     'AU': ('21 AUSTRALIA', 'ABCTV.au ABCNews.au Channel9.au 9Gem.au 9Go.au 9Life.au 10Bold.au ABCKids.au ABCEntertains.au AusbizTV.au tickerNews.au C31Melbourne.au'.split()),
-    'NZ': ('22 NEW ZEALAND', 'TVNZ1.nz TVNZ2.nz TVNZDUKE.nz WhakaataMaori.nz TeReo.nz ParliamentTV.nz JuiceTV.nz'.split()),
+    'NZ': ('22 NEW ZEALAND', 'WhakaataMaori.nz TeReo.nz ParliamentTV.nz JuiceTV.nz'.split()),
 }
 WEB = {
-    'TTT.tt': 'https://player.tegotv.com/player.php?channel=1&about=0&chat=0&donation=0&epg=0',
-    'CCNTV6.tt': 'https://geo.dailymotion.com/player/x8dgt.html?video=x7x3klh',
+    'TTT.tt': 'https://player.tegotv.com/player.php?channel=1&about=0&chat=0&donation=0&epg=0&autoplay=1',
+    'CCNTV6.tt': 'https://www.tv6tnt.com/watch_live/',
 }
 # These are public broadcaster/CDN endpoints in the directory, not private
 # IPTV hosts. Do not accept raw IP streams or /live/user/password paths.
 HOSTS = ('akamaized.net','cloudfront.net','amagi.tv','pbs.org','mjh.nz','jmp2.uk',
          'brightcove.com','5centscdn.com','streamlock.net','bizzmedia.biz','getstreamhosting.com',
+         'juicex.nz','kordia.net.nz','streamhoster.com','livepush.io',
          'cbsnews.com','abcnews.com','uplynk.com','9c9media.com','mediapackage.us-west-2.amazonaws.com')
 DEFAULT_FEED = {'ABCTV.au':'NSW','Channel9.au':'Sydney','CBCTelevision.ca':'CBLTDT','PBS.us':'East'}
 EXCLUDE_FEEDS = ('Plus1','Plus2','UK','UKHD','GB','GBHD')
