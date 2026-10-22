@@ -1,0 +1,5726 @@
+[
+  {
+    "channel": "5Cops.us",
+    "feed": "UK",
+    "title": "5 Cops",
+    "url": "https://jmp2.uk/plu-5d2c571faeb3e2738ae27933.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "5USA.uk",
+    "feed": "SD",
+    "title": "5USA",
+    "url": "https://lb.iptvnetwork.net/ls28/10115/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AajTak.in",
+    "feed": "SD",
+    "title": "Aaj Tak",
+    "url": "http://103.213.31.109:90/AajtakHD/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AajTak.in",
+    "feed": "SD",
+    "title": "Aaj Tak",
+    "url": "https://d1rc86nwwc9fag.cloudfront.net/vglive-sk-791258/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AajTak.in",
+    "feed": "SD",
+    "title": "Aaj Tak",
+    "url": "https://feeds.intoday.in/aajtak/api/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AajTak.in",
+    "feed": "SD",
+    "title": "Aaj Tak",
+    "url": "https://aajtaklive-amd.akamaized.net/hls/live/2014416/aajtak/aajtaklive/live_404p/chunks.m3u8",
+    "quality": "404p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AathavanTV.uk",
+    "feed": "SD",
+    "title": "Aathavan TV",
+    "url": "http://45.77.66.224:1935/athavantv/live/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ABCNewsLive.us",
+    "feed": "SD",
+    "title": "ABC News Live",
+    "url": "https://jmp2.uk/plu-6508be683a0d700008c534e4.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ABCNewsLive.us",
+    "feed": "SD",
+    "title": "ABC News Live",
+    "url": "https://pb-0n3n2ej0w8pl9.akamaized.net/ABCNewsLive_Disney.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ABCNewsLive.us",
+    "feed": "SD",
+    "title": "ABC News Live",
+    "url": "https://aegis-cloudfront-1.tubi.video/d6cbb0de-68e4-4f3b-82f9-bf5d526e0bde/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AdventureEarth.de",
+    "feed": "SD",
+    "title": "Adventure Earth",
+    "url": "https://a57e9c69976649b582a8d7604c00e69a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AdventureEarth/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AdventureEarth.de",
+    "feed": "SD",
+    "title": "Adventure Earth",
+    "url": "https://autentic-adventure-earth-1-eu.rakuten.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AdventureEarth.de",
+    "feed": "SD",
+    "title": "Adventure Earth",
+    "url": "https://autentic-adventure-earth-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AfrobeatTVEntertainment.uk",
+    "feed": "SD",
+    "title": "Afrobeats",
+    "url": "https://stream.ecable.tv/afrobeats/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AhlulbaytTV.uk",
+    "feed": "SD",
+    "title": "Ahlulbayt TV",
+    "url": "https://cdn5.iqsat.net/iqb02/35fae546b99b61a038d52353487e8190.sdp/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AhlulbaytTV.uk",
+    "feed": "SD",
+    "title": "Ahlulbayt TV",
+    "url": "https://cd198.anystream.uk:8082/hls/abtv3ng/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AkaalChannel.uk",
+    "feed": "SD",
+    "title": "Akaal Channel",
+    "url": "https://cdn-globecast.akamaized.net/live/eds/akaal_tv/hls1_smart_akaal/akaal_tv.m3u8",
+    "quality": "396p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AlbUKTV.uk",
+    "feed": "SD",
+    "title": "AlbUK TV",
+    "url": "http://albuk.dyndns.tv:1935/albuk/albuk.stream/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AlHiwarTV.uk",
+    "feed": "SD",
+    "title": "Alhiwar TV",
+    "url": "https://mn-nl.mncdn.com/alhiwar_live/smil:alhiwar.smil/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AnandTV.uk",
+    "feed": "SD",
+    "title": "Anand TV",
+    "url": "https://live-anandtv.anandmedia.net/anandtvapp/anandtv/index.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Andromeda.us",
+    "feed": "UK",
+    "title": "Andromeda",
+    "url": "https://jmp2.uk/plu-5e8db96bccae160007c71eec.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AnthonyBourdainPartsUnknown.us",
+    "feed": "UK",
+    "title": "Anthony Bourdain: Parts Unknown",
+    "url": "https://jmp2.uk/plu-69173ce8abd4703b27f71d44.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ATNBanglaUK.uk",
+    "feed": "SD",
+    "title": "ATN Bangla UK",
+    "url": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI2/atnbanglauk-off.stream/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AuctionHunters.de",
+    "feed": "GB",
+    "title": "Auction Hunters",
+    "url": "https://jmp2.uk/plu-62ac50e92c48f900071444c9.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AutenticHistory.de",
+    "feed": "SD",
+    "title": "Autentic History",
+    "url": "https://9e754fa707344ccca6d84955c8fcaf36.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AutenticHistory/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AutenticHistory.de",
+    "feed": "SD",
+    "title": "Autentic History",
+    "url": "https://autentic-autentichistory-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AutenticTravel.de",
+    "feed": "SD",
+    "title": "Autentic Travel",
+    "url": "https://cb0c87cc605942ff9766a4e6744bbadc.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AutenticTravel/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "AutenticTravel.de",
+    "feed": "SD",
+    "title": "Autentic Travel",
+    "url": "https://autentic-autentictravel-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Avatar.de",
+    "feed": "GB",
+    "title": "Avatar",
+    "url": "https://jmp2.uk/plu-656df599c0fc8800089c75ab.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BabyTV.uk",
+    "feed": "UK",
+    "title": "BabyTV",
+    "url": "http://57.128.231.171:8080/310/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCAlba.uk",
+    "feed": "SD",
+    "title": "BBC Alba",
+    "url": "https://cdn.stmify.com/bbc/stream/BBC_ALBA/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCAlba.uk",
+    "feed": "SD",
+    "title": "BBC Alba (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_alba/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFour.uk",
+    "feed": "UK",
+    "title": "BBC Four",
+    "url": "https://cdn.stmify.com/bbc/stream/BBC_FOUR/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFour.uk",
+    "feed": "UK",
+    "title": "BBC Four HD",
+    "url": "https://vs-cmaf-pushb-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_four_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFour.uk",
+    "feed": "UK",
+    "title": "BBC Four HD",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_four_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFour.uk",
+    "feed": "UK",
+    "title": "BBC Four HD",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_four_hd/pc_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFour.uk",
+    "feed": "UK",
+    "title": "BBC Four HD (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_four_hd/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCFourCBeebies.uk",
+    "feed": "HD",
+    "title": "BBC Four/CBeebies",
+    "url": "http://193.46.58.239:8080/CbeebiesHD/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCNewsPashto.uk",
+    "feed": "HD",
+    "title": "BBC News Pashto",
+    "url": "https://vs-cmaf-pushb-ww.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_afghan_tv/pc_hd_abr_v2.mpd",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCNewsPashto.uk",
+    "feed": "HD",
+    "title": "BBC News Pashto",
+    "url": "https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_afghan_tv/t=3840/v=pv14/b=5070016/main.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCParliament.uk",
+    "feed": "SD",
+    "title": "BBC Parliament",
+    "url": "https://cdn.stmify.com/bbc/stream/BBC_PARLIAMENT/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCParliament.uk",
+    "feed": "SD",
+    "title": "BBC Parliament",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_parliament/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCParliament.uk",
+    "feed": "SD",
+    "title": "BBC Parliament (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_parliament/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2.mpd",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2_http.mpd",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-cmaf-pushb-ww.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2.mpd",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-cmaf-pushb-ww.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2_http.mpd",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/mobile_wifi_main_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian",
+    "url": "https://vs-hls-pushb-ww.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_persian_tv/pc_hd_abr_v2.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCPersian.uk",
+    "feed": "SD",
+    "title": "BBC Persian (720p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/hevc_iptv_mse_v0.mpd",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton1.uk",
+    "feed": "SD",
+    "title": "BBC RB 1",
+    "url": "https://vs-cmaf-pushb-uk.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:red_button_one/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton1.uk",
+    "feed": "SD",
+    "title": "BBC RB 1 (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk.live.cf.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:red_button_one/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton1.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 1",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_001/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton1.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 1 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_001/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton2.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 2",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_002/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton2.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 2 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_002/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton3.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 3",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_003/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton3.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 3 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_003/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton4.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 4",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_004/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton4.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 4 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_004/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton5.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 5",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_005/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton5.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 5 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_005/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton6.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 6",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_006/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton6.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 6 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_006/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton7.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 7",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_007/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton7.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 7 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_007/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton8.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 8",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_008/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton8.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 8 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_008/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton9.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 9",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_009/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton9.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 9 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_009/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton10.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 10",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_010/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton10.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 10 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_010/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton11.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 11",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_011/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton11.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 11 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_011/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton12.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 12",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_012/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton12.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 12 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_012/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton13.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 13",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_013/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton13.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 13 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_013/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton14.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 14",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_014/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton14.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 14 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_014/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton15.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 15",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_015/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton15.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 15 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_015/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton16.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 16",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_016/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton16.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 16 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_016/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton17.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 17",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_017/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton17.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 17 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_017/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton18.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 18",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_018/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton18.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 18 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_018/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton19.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 19",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_019/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton19.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 19 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_019/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton20.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 20",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_020/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton20.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 20 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_020/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton21.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 21",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_021/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton21.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 21 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_021/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton22.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 22",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_022/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton22.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 22 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_022/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton23.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 23",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_023/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton23.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 23 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_023/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton24.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 24",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_024/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCRedButton24.uk",
+    "feed": "SD",
+    "title": "BBC Red Button 24 (1080p) (HEVC)",
+    "url": "https://ve-cmaf-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:uk_bbc_stream_024/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCScotland.uk",
+    "feed": "SD",
+    "title": "BBC Scotland",
+    "url": "https://cdn.stmify.com/bbc/stream/BBC_SCOTLAND/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCScotland.uk",
+    "feed": "SD",
+    "title": "BBC Scotland",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_scotland_hd/pc_hd_abr_v2.m3u8",
+    "quality": "540p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCScotland.uk",
+    "feed": "SD",
+    "title": "BBC Scotland HD",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_scotland_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCScotland.uk",
+    "feed": "SD",
+    "title": "BBC Scotland HD (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_scotland_hd/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThree.uk",
+    "feed": "HD",
+    "title": "BBC Three HD",
+    "url": "https://cdn.stmify.com/bbc/stream/BBC_THREE/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThree.uk",
+    "feed": "SD",
+    "title": "BBC Three HD",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_three_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThree.uk",
+    "feed": "SD",
+    "title": "BBC Three HD",
+    "url": "https://vs-cmaf-pushb-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_three_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThree.uk",
+    "feed": "SD",
+    "title": "BBC Three HD",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_three_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThree.uk",
+    "feed": "SD",
+    "title": "BBC Three HD (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_three_hd/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCThreeCBBC.uk",
+    "feed": "HD",
+    "title": "BBC Three/CBBC",
+    "url": "http://193.46.58.239:8080/CBBCHD/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BBCUHD4.uk",
+    "feed": "SD",
+    "title": "BBC UHD 4",
+    "url": "http://45.14.84.37/bbc4/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BeyondBeliefFactorFiction.us",
+    "feed": "UK",
+    "title": "Beyond Belief: Fact or Fiction",
+    "url": "https://jmp2.uk/plu-611f85396abc84000738417b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Blaze.uk",
+    "feed": "SD",
+    "title": "Blaze",
+    "url": "https://live-blaze-ssai.simplestreamcdn.com/v1/master/774d979dd66704abea7c5b62cb34c6815fda0d35/blaze-live-broadcast-scte/index.m3u8",
+    "quality": "576p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BloombergTV.us",
+    "feed": "Europe",
+    "title": "Bloomberg TV Europe",
+    "url": "https://bloomberg.com/media-manifest/streams/eu.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BritAsiaTV.uk",
+    "feed": "HD",
+    "title": "Brit Asia TV",
+    "url": "https://hls.autopo.st/hls/britasiatv/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "BritAsiaTV.uk",
+    "feed": "HD",
+    "title": "Brit Asia TV",
+    "url": "http://51.75.127.199:3141/britasia/index.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CagneyLacey.de",
+    "feed": "GB",
+    "title": "Cagney & Lacey",
+    "url": "https://jmp2.uk/plu-6960c5a906d76f50db2816dc.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Canaf54TV.uk",
+    "feed": "SD",
+    "title": "Canaf54 TV",
+    "url": "https://5caf24a595d94.streamlock.net:1937/pvyugfkzkc/pvyugfkzkc/playlist.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBBC.uk",
+    "feed": "HD",
+    "title": "CBBC HD",
+    "url": "https://cdn.stmify.com/bbc/stream/CBBC/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBBC.uk",
+    "feed": "SD",
+    "title": "CBBC HD",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbbc_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBBC.uk",
+    "feed": "SD",
+    "title": "CBBC HD",
+    "url": "https://vs-cmaf-pushb-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:cbbc_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBBC.uk",
+    "feed": "SD",
+    "title": "CBBC HD",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbbc_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBBC.uk",
+    "feed": "SD",
+    "title": "CBBC HD (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbbc_hd/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "HD",
+    "title": "CBeebies HD",
+    "url": "https://cdn.stmify.com/bbc/stream/CBEEBIES/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "SD",
+    "title": "CBeebies HD",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbeebies_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "SD",
+    "title": "CBeebies HD",
+    "url": "https://vs-cmaf-pushb-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:cbeebies_hd/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "SD",
+    "title": "CBeebies HD",
+    "url": "https://vs-cmaf-pushb-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:cbeebies_hd/pc_hd_abr_v2.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "SD",
+    "title": "CBeebies HD",
+    "url": "https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbeebies_hd/mobile_wifi_main_hd_abr_v2.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBeebies.uk",
+    "feed": "SD",
+    "title": "CBeebies HD (1080p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:cbeebies_hd/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6350fdd266e9ea0007bedec5.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-62441d6ded1827000763dcda.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-61e82af27027f9000753c6e4.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231ede1be5b460007f91bc1.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231ec93779a9d00079ba8e2.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231ec4b62cd1f0007093c7b.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231e909bc960f00075d8e7c.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231e9b7f6deff00074674f4.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-6231eb3865be650007f59595.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://cbsn-us-vtt.cbsnstream.cbsnews.com/out/v1/ef868690d34144509eda696884bf1619/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://cbsn-us.cbsnstream.cbsnews.com/out/v1/55a8648e8f134e82a470f83d562deeca/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CBSNews247.us",
+    "feed": "SD",
+    "title": "CBS News 24/7",
+    "url": "https://jmp2.uk/plu-5a6b92f6e22a617379789618.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Channel4.uk",
+    "feed": "UK",
+    "title": "Channel 4",
+    "url": "https://lb.iptvnetwork.net/ls28/10104/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Channel5.uk",
+    "feed": "SD",
+    "title": "Channel 5",
+    "url": "https://lb.iptvnetwork.net/ls28/10105/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ChannelS.uk",
+    "feed": "SD",
+    "title": "Channel S",
+    "url": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI/chsukoff.stream/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ClubbingTV.us",
+    "feed": "UK",
+    "title": "Clubbing TV UK",
+    "url": "https://a-cdn.klowdtv.com/live3/clubbingtv_720p/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CNBCUK.uk",
+    "feed": "SD",
+    "title": "CNBC UK",
+    "url": "https://amg01079-nbcuuk-amg01079c2-lg-gb-2030.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CNBCUK.uk",
+    "feed": "SD",
+    "title": "CNBC",
+    "url": "https://amg01079-nbcuuk-amg01079c2-samsung-gb-1258.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "CSICrimeSceneInvestigation.de",
+    "feed": "GB",
+    "title": "CSI: Crime Scene Investigation",
+    "url": "https://jmp2.uk/plu-6304f8d5ffb61000071ab478.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DAZNCombat.uk",
+    "feed": "SD",
+    "title": "DAZN Combat",
+    "url": "https://jmp2.uk/plu-64805922536e0c0008a1a1e6.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DAZNCombat.uk",
+    "feed": "SD",
+    "title": "DAZN Combat",
+    "url": "https://jmp2.uk/plu-64d626ac9b414d000820e2fc.m3u8",
+    "quality": "684p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DAZNCombat.uk",
+    "feed": "SD",
+    "title": "DAZN Combat",
+    "url": "https://jmp2.uk/plu-648056f0f77b61000828f1ba.m3u8",
+    "quality": "684p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DAZNCombat.uk",
+    "feed": "SD",
+    "title": "DAZN Combat",
+    "url": "https://jmp2.uk/plu-64805755536e0c0008a19fa1.m3u8",
+    "quality": "684p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DeadlyWomen.us",
+    "feed": "UK",
+    "title": "Deadly Women",
+    "url": "https://jmp2.uk/plu-5ca1df0d50be2571e393ad31.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DeadlyWomen.us",
+    "feed": "UK",
+    "title": "Deadly Women",
+    "url": "https://d1mgh147xpmgs8.cloudfront.net/DeadlyWomen_GB.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DeenTV.uk",
+    "feed": "SD",
+    "title": "Deen TV",
+    "url": "https://ap02.iqplay.tv:8082/iqb8002/d33ntv/playlist.m3u8",
+    "quality": "576p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DeenTV.uk",
+    "feed": "SD",
+    "title": "Deen TV",
+    "url": "https://cd198.anystream.uk:9092/iqapp/d33ntv/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DerTV.uk",
+    "feed": "SD",
+    "title": "Der TV",
+    "url": "https://stream.berosat.live/hls/der-tv/der-tv.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DogtheBountyHunter.us",
+    "feed": "UK",
+    "title": "Dog The Bounty Hunter",
+    "url": "https://jmp2.uk/plu-5f6b535a278bfe000799484a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DogtheBountyHunter.us",
+    "feed": "UK",
+    "title": "Dog The Bounty Hunter [Geo-blocked]",
+    "url": "https://amg00276-amg00276c11-rakuten-uk-3446.playouts.now.amagi.tv/playlist/amg00276-aetelevisionnetworksfast-dogthebountyhunterall-rakutenuk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DogtheBountyHunter.us",
+    "feed": "UK",
+    "title": "Dog The Bounty Hunter",
+    "url": "https://amg00276-amg00276c11-samsung-gb-3484.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DogWhisperer.us",
+    "feed": "UK",
+    "title": "Dog Whisperer",
+    "url": "https://pb-ffpxvjshv4rxx.akamaized.net/Dog_Whisperer_with_Cesar_Millan.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://jmp2.uk/plu-6540fe6fbfbaec0008a583ae.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://jmp2.uk/plu-65787e8232c1b300089a8482.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://jmp2.uk/plu-657739fcb9adc40008fe02f4.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://jmp2.uk/plu-65788611a620e30008fe36ff.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://jmp2.uk/plu-5f6b54b9e67cf60007d4cef1.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://amg00276-amg00276c2-rakuten-uk-3449.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://amg00276-amg00276c2-samsung-gb-3485.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DuckDynasty.us",
+    "feed": "UK",
+    "title": "Duck Dynasty",
+    "url": "https://pb-mfmqu5e0fq1lb.akamaized.net/Duck_Dynasty.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "DunyaNewsUK.uk",
+    "feed": "SD",
+    "title": "Dunya News (UK Feed)",
+    "url": "https://ukintl.dunyanews.tv/liveuk/ngrp:dunyalive_all/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "E4.uk",
+    "feed": "SD",
+    "title": "E4",
+    "url": "https://lb.iptvnetwork.net/ls28/10113/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EmanChannel.uk",
+    "feed": "SD",
+    "title": "Eman Channel",
+    "url": "https://ap02.iqplay.tv:8082/iqb8002/3m9n/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EnglishClubTV.uk",
+    "feed": "SD",
+    "title": "English Club TV",
+    "url": "https://dash2.antik.sk/live/test_ectv_hd_1200/playlist.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EnglishClubTV.uk",
+    "feed": "SD",
+    "title": "English Club TV",
+    "url": "https://stream8.cinerama.uz/1442/tracks-v1a1/mono.m3u8",
+    "quality": "576i",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ENTChannel.uk",
+    "feed": "HD",
+    "title": "ENT Channel",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/ENT_Channel/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ENTFamily.uk",
+    "feed": "HD",
+    "title": "ENT Family",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/ENT_Family/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://jmp2.uk/plu-61de96114757070008d33cae.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://cdn-euronews.akamaized.net/live/eds/euronews-en/25002/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://jmp2.uk/plu-61de90a47365340007f77c27.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews",
+    "url": "https://jmp2.uk/plu-5ca1da6c593a5d78f0e7edce.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://a-cdn.klowdtv.com/live3/euronews_720p/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://streams.sofast.tv/euronewsen/live/eds/euronews-en/25017/euronews-en.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "EuronewsEnglish.fr",
+    "feed": "SD",
+    "title": "Euronews English",
+    "url": "https://aegis-cloudfront-1.tubi.video/b1c4d439-03a5-4c40-ae9d-90a183e010c9/euronews-en.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FailArmy.us",
+    "feed": "UK",
+    "title": "FailArmy",
+    "url": "https://failarmy-international-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FaithUK.uk",
+    "feed": "SD",
+    "title": "Faith UK",
+    "url": "https://faithnow-hls.secdn.net/faithnow-c-channel/play/FaithUK.smil/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FaithWorldTV.uk",
+    "feed": "SD",
+    "title": "Faith World TV",
+    "url": "https://faithworldtv.abs.tv/1826926230/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FBIFiles.us",
+    "feed": "UK",
+    "title": "FBI Files",
+    "url": "https://jmp2.uk/plu-62bdaa32a1b2fd00076693e8.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FBIFiles.us",
+    "feed": "UK",
+    "title": "FBI Files",
+    "url": "https://jmp2.uk/plu-61814659533163000748aa04.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FBIFiles.us",
+    "feed": "UK",
+    "title": "FBI Files",
+    "url": "https://jmp2.uk/plu-61815067b9802500076e16e0.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FBIFiles.us",
+    "feed": "UK",
+    "title": "FBI Files",
+    "url": "https://jmp2.uk/plu-61814b9a9704450007e52316.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FBIFiles.us",
+    "feed": "UK",
+    "title": "FBI Files",
+    "url": "https://jmp2.uk/plu-5cb6f6f9a461406ffe4022cf.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-66997e8d3a4ad20008e50be9.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660c29b5aec9680008f5b4a4.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660bfc032433010008def35a.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660bfc7b2433010008def3e3.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660c29f80cd4630008f1547c.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660c2a2d2433010008df7e92.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660bfc4424e1d000085b5f93.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-66997d18a1b69e00082ee85f.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660bfca524e1d000085b6007.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-660bfcd07bcd860008796ae8.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://jmp2.uk/plu-63d91d2560bc8f0008a225e4.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlus.uk",
+    "feed": "English",
+    "title": "FIFA+",
+    "url": "https://ba3e2e93.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c0VuZ2xpc2hfSExT/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "FIFAPlusWomen.uk",
+    "feed": "English",
+    "title": "FIFA+ Women",
+    "url": "https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Foodxp.uk",
+    "feed": "SD",
+    "title": "Foodxp",
+    "url": "https://techtraveleat.in/stream.m3u8?id=foodxp",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0 Win64 x64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "referrer": "https://bhoomtv.org/"
+  },
+  {
+    "channel": "GarshomTV.uk",
+    "feed": "SD",
+    "title": "Garshom TV",
+    "url": "https://og2qd3aal7an-hls-live.5centscdn.com/garshomtv/d0dbe915091d400bd8ee7f27f0791303.sdp/playlist.m3u8",
+    "quality": "360p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://amg01076-lightningintern-gbnewsau-samsungau-et7fz.amagi.tv/playlist/amg01076-lightningintern-gbnewsau-samsungau/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-gbnewsnz-samsungnz/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://amg01076-lightningintern-gbnewsse-samsungse-q7qjc.amagi.tv/playlist/amg01076-lightningintern-gbnewsse-samsungse/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://amg01076-lightning-amg01076c7-lg-gb-2019.playouts.now.amagi.tv/playlist/amg01076-lightning-gbnews-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://live-gbnews-ssai-test.simplestreamcdn.com/v1/master/82267e84b9e5053b3fd0ade12cb1a146df74169a/gbnews-live-TEST/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://live-gbnews.simplestreamcdn.com/live5/gbnews/bitrate1.isml/manifest.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://live-gbnews.simplestreamcdn.com/s3/gbnews_subs/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://hlspackager.akamaized.net/live/DB/GB_NEWS/HLS/GB_NEWS.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://rakutenaa-lightning-gbnews-rakuten-ccoa9.amagi.tv/playlist/rakutenAA-lightning-gbnews-rakuten/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://amg01076-lightningintern-gbnews-samsunguk-0lu52.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GBNews.uk",
+    "feed": "SD",
+    "title": "GB News",
+    "url": "https://amg01076-lightning-amg01076c7-klowdtv-us-2128.playouts.now.amagi.tv/playlist/amg01076-lightning-gbnews-klowdtvus/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GemsTV.uk",
+    "feed": "SD",
+    "title": "Gems TV",
+    "url": "https://lo3.gemporia.com/abrgemporiaukgfx/smil:livestream.smil/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GeordieShore.de",
+    "feed": "GB",
+    "title": "Geordie Shore",
+    "url": "https://jmp2.uk/plu-65c4960d11ced7000812c433.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Getfactual.us",
+    "feed": "UK",
+    "title": "Get.Factual",
+    "url": "https://d1nhni5l2n8hjt.cloudfront.net/gf.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostDimension.us",
+    "feed": "UK",
+    "title": "Ghost Dimension",
+    "url": "https://jmp2.uk/plu-619e1bb3e9af5a0007f235ad.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostDimension.us",
+    "feed": "UK",
+    "title": "Ghost Dimension",
+    "url": "https://jmp2.uk/plu-619e259fd8b672000729b1d7.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostDimension.us",
+    "feed": "UK",
+    "title": "Ghost Dimension",
+    "url": "https://jmp2.uk/plu-619e4726b9997a00072a4059.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://amg00353-amg00353c30-samsung-au-3440.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://jmp2.uk/plu-65cf8ace332fec00081e7ea2.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://amg00353-amg00353c30-samsung-nz-3439.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://jmp2.uk/plu-5f27bbe4779de70007a6d1c1.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://amg00353-amg00353c30-samsung-gb-8552.playouts.now.amagi.tv/playlist/amg00353-lionsgatetvfast-ghosthunterfetch-samsunggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GhostHunters.us",
+    "feed": "UK",
+    "title": "Ghost Hunters",
+    "url": "https://jmp2.uk/plu-64e561a4354251000823a0e0.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GODTV.uk",
+    "feed": "SD",
+    "title": "GOD TV",
+    "url": "https://d1msejlow1t3l4.cloudfront.net/211125/godtv/chunks.m3u8",
+    "quality": "396p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GODTV.uk",
+    "feed": "SD",
+    "title": "GOD TV",
+    "url": "https://fl-dvr.iptvcdn.tv/chid_1/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GODTV.uk",
+    "feed": "SD",
+    "title": "GOD TV",
+    "url": "https://cdn.pishow.tv/ott/live/1391/master.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GREATmovies.uk",
+    "feed": "UK",
+    "title": "GREAT! movies",
+    "url": "https://amg01753-narrativeuk-amg01753c3-lg-gb-1833.playouts.now.amagi.tv/playlist/amg01753-narrativeuk-greatmovies-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GREATmovies.uk",
+    "feed": "UK",
+    "title": "Great! Movies",
+    "url": "https://amg01753-narrativeentert-greatmovies-samsunguk-7z6eh.amagi.tv/playlist/amg01753-narrativeentert-greatmovies-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GREATromance.uk",
+    "feed": "UK",
+    "title": "GREAT! romance",
+    "url": "https://amg01753-narrativeuk-amg01753c2-lg-gb-1832.playouts.now.amagi.tv/playlist/amg01753-narrativeuk-greatchristmas-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "GREATromance.uk",
+    "feed": "UK",
+    "title": "Great! Romance",
+    "url": "https://amg01753-narrativeentert-greatchristmas-samsunguk-8atls.amagi.tv/playlist/amg01753-narrativeentert-greatchristmas-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HalaLondon.uk",
+    "feed": "SD",
+    "title": "Hala London",
+    "url": "https://halalondon-live.ercdn.net/halalondon/halalondon.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellenicTV.uk",
+    "feed": "SD",
+    "title": "Hellenic TV",
+    "url": "https://l5.cloudskep.com/hellenictv/htv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://amg00654-itv-amg00654c1-samsung-au-1072.playouts.now.amagi.tv/itv-hellskitchen-samsung/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-644257fe7cb4b100081ed874.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-61c194ff6f23a7000780073a.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-664f0ddbf78a8500092dcffa.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://amg00654-itvstudios-hellskitchennl-samsungnl-kvxhp.amagi.tv/playlist/amg00654-itvstudios-hellskitchennl-samsungnl/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-62022f7b9fcc3800076f8c26.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-61c1871dac860c0007684974.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://amg00654-itvstudios-hellskitchen-samsungse-9n806.amagi.tv/playlist/amg00654-itvstudios-hellskitchen-samsungse/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://jmp2.uk/plu-5e6f38792075160007d85823.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://itv-hellskitchen-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://amg00654-itvstudios-hellskitchen-samsunguk-c8rgt.amagi.tv/playlist/amg00654-itvstudios-hellskitchen-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HellsKitchen.us",
+    "feed": "UK",
+    "title": "Hell's Kitchen",
+    "url": "https://pb-lf7eocnc8ua2e.akamaized.net/Hells_Kitchen_SONO10.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HighwaytoHeaven.us",
+    "feed": "UK",
+    "title": "Highway to Heaven",
+    "url": "https://jmp2.uk/plu-68bff9a63efb41cd97562e46.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HighwaytoHeaven.us",
+    "feed": "UK",
+    "title": "Highway to Heaven",
+    "url": "https://jmp2.uk/plu-68c014ee337652ee75dab43b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HighwaytoHeaven.us",
+    "feed": "UK",
+    "title": "Highway to Heaven",
+    "url": "https://jmp2.uk/plu-68c015dc6523408b14f54dee.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HighwaytoHeaven.us",
+    "feed": "UK",
+    "title": "Highway to Heaven",
+    "url": "https://jmp2.uk/plu-6081738748d3200007afb24b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HobbyMaker.uk",
+    "feed": "SD",
+    "title": "Hobby Maker",
+    "url": "https://lo3.gemporia.com/abrhobbymakerukgfx/smil:livestreamFullHD.smil/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-au.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-dk.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-fi.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-nl.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-no.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-nz.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under The Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-se.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under Hammer",
+    "url": "https://jmp2.uk/plu-5c5c2e9d8002db3c3e0b1c72.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-gb.rakuten.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomesUnderHammer.us",
+    "feed": "UK",
+    "title": "Homes Under the Hammer",
+    "url": "https://all3media-homes-under-the-hammer-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomicideHunter.us",
+    "feed": "UK",
+    "title": "Homicide Hunter",
+    "url": "https://jmp2.uk/plu-619e21b213ef6b0007d8c17a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomicideHunter.us",
+    "feed": "UK",
+    "title": "Homicide Hunter",
+    "url": "https://jmp2.uk/plu-619e286e093e7c0007489e6a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomicideHunter.us",
+    "feed": "UK",
+    "title": "Homicide Hunter",
+    "url": "https://jmp2.uk/plu-619e4a3518d6970008bebc95.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HomicideHunter.us",
+    "feed": "UK",
+    "title": "Homicide Hunter",
+    "url": "https://jmp2.uk/plu-60e452730e76f20007598de8.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HorseCountryTV.uk",
+    "feed": "SD",
+    "title": "Horse and Country",
+    "url": "https://hncfree-samsungau.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HorseCountryTV.uk",
+    "feed": "SD",
+    "title": "Horse and Country Free",
+    "url": "https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00810-horsecountrytvl-hncfreenz-samsungnz/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HorseCountryTV.uk",
+    "feed": "SD",
+    "title": "Horse & Country TV",
+    "url": "https://hnc-free-viewlift.amagi.tv/HNC_AUSTRALIA.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "HorseCountryTV.uk",
+    "feed": "SD",
+    "title": "Horse and Country",
+    "url": "https://hncfree-samsung-uk.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IBCBakthi.uk",
+    "feed": "SD",
+    "title": "IBC Bakthi",
+    "url": "https://ibc.massstream.net/IBC2/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IBCTamil.uk",
+    "feed": "SD",
+    "title": "IBC Tamil",
+    "url": "https://ibc.massstream.net/IBC/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "InsideCrime.us",
+    "feed": "UK",
+    "title": "Inside Crime",
+    "url": "https://blaze-fast-inside-crime-ssai.simplestreamcdn.com/v1/master/774d979dd66704abea7c5b62cb34c6815fda0d35/blaze-fast-inside-crime-amagi/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "InsideCrime.us",
+    "feed": "UK",
+    "title": "Inside Crime",
+    "url": "https://jmp2.uk/plu-61c49f1495f417000731cef0.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "InsideCrime.us",
+    "feed": "UK",
+    "title": "Inside Crime",
+    "url": "https://aenetworks-insidecrime-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "InsideCrime.us",
+    "feed": "UK",
+    "title": "Inside Crime",
+    "url": "https://amg00841-aenetworksukane-insidecrime-samsunguk-o968i.amagi.tv/playlist/amg00841-aenetworksukane-insidecrime-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IonTV.uk",
+    "feed": "SD",
+    "title": "iON TV",
+    "url": "https://ap02.iqplay.tv:8082/iqb8002/i09/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IqraBangla.uk",
+    "feed": "SD",
+    "title": "Iqra Bangla",
+    "url": "https://tvsen3.aynaott.com/EuEy5mBW/index.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IqraTV.uk",
+    "feed": "SD",
+    "title": "Iqra TV",
+    "url": "https://cdn149.anystream.uk:8082/app/iq53la/playlist.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IranInternational.uk",
+    "feed": "SD",
+    "title": "Iran International",
+    "url": "https://hlspackager.akamaized.net/live/DB/IRAN_INTERNATIONAL/HLS/IRAN_INTERNATIONAL.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IranInternational.uk",
+    "feed": "SD",
+    "title": "Iran International",
+    "url": "https://dev-live.livetvstream.co.uk/LS-63503-4/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IranInternational.uk",
+    "feed": "SD",
+    "title": "Iran International",
+    "url": "https://live.livetvstream.co.uk/LS-63503-4/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IranInternational.uk",
+    "feed": "SD",
+    "title": "Iran International",
+    "url": "https://live.playstop.me/1816184091/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IranInternational.uk",
+    "feed": "SD",
+    "title": "Iran International",
+    "url": "https://live.playstop.me/LS-63503-4/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "IslamChannel.uk",
+    "feed": "SD",
+    "title": "Islam Channel",
+    "url": "https://live.islamchannel.tv/live11/islamtv_english/bitrate1.isml/live.m3u8",
+    "quality": "576p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ITV2.uk",
+    "feed": "SD",
+    "title": "ITV2",
+    "url": "https://lb.iptvnetwork.net/ls28/10106/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ITV3.uk",
+    "feed": "SD",
+    "title": "ITV3",
+    "url": "https://lb.iptvnetwork.net/ls28/10107/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ITV4.uk",
+    "feed": "SD",
+    "title": "ITV4",
+    "url": "https://lb.iptvnetwork.net/ls28/10108/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "JudgeJudy.de",
+    "feed": "GB",
+    "title": "Judge Judy",
+    "url": "https://jmp2.uk/plu-622f498d119b4c000719c0b7.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KalsanTV.uk",
+    "feed": "SD",
+    "title": "Kalsan TV",
+    "url": "https://ap02.iqplay.tv:8082/iqb8002/ka1s0n/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KanalJadid.uk",
+    "feed": "SD",
+    "title": "Kanal Jadid",
+    "url": "https://kjhls.wns.live/hls/stream.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KanshiTV.uk",
+    "feed": "SD",
+    "title": "Kanshi TV",
+    "url": "https://live.kanshitv.co.uk/mobile/kanshitvkey.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KNMusicTV.az",
+    "feed": "SD",
+    "title": "KN Music TV",
+    "url": "https://cdn4.yayin.com.tr/kntv/tracks-v1a1/mono.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KTO.fr",
+    "feed": "SD",
+    "title": "KTO",
+    "url": "http://145.239.5.177/354/index.m3u8",
+    "quality": "504p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "KTO.fr",
+    "feed": "SD",
+    "title": "KTO",
+    "url": "https://live-kto.akamaized.net/hls/live/2033284/KTO/master.m3u8",
+    "quality": "404p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LatestTV.uk",
+    "feed": "SD",
+    "title": "Latest TV",
+    "url": "https://5a0e89631aa14.streamlock.net/live/LatestTelevision/playlist.m3u8",
+    "quality": "480p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LiveNOWfromFOX.us",
+    "feed": "SD",
+    "title": "LiveNOW from FOX",
+    "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00488-foxdigital-livenowbyfox-lgus/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LiveNOWfromFOX.us",
+    "feed": "SD",
+    "title": "LiveNOW from FOX",
+    "url": "https://fox-foxnewsnow-vizio.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LiveNOWfromFOX.us",
+    "feed": "SD",
+    "title": "LiveNOW from FOX",
+    "url": "https://jmp2.uk/plu-63d025db4e83e700086eaa96.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LiveNOWfromFOX.us",
+    "feed": "SD",
+    "title": "LiveNOW from FOX",
+    "url": "https://pb-k5p02dtnr2162.akamaized.net/LiveNOW_from_FOX.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "LoveWorldUK.ng",
+    "feed": "SD",
+    "title": "Loveworld UK",
+    "url": "https://cdn3.wowza.com/5/L1Uzd2FrbVlLRG1W/live/smil:lwukweb.smil/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MagnavisionTV.uk",
+    "feed": "SD",
+    "title": "Magnavision TV",
+    "url": "https://manatv.akamaized.net/120723/smil:magnavision.smil/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MarriedwithChildren.us",
+    "feed": "UK",
+    "title": "Married... with Children",
+    "url": "https://jmp2.uk/plu-66bb3212fe11e5000883ea6b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MBC.uk",
+    "feed": "HD",
+    "title": "MBC",
+    "url": "https://cdn8.fntvchannel.com/v1/master/02eeb1726c343dc9c30c32e93dee82013e157021/FNTV-CHANNEL_CDN77/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "McLeodsDaughters.us",
+    "feed": "UK",
+    "title": "Mcleod's Daughters",
+    "url": "https://amg00627-amg00627c5-samsung-nz-2807.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mcleodsdaughters-samsungnz/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MiracleTV.uk",
+    "feed": "SD",
+    "title": "Miracle TV",
+    "url": "https://viewmedia7219.bozztv.com/wmedia/viewmedia100/web_030/Stream/playlist.m3u8",
+    "quality": "480p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoonbugKids.uk",
+    "feed": "SD",
+    "title": "Moonbug Kids",
+    "url": "https://tvsen6.aynaott.com/MoonbugKids/index.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoonbugKids.uk",
+    "feed": "SD",
+    "title": "Moonbug Kids",
+    "url": "https://mumbai-edge.smartplaytv.in/Moonbug/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoonbugKids.uk",
+    "feed": "SD",
+    "title": "Moonbug Kids",
+    "url": "https://moonbug-rokuus.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoonbugKids.uk",
+    "feed": "SD",
+    "title": "Moonbug",
+    "url": "https://dq2a9ghraf7sw.cloudfront.net/Moonbug.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "More4.uk",
+    "feed": "SD",
+    "title": "More4",
+    "url": "https://lb.iptvnetwork.net/ls28/10114/playlist.m3u8",
+    "quality": "360p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoreTVCrime.de",
+    "feed": "GB",
+    "title": "More TV Crime",
+    "url": "https://jmp2.uk/plu-639b558c73423d00071ce624.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MoreTVScifi.de",
+    "feed": "GB",
+    "title": "More TV Sci-fi",
+    "url": "https://jmp2.uk/plu-645e00d5d3fdde000829463a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MostHaunted.uk",
+    "feed": "UK",
+    "title": "Most Haunted",
+    "url": "https://jmp2.uk/plu-66d722d31878f200081c2c64.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MostHaunted.uk",
+    "feed": "UK",
+    "title": "Most Haunted",
+    "url": "https://jmp2.uk/plu-6081648340382e0007f73d45.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MostHaunted.uk",
+    "feed": "UK",
+    "title": "Most Haunted",
+    "url": "https://amg00426-lds-amg00426c17-samsung-gb-10157.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MovieSphere.us",
+    "feed": "UK",
+    "title": "MovieSphere UK",
+    "url": "https://moviesphereuk-samsunguk.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanAnimated.uk",
+    "feed": "English",
+    "title": "Mr. Bean Animated",
+    "url": "https://amg00627-amg00627c23-samsung-au-4110.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanAnimated.uk",
+    "feed": "English",
+    "title": "Mr. Bean Animated",
+    "url": "https://jmp2.uk/plu-69fca9f9b9c0f0d444f631ca.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanAnimated.uk",
+    "feed": "English",
+    "title": "Mr. Bean Anime",
+    "url": "https://amg00627-amg00627c28-rakuten-uk-3984.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanukcc-rakutenuk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanAnimated.uk",
+    "feed": "English",
+    "title": "Mr Bean Animated",
+    "url": "https://amg00627-amg00627c23-samsung-gb-3927.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanAnimated.uk",
+    "feed": "English",
+    "title": "Mr. Bean Animated",
+    "url": "https://d2t1w90tnft92.cloudfront.net/Mr_Bean_Animated.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MrBeanLiveAction.uk",
+    "feed": "SD",
+    "title": "Mr Bean Live Action",
+    "url": "https://amg00627-amg00627c39-samsung-gb-5569.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA1World.uk",
+    "feed": "SD",
+    "title": "MTA1 World",
+    "url": "https://chlivemta1.akamaized.net/hls/live/2008145/mta1/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA2Europe.uk",
+    "feed": "SD",
+    "title": "MTA2 Europe",
+    "url": "https://chlivemta1.akamaized.net/hls/live/2008145/mta2/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA3AlArabia.uk",
+    "feed": "SD",
+    "title": "MTA3 Al-Arabia",
+    "url": "https://chlivemta1.akamaized.net/hls/live/2010556/mta3alarabia/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA4Africa.uk",
+    "feed": "SD",
+    "title": "MTA4 Africa",
+    "url": "https://chlivemta.akamaized.net/hls/live/2010555/mtaafrica1/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA5Africa.uk",
+    "feed": "SD",
+    "title": "MTA5 Africa",
+    "url": "https://chlivemta.akamaized.net/hls/live/2010555/mtaafrica2/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA6Asia.uk",
+    "feed": "SD",
+    "title": "MTA6 Asia",
+    "url": "https://livemtaasia.akamaized.net/hls/live/2039224/mta6asia/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA7Asia.uk",
+    "feed": "SD",
+    "title": "MTA7 Asia",
+    "url": "https://livemtaasia.akamaized.net/hls/live/2039224/mtaasia2/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MTA8America.uk",
+    "feed": "SD",
+    "title": "MTA8 America",
+    "url": "https://chlivemta.akamaized.net/hls/live/2016718/mta8/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MUTV.uk",
+    "feed": "SD",
+    "title": "MUTV",
+    "url": "https://fastly.live.brightcove.com/6374054671112/eu-west-1/6058004203001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXplMnp5LmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiNjA1ODAwNDIwMzAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU4MDA0MjAzMDAxIl0sImp0aSI6IjYzNzQwNTQ2NzExMTIifQ.3FmuTna3DAmY7xlhK5fk6LMrosrtrR5VsU2QOgYO5y4/playlist-hls.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MysteryTV.us",
+    "feed": "UK",
+    "title": "Mystery TV",
+    "url": "https://blaze-fast-mystery-tv-ssai.simplestreamcdn.com/v1/master/774d979dd66704abea7c5b62cb34c6815fda0d35/blaze-fast-mystery-tv-amagi/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MysteryTV.us",
+    "feed": "UK",
+    "title": "Mystery TV",
+    "url": "https://jmp2.uk/plu-61c4a09d6c959f0007189c93.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MysteryTV.us",
+    "feed": "UK",
+    "title": "Mystery TV",
+    "url": "https://aenetworks-mysterytv-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MysteryTV.us",
+    "feed": "UK",
+    "title": "Mystery TV",
+    "url": "https://amg00841-aenetworksukane-mysterytv-samsunguk-mggb7.amagi.tv/playlist/amg00841-aenetworksukane-mysterytv-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "Mythbusters",
+    "url": "https://d2bog959vw5xq.cloudfront.net/playlist/amg00627-banijayfast-mythbusters-samsungau/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "Mythbusters",
+    "url": "https://amg00627-banijay-amg00627c14-samsung-nz-2342.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mythbusters-samsungnz/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "Mythbusters",
+    "url": "https://jmp2.uk/plu-5bd833b41843b56328bac189.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "Mythbusters",
+    "url": "https://amg00627-amg00627c14-rakuten-uk-4802.playouts.now.amagi.tv/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "Mythbusters",
+    "url": "https://d1cgf0ptrv4t22.cloudfront.net/Mythbusters_GB.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Mythbusters.us",
+    "feed": "UK",
+    "title": "MythBusters",
+    "url": "https://jmp2.uk/plu-66e0b4866ad04d0008fff4d8.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MyTimeMovieNetwork.uk",
+    "feed": "SD",
+    "title": "MyTime Movie Network",
+    "url": "https://appletree-mytimeuk-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "MyTimeMovieNetwork.uk",
+    "feed": "SD",
+    "title": "MyTime Movie Network",
+    "url": "https://appletree-mytimeuk-samsung.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NatureTime.ca",
+    "feed": "UK",
+    "title": "NatureTime",
+    "url": "https://amg01515-amg01515c43-samsung-gb-9038.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News NOW",
+    "url": "https://d1si3n1st4nkgb.cloudfront.net/10502/88896001/hls/master.m3u8?ads.xumo_channelId=88896001",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News NOW",
+    "url": "https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=99984003",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News NOW",
+    "url": "https://livehub-voidnet.onrender.com/cluster/streamcore/us/NBC_REDIS.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News NOW",
+    "url": "https://jmp2.uk/plu-5df97894467dfa00091c873c.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News NOW",
+    "url": "https://pb-o6czxr182vtiv.akamaized.net/master.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News Now",
+    "url": "https://aegis-cloudfront-1.tubi.video/605fb6ea-f89c-451a-873c-030cb726b493/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NBCNewsNOW.us",
+    "feed": "SD",
+    "title": "NBC News Now",
+    "url": "https://xumo-drct-nbcnn-ir8ze.fast.nbcuni.com/live/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://nmxlive.akamaized.net/hls/live/529965/Live_1/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://amg00217-newsmax-newsmax-zeasn-022k9.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://nmxdistro.akamaized.net/hls/live/529965/Live_1/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://newsmax-klowdtv.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://a-cdn.klowdtv.com/live3/newsmax2_720p/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax2",
+    "url": "https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://amg00217-newsmax-newsmax-rokuus-dur76.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://newsmax-samsungus.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Newsmax2.us",
+    "feed": "SD",
+    "title": "Newsmax 2",
+    "url": "https://newsmax-vizio.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Nickelodeon.uk",
+    "feed": "SD",
+    "title": "Nickelodeon",
+    "url": "http://tvsen7.aynascope.net/nicklodean/index.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NollyAfrica.uk",
+    "feed": "SD",
+    "title": "Nolly Africa HD",
+    "url": "https://amg02784-amg02784c1-distrotv-us-3394.playouts.now.amagi.tv/playlist/amg02784-nollyafricafast-nollyafricahd-distrotvus/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NollyAfrica.uk",
+    "feed": "SD",
+    "title": "Nolly Africa HD",
+    "url": "https://amg02784-amg02784c2-amgplt0002.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg02784-amg02784c2-amgplt0002/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NollyAfrica.uk",
+    "feed": "SD",
+    "title": "Nolly Africa",
+    "url": "https://amg02784-nollyafricafast-amg02784c1-cineverse-us-1124.playouts.now.amagi.tv/playlist/amg02784-nollyafricafast-nollyafricahd-cineverseus/playlist.m3u8",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NollyAfrica.uk",
+    "feed": "SD",
+    "title": "Nolly Africa HD",
+    "url": "https://amg02784-amg02784c1-distrotv-latam-5650.playouts.now.amagi.tv/playlist/amg02784-nollyafricafast-nollyafricahd-distrotvlatam/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NoorTV.uk",
+    "feed": "SD",
+    "title": "Noor TV",
+    "url": "https://sscsott.com/srt/noortvuk/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Nosey.us",
+    "feed": "UK",
+    "title": "Nosey",
+    "url": "https://jmp2.uk/plu-5dc2ba1a9c91420009db4858.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now70s.uk",
+    "feed": "SD",
+    "title": "Now 70s",
+    "url": "https://lightningnow70-samsungau.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now70s.uk",
+    "feed": "SD",
+    "title": "Now 70's",
+    "url": "https://lightning-now70s-samsungnz.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now70s.uk",
+    "feed": "SD",
+    "title": "Now 70s",
+    "url": "https://lightning-now70s-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now70s.uk",
+    "feed": "SD",
+    "title": "Now 70s",
+    "url": "https://amg01076-amg01076c1-samsung-gb-6682.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80s",
+    "url": "https://lightningnow80-samsungau.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80's",
+    "url": "https://lightning-now80s-samsungnz.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80s",
+    "url": "https://lightning-now80s-samsungse.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80s",
+    "url": "https://lightning-now80s-samsungnz.amagi.tv/playlist720p.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80s",
+    "url": "https://lightning-now80s-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Now80s.uk",
+    "feed": "SD",
+    "title": "Now 80s",
+    "url": "https://samsunguk-lightning-now80s-samsunguk-n908q.amagi.tv/playlist/samsunguk-lightning-now80s-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NOWRock.uk",
+    "feed": "SD",
+    "title": "Now Rock",
+    "url": "https://lightningnow90-samsungau.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NOWRock.uk",
+    "feed": "SD",
+    "title": "NOW Rock",
+    "url": "https://lightning-now90s-samsungnz.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NOWRock.uk",
+    "feed": "SD",
+    "title": "Now Rock",
+    "url": "https://lightning-now90s-samsungse.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NOWRock.uk",
+    "feed": "SD",
+    "title": "Now Rock",
+    "url": "https://jmp2.uk/plu-6568a78d635c3c0008765f41.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NOWRock.uk",
+    "feed": "SD",
+    "title": "NOW Rock",
+    "url": "https://lightning-now90s-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "480p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "NTDTVEnglish.us",
+    "feed": "UK",
+    "title": "NTD TV English UK",
+    "url": "https://ntd02.akamaized.net/NTD-UK/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "OnTheCase.us",
+    "feed": "UK",
+    "title": "On the Case",
+    "url": "https://jmp2.uk/plu-62cd971cec90c20007081050.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "OnTheCase.us",
+    "feed": "UK",
+    "title": "On the Case",
+    "url": "https://jmp2.uk/plu-62cd9f1cda044a00077b8f41.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "OnTheCase.us",
+    "feed": "UK",
+    "title": "On the Case",
+    "url": "https://jmp2.uk/plu-62cdad7b5c38c00007f566c2.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "OnTheCase.us",
+    "feed": "UK",
+    "title": "On The Case",
+    "url": "https://jmp2.uk/plu-615af74dfe3d8e0007524511.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PanjabTV.uk",
+    "feed": "SD",
+    "title": "Panjab TV",
+    "url": "https://panjabtv.akamaized.net/panjabtv/panjabtvhlsout/playlist.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ParanormalState.us",
+    "feed": "UK",
+    "title": "Paranormal State",
+    "url": "https://jmp2.uk/plu-60804d85858bd00007c5d591.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlanetFun.uk",
+    "feed": "SD",
+    "title": "Planet Fun",
+    "url": "http://66.102.126.10:8000/play/a02k/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVAlienInvasion.de",
+    "feed": "GB",
+    "title": "Pluto TV Alien Invasion",
+    "url": "https://jmp2.uk/plu-6462190b7cb4b1000862dd60.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVAmericanTrueCrime.de",
+    "feed": "GB",
+    "title": "Pluto TV American True Crime",
+    "url": "https://jmp2.uk/plu-692ebafce72f03e07e7df985.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVAnimals.de",
+    "feed": "GB",
+    "title": "Pluto TV Animals",
+    "url": "https://jmp2.uk/plu-5ddf8ea0d000120009bcad83.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVAnimation.de",
+    "feed": "GB",
+    "title": "Pluto TV Animation",
+    "url": "https://jmp2.uk/plu-612f761008a9e50007984ba0.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVBritainatWar.de",
+    "feed": "GB",
+    "title": "Pluto TV Britain at War",
+    "url": "https://jmp2.uk/plu-625e8cb585ef320007806caf.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVClassicTV.de",
+    "feed": "GB",
+    "title": "Pluto TV Classic TV",
+    "url": "https://jmp2.uk/plu-5d134a74ca91eedee1630faa.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVConspiracy.de",
+    "feed": "GB",
+    "title": "Pluto TV Conspiracy",
+    "url": "https://jmp2.uk/plu-5d4ae94ef1a1bbb350ca41bb.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVCrime.de",
+    "feed": "GB",
+    "title": "Pluto TV Crime",
+    "url": "https://jmp2.uk/plu-5d767790d0438aceb41d03ae.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVCultFilms.de",
+    "feed": "GB",
+    "title": "Pluto TV Cult Films",
+    "url": "https://jmp2.uk/plu-5c5c31f2f21b553c1f673fb0.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVFamilyMovieClub.de",
+    "feed": "GB",
+    "title": "Pluto TV Family Movie Club",
+    "url": "https://jmp2.uk/plu-5dc3fc6b9133f500099c7d98.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVFantasyHorror.de",
+    "feed": "GB",
+    "title": "Pluto TV Fantasy & Horror",
+    "url": "https://jmp2.uk/plu-685041d936c9361b1921c26c.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVFood.de",
+    "feed": "GB",
+    "title": "Pluto TV Food",
+    "url": "https://jmp2.uk/plu-5ddf930548ff9b00090d5686.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVInvestigation.de",
+    "feed": "GB",
+    "title": "Pluto TV Investigation",
+    "url": "https://jmp2.uk/plu-63808dc806aa4700075f319a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVMovies.de",
+    "feed": "GB",
+    "title": "Pluto TV Movies",
+    "url": "https://jmp2.uk/plu-5ad8d3a31b95267e225e4e09.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVPetrolHeads.de",
+    "feed": "GB",
+    "title": "Pluto TV PetrolHeads",
+    "url": "https://jmp2.uk/plu-65a7b0814a10d800085ff2df.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVRetroToons.de",
+    "feed": "GB",
+    "title": "Pluto TV Retro Toons",
+    "url": "https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVScifiSeries.de",
+    "feed": "GB",
+    "title": "Pluto TV Sci-fi Series",
+    "url": "https://jmp2.uk/plu-619247c34a270700077c8415.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVSherlock.de",
+    "feed": "GB",
+    "title": "Pluto TV Sherlock",
+    "url": "https://jmp2.uk/plu-5dc2c00abfed110009d97243.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVSitcoms.de",
+    "feed": "GB",
+    "title": "Pluto TV Sitcoms",
+    "url": "https://jmp2.uk/plu-62f53dc6ee9a0400071dc22b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVSpace.de",
+    "feed": "GB",
+    "title": "Pluto TV Space",
+    "url": "https://jmp2.uk/plu-5dbc2f98777f2e0009934ae7.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVToughJobs.de",
+    "feed": "GB",
+    "title": "Pluto TV Tough Jobs",
+    "url": "https://jmp2.uk/plu-600acaff5f2d6e000745effb.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PlutoTVWesterns.de",
+    "feed": "GB",
+    "title": "Pluto TV Westerns",
+    "url": "https://jmp2.uk/plu-5d4bdb635ce813b38639e6a3.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://amg01753-amg01753c6-samsung-au-6678.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://amg01753-narrativeentert-popkids-lggb-xyy5k.amagi.tv/ts-eu-w1-n2/playlist/amg01753-narrativeentert-popkids-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01753-narrativeentert-popkids-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://rakutenaa-narrative-popkids-rakuten-uwrx0.amagi.tv/ts-eu-w1-n2/playlist/rakutenAA-narrative-popkids-rakuten/cb553d1e726c648b9dd43e6fd4ef41a8dd2406fc087a8d6933fb4b926bc10f41f8eda29ab30fb02b04940fa73f4e380d4d1a9a4ace0362d7b66aa9512a7d127f8adaf471d89c1617b2c11f5d7fe021414efc0e14d025522288a93c019738b3761d5cb95c3a1862cff90bfc7000c7800bda62218ba4dd7c387c0c5e820c5feda643a6fde90e43d038a4e21e1bc72560ddbc139d9773efd59202cd16e92aac50bfa1cabad21aadbcb032fd14dd370656367897944694cc53a4dfe80353f472204f1251f4a69da43f56e146474fc7fac5a9179979aa99378e646de16ae84e8023b578be1ba2e043a9a3bce04b454be2ae1f3575a4e1f9d9f9617ee437fda0a489212d9fbb4d2814cb20dc202a6e94adca40d2931095ec51efde68192bff9c448996b7979dd4e728892e90879ee03c465d5c16169062a19563cf2cd36c97c2122f5b5845aa9f27a0ecbb5b3e3836ecef5fd00024bdde9d8adc0b04d3651a489a06b33f54359b6436078f5cf89e2f53992a0b9c302fc450308945f4ac5e93cdbfb45663e584bf28906eeba635d6f314a06e396616aae2292d20261ec7eb64574513aa44e0c0f5f3631f09e885a594a6016f5661420a56d9888f719f9dff390d1fc521600a30431390078e39885904022b994b9ef85e25d44b7928b7f272595c35959ae58584d39a14ec25afa592382b286667b8250c256becbb8c52f84a22141d5b891d6145b21f000a80e7c8e18abf69cf915ba937700666c9f1034e1b2001097acac13a8f06b3ca48efca9a0498bdd4431ff856d300148defd869eee482c270029fae521515feb940e25603e225fd08d2ae1aaab15115232e545efd8d5bf14bbcd18ef8229e5ecb25672ab220ebc6a6d9b86752f4ae4b232336570271567a297ecbb0a4670f76a2ae26ed48f2ee5bbd541a243a4584c26a2887ec64239f3a7074a0aedfb4aecb1715cd61e67ccc7371c03d6907c0ee69b0f9d883fb837c6b10d5b7b249a99e9f88c8c2c25418610861c2930f0f0db24bf18814deb80e79fdb69ffcca6be51c8852ad8da527f033b2912e6cc4e09cfae848105a4a45c3c2f8f407deb21e370619b1f74f3bad84dda775fcebb23e2bfa5ac186264c8c1b507ec78dfc25e90a99c7180bc6a64a50e45513e0d6a7213fe905f301157cd3faa04d2dc8e22eb26cbadbce2e6dad293fc5667f408d5db4ae926a7cd3a4305552d93c218772b0e2886d75618b975f14125c1f340ed64b7d0dc51f498433bbc5c0924c01ab28a83e1eef608ae37e86912dccd2e5d08fc711448ed52e34d33ec6009a02c9fcaedd198572488b49b23b40a9f6fddde9fbe596e6f63f7839b766be2be957b8e78ab0540f2b5bff2e1a6b0bd53cc42a3f72b5e174c1866c49a7f8d626e2237564233511ec30b5bd12696402a8c75cbcfc4b43404d12c9e22f86329d642aa27656ba1368333e367360a5b6ec3aff08fd5690c65e29c0a4bc8307c68d1effbfa7d79b680fe373076f79bc96aeb0f16014fbb5a8b01449a2ca44b232541c0aa3fb837632e3e40502d987ac55989d42a639172b4ef3ad8f13ec5ea313cb7e7efb1af2de6c4c97c976583a812ca9df7c459949ff0a01e56684406dd91d6753563d867ac7580b602df17283f8fc1a4e748501c96a683cbbe3fe8da83f57220d440f54051271ce412dc5192c4bea132f9b368dc28fec6585ee428d299dfdb38d1521d8c5f0c5922e892fe19290d28ce7b0ae685d481cc8b3c606a42905c4fd69b10cf3fe3406ec17a28b7387405e60c7060763cb9661176182a37d8deb4fb16b8b1ebafa88e1cd6fc8dbb5022bbe5407f552c22990723e574fcd60ad882b27e3aee91ba46d4ef0e5a9bbc4fe41e5f3c126db4da0c79ab0a805aad763294685386e1b742329ec749c3f0e907ef142f95da37d23fb268f455e31e5a99e61f1e35b38447e03d75a92772652d22229293040d7c538a6de867c4771221a55e6da1bd1114dbb225451968722e9d6f7619553d59eb5f650295a7b34fd71385575d06b6f5d16bca7f5c7033bc63aca1e0ab39093e9790a218b9b58bb910461c1f1c626f73dd57de405a670124f089d5d571cbd176d3e631d7e739c4b27ef8ca396a52e2c6364b0cb38015abbf0a149bf386d7a45138130513026/17/1920x1080_5903040/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "POP",
+    "url": "https://jmp2.uk/plu-664c94e80120f40008b860f0.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://narrative-popkids-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Pop.uk",
+    "feed": "SD",
+    "title": "Pop",
+    "url": "https://amg01753-narrativeentert-popkids-samsunguk-yjjil.amagi.tv/playlist/amg01753-narrativeentert-popkids-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "PopUp.uk",
+    "feed": "SD",
+    "title": "Pop Up",
+    "url": "https://amg01753-amg01753c9-samsung-gb-8005.playouts.now.amagi.tv/ts-eu-w1-n2/playlist/amg01753-narrativeuk-popup-samsunggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QVC.uk",
+    "feed": "SD",
+    "title": "QVC UK",
+    "url": "https://qvcuk-live.akamaized.net/hls/live/2097112/qvc/master.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QVCBeauty.uk",
+    "feed": "SD",
+    "title": "QVC UK Beauty",
+    "url": "https://qvcuk-live.akamaized.net/hls/live/2097112/qby/master.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QVCExtra.uk",
+    "feed": "SD",
+    "title": "QVC UK Extra",
+    "url": "https://qvcuk-live.akamaized.net/hls/live/2097112/qex/master.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QVCStyle.uk",
+    "feed": "SD",
+    "title": "QVC UK Style",
+    "url": "https://qvcuk-live.akamaized.net/hls/live/2097112/qst/master.m3u8",
+    "quality": "540p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QwestTVJazzBeyond.fr",
+    "feed": "SD",
+    "title": "Qwest TV Jazz & Beyond",
+    "url": "https://samsungau-qwestjazz-samsungtv-zw2jc.amagi.tv/playlist/samsungau-qwestjazz-samsungtv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "QwestTVJazzBeyond.fr",
+    "feed": "SD",
+    "title": "Qwest TV Jazz & Beyond",
+    "url": "https://cdn-ue1-prod.tsv2.amagi.tv/linear/qwestAAAA-qwestjazz-uk-samsungtv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RakutenTVActionMovies.es",
+    "feed": "UK",
+    "title": "Rakuten TV Action Movies UK",
+    "url": "https://54045f0c40fd442c8b06df076aaf1e85.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6065/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RakutenTVComedyMovies.es",
+    "feed": "UK",
+    "title": "Rakuten TV Comedy Movies UK",
+    "url": "https://9be783d652cd4b099cf63e1dc134c4a3.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6181/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RakutenTVDramaMovies.es",
+    "feed": "UK",
+    "title": "Rakuten TV Drama Movies UK",
+    "url": "https://fee09fd665814f51b939b6d106cf5f66.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6093/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RakutenTVFamilyMovies.es",
+    "feed": "UK",
+    "title": "Rakuten TV Family Movies UK",
+    "url": "https://e3207568b726401995c25670faaf32e4.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6203/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RakutenTVTopMovies.es",
+    "feed": "UK",
+    "title": "Rakuten Top Movies UK",
+    "url": "https://0145451975a64b35866170fd2e8fa486.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-5987/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RedBullTV.at",
+    "feed": "UK",
+    "title": "Red Bull TV UK",
+    "url": "https://1a3566cb46914c5499fbc86fbc4ac87e.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-932-WORBUKENFAST-WHALETVPLUS/932/whaletvplus/hls/master/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RedBullTV.at",
+    "feed": "UK",
+    "title": "Red Bull TV UK",
+    "url": "https://e7c8f7d5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWdiX1JlZEJ1bGxUVi0xX0hMUw/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RedBullTV.at",
+    "feed": "UK",
+    "title": "Red Bull TV",
+    "url": "https://d1hlbgn3fph0cz.cloudfront.net/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RugbyPassTV.uk",
+    "feed": "SD",
+    "title": "Rugby Pass TV",
+    "url": "https://jmp2.uk/plu-66f137cb483d460008ece053.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RugbyPassTV.uk",
+    "feed": "SD",
+    "title": "RugbyPass TV",
+    "url": "https://97bf7b92.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9SdWdieVBhc3NUVl9ITFM/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "RugbyPassTV.uk",
+    "feed": "SD",
+    "title": "RugbyPass TV",
+    "url": "https://dt1kh32hg3tft.cloudfront.net/v1/world_rugby_rugbypasstv_1/samsungheadend_us/latest/main/hls/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "S4C.uk",
+    "feed": "SD",
+    "title": "S4C",
+    "url": "https://v2.uk.live.s4c-cdn.co.uk/out/v1/S4C/UK_TX/uk_live/uk-tx-dvb.mpd",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "S4C.uk",
+    "feed": "SD",
+    "title": "S4C",
+    "url": "https://v2.uk.live.s4c-cdn.co.uk/out/v1/S4C/UK_TX/uk_live/uk-tx-hls.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "S4C.uk",
+    "feed": "SD",
+    "title": "S4C",
+    "url": "https://matchmaker.live.bidi.net.uk/vs-cmaf-pushb-uk/x=4/i=urn:bbc:pips:service:s4cpbs/pc_hd_abr_v2.mpd",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "S4C.uk",
+    "feed": "SD",
+    "title": "S4C",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:s4cpbs/iptv_hd_abr_v1.mpd",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "S4C.uk",
+    "feed": "SD",
+    "title": "S4C (720p) (HEVC)",
+    "url": "https://vs-cmaf-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:s4cpbs/hevc_iptv_mse_v0.mpd",
+    "quality": null,
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SabrinaTheTeenageWitch.de",
+    "feed": "GB",
+    "title": "Sabrina The Teenage Witch",
+    "url": "https://jmp2.uk/plu-66276091cee0d900085fe053.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SafeerTV.uk",
+    "feed": "SD",
+    "title": "Safeer TV",
+    "url": "https://cdn3.wowza.com/1/YStGZlJRdktzZkdK/VXROZWNW/hls/live/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SangatTV.uk",
+    "feed": "SD",
+    "title": "Sangat TV",
+    "url": "https://mumt06.tangotv.in/qYyB8fXVSANGATTV/index.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SanskarUK.in",
+    "feed": "SD",
+    "title": "Sanskar UK",
+    "url": "https://d34z4embz0hjf6.cloudfront.net/out/v1/7ac2789ff9a544a49337d1ffc54ce61c/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Scorpion.de",
+    "feed": "GB",
+    "title": "Scorpion",
+    "url": "https://jmp2.uk/plu-63d000ef4e83e700086e0d6c.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SensingMurder.us",
+    "feed": "UK",
+    "title": "Sensing Murder",
+    "url": "https://jmp2.uk/plu-5e9ed47c26ebb000074af566.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SheffieldLiveTV.uk",
+    "feed": "SD",
+    "title": "Sheffield Live TV",
+    "url": "http://tv.sheffieldlive.org/hls/main.m3u8",
+    "quality": "360p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SkyNewsWeather.uk",
+    "feed": "SD",
+    "title": "Sky News Weather",
+    "url": "https://distro001-gb-hls1-prd.delivery.skycdp.com/easel_cdn/ngrp:weather_loop.stream_all/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SkySportsF1.uk",
+    "feed": "SD",
+    "title": "Sky Sports F1",
+    "url": "https://cdn.stmify.com/out/v1/SKY_SPORTS_F1/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "referrer": "https://stmify.com/"
+  },
+  {
+    "channel": "SkySportsNFL.uk",
+    "feed": "SD",
+    "title": "Sky Sports NFL",
+    "url": "https://cdn.stmify.com/out/v1/SKY_SPORTS_ACTION/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "referrer": "https://stmify.com/"
+  },
+  {
+    "channel": "SoReal.us",
+    "feed": "UK",
+    "title": "So\u2026 Real",
+    "url": "https://all3media-soreal-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SouthPark.de",
+    "feed": "GB",
+    "title": "South Park",
+    "url": "https://jmp2.uk/plu-64edf6eaa7ec0d000812f58c.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "SparkTV.uk",
+    "feed": "SD",
+    "title": "Spark TV",
+    "url": "https://candlelightmedia-sparklightlove-4-us.roku.wurl.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "StarBharat.uk",
+    "feed": "SD",
+    "title": "Star Bharat",
+    "url": "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavBharat.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "StarPlus.uk",
+    "feed": "SD",
+    "title": "StarPlus",
+    "url": "https://d1rc86nwwc9fag.cloudfront.net/260723/starplusuk_2500/chunks.m3u8",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "StarPlus.uk",
+    "feed": "SD",
+    "title": "StarPlus",
+    "url": "http://103.151.60.162:2122/play/a0fo/index.m3u8?hls",
+    "quality": "576p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "StarVijay.in",
+    "feed": "UK",
+    "title": "Star Vijay",
+    "url": "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:starvijayuk.smil/playlist.m3u8",
+    "quality": "396p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Strongman.us",
+    "feed": "UK",
+    "title": "Strongman",
+    "url": "https://rightsboosterltd-scl-1-eu.rakuten.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Strongman.us",
+    "feed": "UK",
+    "title": "Strongman Champions League",
+    "url": "https://rightsboosterltd-scl-1-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TakbeerTV.uk",
+    "feed": "SD",
+    "title": "Takbeer TV",
+    "url": "https://cd198.anystream.uk:9092/iqapp/t5kb86tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "talkSPORT.uk",
+    "feed": "SD",
+    "title": "talkSPORT",
+    "url": "https://af7a8b4e.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfdGFsa1NQT1JUX0hMUw/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "talkSPORT.uk",
+    "feed": "SD",
+    "title": "talkSPORT",
+    "url": "https://tvsen6.aynaott.com/talkSPORT/index.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TalkTV.uk",
+    "feed": "SD",
+    "title": "TalkTV",
+    "url": "https://488f4ce4.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfVGFsa19ITFM/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Tastemade.us",
+    "feed": "UK",
+    "title": "Tastemade",
+    "url": "https://tastemade-tdint-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TBNUK.uk",
+    "feed": "SD",
+    "title": "TBN UK",
+    "url": "https://live-tbn-ssai.simplestreamcdn.com/v1/master/774d979dd66704abea7c5b62cb34c6815fda0d35/tbn-live/manifest.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TeenMom.de",
+    "feed": "GB",
+    "title": "Teen Mom",
+    "url": "https://jmp2.uk/plu-62d550d81054990007db7798.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Teletubbies.uk",
+    "feed": "SD",
+    "title": "Teletubbies",
+    "url": "https://jmp2.uk/plu-64e50055286f6b000838c067.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Teletubbies.uk",
+    "feed": "SD",
+    "title": "Teletubbies",
+    "url": "https://jmp2.uk/plu-66a10eeb46762a0008201e85.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Teletubbies.uk",
+    "feed": "SD",
+    "title": "Teletubbies",
+    "url": "https://dv8lsrd8fecw9.cloudfront.net/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Teletubbies.uk",
+    "feed": "SD",
+    "title": "Teletubbies",
+    "url": "https://dy9gbyiaxw0rb.cloudfront.net/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TerraMaterWILD.de",
+    "feed": "English",
+    "title": "Terra Mater WILD English",
+    "url": "https://amg01775-amg01775c1-amgplt0343.playout.now3.amagi.tv/playlist/amg01775-amg01775c1-amgplt0343/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TerraMaterWILD.de",
+    "feed": "English",
+    "title": "Terra Mater WILD",
+    "url": "https://amg01775-amg01775c1-amgplt0002.playout.now3.amagi.tv/playlist/amg01775-amg01775c1-amgplt0002/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Thats70s.uk",
+    "feed": "HD",
+    "title": "That's 70s",
+    "url": "https://jmp2.uk/plu-69ef53e12f4d2b4f9c582e76.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Thats80s.uk",
+    "feed": "SD",
+    "title": "That's 80s",
+    "url": "https://jmp2.uk/plu-69ef54f3c700cf0140272def.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheChatShowChannel.uk",
+    "feed": "SD",
+    "title": "The Chat Show Channel",
+    "url": "https://amg00426-littledotstudio-thechatshow-samsungnz-uqmtt.amagi.tv/playlist/amg00426-littledotstudio-thechatshow-samsungnz/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheChatShowChannel.uk",
+    "feed": "SD",
+    "title": "The Chat Show Channel",
+    "url": "https://amg00426-lds-amg00426c11-rakuten-uk-3888.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://jmp2.uk/plu-66166ce7aec96800080f6bd3.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://jmp2.uk/plu-6915dd5ca570568f53431c7f.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://jmp2.uk/plu-6915ddcb0d121b44ad1b6bf2.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://jmp2.uk/plu-6915de3d74601d957afa4592.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://amg00654-itv-amg00654c35-rakuten-gb-7598.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://jmp2.uk/plu-66e06576abec540008cc17a9.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheGrahamNortonShow.uk",
+    "feed": "SD",
+    "title": "The Graham Norton Show",
+    "url": "https://amg00654-itv-amg00654c14-samsung-gb-2308.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheNanny.us",
+    "feed": "UK",
+    "title": "The Nanny",
+    "url": "https://jmp2.uk/plu-6391cef9edb23c0008598cee.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheNanny.us",
+    "feed": "UK",
+    "title": "The Nanny",
+    "url": "https://jmp2.uk/plu-6391df52d146a40007c265f3.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheNewDetectives.de",
+    "feed": "GB",
+    "title": "The New Detectives",
+    "url": "https://jmp2.uk/plu-5e393d5c696b3b0009775c8b.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ThePetCollective.us",
+    "feed": "UK",
+    "title": "The Pet Collective",
+    "url": "https://the-pet-collective-international-gb.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TheYellowCouchwithJeremyLynch.de",
+    "feed": "GB",
+    "title": "The Yellow Couch with Jeremy Lynch",
+    "url": "https://jmp2.uk/plu-68e8ffee9d1d49e672fe790f.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TinyPop.uk",
+    "feed": "SD",
+    "title": "Tiny Pop",
+    "url": "https://amg01753-narrativeuk-amg01753c1-lg-gb-1830.playouts.now.amagi.tv/playlist/amg01753-narrativeuk-tinypop-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TinyPop.uk",
+    "feed": "SD",
+    "title": "Tiny Pop",
+    "url": "https://amg01753-narrativeuk-amg01753c1-lg-gb-1830.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg01753-narrativeuk-tinypop-lggb/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TinyPop.uk",
+    "feed": "SD",
+    "title": "Tiny Pop",
+    "url": "https://amg01753-narrativeuk-amg01753c1-rakuten-uk-2339.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg01753-narrativeuk-tinypop-rakutenuk/cb7d3e4f7b726f8c9999376cd9f547f3d1006681563ad7316cad5e9420c91853d7b9f7c0e74feb690dbd7ba33e40340d0136d41cc07c11dfa32bfb086a384837c293a20287dd4755a2a55e793acc190e39ee0f15ce24562999fb0c52d468e137555aa82e6b553982f25bad7752c5810a8a6f5fd2ef88376635455e9a5943e5b24aa0ade75a44df64a9ac14489c2f58e68314c8c915ee84dc469745d722f247999aa482db16888cab43f803f10b1a4c3078988d709dce62bfdee82f53d8227a431a04b5a696b3186ad6450e08fafbcef267f942cbc470d13064ec549e1fd136df3af071cd8e4fa4be84db475730a7c164753eb0e0d2ef915624b864a1ea83af72788ac913794af66ed730393d9cfcdf1b96b167fcc672d3e23c456f99c211cbc9e5d2b6e7df10e64fbac6f08b025242621d079462b59369cf21af1ec2aa42780e1d1ed8f03bc582ca613467598f835beb1f16ada9e8e9be5f61b80a715bec73e656047ec731780e81479b8f3736f54c7884312ec44a21967dffb722e1a2d5f13932b1aca1289b3ab8ed5288b668d16c384a3da1e63a60464373c4eb68190f75c24be3c6cbe6727b648695c8f09a125276381341338af2f74f889acf3b1829d4412a12187a7d8405dd7ccb05474e3adf44afc6667581151e29e3b1365e5f539bc9ba84f5bfa023b376c1cafb3637611909cb32013551d0b9834df8365f41795c940a634caf0e5f5198f3a381b0a14c9fc636c050631070fae007480d2035094ecdc23b840db1c745f4cd9d0f95a2d943118771fa07479b9d8a39febf8493185bc6fd064f3deab957c4773ef813d13d81d175e7bd5a0219303221a8e973da719cedb3e471e346c24e076dd57cbe8aeab0d3594fe290584155633146260526767dd2bdd4601344e9b231943b8c8f45bb4d50697b2db283044db9f87818a3216770a0d2bfe1dfda0f11d36be665c86706995a042af3c334e6d9c89997866b473fcca5ae5e84b59191c9a4a34c191d652392d550472d9d4c9e8d03f2921c6cffb689f0d46a9b709046d1f5b521e972b2cab71bba9593eaed39005b580d6ea39d8a15dfaf3542bf6bc9722e179299e1fa718967de6dc2887ed18b3e3dbe394f53f0f8eb03e92899c41b0fc9a4677fd25513e0c1de073de9058429035cd0ecb7363cece22ec76cbc94d5386daf1e19c5667f408d32c3a69e484ec09d322170cc2a49a55a87dbeb447a27ada651032108383f58e06c4f09e1075b9d4ba1c5e5b66301af20ab2c1e96708ee074838329c7d1f5d2fefc1d448ed63f37d02ec6289801e7f8a6da1a8672508b63b23b6583fef9dfe9cdee96eefc3f7817bf65b828df54bbef80b057272b58fb2d1a6b0add3ee22a0072b5e574eb866e45a7d9dc35e2277164093511ea3898b730696002a8c75cbcfe4369486b11c9e227963295642aa57e569f3b4e3b2e267b6083b1ec3ad920db5690c57821e2a4968307c68d1effae81cf9f6803e373076f69b894aea0f16032ddb5abb0044da0ca449431543e0aa0fb836618e3e42301d987ac559a9d528e39172b4ef3a98f13ee5ea313cb7e7efb1af0de6c4cecac3d151aa41eb7ec526087079970759616fd0d7eda126a534a39b87ac769146c5b8917e7f7ae5228019600d40f1246dadde98a983d5e1c01531119617d12db4832a26b4321f55761f99099c29f859e1d1131e35db3db838b4a498386a499875db2d787fce6b7011d1aad370a1ff20e409172cb1815d2b252bd78869297865f07ba8275a03f85e655767210e98b316b192c68938740c15624de0dffda8af0c46ac3cdf237306e7e770a42d36f866463460de97dbec4193cf4ff9e6b0ad08ff2a3e4cfb38553e2a0f2509a9a446ad5fab530f0ebb436f55d0655850b571607b9b0505b39cc20a9ebd7e94303a22e954d582dece7fd3bb1b7147e539661b460ab772f53856e0168710b8bc55d8adcc55a7a2515490cedd4638a5e08a5742301c093438adf8f06c10090c0afff406a1c7134f87436233582496c5105fcb9f2c31c3be406f02b65a6d9b99e1a54698a9b58959d3e748194b800c871ec75ef72ff2c461c7dc7777d719d3e240a2d7b2018a94921e59aa6ecb4348c2dfc7b4cc800a57d37ba92021b82df7d8e7d7d539fd21441af67a13fa6998850e6786ee58eebcc0a/27/1920x1080_5903040/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TinyPop.uk",
+    "feed": "SD",
+    "title": "Tiny Pop",
+    "url": "https://amg01753-narrativeuk-amg01753c1-rakuten-uk-2339.playouts.now.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TinyPop.uk",
+    "feed": "SD",
+    "title": "Tiny POP",
+    "url": "https://amg01753-narrativeentert-tinypop-samsunguk-hvvb7.amagi.tv/playlist/amg01753-narrativeentert-tinypop-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TJC.uk",
+    "feed": "SD",
+    "title": "TJC",
+    "url": "https://cdn-shop-lc-01.akamaized.net/Content/HLS_HLS/Live/channel(TJCOTT)/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TJC.uk",
+    "feed": "SD",
+    "title": "TJC",
+    "url": "https://cdn-shop-lc-01.vos360.video/Content/HLS_HLS/Live/channel(HDTJCcustomGFX)/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-638e10220aa6a6000726979f.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-64c109735dc1660008a4a2dc.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-620234d766314700075cac86.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-60d356a534f63f000850cdd7.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-64c1093824ade50008bd117f.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-64c109a4798def0008a6e03e.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-6202357dea93940007d723ca.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-620239894757070008d4812d.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://jmp2.uk/plu-636adc255bcf470007d6e0e2.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://d1daq1khzqxpku.cloudfront.net/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TopGear.uk",
+    "feed": "SD",
+    "title": "Top Gear",
+    "url": "https://aegis-cloudfront-1.tubi.video/33ccaca5-a666-4b28-8578-55a9ab9f06d5/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TotallyTurtles.de",
+    "feed": "GB",
+    "title": "Totally Turtles",
+    "url": "https://jmp2.uk/plu-656ef4af4261ca00083c8f37.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Totalmusic80s.uk",
+    "feed": "HD",
+    "title": "Totalmusic 80s",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/Totalmusic_80s/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Totalmusic2000s.uk",
+    "feed": "HD",
+    "title": "Totalmusic 2000s",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/Totalmusic_00s/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Totalmusic.uk",
+    "feed": "HD",
+    "title": "Totalmusic",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/Totalmusic/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TotalmusicConcerts.uk",
+    "feed": "HD",
+    "title": "Totalmusic Concerts",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/Totalmusic_Concerts/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TotalmusicDance.uk",
+    "feed": "HD",
+    "title": "Totalmusic Dance",
+    "url": "https://cdn.global.elektamedia.com/live/c7eds/Totalmusic_Dance/SA_LIVE_hls_enc/master.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TraceUK.uk",
+    "feed": "HD",
+    "title": "Trace UK",
+    "url": "https://channels.trace.plus/Traceprod/UK_FAST_hd/index.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TraceUK.uk",
+    "feed": "HD",
+    "title": "Trace UK",
+    "url": "https://d2l4tng0wskzvn.cloudfront.net/Trace_GB.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Trailers.es",
+    "feed": "UK",
+    "title": "Trailers",
+    "url": "https://amg01821-lovetvchannels-lovemagazineuk-samsungse-p1sf1.amagi.tv/playlist/amg01821-lovetvchannels-lovemagazineuk-samsungse/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TrueCrime.uk",
+    "feed": "SD",
+    "title": "True Crime UK",
+    "url": "https://jmp2.uk/plu-6304fb268bd95300072d2198.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TrueCrime.uk",
+    "feed": "SD",
+    "title": "True Crime UK",
+    "url": "https://b6cca454.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9UcnVlQ3JpbWVVS2Zyb21DQlNSZWFsaXR5X0hMUw/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "TVWarehouse.uk",
+    "feed": "SD",
+    "title": "TV Warehouse",
+    "url": "https://tvwarehouse.r.worldssl.net/mystream.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "UndercoverBossGlobal.us",
+    "feed": "UK",
+    "title": "Undercover Boss",
+    "url": "https://all3media-international-undercoverboss-1-au.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "UndercoverBossGlobal.us",
+    "feed": "UK",
+    "title": "Undercover Boss",
+    "url": "https://all3media-international-undercoverboss-1-nz.samsung.wurl.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "UnsolvedMysteries.us",
+    "feed": "UK",
+    "title": "Unsolved Mysteries",
+    "url": "https://jmp2.uk/plu-5bd05b4694d45d266bc951f2.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "UtsavBharat.uk",
+    "feed": "SD",
+    "title": "Utsav Bharat",
+    "url": "https://d1taaads3ztvmu.cloudfront.net/120723/smil:lifeokuk.smil/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "UtsavPlus.uk",
+    "feed": "SD",
+    "title": "Utsav Plus",
+    "url": "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "V2BEATTV.uk",
+    "feed": "SD",
+    "title": "V2BEAT",
+    "url": "https://abr.de1se01.v2beat.live/playlist.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Not 24/7"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "VantageMusic.ee",
+    "feed": "UK",
+    "title": "Vantage Music UK",
+    "url": "https://hls.vantagetv.co.uk/vmusicuk_stream/index.m3u8",
+    "quality": "1080p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "WaterBear.ch",
+    "feed": "SD",
+    "title": "WaterBear",
+    "url": "https://amg01415-waterbearnetwor-waterbear-samsunguk-1h0y8.amagi.tv/playlist/amg01415-waterbearnetwor-waterbear-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "WildatHeart.us",
+    "feed": "UK",
+    "title": "Wild at Heart",
+    "url": "https://jmp2.uk/plu-60817936fd2d70000763d2b2.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Wonder.uk",
+    "feed": "SD",
+    "title": "Wonder",
+    "url": "https://lds-wonder-samsungau.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Wonder.uk",
+    "feed": "SD",
+    "title": "Wonder",
+    "url": "https://lds-wonder-rakuten.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Wonder.uk",
+    "feed": "SD",
+    "title": "Wonder",
+    "url": "https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00426-littledotstudio-wondernz-samsungnz/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Wonder.uk",
+    "feed": "SD",
+    "title": "Wonder",
+    "url": "https://wonder-samsung-uk.amagi.tv/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "Wonder.uk",
+    "feed": "SD",
+    "title": "Wonder",
+    "url": "https://lds-wonder-plex.amagi.tv/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "WorldPokerTour.us",
+    "feed": "UK",
+    "title": "World Poker Tour",
+    "url": "https://jmp2.uk/plu-5ad8d796e738977e2c31094a.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "WorldPokerTour.us",
+    "feed": "UK",
+    "title": "World Poker Tour",
+    "url": "https://amg00477-samsungelectron-worldpokertour-samsunguk-81igb.amagi.tv/playlist/amg00477-samsungelectron-worldpokertour-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "XITEHits.nl",
+    "feed": "UK",
+    "title": "XITE Hits UK",
+    "url": "https://amg01243-xitenetworksint-hitsuk-samsunguk-mvovq.amagi.tv/playlist/amg01243-xitenetworksint-hitsuk-samsunguk/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "YAAAS.uk",
+    "feed": "HD",
+    "title": "YAAAS!",
+    "url": "https://d3knqoaufvjug3.cloudfront.net/yas.m3u8",
+    "quality": "720p",
+    "labels": [
+      "Geo-blocked"
+    ],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ZeeOne.uk",
+    "feed": "UK",
+    "title": "Zee One",
+    "url": "https://amg17931-zee-amg17931c6-samsung-au-8872.playouts.now.amagi.tv/playlist/amg17931-asiatvusaltdfast-zeeworld-samsungau/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ZeeOne.uk",
+    "feed": "UK",
+    "title": "Zee One",
+    "url": "https://87e3eec452134557a82da031f54a1899.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RakutenTV-fr_ZeeMagic/playlist.m3u8",
+    "quality": null,
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ZeeOne.uk",
+    "feed": "UK",
+    "title": "Zee One",
+    "url": "https://4bc5d2b3.wurl.com/v1/asia_tv_limited_zeeworld_1/ohlscdn_us/V00000001/7200/HLS/playlist.m3u8",
+    "quality": "1080p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  },
+  {
+    "channel": "ZeeOne.uk",
+    "feed": "UK",
+    "title": "Zee One",
+    "url": "https://536ec699.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9aZWVXb3JsZC0xX0hMUw/playlist.m3u8",
+    "quality": "720p",
+    "labels": [],
+    "user_agent": null,
+    "referrer": null
+  }
+]

@@ -14,6 +14,7 @@ from urllib.parse import urlsplit, parse_qsl
 from guide_supplements import load_guide, mappings, parse_xml
 from channel_groups import arrange_channels
 from bbc_sources import combine as combine_bbc, refresh_sources
+from stream_sources import augment, refresh as refresh_streams, refresh_sky
 
 ATTR = re.compile(r'([\w-]+)="([^"]*)"')
 
@@ -290,6 +291,7 @@ def main():
         guides,
         refresh_sources()
     )
+    data['channels'] = augment(data['channels'], refresh_streams(), refresh_sky())
     data['warnings'].extend(guide_warnings)
     if len(data['channels']) < 10 or len(data['programmes']) < 100:
         raise SystemExit('Refusing to publish an incomplete catalogue')
