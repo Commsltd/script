@@ -67,11 +67,16 @@ fun Television(
 
     val currentYoutube by rememberUpdatedState(youtubeSource)
     val currentResize by rememberUpdatedState(resizeMode)
-    // Move the same renderer between preview and full screen: changing layout
-    // must not reload the channel or start another YouTube advertising session.
-    val media = remember(model, engine) { movableContentOf {
+    // Preserve the YouTube page/session when moving between preview and full
+    // screen. Native SurfaceViews must attach freshly at each destination:
+    // moving one while replacing its player can strand video on Fire OS.
+    val youtubeMedia = remember(model, engine) { movableContentOf {
         MediaSurface(model, engine, currentYoutube, Modifier.fillMaxSize(), currentResize, false)
     } }
+    val media: @Composable () -> Unit = {
+        if (currentYoutube != null) youtubeMedia()
+        else MediaSurface(model, engine, null, Modifier.fillMaxSize(), currentResize, false)
+    }
 
     MaterialTheme {
         Box(Modifier.fillMaxSize().background(Ink)) {
@@ -107,20 +112,24 @@ private fun MediaSurface(
                 interactive = interactiveYoutube
             )
         } else {
-            AndroidView(
-                factory = { context ->
-                    PlayerView(context).apply {
-                        useController = false
-                        keepScreenOn = true
-                        isFocusable = false
+            val player = engine.player
+            key(player) {
+                AndroidView(
+                    factory = { context ->
+                        PlayerView(context).apply {
+                            useController = false
+                            keepScreenOn = true
+                            isFocusable = false
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                    onRelease = { it.player = null },
+                    update = {
+                        it.player = player
+                        it.resizeMode = resizeMode
                     }
-                },
-                modifier = Modifier.fillMaxSize(),
-                update = {
-                    it.player = engine.player
-                    it.resizeMode = resizeMode
-                }
-            )
+                )
+            }
         }
     }
 }

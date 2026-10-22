@@ -21,7 +21,7 @@ class SourceRecoveryLiveTest {
         for(i in 0 until all.length())rows.put(all.get(i))
         val station=original.copy(sourcesJson=rows.toString())
         assertTrue("All available GB News alternatives must be retained",original.sources().size>=11)
-        val attempts=JSONArray();var seen="";var stable=0L;var passed=false;var frames=0;var status=""
+        val attempts=JSONArray();var seen="";var stable=0L;var passed=false;var frames=0;var status="";var attemptCount=0
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             lateinit var engine:PlaybackEngine
             scenario.onActivity { a ->
@@ -37,18 +37,20 @@ class SourceRecoveryLiveTest {
                     if(source!=null && source.id!=seen) { seen=source.id;stable=0;attempts.put(JSONObject().put("id",seen).put("label",source.label).put("time",System.currentTimeMillis())) }
                     frames=engine.player?.videoDecoderCounters?.renderedOutputBufferCount ?: 0
                     status=engine.status
+                    attemptCount=PlaybackEngine::class.java.getDeclaredField("attempt").apply { isAccessible=true }.getInt(engine)
                     if(engine.player?.isPlaying==true && frames>0) {
                         if(stable==0L)stable=System.currentTimeMillis()
                         passed=System.currentTimeMillis()-stable>=20000
                     } else stable=0
                 }
-                File(context.getExternalFilesDir(null),"gbnews-recovery.json").writeText(JSONObject().put("sourceCount",original.sources().size).put("attempts",attempts).put("playing",passed).put("frames",frames).put("status",status).toString(2))
+                File(context.getExternalFilesDir(null),"gbnews-recovery.json").writeText(JSONObject().put("sourceCount",original.sources().size).put("attempts",attempts).put("attemptCount",attemptCount).put("playing",passed).put("frames",frames).put("status",status).toString(2))
                 if(passed)break
                 Thread.sleep(300)
             }
             scenario.onActivity { engine.close() }
         }
         assertTrue("GB News did not recover: $status $attempts",passed)
-        assertTrue("A different source must be selected automatically",attempts.length()>=2)
+        // A connection refusal can finish between 300 ms observation samples.
+        assertTrue("A different source must be selected automatically",attemptCount>=2)
     }
 }
