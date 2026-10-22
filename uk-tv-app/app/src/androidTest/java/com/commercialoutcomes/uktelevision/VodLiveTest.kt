@@ -98,7 +98,12 @@ class VodLiveTest {
             }
             device.takeScreenshot(File(context.getExternalFilesDir(null),"vod-playback-${source.provider.name}.png"))
             assertTrue(output.toString(),played)
-            if(source.provider==VodProvider.TUBI)assertTrue("Tubi must enter full screen",output.optBoolean("fullscreen"))
+            if(source.provider==VodProvider.TUBI) {
+                val v=output.getJSONArray("videos").getJSONObject(0).getJSONObject("rect")
+                val viewport=output.getJSONObject("viewport")
+                assertEquals(viewport.getDouble("width"),v.getDouble("width"),2.0)
+                assertEquals(viewport.getDouble("height"),v.getDouble("height"),2.0)
+            }
             if(source.provider==VodProvider.MOVY) {
                 val viewport=output.getJSONObject("viewport")
                 assertEquals("The entire player must fit horizontally",viewport.getDouble("width"),viewport.getDouble("visibleWidth"),2.0)

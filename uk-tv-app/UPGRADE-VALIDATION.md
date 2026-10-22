@@ -1,5 +1,17 @@
 # UK Television upgrade validation — 22 October 2026
 
+## 0.8.1 Tubi TV playback and remote controls
+
+Tubi previously displayed its desktop header, signup CTA and recommendation column beside a half-width player until an unreliable full-screen shortcut succeeded. Version code 11 keeps its actual provider video/ad/caption stage in the entire viewport with `object-fit: contain`. The surrounding webpage and optional signup CTA are hidden from playback. UK TV supplies a native control row for play/pause, rewind/forward, subtitles and options. D-pad actions are explicitly routed to that row; hidden controls allow direct left/right seeking. Back closes the menu or controls before leaving playback.
+
+Playback commands use the provider's own controls and keyboard shortcuts; there is no stream extraction, direct currentTime override, ad skipping or external app handoff. Tubi remains the playback engine and can still impose its own availability and connection restrictions. Its auto-start is latched once, including when Tubi autoplays before the first app poll, so a later user pause is never interpreted as a first-play request. Hidden provider transport controls are remounted through their own pointer handler before play/pause. Consent notices are mirrored in a native scrollable dialogue, and only an explicit remote selection submits a choice. Startup and lifecycle polling are bounded to one active check and cancelled when leaving/backgrounding the player.
+
+On the AFTSS Firestick, The Man from Earth rendered at 1920 pixels wide with advancing feature playback. Remote pause held the position; forward and rewind changed position through Tubi; OK resumed and playback continued for a further 7.5 seconds. The video occupied the complete 960 × 540 CSS viewport without cropping. Player audio was unmuted with volume 1; this is a player-state check, not an acoustic recording. These are bounded device checks, not proof of whole-film reliability or every Tubi title. The app still loads Tubi's playback engine internally, so no reduction in all provider resource use is claimed.
+
+The two local device fixtures passed, covering remote-only consent, layout, held keys and preserving an intentional pause after provider autoplay. The final combined live regression did not pass: one run reached all playback assertions but timed out on the Back sequence, and a subsequent run intermittently failed to resume using OK after seeking. Direct Back checks succeeded. These failures remain recorded; the user confirmed playback was working and requested testing stop. No claim is made that the complete device suite passed.
+
+The normal APK passes 57 Kotlin tests, tvPreview lint with zero errors, and debug/test/tvPreview builds. The package and signing certificate are unchanged. The exact approved icon bytes match SHA-256 `8a24040706b0dc84b2245c8133ffa31e978148ab851780e0cc84a312ae80da93`. Saved library data and general preferences matched the pre-upgrade backup.
+
 ## 0.8.0 online search, Dulo seasons and local Crew experiment
 
 The same AFTSS Firestick and package are upgraded in place (version code 10), without clearing app data or changing the VPN. A fresh private app-data archive was captured before the first test launch.

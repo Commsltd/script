@@ -32,6 +32,7 @@ class VodPlayerActivity : ComponentActivity() {
     private var servicesDialog:AlertDialog?=null
     private var webFailed=false
     private var qualityControls:VodQualityControls?=null
+    private var tubiControls:TubiTvControls?=null
     var nativePlayback:NativeVodPlayback?=null;private set
     private lateinit var defaultAgent: String
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -88,11 +89,11 @@ class VodPlayerActivity : ComponentActivity() {
                     if(provider==VodProvider.PLEX) consentControls?.check(false)
                     if(provider==VodProvider.MOVY) fitMovyViewport()
                     if(provider==VodProvider.PLUTO) startChosenPlutoTitle()
-                    if(provider==VodProvider.TUBI) enterTubiFullscreen()
+
                     if(provider==VodProvider.DULO) web.evaluateJavascript("""(()=>{const style=document.createElement('style');style.textContent='video{object-fit:contain!important}';document.head.appendChild(style)})()""",null)
                 }
                 override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
-                    consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close()
+                    consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();nativePlayback?.close()
                     handler.removeCallbacksAndMessages(null);closeFullscreen();root.removeView(view);view.destroy();webFailed=true
                     AlertDialog.Builder(this@VodPlayerActivity).setMessage("The provider player stopped. Please reopen On Demand.").setPositiveButton("Return to library") { _, _ -> finish() }.show()
                     return true
@@ -124,7 +125,8 @@ class VodPlayerActivity : ComponentActivity() {
         Toast.makeText(this,"Press MENU to change stream or provider",Toast.LENGTH_LONG).show()
     }
     private fun prepareProviderControls() {
-        consentControls?.close();qualityControls?.close();nativePlayback?.close();nativePlayback=null
+        consentControls?.close();consentControls=null;qualityControls?.close();tubiControls?.close();tubiControls=null;nativePlayback?.close();nativePlayback=null
+        if(provider==VodProvider.TUBI)tubiControls=TubiTvControls(this,root,web,intent.getStringExtra("title").orEmpty(),::showServices)
         if(provider==VodProvider.PLEX){consentControls=WebConsentControls(this,web).also{it.start()};startWithSound()}
         if(provider==VodProvider.MOVY)qualityControls=VodQualityControls(web).also{it.startAt720p()}
         if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))nativePlayback=NativeVodPlayback(this,root,web).also{it.start()}
@@ -165,19 +167,6 @@ class VodPlayerActivity : ComponentActivity() {
         web.requestFocus()
         web.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN,code))
         web.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP,code))
-    }
-    private fun enterTubiFullscreen() {
-        var attempts=0
-        val poll=object:Runnable {
-            override fun run() {
-                if(isFinishing || isDestroyed || custom!=null || attempts++>=60)return
-                web.evaluateJavascript("""(()=>{const v=document.querySelector('video[data-id="videoPlayerComponent"]');return !!document.fullscreenElement?2:(v && v.readyState>=2 && v.duration>120 && !v.paused?1:0)})()""") { result ->
-                    if(result=="1")sendPlayerKey(KeyEvent.KEYCODE_F)
-                    if(result!="2")handler.postDelayed(this,1500)
-                }
-            }
-        }
-        handler.post(poll)
     }
     private fun startChosenPlutoTitle() {
         // The native library selection is the user's play request. Pluto exposes
@@ -248,7 +237,7 @@ class VodPlayerActivity : ComponentActivity() {
         Toast.makeText(this,"Opening ${source.provider.label}…",Toast.LENGTH_SHORT).show()
         lifecycleScope.launch {
             runCatching { VodCatalogue.playbackPage(source) }.onSuccess { url ->
-                consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);closeFullscreen()
+                consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);closeFullscreen()
                 web.stopLoading();provider=source.provider;sourceIndex=index
                 web.settings.userAgentString=if(provider==VodProvider.TUBI)defaultAgent.replaceFirst(Regex("\\([^)]*\\)"),"(X11; Linux x86_64)").replace(" Version/4.0","").replace(" Mobile","") else defaultAgent
                 web.loadUrl(url)
@@ -277,7 +266,7 @@ class VodPlayerActivity : ComponentActivity() {
                         if(selected.kind=="season")chooseEpisode(selected.sources.first()) else lifecycleScope.launch {
                             try {
                                 val url=VodCatalogue.playbackPage(selected.sources.first())
-                                consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close()
+                                consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();nativePlayback?.close()
                                 handler.removeCallbacksAndMessages(null);closeFullscreen();web.stopLoading()
                                 web.loadUrl(url);prepareProviderControls();web.requestFocus()
                             } catch(e:kotlinx.coroutines.CancellationException){throw e}
@@ -301,7 +290,7 @@ class VodPlayerActivity : ComponentActivity() {
             add("Choose another provider")
             if(provider==VodProvider.PLEX)add("Consent choices")
             add("VPN / country")
-            if(provider==VodProvider.TUBI)add("Full screen")
+            if(provider==VodProvider.TUBI)add("Playback controls")
             add("Reload this source");add("Return to library")
         }
         servicesDialog=AlertDialog.Builder(this).setTitle("UK TV · ${provider.label}")
@@ -313,10 +302,27 @@ class VodPlayerActivity : ComponentActivity() {
                 "Choose another provider" -> chooseProvider()
                 "Consent choices" -> consentControls?.check()
                 "VPN / country" -> VpnShortcut.open(this, provider.label)
-                "Full screen" -> if(custom==null)sendPlayerKey(KeyEvent.KEYCODE_F)
+                "Playback controls" -> tubiControls?.show()
                 "Reload this source" -> { streamControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);web.reload();prepareProviderControls() }
                 else -> finish()
             } }.show()
+    }
+    // Intercept TV hardware keys before either WebView or its descendants take focus.
+    // AndroidX annotates this inherited framework override as library-restricted.
+    @SuppressLint("RestrictedApi")
+    override fun dispatchKeyEvent(event:KeyEvent):Boolean {
+        if(::provider.isInitialized&&provider==VodProvider.TUBI&&!webFailed) {
+            if(event.keyCode==KeyEvent.KEYCODE_MENU) {
+                if(event.action==KeyEvent.ACTION_DOWN&&event.repeatCount==0)showServices()
+                return true
+            }
+            if(tubiControls?.key(event)==true)return true
+            if(event.keyCode==KeyEvent.KEYCODE_BACK) {
+                if(event.action==KeyEvent.ACTION_DOWN&&event.repeatCount==0)finish()
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if(keyCode==KeyEvent.KEYCODE_MENU) { if(event.repeatCount==0)showServices();return true }
@@ -329,7 +335,7 @@ class VodPlayerActivity : ComponentActivity() {
         }
         return super.onKeyDown(keyCode,event)
     }
-    override fun onPause() { nativePlayback?.pause();if(::web.isInitialized&&!webFailed)web.onPause(); super.onPause() }
-    override fun onResume() { super.onResume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
-    override fun onDestroy() { consentControls?.close();streamControls?.close();qualityControls?.close();if(!webFailed)nativePlayback?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized&&!webFailed){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
+    override fun onPause() { tubiControls?.pause();nativePlayback?.pause();if(::web.isInitialized&&!webFailed)web.onPause(); super.onPause() }
+    override fun onResume() { super.onResume();tubiControls?.resume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
+    override fun onDestroy() { consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();if(!webFailed)nativePlayback?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized&&!webFailed){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
 }
