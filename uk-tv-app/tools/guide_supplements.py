@@ -15,6 +15,10 @@ from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 
 GUIDE_URLS = {
+    **{name: 'https://epgshare01.online/epgshare01/epg_ripper_'+feed+'.xml.gz' for name,feed in [('rakuten','RAKUTEN1'),('au','AU1'),('ca','CA2'),('ie','IE1'),('nz','NZ1'),('us','US2')]},
+    'jm': 'https://epgshare01.online/epgshare01/epg_ripper_JM1.xml.gz',
+    'nz_mjh': 'https://i.mjh.nz/nz/epg.xml.gz',
+    'pluto_us': 'https://i.mjh.nz/PlutoTV/us.xml.gz',
     'openepg': 'https://www.open-epg.com/files/unitedkingdom.xml.gz',
     'uk1': 'https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz',
     'epgpw': 'https://epg.pw/xmltv/epg_GB.xml.gz',
@@ -82,7 +86,12 @@ def mappings(source, channels):
     if source == 'openepg': return OPEN_EPG_IDS
     if source == 'samsung': return SAMSUNG_IDS
     if source == 'epgpw': return EPGPW_IDS
-    if source != 'pluto': return {}
+    if source == 'rakuten':
+        return {'RakutenTV'+service+'Movies.es@UK': 'UK:.'+guide+'.-.Rakuten.TV.be' for service,guide in [('Action','Action.Movies'),('Comedy','Comedy.Movies'),('Drama','Drama.Movies'),('Family','Family'),('Top','Top.Movies')]}
+    if source in {'au','ca','ie','nz','nz_mjh','us','tego','jm'}:
+        from international_guides import mappings as country_mappings
+        return country_mappings(source, channels)
+    if source not in {'pluto','pluto_us'}: return {}
     result = {}
     for cid, channel in channels.items():
         ids = set()
@@ -98,7 +107,7 @@ def mappings(source, channels):
 def download(name, output):
     path = output / (name + '.xml.gz')
     try:
-        with urlopen(Request(GUIDE_URLS[name], headers={'User-Agent':'UKTelevision/0.4'}), timeout=45) as response:
+        with urlopen(Request(GUIDE_URLS[name], headers={'User-Agent':'Mozilla/5.0 (compatible; UKTelevision/0.7.1)'}), timeout=45) as response:
             data = response.read(20 * 1024 * 1024 + 1)
         if len(data) > 20 * 1024 * 1024:
             raise ValueError('Download exceeds size limit')

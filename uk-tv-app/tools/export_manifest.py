@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qsl
-from guide_supplements import load_guide, mappings, parse_xml
+from guide_supplements import GUIDE_URLS, load_guide, mappings, parse_xml
 from channel_groups import arrange_channels
 from international_channels import expand as expand_international
 from bbc_sources import combine as combine_bbc, refresh_sources
@@ -133,6 +133,55 @@ def family(cid):
     base = cid.partition('@')[0]
     return {'BBCThreeCBBC.uk': 'BBCThree.uk', 'BBCFourCBeebies.uk': 'BBCFour.uk', 'STV.uk': 'ITV1.uk'}.get(base, base)
 
+def read_programmes(root, channels):
+    by_epg = {}
+    for channel in channels.values():
+        if channel['epgId']:
+            by_epg.setdefault(channel['epgId'], []).append(channel['id'])
+    programmes, seen = [], set()
+    for p in root.findall('programme'):
+        start, stop = stamp(p.get('start', '')), stamp(p.get('stop', ''))
+        title = (p.findtext('title') or '').strip()
+        if start is None or stop is None or stop <= start or not title:
+            continue
+        for cid in by_epg.get(p.get('channel'), []):
+            key = identity(f'{cid}|{start}|{stop}|{title}')
+            if key in seen:
+                continue
+            seen.add(key)
+            details = []
+            for child in p.findall('episode-num'):
+                if child.text:
+                    value = child.text.strip()
+                    if child.get('system') == 'xmltv_ns':
+                        parts = value.split('.')
+                        try:
+                            season = str(int(parts[0].strip()) + 1) if parts[0].strip().isdigit() else ''
+                            episode = str(int(parts[1].strip().split('/')[0]) + 1) if len(parts) > 1 and parts[1].strip().split('/')[0].isdigit() else ''
+                            value = ' '.join(x for x in [f'Series {season}' if season else '', f'Episode {episode}' if episode else ''] if x)
+                        except (IndexError, ValueError):
+                            value = ''
+                    if value:
+                        details.append(value)
+            categories = [c.text.strip() for c in p.findall('category') if c.text]
+            details.extend(categories)
+            if p.findtext('date'):
+                details.append(p.findtext('date'))
+            for rating in p.findall('rating'):
+                value = rating.findtext('value')
+                if value:
+                    details.append('Rating ' + value)
+            if p.find('previously-shown') is not None:
+                details.append('Repeat')
+            if p.find('new') is not None:
+                details.append('New')
+            credits = p.find('credits')
+            if credits is not None:
+                details.extend(f'{c.tag.title()}: {c.text}' for c in credits if c.text)
+            programmes.append({'key': key, 'channelId': cid, 'start': start, 'stop': stop, 'title': title, 'subtitle': (p.findtext('sub-title') or '').strip(), 'description': (p.findtext('desc') or '').strip(), 'details': ' · '.join(dict.fromkeys(details)), 'artwork': p.find('icon').get('src', '') if p.find('icon') is not None else ''})
+    programmes.sort(key=lambda p: (p['channelId'], p['start'], p['stop']))
+    return programmes
+
 def build(playlist, xml_bytes, revision='unknown', youtube_live=None, supplemental_xml=None, extra_guides=None, bbc_sources=()):
     youtube_live = youtube_live or {}
     channels = {}
@@ -207,52 +256,7 @@ def build(playlist, xml_bytes, revision='unknown', youtube_live=None, supplement
         added = supplement_missing(root, channels, xml, SUPPLEMENT_IDS if source == 'uk1' else mappings(source, channels))
         guide_sources[source] = added
         supplemented.extend(added)
-    by_epg = {}
-    for channel in channels.values():
-        if channel['epgId']:
-            by_epg.setdefault(channel['epgId'], []).append(channel['id'])
-    programmes, seen = [], set()
-    for p in root.findall('programme'):
-        start, stop = stamp(p.get('start', '')), stamp(p.get('stop', ''))
-        title = (p.findtext('title') or '').strip()
-        if start is None or stop is None or stop <= start or not title:
-            continue
-        for cid in by_epg.get(p.get('channel'), []):
-            key = identity(f'{cid}|{start}|{stop}|{title}')
-            if key in seen:
-                continue
-            seen.add(key)
-            details = []
-            for child in p.findall('episode-num'):
-                if child.text:
-                    value = child.text.strip()
-                    if child.get('system') == 'xmltv_ns':
-                        parts = value.split('.')
-                        try:
-                            season = str(int(parts[0].strip()) + 1) if parts[0].strip().isdigit() else ''
-                            episode = str(int(parts[1].strip().split('/')[0]) + 1) if len(parts) > 1 and parts[1].strip().split('/')[0].isdigit() else ''
-                            value = ' '.join(x for x in [f'Series {season}' if season else '', f'Episode {episode}' if episode else ''] if x)
-                        except (IndexError, ValueError):
-                            value = ''
-                    if value:
-                        details.append(value)
-            categories = [c.text.strip() for c in p.findall('category') if c.text]
-            details.extend(categories)
-            if p.findtext('date'):
-                details.append(p.findtext('date'))
-            for rating in p.findall('rating'):
-                value = rating.findtext('value')
-                if value:
-                    details.append('Rating ' + value)
-            if p.find('previously-shown') is not None:
-                details.append('Repeat')
-            if p.find('new') is not None:
-                details.append('New')
-            credits = p.find('credits')
-            if credits is not None:
-                details.extend(f'{c.tag.title()}: {c.text}' for c in credits if c.text)
-            programmes.append({'key': key, 'channelId': cid, 'start': start, 'stop': stop, 'title': title, 'subtitle': (p.findtext('sub-title') or '').strip(), 'description': (p.findtext('desc') or '').strip(), 'details': ' · '.join(dict.fromkeys(details)), 'artwork': p.find('icon').get('src', '') if p.find('icon') is not None else ''})
-    programmes.sort(key=lambda p: (p['channelId'], p['start'], p['stop']))
+    programmes = read_programmes(root, channels)
     channels, programmes, regional, aliases = combine_bbc(list(channels.values()), programmes, bbc_sources)
     channels = arrange_channels(channels)
     return {'schemaVersion': 1, 'sourceRevision': revision, 'supplementedChannels': supplemented, 'supplementalGuideSources': guide_sources, 'channelsWithGuide': len({p['channelId'] for p in programmes}), 'youtubeLiveSources': youtube_count, 'builtAt': int(datetime.now(timezone.utc).timestamp() * 1000), 'guideStart': min((p['start'] for p in programmes), default=0), 'guideEnd': max((p['stop'] for p in programmes), default=0), 'descriptionCount': sum(bool(p['description']) for p in programmes), 'warnings': sorted(set(warnings)), 'channels': channels, 'programmes': programmes, 'regionalProgrammes': regional, 'channelAliases': aliases}
@@ -275,7 +279,7 @@ def main():
     guides = {}
     guide_warnings = []
     if args.guides_dir:
-        for source in ('pluto', 'samsung', 'openepg', 'uk1', 'epgpw'):
+        for source in ('pluto', 'samsung', 'openepg', 'uk1', 'epgpw', *[name for name in GUIDE_URLS if name not in {'pluto','samsung','openepg','uk1','epgpw'}]):
             path = args.guides_dir / (source + '.xml.gz')
             if path.exists():
                 try:
@@ -294,6 +298,8 @@ def main():
     )
     streams = refresh_streams()
     data['channels'] = arrange_channels(expand_international(augment(data['channels'], streams, refresh_sky()), streams))
+    from international_guides import add_guides
+    add_guides(data, guides)
     data['warnings'].extend(guide_warnings)
     if len(data['channels']) < 10 or len(data['programmes']) < 100:
         raise SystemExit('Refusing to publish an incomplete catalogue')
