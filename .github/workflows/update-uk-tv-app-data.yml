@@ -10,6 +10,10 @@ on:
     paths:
       - 'uk-tv-app/tools/export_manifest.py'
       - 'uk-tv-app/tools/channel_groups.py'
+      - 'uk-tv-app/tools/stream_sources.py'
+      - 'uk-tv-app/tools/stream-source-seed.json'
+      - 'uk-tv-app/tools/sky-source-seed.json'
+      - 'uk-tv-app/tools/test_stream_sources.py'
       - 'uk-tv-app/tools/bbc_sources.py'
       - 'uk-tv-app/tools/bbc-source-seed.json'
       - 'uk-tv-app/tools/guide_supplements.py'
@@ -48,7 +52,7 @@ jobs:
       - name: Test exporter, artwork and YouTube resolvers
         working-directory: uk-tv-app/tools
         run: |
-          python3 -m unittest -v             test_manifest.py             test_guide_supplements.py             test_mirror_artwork.py             test_youtube_resolver.py
+          python3 -m unittest -v             test_manifest.py             test_stream_sources.py             test_guide_supplements.py             test_mirror_artwork.py             test_youtube_resolver.py
 
       - name: Resolve current official YouTube live videos
         run: |
