@@ -77,6 +77,8 @@ class VodCatalogueTest {
         assertEquals("19 USA",CountryGroups.group("ABCNewsLive.us@SD"))
         assertNull(CountryGroups.group("SomeChannel.us@GB"))
         assertNull(CountryGroups.group("BBCOne.uk@London"))
+        assertNull(CountryGroups.group("BloombergTV.us@Europe"))
+        assertEquals("19 USA",CountryGroups.group("FilmRiseClassicTV.us@National"))
     }
 
 }

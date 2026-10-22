@@ -87,6 +87,7 @@ class OnDemandActivity : ComponentActivity() {
                     catalogue=VodCatalogue.more(catalogue)
                 }
             }
+            expandDulo(60)
             loading=false
             message="${catalogue.titles.size} titles · Free with adverts · Availability follows your connection"
             expandGenre()
@@ -94,9 +95,21 @@ class OnDemandActivity : ComponentActivity() {
     }
     private fun more() {
         if(loading)return
-        if(catalogue.nextPages.values.all { it.isEmpty() }) { status();return }
+        if(browse.provider!=null && browse.provider!=VodProvider.DULO && catalogue.nextPages[browse.provider].isNullOrEmpty()) { status();return }
         loading=true;message="Loading more films and series…"
-        lifecycleScope.launch { catalogue=VodCatalogue.more(catalogue);loading=false;message="${catalogue.titles.size} titles · Free with adverts" }
+        lifecycleScope.launch {
+            if(browse.provider==null || browse.provider==VodProvider.DULO)expandDulo((listOf("movie","show").maxOf{kind->catalogue.titles.count{t->t.kind==kind&&t.sources.any{s->s.provider==VodProvider.DULO}}}+40).coerceAtLeast(80))
+            catalogue=VodCatalogue.more(catalogue,browse.provider);loading=false;message="${catalogue.titles.size} titles · Free with adverts"
+        }
+    }
+    private suspend fun expandDulo(count:Int) {
+        for(url in listOf("https://dulo.mov/movies/","https://dulo.mov/shows/")) {
+            message="Loading more Dulo ${if(url.contains("shows"))"series" else "films"}…"
+            runCatching { VodWebCatalogue.fetch(this,VodProvider.DULO,url,count) }.onSuccess { doc ->
+                val titles=VodCatalogue.merge(catalogue.titles+VodCatalogue.parse(VodProvider.DULO,doc))
+                catalogue=catalogue.copy(titles=titles,statuses=catalogue.statuses+(VodProvider.DULO to "${titles.count{t->t.sources.any{s->s.provider==VodProvider.DULO}}} titles loaded · More titles continues browsing"))
+            }
+        }
     }
     private fun choose(title: String, labels: List<String>, selected: Int = -1, action: (Int)->Unit) {
         AlertDialog.Builder(this).setTitle(title).setSingleChoiceItems(labels.toTypedArray(),selected) { dialog,i -> dialog.dismiss();action(i) }.setNegativeButton("Back",null).show()

@@ -27,7 +27,7 @@ data class VodTitle(val title: String, val year: Int?, val kind: String, val pos
     val key: String = if (year != null) "$kind:$year:${normalTitle(title)}" else sources.first().url
     val subtitle: String get() = listOfNotNull(year?.toString(), if(kind=="show") "TV series" else "Film", sources.joinToString(" · ") { it.provider.label }).joinToString("  ·  ")
 }
-data class VodResult(val titles: List<VodTitle>, val statuses: Map<VodProvider,String>, val nextPages: Map<VodProvider,List<String>> = emptyMap())
+data class VodResult(val titles: List<VodTitle>, val statuses: Map<VodProvider,String>, val nextPages: Map<VodProvider,List<String>> = emptyMap(), val loadedPages: Set<String> = emptySet())
 private val titlePunctuation = Regex("[^\\p{L}\\p{N}]+")
 fun normalTitle(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFKC).lowercase(java.util.Locale.ROOT)
     .replace(titlePunctuation," ").trim()
@@ -47,6 +47,10 @@ object VodCatalogue {
             VodProvider.MOVY -> URL(url).path in setOf("/browse/movie","/browse/tv")
             VodProvider.DULO -> URL(url).path.trimEnd('/') in setOf("/movies","/shows","/genres") || URL(url).path.startsWith("/genre/")
         }
+    }.map { url ->
+        // Dulo prerenders slash-terminated routes; slashless links redirect
+        // through HTTP and were silently discarded by Android's fetcher.
+        if(provider==VodProvider.DULO)URL(url).let { u -> "https://dulo.mov"+u.path.trimEnd('/')+"/"+(u.query?.let { "?$it" }?:"") } else url
     }.filter { it!=doc.location() }.distinct().take(60)
     suspend fun load(): VodResult = supervisorScope {
         val results=VodProvider.entries.map { provider -> async(Dispatchers.IO) {
@@ -56,17 +60,23 @@ object VodCatalogue {
             { if(it.first.isEmpty()) "No catalogue returned on this connection" else "${it.first.size} titles loaded" },
             { it.message?.take(120) ?: "Could not connect" }) }
         VodResult(merge(results.flatMap { it.second.getOrNull()?.first.orEmpty() }),statuses,
-            results.associate { it.first to it.second.getOrNull()?.second.orEmpty() })
+            results.associate { it.first to it.second.getOrNull()?.second.orEmpty() }, VodProvider.entries.map { it.home }.toSet())
     }
-    suspend fun more(previous: VodResult): VodResult = supervisorScope {
+    suspend fun more(previous: VodResult, only: VodProvider?=null): VodResult = supervisorScope {
+        data class Batch(val provider:VodProvider,val titles:List<VodTitle>,val queued:List<String>,val loaded:Set<String>)
         val results=previous.nextPages.map { (provider,urls) -> async(Dispatchers.IO) {
-            val titles=urls.take(2).flatMap { url -> runCatching { parse(provider,fetch(url)) }.getOrDefault(emptyList()) }
-            Triple(provider,titles,urls.drop(2))
+            if(only!=null && provider!=only)return@async Batch(provider,emptyList(),urls,emptySet())
+            val candidates=urls.filter { it !in previous.loadedPages }.take(2)
+            val loaded=mutableSetOf<String>();val titles=mutableListOf<VodTitle>();val discovered=mutableListOf<String>()
+            for(url in candidates)runCatching { fetch(url) }.onSuccess { doc ->
+                loaded.add(url);titles.addAll(parse(provider,doc));discovered.addAll(collections(provider,doc))
+            }
+            Batch(provider,titles,(urls+discovered).filter { it !in loaded && it !in previous.loadedPages }.distinct(),loaded)
         } }.map { it.await() }
-        val merged=merge(previous.titles+results.flatMap { it.second })
+        val merged=merge(previous.titles+results.flatMap { it.titles })
         VodResult(merged,previous.statuses.mapValues { (p,old) ->
             val count=merged.count { t->t.sources.any { it.provider==p } };if(count>0)"$count titles loaded" else old },
-            results.associate { it.first to it.third })
+            results.associate { it.provider to it.queued },previous.loadedPages+results.flatMap { it.loaded })
     }
     suspend fun forGenre(previous: VodResult, genre: String): VodResult = supervisorScope {
         // Use only genre collections already linked by the provider itself.

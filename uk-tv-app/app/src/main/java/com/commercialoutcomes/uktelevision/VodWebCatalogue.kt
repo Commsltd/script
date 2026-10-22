@@ -23,14 +23,17 @@ import kotlin.coroutines.resumeWithException
  * page scripts in the Android process. Only one bounded page is loaded at a time. */
 object VodWebCatalogue {
     @SuppressLint("SetJavaScriptEnabled")
-    suspend fun fetch(activity: Activity, provider: VodProvider, url: String=provider.home): Document = withContext(Dispatchers.Main) {
+    suspend fun fetch(activity: Activity, provider: VodProvider, url: String=provider.home, minimumTitles:Int=1): Document = withContext(Dispatchers.Main) {
         require(provider.owns(url))
         suspendCancellableCoroutine { continuation ->
             val handler=Handler(Looper.getMainLooper())
             val parent=activity.window.decorView as ViewGroup
             val web=WebView(activity)
             var finished=false
-            val deadline=android.os.SystemClock.elapsedRealtime()+25000
+            val deadline=android.os.SystemClock.elapsedRealtime()+45000
+            var bestDocument:Document?=null
+            var lastCount=0
+            var unchanged=0
             fun cleanup() {
                 finished=true;handler.removeCallbacksAndMessages(null)
                 parent.removeView(web);web.stopLoading();web.destroy()
@@ -50,21 +53,26 @@ object VodWebCatalogue {
             val poll=object:Runnable {
                 override fun run() {
                     if(finished)return
-                    if(android.os.SystemClock.elapsedRealtime()>=deadline) { fail("${provider.label} catalogue did not load on this connection");return }
+                    if(android.os.SystemClock.elapsedRealtime()>=deadline) { val best=bestDocument;if(best!=null){cleanup();if(continuation.isActive)continuation.resume(best)}else fail("${provider.label} catalogue did not load on this connection");return }
                     web.evaluateJavascript("document.documentElement.outerHTML.slice(0,6000000)") { raw ->
                         if(!finished) {
                             val html=runCatching { JSONTokener(raw).nextValue() as? String }.getOrNull().orEmpty()
                             val doc=Jsoup.parse(html,web.url ?: url)
                             val rows=runCatching { VodCatalogue.parse(provider,doc) }.getOrDefault(emptyList())
-                            if(rows.isNotEmpty()) { cleanup();if(continuation.isActive)continuation.resume(doc) }
-                            else handler.postDelayed(this,1000)
+                            if(rows.isNotEmpty())bestDocument=doc
+                            unchanged=if(rows.size==lastCount)unchanged+1 else 0;lastCount=rows.size
+                            if(rows.size>=minimumTitles || (rows.isNotEmpty()&&unchanged>=10)) { cleanup();if(continuation.isActive)continuation.resume(doc) }
+                            else {
+                                if(provider==VodProvider.DULO && rows.isNotEmpty())web.evaluateJavascript("window.scrollTo(0,document.documentElement.scrollHeight)",null)
+                                handler.postDelayed(this,1000)
+                            }
                         }
                     }
                 }
             }
             continuation.invokeOnCancellation { handler.post { if(!finished)cleanup() } }
             web.loadUrl(url);handler.postDelayed(poll,3000)
-            handler.postDelayed({ fail("${provider.label} catalogue did not load on this connection") },26000)
+            handler.postDelayed({ fail("${provider.label} catalogue did not load on this connection") },46000)
         }
     }
 }

@@ -25,9 +25,14 @@ class VodPlayerActivity : ComponentActivity() {
     private var custom: View? = null
     private var customCallback: WebChromeClient.CustomViewCallback? = null
     private lateinit var provider: VodProvider
+    private var consentControls: WebConsentControls? = null
     private var streamControls: VodStreamControls? = null
     private var sources=emptyList<VodSource>()
     private var sourceIndex=0
+    private var servicesDialog:AlertDialog?=null
+    private var webFailed=false
+    private var qualityControls:VodQualityControls?=null
+    var nativePlayback:NativeVodPlayback?=null;private set
     private lateinit var defaultAgent: String
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
@@ -80,12 +85,15 @@ class VodPlayerActivity : ComponentActivity() {
                     request.isForMainFrame && !provider.owns(request.url.toString())
                 override fun onPageFinished(view: WebView, url: String) {
                     if(!provider.owns(url))return
+                    if(provider==VodProvider.PLEX) consentControls?.check(false)
                     if(provider==VodProvider.MOVY) fitMovyViewport()
                     if(provider==VodProvider.PLUTO) startChosenPlutoTitle()
                     if(provider==VodProvider.TUBI) enterTubiFullscreen()
                     if(provider==VodProvider.DULO) web.evaluateJavascript("""(()=>{const style=document.createElement('style');style.textContent='video{object-fit:contain!important}';document.head.appendChild(style)})()""",null)
                 }
                 override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                    consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close()
+                    handler.removeCallbacksAndMessages(null);closeFullscreen();root.removeView(view);view.destroy();webFailed=true
                     AlertDialog.Builder(this@VodPlayerActivity).setMessage("The provider player stopped. Please reopen On Demand.").setPositiveButton("Return to library") { _, _ -> finish() }.show()
                     return true
                 }
@@ -111,8 +119,32 @@ class VodPlayerActivity : ComponentActivity() {
             WebViewCompat.addDocumentStartJavaScript(web,"""try{const key='dulo_tv_preferences_v1';const p=JSON.parse(localStorage.getItem(key)||'{}');if(p.preferredQuality!=='720p')p.preferredQuality='$quality';localStorage.setItem(key,JSON.stringify(p))}catch(e){}""",setOf("https://dulo.mov"))
         }
         web.loadUrl(target)
+        prepareProviderControls()
         web.requestFocus()
         Toast.makeText(this,"Press MENU to change stream or provider",Toast.LENGTH_LONG).show()
+    }
+    private fun prepareProviderControls() {
+        consentControls?.close();qualityControls?.close();nativePlayback?.close();nativePlayback=null
+        if(provider==VodProvider.PLEX){consentControls=WebConsentControls(this,web).also{it.start()};startWithSound()}
+        if(provider==VodProvider.MOVY){
+            qualityControls=VodQualityControls(web).also{it.startAt720p()}
+            nativePlayback=NativeVodPlayback(this,root,web).also{it.start()}
+        }
+    }
+    private fun soundOn() {
+        nativePlayback?.player?.volume=1f
+        web.evaluateJavascript("""(()=>{const b=document.querySelector('button[aria-label="Unmute"]');if(b)b.click();else for(const v of document.querySelectorAll('video')){v.muted=false;v.volume=1}})()""",null)
+    }
+    private fun startWithSound() {
+        var attempts=0
+        val poll=object:Runnable { override fun run() {
+            if(isFinishing || isDestroyed || attempts++>=90)return
+            web.evaluateJavascript("""(()=>{const v=[...document.querySelectorAll('video')].find(v=>!v.paused&&v.readyState>=2);if(!v)return 0;return v.muted||v.volume===0?1:2})()""") { state ->
+                if(state=="1")soundOn()
+                // One initial unmute per navigation; later user mute choices stay put.
+                if(state=="0")handler.postDelayed(this,1000)
+            }
+        }};handler.post(poll)
     }
     private fun fitMovyViewport() {
         // Movy's TV detection sets a 1280px layout at scale 1, but this
@@ -168,6 +200,7 @@ class VodPlayerActivity : ComponentActivity() {
         customCallback?.onCustomViewHidden(); customCallback = null
     }
     private fun changeStream() {
+        nativePlayback?.returnToWeb()
         if(provider !in setOf(VodProvider.MOVY,VodProvider.DULO)) { chooseProvider();return }
         streamControls?.close()
         val controls=VodStreamControls(web,provider);streamControls=controls
@@ -184,10 +217,22 @@ class VodPlayerActivity : ComponentActivity() {
                     .setItems(labels.toTypedArray()) { _,i -> controls.choose(choices[i]) { changed ->
                         Toast.makeText(this,if(changed)"Changing stream to ${choices[i].label}" else "Choices changed. Open Change stream again.",Toast.LENGTH_LONG).show()
                         web.requestFocus()
+                        if(changed && provider==VodProvider.MOVY) { qualityControls?.startAt720p();nativePlayback?.start() }
                     } }
                     .setNeutralButton("Other providers") { _,_->chooseProvider() }.setNegativeButton("Back",null).show()
             }
         }
+    }
+    private fun changeQuality() {
+        AlertDialog.Builder(this).setTitle("Picture quality")
+            .setItems(arrayOf("720p · recommended for this Firestick","480p · lower data use","1080p · may stutter on this Firestick")){_,index->
+                val height=listOf(720,480,1080)[index]
+                nativePlayback?.returnToWeb()
+                qualityControls?.choose(height){changed->
+                    Toast.makeText(this,if(changed)"${height}p · playback position retained" else "That quality is not available from this source",Toast.LENGTH_LONG).show()
+                    if(changed&&height<=720)nativePlayback?.start()
+                }
+            }.setNegativeButton("Back",null).show()
     }
     private fun chooseProvider() {
         if(sources.size<2) {
@@ -204,32 +249,44 @@ class VodPlayerActivity : ComponentActivity() {
         Toast.makeText(this,"Opening ${source.provider.label}…",Toast.LENGTH_SHORT).show()
         lifecycleScope.launch {
             runCatching { VodCatalogue.playbackPage(source) }.onSuccess { url ->
-                streamControls?.close();handler.removeCallbacksAndMessages(null);closeFullscreen()
+                consentControls?.close();streamControls?.close();qualityControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);closeFullscreen()
                 web.stopLoading();provider=source.provider;sourceIndex=index
                 web.settings.userAgentString=if(provider==VodProvider.TUBI)defaultAgent.replaceFirst(Regex("\\([^)]*\\)"),"(X11; Linux x86_64)").replace(" Version/4.0","").replace(" Mobile","") else defaultAgent
-                web.loadUrl(url);web.requestFocus()
+                web.loadUrl(url)
+                prepareProviderControls()
+                web.requestFocus()
             }.onFailure { AlertDialog.Builder(this@VodPlayerActivity).setTitle("Source unavailable").setMessage(it.message).setPositiveButton("Back",null).show() }
         }
     }
     private fun showServices() {
+        if(webFailed||servicesDialog?.isShowing==true)return
         val labels=buildList {
             if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))add("Change stream · poor copy or buffering")
+            if(provider==VodProvider.MOVY)add("Picture quality")
+            add("Sound on")
             add("Choose another provider")
+            if(provider==VodProvider.PLEX)add("Consent choices")
+            add("VPN / country")
             if(provider==VodProvider.TUBI)add("Full screen")
             add("Reload this source");add("Return to library")
         }
-        AlertDialog.Builder(this).setTitle("UK TV · ${provider.label}")
+        servicesDialog=AlertDialog.Builder(this).setTitle("UK TV · ${provider.label}")
             .setItems(labels.toTypedArray()) { _, i -> when(labels[i]) {
                 "Change stream · poor copy or buffering" -> changeStream()
+                "Picture quality" -> changeQuality()
+                "Sound on" -> soundOn()
                 "Choose another provider" -> chooseProvider()
+                "Consent choices" -> consentControls?.check()
+                "VPN / country" -> VpnShortcut.open(this, provider.label)
                 "Full screen" -> if(custom==null)sendPlayerKey(KeyEvent.KEYCODE_F)
-                "Reload this source" -> { streamControls?.close();handler.removeCallbacksAndMessages(null);web.reload() }
+                "Reload this source" -> { streamControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);web.reload();prepareProviderControls() }
                 else -> finish()
             } }.show()
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if(keyCode==KeyEvent.KEYCODE_MENU) { if(event.repeatCount==0)showServices();return true }
         if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+            nativePlayback?.player?.let{if(it.isPlaying)it.pause() else it.play();return true}
             // Ask the provider player to toggle. Never resume a content video
             // that its advertising player deliberately paused.
             sendPlayerKey(if(provider==VodProvider.TUBI)KeyEvent.KEYCODE_K else KeyEvent.KEYCODE_SPACE)
@@ -237,7 +294,7 @@ class VodPlayerActivity : ComponentActivity() {
         }
         return super.onKeyDown(keyCode,event)
     }
-    override fun onPause() { if(::web.isInitialized)web.onPause(); super.onPause() }
-    override fun onResume() { super.onResume(); if(::web.isInitialized)web.onResume() }
-    override fun onDestroy() { streamControls?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
+    override fun onPause() { nativePlayback?.pause();if(::web.isInitialized&&!webFailed)web.onPause(); super.onPause() }
+    override fun onResume() { super.onResume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
+    override fun onDestroy() { consentControls?.close();streamControls?.close();qualityControls?.close();if(!webFailed)nativePlayback?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized&&!webFailed){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
 }

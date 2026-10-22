@@ -64,6 +64,8 @@ class MainActivity : ComponentActivity() {
     private var liveOverlay by mutableStateOf(LiveOverlay.NONE)
     private var quickGuideKey by mutableStateOf("")
     private var resizeMode by mutableIntStateOf(AspectRatioFrameLayout.RESIZE_MODE_FIT)
+    private var liveWeb by mutableStateOf<LiveWebPlayer?>(null)
+    private var vpnReturn=false
     private var youtubeSource by mutableStateOf<StreamSource?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +89,7 @@ class MainActivity : ComponentActivity() {
                     model = model,
                     engine = engine,
                     youtubeSource = youtubeSource,
+                    liveWeb = liveWeb,
                     surface = surface,
                     liveOverlay = liveOverlay,
                     quickGuideKey = quickGuideKey,
@@ -115,13 +118,15 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         val row = model.playingRow
         if (row != null && engine.player == null && youtubeSource == null) {
-            startPlayback(row, fullscreen = surface == TvSurface.LIVE)
+            startPlayback(row, fullscreen = surface == TvSurface.LIVE, force = vpnReturn)
+            vpnReturn=false
         }
     }
 
     override fun onStop() {
         overlayJob?.cancel()
         engine.close()
+        liveWeb?.close();liveWeb=null
         youtubeSource = null
         super.onStop()
     }
@@ -156,15 +161,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
-        if(row.source.kind=="web" && row.station.family in LiveWebActivity.pages) {
-            engine.close();youtubeSource=null;model.playingRow=null
-            surface=TvSurface.GUIDE;liveOverlay=LiveOverlay.NONE
-            startActivity(android.content.Intent(this,LiveWebActivity::class.java).putExtra("station",row.station.family).putExtra("title",row.station.name))
-            return
-        }
+        if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }
         model.markPlaying(row)
         quickGuideKey = row.station.id
         when (row.source.kind) {
+            "web" -> {
+                if(row.station.family !in LiveWebActivity.pages){toast("Broadcaster player unavailable");return}
+                engine.close();youtubeSource=null
+                if(liveWeb?.station!=row.station.family){liveWeb?.close();liveWeb=LiveWebPlayer(this,row.station.family)}
+                else if(force)liveWeb?.reload()
+            }
             "youtube" -> {
                 engine.close()
                 youtubeSource = row.source
@@ -246,7 +252,7 @@ class MainActivity : ComponentActivity() {
 
     private fun shortSelect() {
         if (youtubeSource != null && engine.youtube.failed) { engine.youtube.retry(); return }
-        if (youtubeSource == null && engine.failed) { engine.pauseOrPlay(); return }
+        if (liveWeb == null && youtubeSource == null && engine.failed) { engine.pauseOrPlay(); return }
         when (surface) {
             TvSurface.LIVE -> when (liveOverlay) {
                 LiveOverlay.QUICK_GUIDE -> confirmQuickGuide()
@@ -342,7 +348,7 @@ class MainActivity : ComponentActivity() {
             KeyEvent.KEYCODE_MEDIA_PLAY,
             KeyEvent.KEYCODE_MEDIA_PAUSE -> {
                 if (surface == TvSurface.LIVE) {
-                    if (youtubeSource != null) engine.youtube.pauseOrPlay() else engine.pauseOrPlay()
+                    if (liveWeb != null) liveWeb?.showControls() else if (youtubeSource != null) engine.youtube.pauseOrPlay() else engine.pauseOrPlay()
                     showInfo()
                 } else if (surface == TvSurface.GUIDE) {
                     model.selected()?.let { startPlayback(it, fullscreen = true) }
@@ -415,6 +421,8 @@ class MainActivity : ComponentActivity() {
                 add("Categories")
                 add("Back to now")
                 add("Refresh guide")
+                add("VPN / country")
+                if(liveWeb!=null){add("Broadcaster controls");add("Reload broadcaster")}
                 add("Settings")
             }
         } else {
@@ -434,6 +442,8 @@ class MainActivity : ComponentActivity() {
                     add("Aspect ratio")
                     add("Prefer this source")
                 }
+                add("VPN / country")
+                if(liveWeb!=null){add("Broadcaster controls");add("Reload broadcaster")}
                 add("Settings")
             }
         }
@@ -475,6 +485,9 @@ class MainActivity : ComponentActivity() {
                             toast("Preferred for ${model.profile}")
                         }
                         "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
+                        "VPN / country" -> handler.post { VpnShortcut.open(this,row?.station?.name?:"UK TV",row?.station?.id.orEmpty()){vpnReturn=true} }
+                        "Broadcaster controls" -> liveWeb?.showControls()
+                        "Reload broadcaster" -> liveWeb?.reload()
                         "Settings" -> handler.post { showSettings() }
                     }
                 }

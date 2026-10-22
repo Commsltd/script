@@ -51,6 +51,7 @@ fun Television(
     model: TvModel,
     engine: PlaybackEngine,
     youtubeSource: StreamSource?,
+    liveWeb: LiveWebPlayer?,
     surface: TvSurface,
     liveOverlay: LiveOverlay,
     quickGuideKey: String,
@@ -65,6 +66,10 @@ fun Television(
         }
     }
 
+    val currentWeb by rememberUpdatedState(liveWeb)
+    val webMedia=remember { movableContentOf {
+        currentWeb?.let { player -> key(player) { AndroidView(factory={player},modifier=Modifier.fillMaxSize()) } }
+    } }
     val currentYoutube by rememberUpdatedState(youtubeSource)
     val currentResize by rememberUpdatedState(resizeMode)
     // Preserve the YouTube page/session when moving between preview and full
@@ -74,7 +79,8 @@ fun Television(
         MediaSurface(model, engine, currentYoutube, Modifier.fillMaxSize(), currentResize, false)
     } }
     val media: @Composable () -> Unit = {
-        if (currentYoutube != null) youtubeMedia()
+        if (currentWeb != null) webMedia()
+        else if (currentYoutube != null) youtubeMedia()
         else MediaSurface(model, engine, null, Modifier.fillMaxSize(), currentResize, false)
     }
 
@@ -247,7 +253,7 @@ private fun GuideScreen(
 
             Box(
                 Modifier.width(348.dp).fillMaxHeight()
-                    .clip(RoundedCornerShape(12.dp))
+                    .then(if(playing?.source?.kind=="web")Modifier else Modifier.clip(RoundedCornerShape(12.dp)))
                     .border(1.dp, if (playing != null) Mint.copy(alpha = .6f) else Soft, RoundedCornerShape(12.dp))
             ) {
                 if (playing != null) {
@@ -266,7 +272,7 @@ private fun GuideScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    if (engine.failed && youtubeSource == null) {
+                    if (engine.failed && youtubeSource == null && model.playingRow?.source?.kind!="web") {
                         Box(
                             Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                                 .background(Ink.copy(alpha = .88f))
@@ -657,7 +663,7 @@ private fun LiveScreen(
             LiveOverlay.QUICK_GUIDE -> QuickGuideOverlay(model, quickGuideKey)
         }
 
-        if (engine.failed && youtubeSource == null) {
+        if (engine.failed && youtubeSource == null && model.playingRow?.source?.kind!="web") {
             Column(
                 Modifier.align(Alignment.Center)
                     .widthIn(max = 620.dp)

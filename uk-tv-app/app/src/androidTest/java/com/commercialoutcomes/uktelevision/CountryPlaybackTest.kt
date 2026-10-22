@@ -19,7 +19,7 @@ class CountryPlaybackTest {
         val context=InstrumentationRegistry.getInstrumentation().targetContext
         val prefs=context.getSharedPreferences("preferences",0);val last=prefs.getString("lastChannel",null)
         val app=context.applicationContext as TvApplication
-        assertNull(runBlocking { app.repository.refresh() })
+        if(args.getString("stagedFeed")!="true")assertNull(runBlocking { app.repository.refresh() })
         val report=JSONArray()
         try { ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             lateinit var model:TvModel;lateinit var engine:PlaybackEngine
@@ -34,7 +34,7 @@ class CountryPlaybackTest {
                 assertTrue(model.stations.single { it.family=="CBCTelevision.ca" }.sources().size>=14)
                 assertTrue(model.stations.single { it.family=="ABCTV.au" }.sources().size>=8)
             }
-            for(id in listOf("BizzTV.tt","TG4.ie","CityNewsToronto.ca","ABCNews.au","WhakaataMaori.nz")) {
+            for(id in args.getString("channels","BizzTV.tt,TG4.ie,CityNewsToronto.ca,ABCNews.au,WhakaataMaori.nz").split(",")) {
                 scenario.onActivity { a ->
                     val station=model.stations.single { it.family==id }
                     MainActivity::class.java.getDeclaredMethod("startPlayback",GuideRow::class.java,Boolean::class.javaPrimitiveType,Boolean::class.javaPrimitiveType)
