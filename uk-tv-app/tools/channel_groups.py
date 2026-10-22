@@ -27,6 +27,12 @@ GROUPS = {
     'faith': '14 FAITH',
     'shopping': '15 SHOPPING',
     'events': '16 LIVE EVENTS',
+    'tt': '17 TRINIDAD & TOBAGO',
+    'ie': '18 IRELAND',
+    'us': '19 USA',
+    'ca': '20 CANADA',
+    'au': '21 AUSTRALIA',
+    'nz': '22 NEW ZEALAND',
     'other': '99 MORE CHANNELS',
 }
 
@@ -125,6 +131,11 @@ FEATURED = {
     'drama': 'ITV3.uk 5USA.uk UAlibi.uk ThatsTV.uk'.split(),
     'kids': 'CBBC.uk CBeebies.uk'.split(),
 }
+
+
+# Familiar national services lead each new country shelf.
+from international_channels import COUNTRIES
+FEATURED.update({code.lower(): ids for code, (_, ids) in COUNTRIES.items()})
 
 
 def category(channel):
