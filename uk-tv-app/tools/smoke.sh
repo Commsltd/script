@@ -17,7 +17,9 @@ adb shell settings put global device_provisioned 1
 adb shell settings put secure user_setup_complete 1
 adb shell input keyevent KEYCODE_WAKEUP
 adb shell input keyevent KEYCODE_HOME
-adb install -r delivery/UK-Television-0.4.0-preview.apk
+preview_apks=(delivery/UK-Television-*-preview.apk)
+[ "${#preview_apks[@]}" -eq 1 ]
+adb install -r "${preview_apks[0]}"
 adb install -r delivery/uk-tv-tests.apk
 adb logcat -c
 set +e

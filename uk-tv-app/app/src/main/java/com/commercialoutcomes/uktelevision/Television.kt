@@ -343,7 +343,11 @@ private fun CategoryRail(model: TvModel, modifier: Modifier) {
     val index = groups.indexOf(model.group).coerceAtLeast(0)
 
     LaunchedEffect(model.group, groups.size) {
-        if (groups.isNotEmpty()) state.scrollToItem(index.coerceIn(0, groups.lastIndex))
+        if (groups.isNotEmpty()) {
+            val visible = state.layoutInfo.visibleItemsInfo
+            if (visible.isEmpty() || index < visible.first().index) state.scrollToItem(index)
+            else if (index >= visible.last().index) state.scrollToItem((index - visible.size + 2).coerceAtLeast(0))
+        }
     }
 
     Column(
@@ -360,7 +364,7 @@ private fun CategoryRail(model: TvModel, modifier: Modifier) {
             items(groups, key = { it }) { group ->
                 val active = group == model.group
                 val focused = active && model.guideZone == GuideZone.CATEGORIES
-                val label = group.replace(Regex("^\\d+\\s+"), "")
+                val label = remember(group) { group.replace(Regex("^\\d+\\s+"), "") }
                 Row(
                     Modifier.fillMaxWidth()
                         .background(
@@ -417,7 +421,9 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
         val selectedIndex = rows.indexOfFirst { it.key == model.selectedKey }.coerceAtLeast(0)
         LaunchedEffect(model.selectedKey, rows.size) {
             if (rows.isNotEmpty()) {
-                state.scrollToItem((selectedIndex - 2).coerceAtLeast(0))
+                val visible = state.layoutInfo.visibleItemsInfo
+                if (visible.isEmpty() || selectedIndex < visible.first().index) state.scrollToItem(selectedIndex)
+                else if (selectedIndex >= visible.last().index) state.scrollToItem((selectedIndex - 2).coerceAtLeast(0))
             }
         }
 
@@ -443,10 +449,10 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
                         row = row,
                         programmes = model.schedule[row.station.id].orEmpty(),
                         selected = row.key == model.selectedKey,
-                        selectedProgrammeKey = model.selectedProgrammeKey,
+                        selectedProgrammeKey = if (row.key == model.selectedKey) model.selectedProgrammeKey else "",
                         guideZone = model.guideZone,
                         window = model.windowStart,
-                        cursor = model.cursor,
+                        cursor = if (row.key == model.selectedKey) model.cursor else 0L,
                         now = model.clock,
                         favourite = row.station.id in model.favourites,
                         privacyMode = model.privacyMode,
@@ -521,7 +527,7 @@ private fun ChannelLine(
                 .background(Deep)
         ) {
             val end = window + WINDOW
-            val available = GuideRules.inWindow(programmes, window, end)
+            val available = remember(programmes, window) { GuideRules.inWindow(programmes, window, end) }
             if (available.isEmpty()) {
                 Box(
                     Modifier.fillMaxSize()

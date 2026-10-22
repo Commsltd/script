@@ -5,6 +5,9 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOn
 
 const val HALF_HOUR = 1800000L
 const val WINDOW = HALF_HOUR * 6
@@ -93,6 +96,32 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     var playingRow by mutableStateOf<GuideRow?>(null)
     var previousRow: GuideRow? = null
 
+    private val visibleRows by derivedStateOf {
+        val filtered = stations.filter {
+            group == "ALL CHANNELS" ||
+                (group == "FAVOURITES" && it.id in favourites) ||
+                it.groupName == group
+        }
+        filtered.flatMap { station ->
+            val all = sourceCache[station.id] ?: station.sources()
+            (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->
+                GuideRow(station, source, index)
+            }
+        }
+    }
+
+    fun rows(): List<GuideRow> = visibleRows
+
+    private val visibleChannels by derivedStateOf { visibleRows.distinctBy { it.station.id } }
+    private val visibleGroups by derivedStateOf {
+        listOf("FAVOURITES", "ALL CHANNELS") + stations.map { it.groupName }.distinct()
+    }
+
+    /** One row per service/variant, for the fast live overlay. */
+    fun channelRows(): List<GuideRow> = visibleChannels
+
+    fun groups(): List<String> = visibleGroups
+
     init {
         viewModelScope.launch {
             dao.stations().collect {
@@ -101,8 +130,8 @@ class TvModel(application: Application) : AndroidViewModel(application) {
             }
         }
         viewModelScope.launch {
-            dao.programmes().collect {
-                schedule = it.groupBy { p -> p.channelId }
+            dao.programmes().map { rows -> rows.groupBy { it.channelId } }.flowOn(Dispatchers.Default).collect {
+                schedule = it
                 syncProgrammeToCursor()
             }
         }
@@ -117,7 +146,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
             try { app.repository.seed() } catch (_: Exception) {
                 message = "Downloading your channel list…"
             }
-            val core = app.repository.refresh()
+            val core = app.repository.refresh(skipRecent = true)
             val extras = refreshUserPlaylistsInternal()
             message = extras ?: core ?: "Guide ready"
             refreshing = false
@@ -125,8 +154,9 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun rebuildStations() {
-        stations = PlaylistImport.merge(baseStations, importedStations)
-        sourceCache = stations.associate { it.id to it.sources() }
+        val merged = PlaylistImport.merge(baseStations, importedStations)
+        sourceCache = merged.associate { it.id to it.sources() }
+        stations = merged
         if (group !in groups()) group = stations.firstOrNull()?.groupName ?: "01 MAIN UK"
         ensureSelection()
     }
@@ -142,26 +172,6 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         rebuildStations()
         return result.warnings.takeIf { it.isNotEmpty() }?.joinToString(" · ")
     }
-
-    fun rows(): List<GuideRow> {
-        val filtered = stations.filter {
-            group == "ALL CHANNELS" ||
-                (group == "FAVOURITES" && it.id in favourites) ||
-                it.groupName == group
-        }
-        return filtered.flatMap { station ->
-            val all = sourceCache[station.id] ?: station.sources()
-            (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->
-                GuideRow(station, source, index)
-            }
-        }
-    }
-
-    /** One row per service/variant, for the fast live overlay. */
-    fun channelRows(): List<GuideRow> = rows().distinctBy { it.station.id }
-
-    fun groups(): List<String> =
-        listOf("FAVOURITES", "ALL CHANNELS") + stations.map { it.groupName }.distinct()
 
     fun ensureSelection() {
         val rows = rows()

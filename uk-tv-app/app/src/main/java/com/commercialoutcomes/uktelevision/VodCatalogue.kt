@@ -23,12 +23,13 @@ enum class VodProvider(val label: String, val home: String, val domain: String) 
 data class VodSource(val provider: VodProvider, val url: String)
 data class VodTitle(val title: String, val year: Int?, val kind: String, val poster: String,
     val description: String = "", val sources: List<VodSource>, val genres: List<String> = emptyList()) {
-    val key: String get() = if (year != null) "$kind:$year:${normalTitle(title)}" else sources.first().url
+    val key: String = if (year != null) "$kind:$year:${normalTitle(title)}" else sources.first().url
     val subtitle: String get() = listOfNotNull(year?.toString(), if(kind=="show") "TV series" else "Film", sources.joinToString(" · ") { it.provider.label }).joinToString("  ·  ")
 }
 data class VodResult(val titles: List<VodTitle>, val statuses: Map<VodProvider,String>, val nextPages: Map<VodProvider,List<String>> = emptyMap())
+private val titlePunctuation = Regex("[^\\p{L}\\p{N}]+")
 fun normalTitle(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFKC).lowercase(java.util.Locale.ROOT)
-    .replace(Regex("[^\\p{L}\\p{N}]+")," ").trim()
+    .replace(titlePunctuation," ").trim()
 
 object VodCatalogue {
     fun merge(rows: List<VodTitle>): List<VodTitle> = rows.groupBy { it.key }.values.map { matches ->

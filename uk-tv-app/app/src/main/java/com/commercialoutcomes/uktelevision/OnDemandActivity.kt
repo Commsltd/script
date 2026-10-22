@@ -41,10 +41,10 @@ class OnDemandActivity : ComponentActivity() {
     private var saved by mutableStateOf(VodSaved())
     private var shelf by mutableStateOf("browse")
     private val libraryPreferences get()=getSharedPreferences("vod-library",MODE_PRIVATE)
-    private val allTitles get()=saved.available(catalogue.titles)
-    val visibleTitles: List<VodTitle> get() {
+    private val allTitles by derivedStateOf { saved.available(catalogue.titles) }
+    val visibleTitles: List<VodTitle> by derivedStateOf {
         val keys=when(shelf) { "browse"->null;"favourites"->saved.favourites;else->saved.lists.firstOrNull { it.id==shelf }?.keys ?: emptySet() }
-        return browse.apply(allTitles.filter { keys==null || saved.keyFor(it) in keys })
+        browse.apply(allTitles.filter { keys==null || saved.keyFor(it) in keys })
     }
     private fun save(value: VodSaved) { saved=value;libraryPreferences.edit().putString("saved",VodSavedCodec.encode(value)).apply() }
     private fun openShelf(value: String) { shelf=value;browse=VodBrowse(sort=browse.sort) }

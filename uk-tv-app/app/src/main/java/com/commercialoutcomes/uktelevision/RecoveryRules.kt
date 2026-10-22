@@ -7,7 +7,7 @@ object RecoveryRules {
         reason == "HTTP_408" || reason == "HTTP_429" -> true
         reason.startsWith("HTTP_") -> false
         reason.contains("PARSING") || reason.contains("DECODING") || reason.contains("DRM") -> false
-        reason == "DNS_UNAVAILABLE" -> false
+        reason == "DNS_UNAVAILABLE" || reason == "VIDEO_STALLED" || reason == "VIDEO_MISSING" -> false
         else -> true
     }
     fun explain(reason: String): String = when {
@@ -21,6 +21,8 @@ object RecoveryRules {
         reason == "START_OR_BUFFER_TIMEOUT" -> "The stream stopped responding."
         reason == "NETWORK_UNAVAILABLE" -> "The network or VPN connection was interrupted."
         reason == "STREAM_ENDED" -> "The live stream ended."
+        reason == "VIDEO_STALLED" -> "The picture stopped updating."
+        reason == "VIDEO_MISSING" -> "This feed is playing sound without a picture."
         else -> "Playback was interrupted."
     }
 }

@@ -189,25 +189,45 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
             }
         }
     }
-    suspend fun refresh(): String? = withContext(Dispatchers.IO) {
+    private suspend fun refreshArtwork(builtAt: Long) {
+        val sync = context.getSharedPreferences("catalogue-sync", Context.MODE_PRIVATE)
+        // Retry a failed bundle on the next refresh, including an HTTP 304.
+        if (sync.getLong("artworkBuiltAt", -1L) != builtAt && ArtworkStore.refresh(context))
+            sync.edit().putLong("artworkBuiltAt", builtAt).apply()
+    }
+
+    suspend fun refresh(skipRecent: Boolean = false): String? = withContext(Dispatchers.IO) {
         lock.withLock {
+            val previous = db.dao().currentSnapshot()
+            if (skipRecent && previous != null &&
+                System.currentTimeMillis() - previous.fetchedAt in 0 until 15 * 60 * 1000L) return@withLock null
+            val sync = context.getSharedPreferences("catalogue-sync", Context.MODE_PRIVATE)
             try {
                 val connection = URL(FEED).openConnection() as java.net.HttpURLConnection
                 connection.connectTimeout = 15000
                 connection.readTimeout = 30000
                 connection.instanceFollowRedirects = true
-                connection.setRequestProperty("User-Agent", "UKTelevision/0.4.0")
+                connection.setRequestProperty("User-Agent", "UKTelevision/${BuildConfig.VERSION_NAME}")
+                if (previous != null) sync.getString("etag", null)?.let { connection.setRequestProperty("If-None-Match", it) }
                 try {
-                    if (connection.responseCode != 200) throw IOException("Guide server returned HTTP ${connection.responseCode}")
+                    val code = connection.responseCode
                     if (connection.url.protocol.lowercase() != "https") {
                         throw IOException("Guide download downgraded from HTTPS")
                     }
+                    if (code == 304 && previous != null) {
+                        refreshArtwork(previous.builtAt)
+                        db.dao().putSnapshot(previous.copy(fetchedAt = System.currentTimeMillis()))
+                        return@withLock null
+                    }
+                    if (code != 200) throw IOException("Guide server returned HTTP $code")
                     val data = connection.inputStream.use { CatalogueParser.parse(it) }
-                    ArtworkStore.refresh(context)
-                    val previous = db.dao().currentSnapshot()
                     require(previous == null || data.snapshot.guideEnd >= previous.guideEnd - 86400000L) { "Older guide rejected; keeping the cached guide" }
                     require(previous == null || data.stations.size >= db.dao().stationCount() / 2) { "Truncated channel list rejected" }
-                    replace(data)
+                    refreshArtwork(data.snapshot.builtAt)
+                    if (previous?.builtAt == data.snapshot.builtAt && previous.revision == data.snapshot.revision)
+                        db.dao().putSnapshot(previous.copy(fetchedAt = System.currentTimeMillis()))
+                    else replace(data)
+                    sync.edit().putString("etag", connection.getHeaderField("ETag")).apply()
                 } finally { connection.disconnect() }
                 null
             } catch (e: CancellationException) { throw e }

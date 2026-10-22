@@ -2,6 +2,7 @@ package com.commercialoutcomes.uktelevision
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.SystemClock
 import androidx.compose.runtime.*
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -11,6 +12,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.upstream.DefaultLoadErrorHandlingPolicy
@@ -33,6 +35,8 @@ class PlaybackEngine(
     private var attempt = 0
     private var request: Job? = null
     private var watchdog: Job? = null
+    private var pictureCheck: Job? = null
+    private var health = emptyMap<String, StreamHealth>()
     private var success: Job? = null
     private var candidates = emptyList<StreamSource>()
     private val tried = mutableSetOf<String>()
@@ -66,7 +70,7 @@ class PlaybackEngine(
         paused = false; lastProblem = ""
         status = "Selecting a stream…"; profile = model.profile; route = checks.route(profile)
         request = scope.launch {
-            val health = model.dao.health(profile).associateBy { it.streamId }
+            health = model.dao.health(profile).associateBy { it.streamId }
             val pin = model.prefs.getString("pin:$profile:${row.station.id}", "")
             val forced = if (forceSource || row.sourceIndex > 0) row.source.id else null
             candidates = row.station.sources()
@@ -106,8 +110,9 @@ class PlaybackEngine(
     private fun startNext(token: Int, retry: StreamSource? = null) {
         if (token != generation) return
         val next = retry ?: if (tried.isEmpty()) candidates.firstOrNull() else candidates.filter { it.id !in tried }.sortedWith(
-            compareBy<StreamSource> { it.priority }
+            compareByDescending<StreamSource> { GuideRules.healthScore(health[it.id]) }
                 .thenByDescending { checks.cached(it, route)?.sampled == true }
+                .thenBy { it.priority }
         ).firstOrNull()
         val limit = if (model.autoFallback) candidates.size else 1
         if (next == null || (retry == null && tried.size >= limit)) {
@@ -141,7 +146,14 @@ class PlaybackEngine(
                     if (hasBackup) C.TIME_UNSET else super.getRetryDelayMsFor(info)
             })
             .createMediaSource(MediaItem.Builder().setUri(next.url).setMimeType(next.mime).build())
-        val exo = ExoPlayer.Builder(context, DefaultRenderersFactory(context).setEnableDecoderFallback(true)).build()
+        // Keep live-TV buffering bounded on the 1 GB Firestick. Start after one
+        // second, retain enough runway for brief VPN/network interruptions.
+        val loadControl = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(15000, 30000, 1000, 2500)
+            .setTargetBufferBytes(24 * 1024 * 1024)
+            .setPrioritizeTimeOverSizeThresholds(false).build()
+        val exo = ExoPlayer.Builder(context, DefaultRenderersFactory(context).setEnableDecoderFallback(true))
+            .setLoadControl(loadControl).build()
         player = exo
         exo.setAudioAttributes(androidx.media3.common.AudioAttributes.Builder().setUsage(C.USAGE_MEDIA).setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(), true)
         exo.setHandleAudioBecomingNoisy(true)
@@ -190,6 +202,19 @@ class PlaybackEngine(
         })
         exo.setMediaSource(media); exo.prepare(); exo.playWhenReady = true
         armWatchdog(token, thisAttempt, if (hasBackup) 8000 else 15000)
+        pictureCheck = scope.launch {
+            val progress = VideoProgress()
+            while (current()) {
+                delay(1000)
+                if (!current()) break
+                val counters = exo.videoDecoderCounters
+                counters?.ensureUpdated()
+                val reason = progress.sample(SystemClock.elapsedRealtime(),
+                    counters?.renderedOutputBufferCount ?: 0, exo.isPlaying && !paused,
+                    exo.currentTracks.isTypeSelected(C.TRACK_TYPE_VIDEO))
+                if (reason != null) { failure(token, thisAttempt, reason); break }
+            }
+        }
     }
     private fun armWatchdog(token: Int, currentAttempt: Int, delayMs: Long) {
         watchdog?.cancel()
@@ -224,8 +249,10 @@ class PlaybackEngine(
             val old = model.dao.health(profile).firstOrNull { it.streamId == failedSource.id }
                 ?: StreamHealth(failedSource.id, profile)
             if (token != generation) return@launch
-            model.dao.putHealth(old.copy(failures = old.failures + 1,
-                lastFailure = System.currentTimeMillis(), lastError = reason))
+            val updated = old.copy(failures = old.failures + 1,
+                lastFailure = System.currentTimeMillis(), lastError = reason)
+            health = health + (failedSource.id to updated)
+            model.dao.putHealth(updated)
             checks.remember(failedSource, route, SourceCheck(System.currentTimeMillis(), reason))
             if (model.autoFallback && candidates.any { it.id !in tried }) {
                 status = "$lastProblem Trying another source…"
@@ -281,7 +308,7 @@ class PlaybackEngine(
         model.prefs.edit().putString("pin:${model.profile}:$id", current.id).apply()
     }
     fun stopPlayer() {
-        watchdog?.cancel(); success?.cancel()
+        watchdog?.cancel(); success?.cancel(); pictureCheck?.cancel()
         val old = player; player = null
         old?.release()
     }

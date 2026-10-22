@@ -1,16 +1,16 @@
-# UK Television — 0.6.0 preview
+# UK Television — 0.6.1 preview
 
 An original remote-first Fire OS / Android TV application using Warren's existing UK channel playlist and enriched programme guide. This is not TiviMate code and does not replace or alter TiviMate or the existing feeds.
 
 ## Install the preview
 
-Use the APK attached to this GitHub preview release. Install it alongside TiviMate. It has its own application ID, `com.commercialoutcomes.uktelevision.preview`.
+Use the APK attached to this GitHub preview release. It uses the application ID `com.commercialoutcomes.uktelevision.preview`.
 
 On an Android-based Firestick, enable **Settings → My Fire TV → Developer options → ADB debugging**. On models where Developer options is hidden, open About and select the device name seven times. Use Amazon's documented ADB process from a computer on the same network:
 
 ```sh
 adb connect FIRESTICK_IP:5555
-adb install -r UK-Television-0.6.0-preview.apk
+adb install -r UK-Television-0.6.1-preview.apk
 ```
 
 Replace `FIRESTICK_IP` with the address shown on your own Firestick. Approve the computer's connection on the TV. Turn ADB debugging off afterwards. The APK can also be installed with an APK downloader on the Firestick after granting that downloader installation permission. No service-provider login is required for this app itself.
@@ -19,13 +19,15 @@ Compatibility target: Android 6 / API 23 or newer, including Android-based Fire 
 
 ## Upgrade status
 
-The 0.5 preview adds a native On Demand library for Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Provider players stay inside UK Television, retain their adverts and consent controls, and use the full screen without a permanent UK TV toolbar. The supplied television artwork is used for the app icon and Fire TV tile.
+The preview includes a native On Demand library for Movy, Plex, Pluto TV and Tubi, with films, series, provider filters and shared title/source cards. Select **Menu → On Demand** from live TV or the guide. Provider players stay inside UK Television, retain their adverts and consent controls, and use the full screen without a permanent UK TV toolbar. The supplied television artwork is used for the app icon and Fire TV tile.
 
 Live-channel alternatives are retained without a three-source cap. The published catalogue includes 51 BBC One, 16 BBC Two and 11 GB News source candidates; these counts are alternatives, not guarantees of independent or working feeds. BBC national feeds precede regional fallbacks. Playback tries untried alternatives before retrying a failed source. Background reachability checks rotate through annotated built-in alternatives, up to three every five minutes after stable playback. User-added account playlists are not probed automatically.
 
 Two official Sky News feeds sustained playback on the Firestick. The official YouTube embed also passed playback and remote pause/resume checks, but took about 55 seconds to start in that run; fast startup is not established. ITV1, Channel 4 and Channel 5 remain unverified/unresolved on this connection. See `UPGRADE-VALIDATION.md` for current device evidence and limitations.
 
 The expanded guide and 16 viewing categories remain available. Optional XMLTV schedules are used only for explicitly mapped services or exact Pluto stream IDs with no existing guide. The optional sources are Open EPG, EPGShare UK1, epg.pw GB and the UK Pluto/Samsung guides; unavailable or malformed optional guides leave the primary guide intact. Regional and +1 schedules are not guessed.
+
+Version 0.6.1 checks decoded video continuously, so a feed that continues playing audio after losing its picture can advance to another source. The six-second picture timeout pauses while playback is paused or buffering. After the initial default/pinned source, alternatives with recent successful playback are preferred; every retained source remains eligible. Live buffering is bounded to reduce memory pressure on the 1 GB Firestick. Guide grouping runs off the UI thread, guide/VOD result lists are cached until their inputs change, and recent or unchanged guide snapshots avoid repeated downloads and database replacement. Failed artwork downloads remain eligible for retry.
 
 ## On Demand
 
@@ -92,12 +94,12 @@ For a local build, install JDK 17, Gradle 8.14.3 and Android SDK 35, then:
 ```sh
 git clone --depth 1 --branch uk-tv-epg-output https://github.com/Commsltd/script.git /tmp/uk-tv-feed
 python3 tools/export_manifest.py --source /tmp/uk-tv-feed --revision "$(git -C /tmp/uk-tv-feed rev-parse HEAD)" --output app/src/main/assets/catalogue.json.gz
-gradle testDebugUnitTest lintDebug assembleDebug
+gradle testDebugUnitTest lintDebug lintTvPreview assembleTvPreview
 ```
 
 ## Signing and upgrades
 
-The initial preview is **debug-signed**, not production-signed. No private signing key is committed, cached publicly or attached to a release. A new clean CI build may use a different debug certificate, so later previews can require uninstall/reinstall (which clears that preview's local preferences). Do not treat this as a stable automatic-update channel yet.
+The installable `tvPreview` build uses the normal, non-debuggable runtime and the existing preview application ID. It is **debug-signed**, not production-signed. `assembleDebug` remains available for development and private data inspection; both builds use the same local signing key and can update each other without clearing data. R8 shrinking is not yet enabled. No private signing key is committed, cached publicly or attached to a release. A new clean CI build may use a different debug certificate, so later previews can require uninstall/reinstall (which clears that preview's local preferences). Do not treat this as a stable automatic-update channel yet.
 
 For private, repeatable release signing, provide GitHub Actions secrets `TV_KEYSTORE_B64`, `TV_KEYSTORE_PASSWORD`, `TV_KEY_ALIAS` and `TV_KEY_PASSWORD`. The workflow already supports them and deletes its temporary keystore after signing. Preserve the private keystore securely yourself. Production identity is `com.commercialoutcomes.uktelevision`, separate from preview installs.
 
