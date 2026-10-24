@@ -73,7 +73,7 @@ def expand(channels, streams=(), inventory=None):
             result.append({'id':cid+'@National','epgId':'','family':cid,'name':meta['name'],
                 'group':group,'order':len(result),'logo':meta.get('logo',''),'variant':'National',
                 'sources':sources,'officialUrl':meta.get('website') or ''})
-    return label_news_countries(add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams))
+    return label_news_countries(add_space_live(add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams)))
 
 
 def add_rt_english(channels, streams=()):
@@ -325,7 +325,7 @@ NEWS_COUNTRY_NAMES = {'uk':'UK', 'us':'USA', 'ca':'Canada', 'au':'Australia',
     'qa':'Qatar', 'tr':'Turkey', 'za':'South Africa', 'fr':'France', 'de':'Germany',
     'ru':'Russia', 'ng':'Nigeria', 'ir':'Iran', 'il':'Israel', 'sa':'Saudi Arabia',
     'pk':'Pakistan', 'gh':'Ghana', 'ke':'Kenya', 'dz':'Algeria', 'cm':'Cameroon',
-    'eg':'Egypt', 'bw':'Botswana', 'zw':'Zimbabwe', 'my':'Malaysia'}
+    'es':'Spain', 'ch':'Switzerland', 'eg':'Egypt', 'bw':'Botswana', 'zw':'Zimbabwe', 'my':'Malaysia'}
 NEWS_COUNTRY_OVERRIDES = {'EuronewsEnglish.fr':'Europe', 'AfricanewsEnglish.fr':'Pan-African',
     'BloombergTV.us@Europe':'Europe'}
 COUNTRY_SHELF_NEWS = {'BNNBloomberg.ca', 'CPACEnglish.ca', 'FoxWeather.us',
@@ -335,11 +335,37 @@ def label_news_countries(channels):
     result = copy.deepcopy(channels)
     for channel in result:
         cid = channel['id'].partition('@')[0]
-        if not (channel.get('group') == '02 NEWS & POLITICS' or
+        if not (channel.get('group') in ('02 NEWS & POLITICS', '08 INTERNATIONAL', '13 WORLD & LANGUAGES') or
                 'news' in channel.get('name','').lower() or cid in COUNTRY_SHELF_NEWS):
             continue
-        country = NEWS_COUNTRY_OVERRIDES.get(channel['id'], NEWS_COUNTRY_OVERRIDES.get(cid))
-        country = country or NEWS_COUNTRY_NAMES.get(cid.rsplit('.',1)[-1].lower())
+        country = channel_country(channel)
         if country and not channel['name'].endswith(' ('+country+')'):
             channel['name'] += ' ('+country+')'
     return result
+
+
+def add_space_live(channels):
+    """One Sen service with independent native CDN alternatives."""
+    result = copy.deepcopy(channels)
+    cid = 'SpaceLivepoweredbysen.uk@SD'
+    existing = next((c for c in result if c['id'].partition('@')[0] == cid.partition('@')[0]), None)
+    urls = ['https://linear-1224.frequency.stream/dist/lg-uk/1224/hls/master/playlist.m3u8',
+            'https://d111bsx9oooqoh.cloudfront.net/playlist.m3u8']
+    entries = [source(url, {}, 'Space Live / Sen · ' + urlsplit(url).hostname, i)
+               for i, url in enumerate(urls)]
+    if existing:
+        seen = {s['id'] for s in entries}
+        existing['sources'] = entries + [s for s in existing['sources'] if s['id'] not in seen]
+    else:
+        result.append({'id':cid, 'family':cid.partition('@')[0], 'epgId':'',
+            'name':'Space Live / Sen', 'group':'06 DOCUMENTARIES', 'order':len(result),
+            'logo':'', 'variant':'SD', 'sources':entries, 'officialUrl':'https://www.sen.com/live'})
+    return result
+
+
+def channel_country(channel):
+    cid, _, edition = channel['id'].partition('@')
+    override = NEWS_COUNTRY_OVERRIDES.get(channel['id'], NEWS_COUNTRY_OVERRIDES.get(cid))
+    if override: return override
+    if edition in ('UK', 'UKHD', 'GB', 'GBHD'): return 'UK'
+    return NEWS_COUNTRY_NAMES.get(cid.rsplit('.', 1)[-1].lower(), 'Other')

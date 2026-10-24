@@ -134,7 +134,7 @@ FEATURED = {
 
 
 # Familiar national services lead each new country shelf.
-from international_channels import COUNTRIES
+from international_channels import COUNTRIES, channel_country, label_news_countries
 FEATURED.update({code.lower(): ids for code, (_, ids) in COUNTRIES.items()})
 
 
@@ -172,7 +172,10 @@ def arrange_channels(channels):
         priority = featured.index(base) if base in featured else len(featured)
         # Base identity keeps HD/SD and +1 versions together. In event groups,
         # natural numeric sorting puts Red Button 2 before Red Button 10.
-        return (ranks[group], priority, natural(base),
+        country = channel_country(channel)
+        if country != 'UK':
+            return (ranks[group], 1, natural(country), natural(channel['name']), channel['id'])
+        return (ranks[group], 0, priority, natural(base),
                 natural(variant.removesuffix('HD')),
                 0 if variant.endswith('HD') else 1, natural(variant), channel['id'])
 
@@ -180,4 +183,4 @@ def arrange_channels(channels):
     for order, channel in enumerate(rows):
         channel['group'] = GROUPS[category(channel)]
         channel['order'] = order
-    return rows
+    return label_news_countries(rows)
