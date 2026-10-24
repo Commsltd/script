@@ -25,9 +25,9 @@ def expand(channels, inventory=None):
             rows.append(channel)
             by_id[channel['id']] = channel
         for route in spec['routes']:
-            entry = source(route['url'], {}, route['label'], 1)
+            entry = source(route['url'], route.get('headers',{}), route['label'], 1)
             entry['guideChannelId'] = route['guideChannelId']
-            entry['region'] = 'UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA'
+            entry['region'] = route.get('region') or ('UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA')
             existing = next((s for s in channel['sources'] if s['id'] == entry['id']), None)
             if existing is None:
                 channel['sources'].append(entry)
@@ -54,7 +54,7 @@ def add_guides(data, guides, inventory=None, now_ms=None):
             route = routes.get(stream['url'])
             if route:
                 stream['guideChannelId'] = route['guideChannelId']
-                stream['region'] = 'UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA'
+                stream['region'] = route.get('region') or ('UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA')
     virtual = {}
     for spec in specs:
         for route in spec['routes']:

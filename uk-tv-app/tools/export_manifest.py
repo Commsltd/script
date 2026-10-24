@@ -297,7 +297,7 @@ def main():
         refresh_sources()
     )
     streams = refresh_streams()
-    data['channels'] = arrange_channels(expand_international(augment(data['channels'], streams, refresh_sky()), streams))
+    data['channels'] = arrange_channels(expand_international(augment(data['channels'], streams, refresh_sky()), streams, refresh_spain=True))
     from international_guides import add_guides
     add_guides(data, guides)
     data['warnings'].extend(guide_warnings)

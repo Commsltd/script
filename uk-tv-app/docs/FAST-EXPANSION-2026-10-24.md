@@ -11,24 +11,25 @@ Checked 24 October 2026. Publication uses exact provider channel identities and 
 
 ## Where to find the additions
 
-Open **TV guide**, press **Menu → Refresh guide**, then choose the category shown below. These are live TV channels, not On Demand providers. Category names and displayed channel names below come from the published catalogue.
+Open **TV guide → Menu → Refresh guide**, then choose the category below. These locations include the later Business & Finance category move.
 
 | App category | New channels |
 | --- | ---: |
-| 02 NEWS & POLITICS | 7 |
+| 02 NEWS & POLITICS | 5 |
 | 03 FILMS | 36 |
 | 04 DRAMA & COMEDY | 26 |
 | 05 ENTERTAINMENT | 1 |
-| 06 DOCUMENTARIES | 32 |
+| 06 DOCUMENTARIES | 31 |
 | 07 CRIME & MYSTERY | 14 |
 | 08 FOOD & LIFESTYLE | 31 |
 | 09 KIDS | 25 |
 | 10 SPORT | 40 |
 | 11 MUSIC | 41 |
+| 24 BUSINESS & FINANCE | 3 |
 
 ### 02 NEWS & POLITICS
 
-AccuWeather NOW (USA); Bloomberg Originals (USA); Reuters 60 (UK); Salem News Channel (USA); The Hill TV (USA); TYT Network (USA); Yahoo Finance (USA).
+AccuWeather NOW (USA); Reuters 60 (UK); Salem News Channel (USA); The Hill TV (USA); TYT Network (USA).
 
 ### 03 FILMS
 
@@ -44,7 +45,7 @@ Team Liquid.
 
 ### 06 DOCUMENTARIES
 
-5 Exploring Britain; 60 Days in Jail; Ax Men; Business Insider; CNN Originals; Cops & Docs; Cosmos; Curiosity Now; Documentary+; Earth Touch; Evolution Earth; Highway Thru Hell; History & Warfare Now; History Hit; History Hunters; Ice Road Truckers; INWILD; INWONDER; Love the Planet; Mayday: Air Disaster; Modern Marvels; Real Wild; River Monsters; The Jack Hanna Channel; The Wicked Tuna Channel; U&The Past; U&Transport; Untold Stories of the E.R.; Wheels & Steel; Wild Planet; World War TV; Xplore.
+5 Exploring Britain; 60 Days in Jail; Ax Men; CNN Originals; Cops & Docs; Cosmos; Curiosity Now; Documentary+; Earth Touch; Evolution Earth; Highway Thru Hell; History & Warfare Now; History Hit; History Hunters; Ice Road Truckers; INWILD; INWONDER; Love the Planet; Mayday: Air Disaster; Modern Marvels; Real Wild; River Monsters; The Jack Hanna Channel; The Wicked Tuna Channel; U&The Past; U&Transport; Untold Stories of the E.R.; Wheels & Steel; Wild Planet; World War TV; Xplore.
 
 ### 07 CRIME & MYSTERY
 
@@ -66,7 +67,11 @@ ACC Digital Network; Big 12 Studios; Billiard TV; CBS Sports Golazo Network; DAZ
 
 Def Jam; Qello Concerts by Stingray; Stingray Classic Rock; Stingray Classica; Stingray Country Greats; Stingray DJAZZ; Stingray Easy Listening; Stingray Euro Hits; Stingray Flashback 70s; Stingray Greatest Hits; Stingray Hip Hop; Stingray Hot Country; Stingray Jukebox Oldies; Stingray Movie Music; Stingray Nothin' But 90s; Stingray Remember the 80s; Stingray Smooth Jazz; Stingray Soft Hits; Vevo 2010s; Vevo 2K; Vevo 70s; Vevo 70s & 80s; Vevo 80s; Vevo 90s; Vevo 90s & 00s; Vevo Country; Vevo Country Rewind; Vevo Hip Hop & R&B; Vevo Hip-Hop; Vevo Pop; Vevo R&B; Vevo Rock; XITE 80s Flashback; XITE 90s Throwback; XITE Christian Hits; XITE Classic Country; XITE Country Today; XITE Just Chill; XITE R&B Classic Jams; XITE Reggae Vibes; XITE Rock x Metal.
 
-For existing channels with extra streams, keep using their existing guide entry. Unresolved requests have not been added.
+### 24 BUSINESS & FINANCE
+
+Bloomberg Originals (USA); Business Insider; Yahoo Finance (USA).
+
+For existing channels with extra streams, use the existing entry. Unresolved requests have not been added.
 
 ## Request-by-request status
 
@@ -75,8 +80,8 @@ For existing channels with extra streams, keep using their existing guide entry.
 | American Ninja Warrior | Unresolved | Not added | — | Matched provider feed requires DRM integration; not added as a broken channel |
 | Localish | Added | 08 FOOD & LIFESTYLE | Localish | Native stream and current exact-provider guide; 1 verified route(s) |
 | Reuters 60 | Added | 02 NEWS & POLITICS | Reuters 60 (UK) | Native stream and current exact-provider guide; 1 verified route(s) |
-| Bloomberg Originals | Added | 02 NEWS & POLITICS | Bloomberg Originals (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
-| Yahoo Finance | Added | 02 NEWS & POLITICS | Yahoo Finance (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
+| Bloomberg Originals | Added | 24 BUSINESS & FINANCE | Bloomberg Originals (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
+| Yahoo Finance | Added | 24 BUSINESS & FINANCE | Yahoo Finance (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
 | TYT Network | Added | 02 NEWS & POLITICS | TYT Network (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
 | The Hill TV | Added | 02 NEWS & POLITICS | The Hill TV (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
 | Newsmax2 | Enhanced | 02 NEWS & POLITICS | Newsmax 2 (USA) | Existing service retained; 1 verified provider route(s) with stream-specific schedules |
@@ -84,7 +89,7 @@ For existing channels with extra streams, keep using their existing guide entry.
 | FOX Weather | Enhanced | 19 USA | Fox Weather (USA) | Existing service retained; 1 verified provider route(s) with stream-specific schedules |
 | AccuWeather NOW | Added | 02 NEWS & POLITICS | AccuWeather NOW (USA) | Native stream and current exact-provider guide; 1 verified route(s) |
 | CNN Originals | Added | 06 DOCUMENTARIES | CNN Originals | Native stream and current exact-provider guide; 1 verified route(s) |
-| Business Insider | Added | 06 DOCUMENTARIES | Business Insider | Native stream and current exact-provider guide; 1 verified route(s) |
+| Business Insider | Added | 24 BUSINESS & FINANCE | Business Insider | Native stream and current exact-provider guide; 1 verified route(s) |
 | The Young Turks | Unresolved | Not added | — | No exact channel in checked UK/US provider line-ups |
 | CBS Sports HQ | Unresolved | Not added | — | Matched provider listing, but no playback-verified route with a current guide passed checks |
 | NBC Sports NOW | Added | 10 SPORT | NBC Sports NOW | Native stream and current exact-provider guide; 1 verified route(s) |

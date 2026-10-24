@@ -8,6 +8,7 @@ Only group/order change: channel, stream and guide identities remain intact.
 from __future__ import annotations
 
 import re
+import unicodedata
 
 # MAIN UK is also the initial selection in installed version 0.3. Keep its key.
 GROUPS = {
@@ -33,6 +34,8 @@ GROUPS = {
     'ca': '20 CANADA',
     'au': '21 AUSTRALIA',
     'nz': '22 NEW ZEALAND',
+    'spain': '23 SPAIN',
+    'business': '24 BUSINESS & FINANCE',
     'other': '99 MORE CHANNELS',
 }
 
@@ -138,8 +141,16 @@ from international_channels import COUNTRIES, channel_country, label_news_countr
 FEATURED.update({code.lower(): ids for code, (_, ids) in COUNTRIES.items()})
 
 
+BUSINESS_SERVICES = {
+    'CNBCUK.uk', 'BloombergTV.us', 'BloombergOriginals.us', 'CheddarNews.us',
+    'YahooFinance.us', 'FASTbusinessinsider.us', 'BNNBloomberg.ca', 'AusbizTV.au', 'tickerNews.au',
+}
+
+
 def category(channel):
     base, _, variant = channel['id'].partition('@')
+    if channel.get('group') == GROUPS['spain']: return 'spain'
+    if base in BUSINESS_SERVICES: return 'business'
     # Preserve the existing London/default main services; do not relabel other
     # regional schedules as London or merge regional favourites/stream health.
     if base in {'BBCOne.uk', 'BBCTwo.uk', 'ITV1.uk'} and variant not in {
@@ -168,6 +179,11 @@ def arrange_channels(channels):
     def key(channel):
         group = category(channel)
         base, _, variant = channel['id'].partition('@')
+        if group == 'spain':
+            return (ranks[group], not channel.get('streamVerified',False),
+                    not channel.get('englishSubtitles',False),
+                    natural(''.join(c for c in unicodedata.normalize('NFKD',channel['name']) if not unicodedata.combining(c))),
+                    channel['id'])
         featured = FEATURED.get(group, [])
         priority = featured.index(base) if base in featured else len(featured)
         country = channel_country(channel)

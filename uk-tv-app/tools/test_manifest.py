@@ -147,6 +147,17 @@ class ChannelGroupTests(unittest.TestCase):
             ['Film4', 'Alpha Movies', 'Zulu Movies', 'Canadian Movies', 'Alpha USA', 'Zulu USA'])
         self.assertEqual(arrange_channels(list(reversed(rows))), rows)
 
+    def test_business_moves_by_identity_and_spain_prefers_verified_english_subtitles(self):
+        rows = arrange_channels([
+            self.channel('BloombergTV.us@Europe','02 NEWS & POLITICS','Bloomberg'),
+            self.channel('FASTbusinessinsider.us@US','06 DOCUMENTARIES','Business Insider'),
+            dict(self.channel('SpanishA.es@Spain','23 SPAIN','Alpha'),streamVerified=True,englishSubtitles=False),
+            dict(self.channel('SpanishZ.es@Spain','23 SPAIN','Zulu'),streamVerified=True,englishSubtitles=True),
+            dict(self.channel('SpanishB.es@Spain','23 SPAIN','Beta'),streamVerified=False,englishSubtitles=True),
+        ])
+        self.assertTrue(all(c['group']=='24 BUSINESS & FINANCE' for c in rows if c['id'].startswith(('Bloomberg','FASTbusiness'))))
+        self.assertEqual([c['name'] for c in rows if c['group']=='23 SPAIN'],['Zulu','Alpha','Beta'])
+
     def test_unknown_channels_are_retained_without_guessing_from_name_or_country(self):
         rows = arrange_channels([self.channel('Unknown.us@UK', name='News about film crimes'),
                                  self.channel('NewMusic.uk@HD', group='05 MUSIC')])

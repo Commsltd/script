@@ -141,3 +141,26 @@ class FastChannelTest(unittest.TestCase):
         expired={'channels':rows,'programmes':[],'supplementalGuideSources':{}}
         add_guides(expired,guides,self.fixture(),stamp('20261025103000 +0000'))
         self.assertEqual(expired['programmes'],[])
+
+
+class SpainChannelTest(unittest.TestCase):
+    def test_public_hls_rejects_private_hosts_credentials_and_placeholder_urls(self):
+        from spanish_channels import public_hls
+        for url in ['https://127.0.0.1/live.m3u8','http://192.168.1.1/live.m3u8',
+                    'https://localhost/live.m3u8','https://user:pass@example.org/live.m3u8',
+                    'https://example.org/live.m3u8?ip=[IP]','https://example.org/page.html']:
+            self.assertFalse(public_hls(url),url)
+        self.assertTrue(public_hls('https://broadcaster.example.org/live.m3u8?channel=1'))
+
+    def test_spanish_route_keeps_country_and_exact_guide_without_losing_backups(self):
+        from spanish_channels import expand
+        spec={'id':'TDTLa1.es@Spain','family':'TDTLa1.es','name':'La 1','group':'23 SPAIN',
+              'variant':'Spain','logo':'','country':'Spain','streamVerified':True,'englishSubtitles':True,
+              'routes':[{'url':'https://example.org/live.m3u8','headers':{'User-Agent':'Mozilla/5.0'},
+                         'label':'Spain','region':'Spain','guideSource':'tdt_spain','guideId':'La1.TV',
+                         'guideChannelId':'spain:La1'}]}
+        rows=expand([], [spec]);source=rows[0]['sources'][0]
+        self.assertEqual(source['region'],'Spain')
+        self.assertEqual(source['guideChannelId'],'spain:La1')
+        self.assertEqual(source['headers'],{'User-Agent':'Mozilla/5.0'})
+        self.assertEqual(expand(rows,[spec]),rows)

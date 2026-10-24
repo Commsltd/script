@@ -16,6 +16,9 @@ from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 
 GUIDE_URLS = {
+    'spain_pluto': 'https://i.mjh.nz/PlutoTV/es.xml.gz',
+    'spain_samsung': 'https://i.mjh.nz/SamsungTVPlus/es.xml.gz',
+    'tdt_spain': 'https://www.tdtchannels.com/epg/TV.xml.gz',
     'samsung_us': 'https://i.mjh.nz/SamsungTVPlus/us.xml.gz',
     'news_cbn': 'https://cmsedit.cbn.com/app_feeds/cbnFamily/liveschedule.php?channel=newsChannel&numHours=168',
     **{name: 'https://epgshare01.online/epgshare01/epg_ripper_'+feed+'.xml.gz'

@@ -139,6 +139,8 @@ def add_guides(data, guides, now_ms=None):
     data.setdefault('regionalProgrammes',[]).extend(regional)
     from fast_channels import add_guides as add_fast_guides
     add_fast_guides(data, guides, now_ms=now_ms)
+    from spanish_channels import add_guides as add_spain_guides
+    add_spain_guides(data, guides, now_ms=now_ms)
     data['programmes'].sort(key=lambda p:(p['channelId'],p['start'],p['stop']))
     data['channelsWithGuide']=len({p['channelId'] for p in data['programmes']})
     data['guideStart']=min((p['start'] for p in data['programmes']),default=0)
