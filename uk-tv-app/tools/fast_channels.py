@@ -44,7 +44,6 @@ def add_guides(data, guides, inventory=None, now_ms=None):
     now = int(time.time()*1000) if now_ms is None else now_ms
     specs = seed() if inventory is None else inventory
     stations = {c['id']: c for c in data['channels']}
-    populated = {p['channelId'] for p in data['programmes'] if p['stop'] > now}
     virtual = {}
     for spec in specs:
         for route in spec['routes']:
@@ -67,11 +66,13 @@ def add_guides(data, guides, inventory=None, now_ms=None):
                 regional.append(programme); seen.add(programme['key'])
     for spec in specs:
         channel = stations.get(spec['id'])
-        if not channel or not channel['sources'] or spec['id'] in populated: continue
+        if not channel or not channel['sources']: continue
         primary = channel['sources'][0].get('guideChannelId')
         programmes = schedules.get(primary, [])
         if not any(p['stop'] > now for p in programmes): continue
-        # Only the actual primary stream supplies the station's default guide.
+        # Earlier generic Pluto mapping may have matched a backup edition.
+        # The actual primary stream's exact schedule takes precedence here.
+        data['programmes'] = [p for p in data['programmes'] if p['channelId'] != channel['id']]
         for programme in programmes:
             row = dict(programme, channelId=channel['id'])
             row['key'] = identity(f"{row['channelId']}|{row['start']}|{row['stop']}|{row['title']}")

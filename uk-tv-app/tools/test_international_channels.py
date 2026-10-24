@@ -129,7 +129,7 @@ class FastChannelTest(unittest.TestCase):
         from fast_channels import expand,add_guides
         from export_manifest import stamp
         rows=expand([],self.fixture())
-        data={'channels':rows,'programmes':[],'supplementalGuideSources':{}}
+        data={'channels':rows,'programmes':[{'channelId':'Example.us@UK', 'title':'Wrong backup edition', 'stop':stamp('20261024110000 +0000')}],'supplementalGuideSources':{}}
         xml=lambda cid,title: f'<tv><programme channel="{cid}" start="20261024100000 +0000" stop="20261024110000 +0000"><title>{title}</title><desc>Actual description</desc></programme></tv>'.encode()
         guides={'samsung':xml('GB123','UK episode'),'samsung_us':xml('US123','US episode')}
         add_guides(data,guides,self.fixture(),stamp('20261024103000 +0000'))
