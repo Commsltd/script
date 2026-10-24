@@ -44,6 +44,17 @@ def add_guides(data, guides, inventory=None, now_ms=None):
     now = int(time.time()*1000) if now_ms is None else now_ms
     specs = seed() if inventory is None else inventory
     stations = {c['id']: c for c in data['channels']}
+    # Earlier generic guide passes may assign one guide to every backup.
+    # Restore exact route identities before selecting any default schedule.
+    for spec in specs:
+        channel = stations.get(spec['id'])
+        if not channel: continue
+        routes = {r['url']: r for r in spec['routes']}
+        for stream in channel['sources']:
+            route = routes.get(stream['url'])
+            if route:
+                stream['guideChannelId'] = route['guideChannelId']
+                stream['region'] = 'UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA'
     virtual = {}
     for spec in specs:
         for route in spec['routes']:
@@ -69,10 +80,11 @@ def add_guides(data, guides, inventory=None, now_ms=None):
         if not channel or not channel['sources']: continue
         primary = channel['sources'][0].get('guideChannelId')
         programmes = schedules.get(primary, [])
-        if not any(p['stop'] > now for p in programmes): continue
+        if primary not in {r['guideChannelId'] for r in spec['routes']}: continue
         # Earlier generic Pluto mapping may have matched a backup edition.
         # The actual primary stream's exact schedule takes precedence here.
         data['programmes'] = [p for p in data['programmes'] if p['channelId'] != channel['id']]
+        if not any(p['stop'] > now for p in programmes): continue
         for programme in programmes:
             row = dict(programme, channelId=channel['id'])
             row['key'] = identity(f"{row['channelId']}|{row['start']}|{row['stop']}|{row['title']}")

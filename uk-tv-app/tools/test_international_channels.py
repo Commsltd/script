@@ -132,6 +132,8 @@ class FastChannelTest(unittest.TestCase):
         data={'channels':rows,'programmes':[{'channelId':'Example.us@UK', 'title':'Wrong backup edition', 'stop':stamp('20261024110000 +0000')}],'supplementalGuideSources':{}}
         xml=lambda cid,title: f'<tv><programme channel="{cid}" start="20261024100000 +0000" stop="20261024110000 +0000"><title>{title}</title><desc>Actual description</desc></programme></tv>'.encode()
         guides={'samsung':xml('GB123','UK episode'),'samsung_us':xml('US123','US episode')}
+        # Simulate the older generic Pluto pass assigning a station-wide guide.
+        for stream in rows[0]['sources']: stream['guideChannelId']='Example.us@UK'
         add_guides(data,guides,self.fixture(),stamp('20261024103000 +0000'))
         self.assertEqual([p['title'] for p in data['programmes']],['UK episode'])
         self.assertEqual({p['title'] for p in data['regionalProgrammes']},{'UK episode','US episode'})
