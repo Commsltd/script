@@ -170,14 +170,16 @@ def arrange_channels(channels):
         base, _, variant = channel['id'].partition('@')
         featured = FEATURED.get(group, [])
         priority = featured.index(base) if base in featured else len(featured)
-        # Base identity keeps HD/SD and +1 versions together. In event groups,
-        # natural numeric sorting puts Red Button 2 before Red Button 10.
         country = channel_country(channel)
-        if country != 'UK':
-            return (ranks[group], 1, natural(country), natural(channel['name']), channel['id'])
-        return (ranks[group], 0, priority, natural(base),
-                natural(variant.removesuffix('HD')),
-                0 if variant.endswith('HD') else 1, natural(variant), channel['id'])
+        variant_key = (natural(variant.removesuffix('HD')),
+                       0 if variant.endswith('HD') else 1, natural(variant))
+        # Only explicitly featured UK broadcasters retain their familiar order.
+        # Every other service sorts by its visible name, never its directory ID.
+        if country == 'UK' and base in featured:
+            return (ranks[group], 0, priority, natural(base), variant_key, channel['id'])
+        return (ranks[group], 1, 0 if country == 'UK' else 1,
+                natural(country), natural(channel['name']), natural(base),
+                variant_key, channel['id'])
 
     rows.sort(key=key)
     for order, channel in enumerate(rows):

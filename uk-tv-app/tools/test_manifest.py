@@ -134,6 +134,19 @@ class ChannelGroupTests(unittest.TestCase):
         self.assertEqual(arrange_channels(list(reversed(rows))), expected)
         self.assertEqual([c['order'] for c in rows], [0, 1, 2])
 
+    def test_visible_names_sort_after_priority_uk_broadcasters(self):
+        rows = arrange_channels([
+            self.channel('ZInternal.uk@UK', '03 FILMS', 'Alpha Movies'),
+            self.channel('AInternal.uk@UK', '03 FILMS', 'Zulu Movies'),
+            self.channel('Film4.uk@SD', '03 FILMS', 'Film4'),
+            self.channel('ZInternal.us@US', '03 FILMS', 'Alpha USA'),
+            self.channel('AInternal.us@US', '03 FILMS', 'Zulu USA'),
+            self.channel('Canada.ca@SD', '03 FILMS', 'Canadian Movies'),
+        ])
+        self.assertEqual([c['name'] for c in rows],
+            ['Film4', 'Alpha Movies', 'Zulu Movies', 'Canadian Movies', 'Alpha USA', 'Zulu USA'])
+        self.assertEqual(arrange_channels(list(reversed(rows))), rows)
+
     def test_unknown_channels_are_retained_without_guessing_from_name_or_country(self):
         rows = arrange_channels([self.channel('Unknown.us@UK', name='News about film crimes'),
                                  self.channel('NewMusic.uk@HD', group='05 MUSIC')])
