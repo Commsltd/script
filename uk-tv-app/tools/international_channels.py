@@ -73,4 +73,67 @@ def expand(channels, streams=(), inventory=None):
             result.append({'id':cid+'@National','epgId':'','family':cid,'name':meta['name'],
                 'group':group,'order':len(result),'logo':meta.get('logo',''),'variant':'National',
                 'sources':sources,'officialUrl':meta.get('website') or ''})
+    return add_cgtn_english(add_rt_english(result, streams), streams)
+
+
+def add_rt_english(channels, streams=()):
+    """One English news channel, retaining native alternatives across refreshes."""
+    result = copy.deepcopy(channels)
+    cid = 'RT.ru@English'
+    existing = next((c for c in result if c['id'] == cid), None)
+    urls = [
+        'https://rt-glb.rttv.com/dvr/rtnews/playlist.m3u8',
+        'https://rt-glb.rttv.com/live/rtnews/playlist.m3u8',
+        'https://wisewatchoott.wiseplayout.com/RT/master.m3u8',
+    ]
+    entries = []
+    for url in urls:
+        entries.append(source(url, {}, 'RT English · ' + urlsplit(url).hostname, len(entries)))
+    # The directory can update addresses on the verified English-service hosts.
+    for row in streams:
+        if row.get('channel') != 'RT.ru' or not valid(row): continue
+        address = urlsplit(row['url'])
+        if address.scheme != 'https' or address.hostname not in ('rt-glb.rttv.com', 'wisewatchoott.wiseplayout.com'): continue
+        if address.hostname == 'rt-glb.rttv.com' and '/rtnews/' not in address.path: continue
+        if address.hostname == 'wisewatchoott.wiseplayout.com' and not address.path.startswith('/RT/'): continue
+        headers = {k:v for k,v in [('User-Agent', row.get('user_agent')), ('Referer', row.get('referrer'))] if v}
+        entry = source(row['url'], headers, 'RT English · ' + address.hostname, 3)
+        if not any(s['id'] == entry['id'] for s in entries): entries.append(entry)
+    if existing:
+        seen = {s['id'] for s in entries}
+        entries.extend(s for s in existing['sources'] if s['id'] not in seen)
+        existing['sources'] = entries
+    else:
+        result.append({'id':cid, 'epgId':'', 'family':'RT.ru', 'name':'RT English',
+            'group':'02 NEWS & POLITICS', 'order':len(result), 'logo':'', 'variant':'English',
+            'sources':entries, 'officialUrl':'https://www.rt.com/on-air/'})
+    return result
+
+
+def add_cgtn_english(channels, streams=()):
+    result = copy.deepcopy(channels)
+    cid = 'CGTN.cn@English'
+    existing = next((c for c in result if c['id'] == cid), None)
+    urls = [
+        'https://english-livebkali.cgtn.com/live/encgtn.m3u8',
+        'https://amg00405-rakutentv-cgtn-rakuten-i9tar.amagi.tv/master.m3u8',
+        'https://hlspackager.akamaized.net/live/DB/CGTN_ENGLISH/HLS/CGTN_ENGLISH.m3u8',
+    ]
+    entries = [source(url, {}, 'CGTN English · ' + urlsplit(url).hostname, i) for i, url in enumerate(urls)]
+    routes = {(urlsplit(u).hostname, urlsplit(u).path) for u in urls}
+    for row in streams:
+        if row.get('channel') != 'CGTN.cn' or not valid(row): continue
+        address = urlsplit(row['url'])
+        if address.scheme != 'https' or (address.hostname, address.path) not in routes: continue
+        headers = {k:v for k,v in [('User-Agent', row.get('user_agent')), ('Referer', row.get('referrer'))] if v}
+        entry = source(row['url'], headers, 'CGTN English · ' + address.hostname, 3)
+        if not any(s['id'] == entry['id'] for s in entries): entries.append(entry)
+    if existing:
+        seen = {s['id'] for s in entries}
+        entries.extend(s for s in existing['sources'] if s['id'] not in seen)
+        existing['sources'] = entries
+    else:
+        result.append({'id':cid, 'epgId':'', 'family':'CGTN.cn', 'name':'CGTN English',
+            'group':'02 NEWS & POLITICS', 'order':len(result), 'logo':'', 'variant':'English',
+            'sources':entries, 'officialUrl':'https://www.cgtn.com/channel/english'})
     return result

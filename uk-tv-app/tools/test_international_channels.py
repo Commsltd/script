@@ -28,3 +28,36 @@ class InternationalTest(unittest.TestCase):
             self.assertFalse(eligible(dict(base,url=url)))
         self.assertFalse(eligible(dict(base,feed='Plus1',url='https://cdn.pbs.org/a.m3u8')))
         self.assertTrue(all(eligible(r) for r in seed()['streams']))
+
+    def test_rt_english_is_one_news_channel_with_native_alternatives(self):
+        from international_channels import add_rt_english
+        rows = add_rt_english([])
+        self.assertEqual(len(rows), 1)
+        channel = rows[0]
+        self.assertEqual(channel['name'], 'RT English')
+        self.assertEqual(channel['group'], '02 NEWS & POLITICS')
+        self.assertEqual(len(channel['sources']), 3)
+        self.assertTrue(all(s['kind'] == 'direct' for s in channel['sources']))
+        self.assertEqual(add_rt_english(rows), rows)
+        self.assertEqual(channel['epgId'], '')
+
+    def test_rt_refresh_keeps_backups_and_rejects_other_languages(self):
+        from international_channels import add_rt_english
+        rows = add_rt_english([])
+        rows[0]['sources'].append({'id':'saved', 'url':'https://example.org/alternative.m3u8'})
+        extra = [
+            {'channel':'RT.ru', 'feed':'SD', 'url':'https://rt-glb.rttv.com/live/rtnews/new.m3u8'},
+            {'channel':'RT.ru', 'feed':'SD', 'url':'https://rt-glb.rttv.com/live/rtesp/playlist.m3u8'},
+            {'channel':'RTArabic.ru', 'feed':'SD', 'url':'https://rt-glb.rttv.com/live/rtnews/other.m3u8'}]
+        updated = add_rt_english(rows, extra)[0]
+        self.assertEqual(len(updated['sources']), 5)
+        self.assertTrue(any(s['id']=='saved' for s in updated['sources']))
+
+    def test_cgtn_english_preserves_news_group_and_excludes_documentary(self):
+        from international_channels import add_cgtn_english
+        extra = [{'channel':'CGTNDocumentary.cn', 'feed':'SD', 'url':'https://english-livebkali.cgtn.com/live/doccgtn.m3u8'}]
+        rows = add_cgtn_english([], extra)
+        self.assertEqual(rows[0]['name'], 'CGTN English')
+        self.assertEqual(rows[0]['group'], '02 NEWS & POLITICS')
+        self.assertEqual(len(rows[0]['sources']), 3)
+        self.assertEqual(add_cgtn_english(rows, extra), rows)
