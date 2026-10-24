@@ -1,5 +1,6 @@
 """Exact country and regional schedules; no name-based or cross-region guesses."""
 import copy
+import time
 import xml.etree.ElementTree as ET
 
 # Directory feed identity -> XMLTV service identity. A missing edition stays blank.
@@ -28,6 +29,40 @@ SERVICES = {
     'us': {'ABCNewsLive.us': {'SD':'ABC.News.Live.us2'}, 'CBSNews247.us': {'SD':'CBS.News.National.Stream.us2'}, 'PBS.us': {'East':'PBS.Stream.us2'}},
 }
 
+# Exact language/service identities. Never use French/Arabic i24 or France 24,
+# NHK World Premium, or a regional Global entertainment schedule as substitutes.
+NEWS_GUIDES = {
+    'news_cbn': {'CBNNews.us@English':'CBNNews.official'},
+    'news_aje': {'AlJazeera.qa@English':'AlJazeera.English.net'},
+    'uk1': {'ArirangTV.kr@English':'Arirang.TV.HD.uk',
+            'NHKWorldJapan.jp@English':'NHK.World.HD.uk',
+            'TRTWorld.tr@English':'TRT.World.HD.uk',
+            'France24.fr@English':'FRANCE.24.HD.uk'},
+    'news_in': {'DDIndia.in@English':'DD.India.in',
+                'DDNews.in@Hindi':'DD.News.in',
+                'TaiwanPlusTV.tw@English':'Taiwan.Plus.in',
+                'CNNNews18.in@English':'CNN.NEWS.18.in',
+                'IndiaToday.in@English':'India.Today.in',
+                'NDTV24x7.in@English':'NDTV.24x7.in',
+                'RepublicTV.in@English':'Republic.TV.in',
+                'WION.in@English':'Wion.in',
+                'RT.ru@English':'RT.TV.in'},
+    'news_in4': {'RepublicTV.in@English':'REPUBLIC.TV.in'},
+    'news_kr': {'ArirangTV.kr@English':'Arirang.World.kr'},
+    'news_sg': {'CNA.sg@English':'CNA.(HD).sg',
+                'NHKWorldJapan.jp@English':'NHK.World.–.Japan.(HD).sg',
+                'France24.fr@English':'France.24.(English).sg',
+                'DW.de@English':'Deutsche.Welle.(English).sg',
+                'CGTN.cn@English':'CGTN.sg'},
+    'news_za': {'SABCNews.za@English':'SABC.News.za',
+                'AfricanewsEnglish.fr@English':'Africanews.za'},
+    'news_ng': {'NewsCentral.ng@English':'News.Central.TV.ng'},
+    'news_il': {'i24NEWSEnglishWorld.il@English':'i24NEWS.ENGLISH.il'},
+    'us': {'CheddarNews.us@English':'Cheddar.us2',
+           'NewsmaxTV.us@English':'Newsmax.TV.HD.us2',
+           'ScrippsNews.us@English':'Scripps.News.us2'},
+}
+
 def mappings(source, channels):
     result={}
     services=SERVICES.get(source,{})
@@ -40,10 +75,11 @@ def mappings(source, channels):
             if guide: result[cid]=guide
     return result
 
-def add_guides(data, guides):
+def add_guides(data, guides, now_ms=None):
     # Expansion happens after the original UK catalogue is assembled. Give each
     # alternative its own schedule, including when the player switches regions.
     from export_manifest import supplement_missing, read_programmes, identity
+    now_ms = int(time.time()*1000) if now_ms is None else now_ms
     virtual={}; defaults={}; targets={}
     for c in data['channels']:
         if c.get('variant')!='National': continue
@@ -67,6 +103,22 @@ def add_guides(data, guides):
         data['supplementalGuideSources'].setdefault('pluto_us',[]).extend(added)
         for cid in added:
             for stream in stations[cid]['sources']: stream['guideChannelId']=cid
+    # Imported English/mixed services are regular station rows, not the
+    # National regional wrappers handled below. Existing primary listings win.
+    populated={p['channelId'] for p in data['programmes']}
+    news_stations={c['id']:dict(c,epgId=c['id']) for c in data['channels'] if c['id'] not in populated}
+    news_root=ET.Element('tv')
+    for source, mapping in NEWS_GUIDES.items():
+        if source not in guides: continue
+        # An expired source must not block a fresher exact-service fallback.
+        from export_manifest import stamp
+        from guide_supplements import parse_xml
+        current_ids={p.get('channel') for p in parse_xml(guides[source]).findall('programme')
+                     if (stamp(p.get('stop','')) or 0)>now_ms}
+        current_mapping={cid:guide for cid,guide in mapping.items() if guide in current_ids}
+        added=supplement_missing(news_root,news_stations,guides[source],current_mapping)
+        data['supplementalGuideSources'].setdefault(source,[]).extend(added)
+    data['programmes'].extend(read_programmes(news_root,news_stations))
     root=ET.Element('tv')
     for source in SERVICES:
         if source not in guides: continue

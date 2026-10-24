@@ -60,4 +60,51 @@ class InternationalGuideTests(unittest.TestCase):
         self.assertEqual(build(playlist,b'<tv/>',extra_guides={'rakuten':uk})['channelsWithGuide'],1)
         self.assertEqual(build(playlist,b'<tv/>',extra_guides={'rakuten':wrong})['channelsWithGuide'],0)
 
+class NewsGuideTests(unittest.TestCase):
+    def fixture(self):
+        from international_channels import add_english_news
+        data=build('',b'<tv/>');data['channels']=add_english_news([])
+        return data
+
+    def test_news_import_uses_exact_language_and_utc_offsets(self):
+        from international_guides import add_guides
+        data=self.fixture()
+        xml=b'<tv><programme channel="CNN.NEWS.18.in" start="20261025153000 +0530" stop="20261025160000 +0530"><title>Real bulletin</title><desc>Actual synopsis</desc></programme><programme channel="NDTV.India.in" start="20261025153000 +0530" stop="20261025160000 +0530"><title>Wrong Hindi service</title></programme></tv>'
+        add_guides(data,{'news_in':xml},now_ms=0)
+        self.assertEqual(len(data['programmes']),1)
+        p=data['programmes'][0]
+        self.assertEqual(p['channelId'],'CNNNews18.in@English')
+        self.assertEqual(p['description'],'Actual synopsis')
+        from export_manifest import stamp
+        self.assertEqual(p['start'],stamp('20261025100000 +0000'))
+
+    def test_expired_guide_cannot_block_fresh_exact_service_fallback(self):
+        from international_guides import add_guides
+        from export_manifest import stamp
+        data=self.fixture()
+        old=GuideSupplementTests().guide('NHK.World.HD.uk','Expired').replace(b'20261025',b'20261023')
+        fresh=GuideSupplementTests().guide('NHK.World.–.Japan.(HD).sg','Current')
+        add_guides(data,{'uk1':old,'news_sg':fresh},now_ms=stamp('20261024000000 +0000'))
+        self.assertEqual([p['title'] for p in data['programmes']],['Current'])
+
+    def test_primary_schedule_wins_and_missing_guide_is_not_fabricated(self):
+        from international_guides import add_guides
+        data=self.fixture()
+        cid='CNNNews18.in@English'
+        data['programmes']=[{'channelId':cid,'start':1000,'stop':2000,'title':'Primary','description':'Original'}]
+        add_guides(data,{'news_in':GuideSupplementTests().guide('CNN.NEWS.18.in','Other')},now_ms=0)
+        self.assertEqual([p['title'] for p in data['programmes']],['Primary'])
+        self.assertFalse(any(p['channelId']=='CBNNews.us@English' for p in data['programmes']))
+
+class BroadcasterGuideTests(unittest.TestCase):
+    def test_cbn_uses_dated_times_offsets_and_filters_other_channels(self):
+        from guide_supplements import cbn_xmltv
+        import xml.etree.ElementTree as ET
+        xml=b'<RiGHTvEPG xmlns="http://www.orca.tv/RiGHTv/7.0/EPG"><ChannelsList><channel id="newsChannel"><program time="20261101013000" duration="PT30M"><title>Invalid date</title></program><program time="2026-11-01T01:30:00-05:00" duration="PT00H30M"><title>Actual show</title><description>Actual description</description></program></channel><channel id="family"><program time="2026-11-01T01:30:00-05:00" duration="PT30M"><title>Wrong channel</title></program></channel></ChannelsList></RiGHTvEPG>'
+        rows=ET.fromstring(cbn_xmltv(xml)).findall('programme')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0].get('start'),'20261101063000 +0000')
+        self.assertEqual(rows[0].get('stop'),'20261101070000 +0000')
+        self.assertEqual(rows[0].findtext('desc'),'Actual description')
+
 if __name__=='__main__':unittest.main()

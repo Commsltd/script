@@ -194,7 +194,8 @@ ENGLISH_NEWS = {'ArirangTV.kr': {'name': 'Arirang TV',
  'DW.de': {'name': 'DW English',
            'website': 'https://www.dw.com/',
            'feeds': ['English'],
-           'urls': ['https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8']},
+           'urls': ['https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream03/streamPlaylist.m3u8',
+                    'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8']},
  'AfricanewsEnglish.fr': {'name': 'Africanews English',
                           'website': 'https://www.africanews.com/',
                           'feeds': ['Poland', 'SD'],
@@ -266,7 +267,22 @@ ENGLISH_NEWS = {'ArirangTV.kr': {'name': 'Arirang TV',
  'GlobalNews.ca': {'name': 'Global News National 24/7',
                    'website': 'https://globalnews.ca/',
                    'feeds': ['National'],
-                   'urls': ['https://live.corusdigitaldev.com/groupd/live/49a91e7f-1023-430f-8d66-561055f3d0f7/live.isml/.m3u8']}}
+                   'urls': ['https://live.corusdigitaldev.com/groupd/live/49a91e7f-1023-430f-8d66-561055f3d0f7/live.isml/.m3u8']},
+ 'AL24News.dz': {'name': 'AL24 News · Mixed languages',
+                 'variant': 'Mixed',
+                 'website': '',
+                 'feeds': ['SD'],
+                 'urls': ['https://cdn.live.easybroadcast.io/abr_corp/66_al24_u4yga6h/corp/66_al24_u4yga6h_240p/chunks.m3u8']},
+ 'CRTVNews.cm': {'name': 'CRTV News · English/French',
+                 'variant': 'Mixed',
+                 'website': '',
+                 'feeds': ['SD'],
+                 'urls': ['https://live1.acangroup.org:1929/publiclive/crtv_news/playlist.m3u8']},
+ 'DDNews.in': {'name': 'DD News · Hindi',
+               'variant': 'Hindi',
+               'website': '',
+               'feeds': ['HD'],
+               'urls': ['https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/0811cd8c37ca4c409d5385a6cd2fa18b/index.m3u8']}}
 
 def add_english_news(channels, streams=()):
     """Preserve station identities/backups; refresh only verified English routes."""
@@ -297,8 +313,8 @@ def add_english_news(channels, streams=()):
             entries.extend(s for s in existing['sources'] if s['id'] not in seen)
             existing['sources'] = entries
         else:
-            result.append({'id':cid+'@English', 'epgId':'', 'family':cid, 'name':spec['name'],
-                'group':'02 NEWS & POLITICS', 'order':len(result), 'logo':'', 'variant':'English',
+            result.append({'id':cid+'@'+spec.get('variant','English'), 'epgId':'', 'family':cid, 'name':spec['name'],
+                'group':'02 NEWS & POLITICS', 'order':len(result), 'logo':'', 'variant':spec.get('variant','English'),
                 'sources':entries, 'officialUrl':spec['website']})
     return result
 

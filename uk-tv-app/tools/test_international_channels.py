@@ -90,7 +90,7 @@ class InternationalTest(unittest.TestCase):
         self.assertNotIn(url+'?wrong=language',urls)
         self.assertFalse(any('untrusted.example' in u for u in urls))
         self.assertEqual(len(rows),len(ENGLISH_NEWS))
-        self.assertTrue(all(c['variant']=='English' and c['epgId']=='' for c in rows))
+        self.assertTrue(all(c['variant']==ENGLISH_NEWS[c['family']].get('variant','English') and c['epgId']=='' for c in rows))
         self.assertTrue(all(s['kind']=='direct' for c in rows for s in c['sources']))
 
     def test_news_country_labels_are_idempotent_and_keep_playback_identity(self):

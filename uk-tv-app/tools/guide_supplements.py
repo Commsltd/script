@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import gzip
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
@@ -15,6 +16,10 @@ from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 
 GUIDE_URLS = {
+    'news_cbn': 'https://cmsedit.cbn.com/app_feeds/cbnFamily/liveschedule.php?channel=newsChannel&numHours=168',
+    **{name: 'https://epgshare01.online/epgshare01/epg_ripper_'+feed+'.xml.gz'
+       for name,feed in [('news_in','IN1'),('news_in4','IN4'),('news_kr','KR1'),('news_sg','SG1'),('news_za','ZA1'),
+                         ('news_ng','NG1'),('news_il','IL1'),('news_aje','ALJAZEERA1')]},
     **{name: 'https://epgshare01.online/epgshare01/epg_ripper_'+feed+'.xml.gz' for name,feed in [('rakuten','RAKUTEN1'),('au','AU1'),('ca','CA2'),('ie','IE1'),('nz','NZ1'),('us','US2')]},
     'jm': 'https://epgshare01.online/epgshare01/epg_ripper_JM1.xml.gz',
     'nz_mjh': 'https://i.mjh.nz/nz/epg.xml.gz',
@@ -104,6 +109,32 @@ def mappings(source, channels):
             result[cid] = ids.pop()
     return result
 
+def cbn_xmltv(data):
+    """Translate the broadcaster's dated schedule; preserve its explicit offsets."""
+    if b'<!ENTITY' in data.upper(): raise ValueError('XML entities are not accepted')
+    root=ET.fromstring(data)
+    namespace={'c':'http://www.orca.tv/RiGHTv/7.0/EPG'}
+    out=ET.Element('tv')
+    for channel in root.findall('.//c:channel',namespace):
+        if channel.get('id')!='newsChannel': continue
+        for item in channel.findall('c:program',namespace):
+            if item.get('delete')=='true': continue
+            duration=re.fullmatch(r'PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?',item.get('duration',''))
+            title=(item.findtext('c:title','',namespace) or '').strip()
+            if not duration or not title: continue
+            try: start=datetime.fromisoformat(item.get('time',''))
+            except ValueError: continue
+            if start.tzinfo is None: continue
+            seconds=sum(int(v or 0)*n for v,n in zip(duration.groups(),[3600,60,1]))
+            if seconds<=0 or seconds>86400: continue
+            stop=start+timedelta(seconds=seconds)
+            fmt=lambda value:value.astimezone(timezone.utc).strftime('%Y%m%d%H%M%S +0000')
+            programme=ET.SubElement(out,'programme',channel='CBNNews.official',start=fmt(start),stop=fmt(stop))
+            ET.SubElement(programme,'title').text=title
+            description=(item.findtext('c:description','',namespace) or '').strip()
+            if description: ET.SubElement(programme,'desc').text=description
+    return ET.tostring(out,encoding='utf-8')
+
 def download(name, output):
     path = output / (name + '.xml.gz')
     try:
@@ -111,6 +142,7 @@ def download(name, output):
             data = response.read(20 * 1024 * 1024 + 1)
         if len(data) > 20 * 1024 * 1024:
             raise ValueError('Download exceeds size limit')
+        if name=='news_cbn': data=gzip.compress(cbn_xmltv(data))
         temporary = path.with_suffix('.tmp.gz')
         temporary.write_bytes(data)
         xml = load_guide(temporary)
