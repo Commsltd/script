@@ -73,7 +73,7 @@ def expand(channels, streams=(), inventory=None):
             result.append({'id':cid+'@National','epgId':'','family':cid,'name':meta['name'],
                 'group':group,'order':len(result),'logo':meta.get('logo',''),'variant':'National',
                 'sources':sources,'officialUrl':meta.get('website') or ''})
-    return add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams)
+    return label_news_countries(add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams))
 
 
 def add_rt_english(channels, streams=()):
@@ -194,8 +194,79 @@ ENGLISH_NEWS = {'ArirangTV.kr': {'name': 'Arirang TV',
  'DW.de': {'name': 'DW English',
            'website': 'https://www.dw.com/',
            'feeds': ['English'],
-           'urls': ['https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8']}}
-
+           'urls': ['https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8']},
+ 'AfricanewsEnglish.fr': {'name': 'Africanews English',
+                          'website': 'https://www.africanews.com/',
+                          'feeds': ['Poland', 'SD'],
+                          'urls': ['https://cdn-euronews.akamaized.net/live/eds/africanews-en/25049/index.m3u8',
+                                   'https://c3c275b999764df8a2dd55ffe2996818.mediatailor.eu-west-1.amazonaws.com/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6576/bitok/eyJzdGlkIjoiOTU0NDAyODQtOTU0My00Yzc2LThmZjQtNDRhY2YwYmQxYTYwIiwibWt0IjoicGwiLCJjaCI6NjYwNiwicHRmIjo1fQ==/26036/africanews-en.m3u8']},
+ 'AlArabiyaEnglish.sa': {'name': 'Al Arabiya English',
+                         'website': '',
+                         'feeds': ['SD'],
+                         'urls': ['https://live.alarabiya.net/alarabiapublish/english/playlist_dvr.m3u8']},
+ 'CBNNews.us': {'name': 'CBN News',
+                'website': 'https://www1.cbn.com/',
+                'feeds': ['SD'],
+                'urls': ['https://fastly.live.brightcove.com/6380396819112/us-east-1/734546207001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiczFpM3ZpLmVncmVzcy50N2M3emwiLCJhY2NvdW50X2lkIjoiNzM0NTQ2MjA3MDAxIiwiZWhuIjoiZmFzdGx5LmxpdmUuYnJpZ2h0Y292ZS5jb20iLCJpc3MiOiJibGl2ZS1wbGF5YmFjay1zb3VyY2UtYXBpIiwic3ViIjoicGF0aG1hcHRva2VuIiwiYXVkIjpbIjczNDU0NjIwNzAwMSJdLCJqdGkiOiI2MzgwMzk2ODE5MTEyIn0.GDYp4IWtzwPkupEWeeOavnioVknO-Ev3UGlHvM1rE6I/playlist-hls.m3u8']},
+ 'CheddarNews.us': {'name': 'Cheddar News',
+                    'website': 'https://cheddar.com/',
+                    'feeds': ['SD'],
+                    'urls': ['https://hls.livecdn.io/cheddar.com/cheddar/playlist.m3u8',
+                             'https://wurlcheddar.global.transmit.live/hls/689ceac9301c34d3919676f3/v1/Cheddar/samsung_us/latest/main/hls/playlist.m3u8']},
+ 'CNNNews18.in': {'name': 'CNN-News18',
+                  'website': 'https://www.news18.com/',
+                  'feeds': ['SD'],
+                  'urls': ['https://n18syndication.akamaized.net/bpk-tv/CNN_News18_NW18_MOB/output01/master.m3u8']},
+ 'i24NEWSEnglishWorld.il': {'name': 'i24NEWS English',
+                            'website': 'https://www.i24news.tv/en/',
+                            'feeds': ['SD'],
+                            'urls': ['https://i24newsenglish-cdn.encoders.immergo.tv/master.m3u8',
+                                     'https://hlspackager.akamaized.net/live/DB/i24_ENGLISH/HLS/i24_ENGLISH.m3u8']},
+ 'IndiaToday.in': {'name': 'India Today',
+                   'website': 'https://www.indiatoday.in/',
+                   'feeds': ['SD'],
+                   'urls': ['https://d1rc86nwwc9fag.cloudfront.net/vglive-sk-293160/master.m3u8',
+                            'https://indiatodaylive.akamaized.net/hls/live/2014320/indiatoday/indiatodaylive/playlist.m3u8']},
+ 'NDTV24x7.in': {'name': 'NDTV 24x7',
+                 'website': 'https://www.ndtv.com/',
+                 'feeds': ['SD'],
+                 'urls': ['https://ndtv24x7elemarchana.akamaized.net/hls/live/2003678/ndtv24x7/master.m3u8']},
+ 'NewsCentral.ng': {'name': 'News Central',
+                    'website': 'http://newscentral.africa/',
+                    'feeds': ['SD'],
+                    'urls': ['https://wf.newscentral.ng:8443/hls/stream.m3u8']},
+ 'NewsmaxTV.us': {'name': 'Newsmax TV',
+                  'website': 'https://www.newsmaxtv.com/',
+                  'feeds': ['SD'],
+                  'urls': ['https://nmx1ota.akamaized.net/hls/live/2107010/Live_1/index.m3u8']},
+ 'PressTV.ir': {'name': 'Press TV',
+                'website': 'https://www.presstv.ir/',
+                'feeds': ['SD'],
+                'urls': ['https://live.presstv.co.uk/hls/presstv.m3u8']},
+ 'RepublicTV.in': {'name': 'Republic TV',
+                   'website': 'https://www.republicworld.com/',
+                   'feeds': ['SD'],
+                   'urls': ['https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/2e31d831f08640ff92f65003bdc89991/index.m3u8']},
+ 'ScrippsNews.us': {'name': 'Scripps News',
+                    'website': 'https://scrippsnews.com/',
+                    'feeds': ['SD'],
+                    'urls': ['https://jmp2.uk/plu-5459795fc9f133a519bc0bef.m3u8',
+                             'https://pb-syzbb4sicfx4g.akamaized.net/ScrippsNews_US.m3u8',
+                             'https://aegis-cloudfront-1.tubi.video/7e1c26b7-7975-4240-9a4f-480eaa8f3ea4/playlist.m3u8']},
+ 'WION.in': {'name': 'WION',
+             'website': 'https://www.wionews.com/',
+             'feeds': ['SD'],
+             'urls': ['https://d7x8z4yuq42qn.cloudfront.net/index_7.m3u8',
+                      'https://d7x8z4yuq42qn.cloudfront.net/index_1.m3u8',
+                      'https://d7x8z4yuq42qn.cloudfront.net/index_2.m3u8',
+                      'https://d7x8z4yuq42qn.cloudfront.net/index_5.m3u8',
+                      'https://d7x8z4yuq42qn.cloudfront.net/index_4.m3u8',
+                      'https://d7x8z4yuq42qn.cloudfront.net/index_3.m3u8',
+                      'https://wion-klowdtv.amagi.tv/playlist.m3u8']},
+ 'GlobalNews.ca': {'name': 'Global News National 24/7',
+                   'website': 'https://globalnews.ca/',
+                   'feeds': ['National'],
+                   'urls': ['https://live.corusdigitaldev.com/groupd/live/49a91e7f-1023-430f-8d66-561055f3d0f7/live.isml/.m3u8']}}
 
 def add_english_news(channels, streams=()):
     """Preserve station identities/backups; refresh only verified English routes."""
@@ -229,4 +300,30 @@ def add_english_news(channels, streams=()):
             result.append({'id':cid+'@English', 'epgId':'', 'family':cid, 'name':spec['name'],
                 'group':'02 NEWS & POLITICS', 'order':len(result), 'logo':'', 'variant':'English',
                 'sources':entries, 'officialUrl':spec['website']})
+    return result
+
+# Use the service's country/edition, not the CDN host or its parent company's base.
+NEWS_COUNTRY_NAMES = {'uk':'UK', 'us':'USA', 'ca':'Canada', 'au':'Australia',
+    'nz':'New Zealand', 'ie':'Ireland', 'tt':'Trinidad & Tobago', 'in':'India',
+    'sg':'Singapore', 'tw':'Taiwan', 'jp':'Japan', 'kr':'South Korea', 'cn':'China',
+    'qa':'Qatar', 'tr':'Turkey', 'za':'South Africa', 'fr':'France', 'de':'Germany',
+    'ru':'Russia', 'ng':'Nigeria', 'ir':'Iran', 'il':'Israel', 'sa':'Saudi Arabia',
+    'pk':'Pakistan', 'gh':'Ghana', 'ke':'Kenya', 'dz':'Algeria', 'cm':'Cameroon',
+    'eg':'Egypt', 'bw':'Botswana', 'zw':'Zimbabwe', 'my':'Malaysia'}
+NEWS_COUNTRY_OVERRIDES = {'EuronewsEnglish.fr':'Europe', 'AfricanewsEnglish.fr':'Pan-African',
+    'BloombergTV.us@Europe':'Europe'}
+COUNTRY_SHELF_NEWS = {'BNNBloomberg.ca', 'CPACEnglish.ca', 'FoxWeather.us',
+    'LiveNOWfromFOX.us', 'AusbizTV.au'}
+
+def label_news_countries(channels):
+    result = copy.deepcopy(channels)
+    for channel in result:
+        cid = channel['id'].partition('@')[0]
+        if not (channel.get('group') == '02 NEWS & POLITICS' or
+                'news' in channel.get('name','').lower() or cid in COUNTRY_SHELF_NEWS):
+            continue
+        country = NEWS_COUNTRY_OVERRIDES.get(channel['id'], NEWS_COUNTRY_OVERRIDES.get(cid))
+        country = country or NEWS_COUNTRY_NAMES.get(cid.rsplit('.',1)[-1].lower())
+        if country and not channel['name'].endswith(' ('+country+')'):
+            channel['name'] += ' ('+country+')'
     return result

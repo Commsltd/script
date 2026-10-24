@@ -5,7 +5,7 @@ class InternationalTest(unittest.TestCase):
     def test_existing_ids_and_all_sources_are_untouched(self):
         old={'id':'ABCNewsLive.us@SD','name':'ABC News Live','sources':[{'id':'one'},{'id':'two'}],'group':'02 NEWS & POLITICS'}
         result=expand([old])
-        self.assertEqual(result[0],old)
+        self.assertEqual(result[0],dict(old,name='ABC News Live (USA)'))
         self.assertEqual(len([c for c in result if c['id'].startswith('ABCNewsLive.us@')]),1)
         self.assertEqual(expand(result),result)
     def test_regional_alternatives_are_all_retained_under_one_national_entry(self):
@@ -89,6 +89,20 @@ class InternationalTest(unittest.TestCase):
         self.assertIn(url+'?refreshed=1',urls)
         self.assertNotIn(url+'?wrong=language',urls)
         self.assertFalse(any('untrusted.example' in u for u in urls))
-        self.assertEqual(len(rows),10)
+        self.assertEqual(len(rows),len(ENGLISH_NEWS))
         self.assertTrue(all(c['variant']=='English' and c['epgId']=='' for c in rows))
         self.assertTrue(all(s['kind']=='direct' for c in rows for s in c['sources']))
+
+    def test_news_country_labels_are_idempotent_and_keep_playback_identity(self):
+        from international_channels import label_news_countries
+        rows=[{'id':'WION.in@English','name':'WION','group':'02 NEWS & POLITICS','sources':[{'id':'keep'}]},
+              {'id':'EuronewsEnglish.fr@SD','name':'Euronews English','group':'02 NEWS & POLITICS'},
+              {'id':'AfricanewsEnglish.fr@English','name':'Africanews English','group':'02 NEWS & POLITICS'},
+              {'id':'CBCNewsNetwork.ca@National','name':'CBC News Network','group':'20 CANADA'},
+              {'id':'CBCTelevision.ca@National','name':'CBC Television','group':'20 CANADA'}]
+        result=label_news_countries(rows)
+        self.assertEqual([c['name'] for c in result],['WION (India)','Euronews English (Europe)',
+            'Africanews English (Pan-African)','CBC News Network (Canada)','CBC Television'])
+        self.assertEqual(label_news_countries(result),result)
+        self.assertEqual(result[0]['sources'],rows[0]['sources'])
+        self.assertEqual(rows[0]['name'],'WION')
