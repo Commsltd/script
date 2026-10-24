@@ -1,0 +1,5693 @@
+[
+  {
+    "id": "Localish.us@US",
+    "family": "Localish.us",
+    "name": "Localish",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC4400005HY_20260421T143117SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC4400005HY",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC4400005HY",
+        "guideChannelId": "fast:samsung_us:USBC4400005HY"
+      }
+    ]
+  },
+  {
+    "id": "FASTreuters60.uk@UK",
+    "family": "FASTreuters60.uk",
+    "name": "Reuters 60",
+    "group": "02 NEWS & POLITICS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD4900001RG_20250107T030741SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD4900001RG",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD4900001RG",
+        "guideChannelId": "fast:samsung:GBBD4900001RG"
+      }
+    ]
+  },
+  {
+    "id": "BloombergOriginals.us@US",
+    "family": "BloombergOriginals.us",
+    "name": "Bloomberg Originals",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ30000041W_20260421T133707SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ30000041W",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ30000041W",
+        "guideChannelId": "fast:samsung_us:USAJ30000041W"
+      }
+    ]
+  },
+  {
+    "id": "YahooFinance.us@US",
+    "family": "YahooFinance.us",
+    "name": "Yahoo Finance",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ4300005PJ_20260120T230333SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ4300005PJ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ4300005PJ",
+        "guideChannelId": "fast:samsung_us:USAJ4300005PJ"
+      }
+    ]
+  },
+  {
+    "id": "TYTNetwork.us@US",
+    "family": "TYTNetwork.us",
+    "name": "TYT Network",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA30002142_20250325T020252SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA30002142",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA30002142",
+        "guideChannelId": "fast:samsung_us:USBA30002142"
+      }
+    ]
+  },
+  {
+    "id": "TheHillTV.us@US",
+    "family": "TheHillTV.us",
+    "name": "The Hill TV",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3300008FX_20260421T133803SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US3300008FX",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3300008FX",
+        "guideChannelId": "fast:samsung_us:US3300008FX"
+      }
+    ]
+  },
+  {
+    "id": "Newsmax2.us@SD",
+    "family": "Newsmax2.us",
+    "name": "Newsmax 2 (USA)",
+    "group": "02 NEWS & POLITICS",
+    "variant": "SD",
+    "logo": "",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA300028QU",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300028QU",
+        "guideChannelId": "fast:samsung_us:USBA300028QU"
+      }
+    ]
+  },
+  {
+    "id": "SalemNewsChannel.us@US",
+    "family": "SalemNewsChannel.us",
+    "name": "Salem News Channel",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3700004Y0_20260421T133623SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US3700004Y0",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3700004Y0",
+        "guideChannelId": "fast:samsung_us:US3700004Y0"
+      }
+    ]
+  },
+  {
+    "id": "FoxWeather.us@National",
+    "family": "FoxWeather.us",
+    "name": "Fox Weather (USA)",
+    "group": "19 USA",
+    "variant": "National",
+    "logo": "",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD700003L7",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD700003L7",
+        "guideChannelId": "fast:samsung_us:USBD700003L7"
+      }
+    ]
+  },
+  {
+    "id": "AccuWeatherNOW.us@US",
+    "family": "AccuWeatherNOW.us",
+    "name": "AccuWeather NOW",
+    "group": "02 NEWS & POLITICS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US50000551O_20260421T133704SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US50000551O",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US50000551O",
+        "guideChannelId": "fast:samsung_us:US50000551O"
+      }
+    ]
+  },
+  {
+    "id": "CNNOriginals.us@US",
+    "family": "CNNOriginals.us",
+    "name": "CNN Originals",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/66e0b4536ad04d0008fff4b2/colorLogoPNG_1755018282136.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-66e0b4536ad04d0008fff4b2.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "66e0b4536ad04d0008fff4b2",
+        "guideChannelId": "fast:pluto_us:66e0b4536ad04d0008fff4b2"
+      }
+    ]
+  },
+  {
+    "id": "FASTbusinessinsider.us@US",
+    "family": "FASTbusinessinsider.us",
+    "name": "Business Insider",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2400013TO_20260929T044439SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2400013TO",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2400013TO",
+        "guideChannelId": "fast:samsung_us:US2400013TO"
+      }
+    ]
+  },
+  {
+    "id": "NBCSportsNOW.us@US",
+    "family": "NBCSportsNOW.us",
+    "name": "NBC Sports NOW",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD420002446_20250729T010447SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD420002446",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD420002446",
+        "guideChannelId": "fast:samsung_us:USBD420002446"
+      }
+    ]
+  },
+  {
+    "id": "FASTfoxsportsfast.us@US",
+    "family": "FASTfoxsportsfast.us",
+    "name": "FOX Sports FAST",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2700001QY_20260421T143236SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2700001QY",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2700001QY",
+        "guideChannelId": "fast:samsung_us:US2700001QY"
+      }
+    ]
+  },
+  {
+    "id": "FuboSportsNetwork.us@US",
+    "family": "FuboSportsNetwork.us",
+    "name": "fubo Sports Network",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ2200023Z0_20251014T230120SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ2200023Z0",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ2200023Z0",
+        "guideChannelId": "fast:samsung_us:USAJ2200023Z0"
+      }
+    ]
+  },
+  {
+    "id": "ScrippsSportsNetwork.us@US",
+    "family": "ScrippsSportsNetwork.us",
+    "name": "Scripps Sports Network",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US400221W2_20261009T160658SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US400221W2",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US400221W2",
+        "guideChannelId": "fast:samsung_us:US400221W2"
+      }
+    ]
+  },
+  {
+    "id": "SportsGrid.us@US",
+    "family": "SportsGrid.us",
+    "name": "SportsGrid",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA300031OT_20261023T223512SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA300031OT",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300031OT",
+        "guideChannelId": "fast:samsung_us:USBA300031OT"
+      }
+    ]
+  },
+  {
+    "id": "FASTrokusportschannel.us@US",
+    "family": "FASTrokusportschannel.us",
+    "name": "Roku Sports Channel",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4500005Z1_20260811T043555SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4500005Z1",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4500005Z1",
+        "guideChannelId": "fast:samsung_us:US4500005Z1"
+      }
+    ]
+  },
+  {
+    "id": "FASTcbssportsgolazonetwork.us@US",
+    "family": "FASTcbssportsgolazonetwork.us",
+    "name": "CBS Sports Golazo Network",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US100000704_20260701T010049SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US100000704",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US100000704",
+        "guideChannelId": "fast:samsung_us:US100000704"
+      }
+    ]
+  },
+  {
+    "id": "FASTuefachampionsleaguefast.us@US",
+    "family": "FASTuefachampionsleaguefast.us",
+    "name": "UEFA Champions League FAST",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US1000012ML_20260528T041831SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US1000012ML",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US1000012ML",
+        "guideChannelId": "fast:samsung_us:US1000012ML"
+      }
+    ]
+  },
+  {
+    "id": "FIFAPlus.uk@English",
+    "family": "FIFAPlus.uk",
+    "name": "FIFA+ (720p)",
+    "group": "10 SPORT",
+    "variant": "English",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-63d91d2560bc8f0008a225e4.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "63d91d2560bc8f0008a225e4",
+        "guideChannelId": "fast:pluto:63d91d2560bc8f0008a225e4"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBD1100008YW",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD1100008YW",
+        "guideChannelId": "fast:samsung:GBBD1100008YW"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBD12000255B",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD12000255B",
+        "guideChannelId": "fast:samsung_us:USBD12000255B"
+      }
+    ]
+  },
+  {
+    "id": "FIFAPlusWomen.uk@English",
+    "family": "FIFAPlusWomen.uk",
+    "name": "FIFA+ Women (720p)",
+    "group": "10 SPORT",
+    "variant": "English",
+    "logo": "https://i.imgur.com/xy9ZxVO.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3800009F0",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3800009F0",
+        "guideChannelId": "fast:samsung:GB3800009F0"
+      }
+    ]
+  },
+  {
+    "id": "FASTgfnfootball.uk@UK",
+    "family": "FASTgfnfootball.uk",
+    "name": "GFN Football",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2200002CC_20261014T010220SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2200002CC",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2200002CC",
+        "guideChannelId": "fast:samsung:GB2200002CC"
+      }
+    ]
+  },
+  {
+    "id": "ACCDigitalNetwork.us@US",
+    "family": "ACCDigitalNetwork.us",
+    "name": "ACC Digital Network",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD25000161U_20250304T041450SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD25000161U",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD25000161U",
+        "guideChannelId": "fast:samsung_us:USBD25000161U"
+      }
+    ]
+  },
+  {
+    "id": "FASTbig12studios.us@US",
+    "family": "FASTbig12studios.us",
+    "name": "Big 12 Studios",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US37000017A_20260421T143312SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US37000017A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US37000017A",
+        "guideChannelId": "fast:samsung_us:US37000017A"
+      }
+    ]
+  },
+  {
+    "id": "Pac12Insider.us@US",
+    "family": "Pac12Insider.us",
+    "name": "PAC-12 Insider",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA300034DB_20250415T005925SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA300034DB",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300034DB",
+        "guideChannelId": "fast:samsung_us:USBA300034DB"
+      }
+    ]
+  },
+  {
+    "id": "NFLChannel.us@UK",
+    "family": "NFLChannel.us",
+    "name": "NFL Channel",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/6a6a02ce1b1c90d8bf9556d8/colorLogoPNG_1785333477887.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6a6a02ce1b1c90d8bf9556d8.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6a6a02ce1b1c90d8bf9556d8",
+        "guideChannelId": "fast:pluto:6a6a02ce1b1c90d8bf9556d8"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5ced7d5df64be98e07ed47b6.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5ced7d5df64be98e07ed47b6",
+        "guideChannelId": "fast:pluto_us:5ced7d5df64be98e07ed47b6"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US2600007WJ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2600007WJ",
+        "guideChannelId": "fast:samsung_us:US2600007WJ"
+      }
+    ]
+  },
+  {
+    "id": "FASTthenbachannel.us@US",
+    "family": "FASTthenbachannel.us",
+    "name": "The NBA Channel",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/6792c30abc03978b9b8bb832/colorLogoPNG_1747950897785.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6792c30abc03978b9b8bb832.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "6792c30abc03978b9b8bb832",
+        "guideChannelId": "fast:pluto_us:6792c30abc03978b9b8bb832"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US3600003R7",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3600003R7",
+        "guideChannelId": "fast:samsung_us:US3600003R7"
+      }
+    ]
+  },
+  {
+    "id": "FASTmlbchannel.us@US",
+    "family": "FASTmlbchannel.us",
+    "name": "MLB Channel",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US1400001WV_20261016T224647SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US1400001WV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US1400001WV",
+        "guideChannelId": "fast:samsung_us:US1400001WV"
+      }
+    ]
+  },
+  {
+    "id": "PGATour.us@UK",
+    "family": "PGATour.us",
+    "name": "PGA TOUR",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/66d885aef0f17500084b6750/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-66d885aef0f17500084b6750.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "66d885aef0f17500084b6750",
+        "guideChannelId": "fast:pluto:66d885aef0f17500084b6750"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB300036IM",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB300036IM",
+        "guideChannelId": "fast:samsung:GB300036IM"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5de94dacb394a300099fa22a.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5de94dacb394a300099fa22a",
+        "guideChannelId": "fast:pluto_us:5de94dacb394a300099fa22a"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US400001M2",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US400001M2",
+        "guideChannelId": "fast:samsung_us:US400001M2"
+      }
+    ]
+  },
+  {
+    "id": "FASTgolfpass.us@US",
+    "family": "FASTgolfpass.us",
+    "name": "GolfPass",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB400000145_20260818T061041SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB400000145",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB400000145",
+        "guideChannelId": "fast:samsung_us:USBB400000145"
+      }
+    ]
+  },
+  {
+    "id": "FASTgolflife.uk@UK",
+    "family": "FASTgolflife.uk",
+    "name": "Golf Life",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1500003S4_20260901T102446SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1500003S4",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1500003S4",
+        "guideChannelId": "fast:samsung:GB1500003S4"
+      }
+    ]
+  },
+  {
+    "id": "TennisChannel2.us@US",
+    "family": "TennisChannel2.us",
+    "name": "Tennis Channel 2",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/681109b688b9d85d0938c6ba/colorLogoPNG_1747434868944.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-681109b688b9d85d0938c6ba.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "681109b688b9d85d0938c6ba",
+        "guideChannelId": "fast:pluto_us:681109b688b9d85d0938c6ba"
+      }
+    ]
+  },
+  {
+    "id": "FASTdaznringside.uk@UK",
+    "family": "FASTdaznringside.uk",
+    "name": "DAZN Ringside",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/65b14aae0cb1a100087a216e/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-65b14aae0cb1a100087a216e.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "65b14aae0cb1a100087a216e",
+        "guideChannelId": "fast:pluto:65b14aae0cb1a100087a216e"
+      }
+    ]
+  },
+  {
+    "id": "FASTtoprankclassics.us@US",
+    "family": "FASTtoprankclassics.us",
+    "name": "Top Rank Classics",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/64d160f53c785e0008df525e/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-64d160f53c785e0008df525e.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "64d160f53c785e0008df525e",
+        "guideChannelId": "fast:pluto_us:64d160f53c785e0008df525e"
+      }
+    ]
+  },
+  {
+    "id": "PFLMMA.us@US",
+    "family": "PFLMMA.us",
+    "name": "PFL MMA",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/6334a574605f140007e233c4/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6334a574605f140007e233c4.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "6334a574605f140007e233c4",
+        "guideChannelId": "fast:pluto_us:6334a574605f140007e233c4"
+      }
+    ]
+  },
+  {
+    "id": "FASTtnawrestling.us@US",
+    "family": "FASTtnawrestling.us",
+    "name": "TNA Wrestling",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/59b722526996084038c01e1b/colorLogoPNG_1784129596431.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-59b722526996084038c01e1b.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "59b722526996084038c01e1b",
+        "guideChannelId": "fast:pluto_us:59b722526996084038c01e1b"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB1000001XP",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB1000001XP",
+        "guideChannelId": "fast:samsung_us:USBB1000001XP"
+      }
+    ]
+  },
+  {
+    "id": "FASTwrestlinglegendstv.uk@UK",
+    "family": "FASTwrestlinglegendstv.uk",
+    "name": "Wrestling Legends TV",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/68c820525ec82769fdfcd104/colorLogoPNG_1765359753710.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-68c820525ec82769fdfcd104.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "68c820525ec82769fdfcd104",
+        "guideChannelId": "fast:pluto:68c820525ec82769fdfcd104"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB500013LT",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB500013LT",
+        "guideChannelId": "fast:samsung:GB500013LT"
+      }
+    ]
+  },
+  {
+    "id": "NASCARChannel.us@US",
+    "family": "NASCARChannel.us",
+    "name": "NASCAR Channel",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US700021SM_20250505T232701SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US700021SM",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US700021SM",
+        "guideChannelId": "fast:samsung_us:US700021SM"
+      }
+    ]
+  },
+  {
+    "id": "FASTmotogpchannel.us@US",
+    "family": "FASTmotogpchannel.us",
+    "name": "MotoGP Channel",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3500007C4_20260421T143306SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US3500007C4",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3500007C4",
+        "guideChannelId": "fast:samsung_us:US3500007C4"
+      }
+    ]
+  },
+  {
+    "id": "NHRATV.us@US",
+    "family": "NHRATV.us",
+    "name": "NHRA TV",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3200019WF_20240528T020722SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3200019WF",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3200019WF",
+        "guideChannelId": "fast:samsung_us:USBC3200019WF"
+      }
+    ]
+  },
+  {
+    "id": "FASTrallytvfastplus.uk@UK",
+    "family": "FASTrallytvfastplus.uk",
+    "name": "Rally.TV FAST+",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB51000026A_20260120T031439SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB51000026A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB51000026A",
+        "guideChannelId": "fast:samsung:GB51000026A"
+      }
+    ]
+  },
+  {
+    "id": "RacerSelect.us@US",
+    "family": "RacerSelect.us",
+    "name": "RACER Select",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD1700019RN_20250819T224353SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD1700019RN",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD1700019RN",
+        "guideChannelId": "fast:samsung_us:USBD1700019RN"
+      }
+    ]
+  },
+  {
+    "id": "FASTpowernation.us@US",
+    "family": "FASTpowernation.us",
+    "name": "POWERNATION",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD2500017XQ_20240528T020725SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD2500017XQ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD2500017XQ",
+        "guideChannelId": "fast:samsung_us:USBD2500017XQ"
+      }
+    ]
+  },
+  {
+    "id": "FASTtorque.us@US",
+    "family": "FASTtorque.us",
+    "name": "Torque",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB5200027Z5_20260117T020411SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB5200027Z5",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB5200027Z5",
+        "guideChannelId": "fast:samsung_us:USBB5200027Z5"
+      }
+    ]
+  },
+  {
+    "id": "FASTdonutmedia.us@US",
+    "family": "FASTdonutmedia.us",
+    "name": "Donut Media",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US17000281T_20260303T094105SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US17000281T",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US17000281T",
+        "guideChannelId": "fast:samsung_us:US17000281T"
+      }
+    ]
+  },
+  {
+    "id": "FASThagerty.us@US",
+    "family": "FASThagerty.us",
+    "name": "Hagerty",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD4200011W4_20240709T002126SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD4200011W4",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD4200011W4",
+        "guideChannelId": "fast:samsung_us:USBD4200011W4"
+      }
+    ]
+  },
+  {
+    "id": "WomensSportsNetwork.us@US",
+    "family": "WomensSportsNetwork.us",
+    "name": "Women's Sports Network",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/686d8dd294a028da3ac59566/colorLogoPNG_1753992941899.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-686d8dd294a028da3ac59566.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "686d8dd294a028da3ac59566",
+        "guideChannelId": "fast:pluto_us:686d8dd294a028da3ac59566"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US4100001KP",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4100001KP",
+        "guideChannelId": "fast:samsung_us:US4100001KP"
+      }
+    ]
+  },
+  {
+    "id": "WorldPokerTour.us@UK",
+    "family": "WorldPokerTour.us",
+    "name": "World Poker Tour UK (1080p)",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/98kLMjj.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ad8d796e738977e2c31094a.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ad8d796e738977e2c31094a",
+        "guideChannelId": "fast:pluto:5ad8d796e738977e2c31094a"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBD2900001VD",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD2900001VD",
+        "guideChannelId": "fast:samsung:GBBD2900001VD"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5616f9c0ada51f8004c4b091.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5616f9c0ada51f8004c4b091",
+        "guideChannelId": "fast:pluto_us:5616f9c0ada51f8004c4b091"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBD1700009P5",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD1700009P5",
+        "guideChannelId": "fast:samsung_us:USBD1700009P5"
+      }
+    ]
+  },
+  {
+    "id": "PokerGo.us@US",
+    "family": "PokerGo.us",
+    "name": "PokerGO",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5fc54366b04b2300072e31af/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5fc54366b04b2300072e31af.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5fc54366b04b2300072e31af",
+        "guideChannelId": "fast:pluto_us:5fc54366b04b2300072e31af"
+      }
+    ]
+  },
+  {
+    "id": "FASTtritonpoker.us@US",
+    "family": "FASTtritonpoker.us",
+    "name": "Triton Poker",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US18000206C_20260804T045907SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US18000206C",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US18000206C",
+        "guideChannelId": "fast:samsung_us:US18000206C"
+      }
+    ]
+  },
+  {
+    "id": "BilliardTV.us@US",
+    "family": "BilliardTV.us",
+    "name": "Billiard TV",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD12000183X_20250428T223415SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD12000183X",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD12000183X",
+        "guideChannelId": "fast:samsung_us:USBD12000183X"
+      }
+    ]
+  },
+  {
+    "id": "RugbyPassTV.uk@SD",
+    "family": "RugbyPassTV.uk",
+    "name": "RugbyPass TV (720p)",
+    "group": "10 SPORT",
+    "variant": "SD",
+    "logo": "",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-66f137cb483d460008ece053.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "66f137cb483d460008ece053",
+        "guideChannelId": "fast:pluto:66f137cb483d460008ece053"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB330000144",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB330000144",
+        "guideChannelId": "fast:samsung:GB330000144"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US1000004YJ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US1000004YJ",
+        "guideChannelId": "fast:samsung_us:US1000004YJ"
+      }
+    ]
+  },
+  {
+    "id": "RedBullTV.at@UK",
+    "family": "RedBullTV.at",
+    "name": "Red Bull TV UK (1080p)",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5e7cb84a172a0f0007da69e4/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD2300003IK",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD2300003IK",
+        "guideChannelId": "fast:samsung:GBBD2300003IK"
+      }
+    ]
+  },
+  {
+    "id": "FASToutside.us@US",
+    "family": "FASToutside.us",
+    "name": "Outside",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ3504707A_20250325T014938SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ3504707A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ3504707A",
+        "guideChannelId": "fast:samsung_us:USAJ3504707A"
+      }
+    ]
+  },
+  {
+    "id": "WaypointTV.us@US",
+    "family": "WaypointTV.us",
+    "name": "Waypoint TV",
+    "group": "10 SPORT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB440002055_20260421T143324SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB440002055",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB440002055",
+        "guideChannelId": "fast:samsung_us:USBB440002055"
+      }
+    ]
+  },
+  {
+    "id": "StrongmanChampionsLeague.uk@UK",
+    "family": "StrongmanChampionsLeague.uk",
+    "name": "Strongman Champions League",
+    "group": "10 SPORT",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC90001089_20250107T153921SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC90001089",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC90001089",
+        "guideChannelId": "fast:samsung:GBBC90001089"
+      }
+    ]
+  },
+  {
+    "id": "DocumentaryPlus.us@US",
+    "family": "DocumentaryPlus.us",
+    "name": "Documentary+",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ3504701A_20260421T141824SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ3504701A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ3504701A",
+        "guideChannelId": "fast:samsung_us:USAJ3504701A"
+      }
+    ]
+  },
+  {
+    "id": "CuriosityNOW.de@UK",
+    "family": "CuriosityNOW.de",
+    "name": "Curiosity Now",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1400001E4_20250107T031103SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1400001E4",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1400001E4",
+        "guideChannelId": "fast:samsung:GB1400001E4"
+      }
+    ]
+  },
+  {
+    "id": "Getfactual.us@UK",
+    "family": "Getfactual.us",
+    "name": "Get.factual (720p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/4oVcjLd.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2700001R6",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700001R6",
+        "guideChannelId": "fast:samsung:GB2700001R6"
+      }
+    ]
+  },
+  {
+    "id": "InWonder.nl@US",
+    "family": "InWonder.nl",
+    "name": "INWONDER",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA300023G8_20250513T012705SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA300023G8",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300023G8",
+        "guideChannelId": "fast:samsung_us:USBA300023G8"
+      }
+    ]
+  },
+  {
+    "id": "HistoryHit.uk@UK",
+    "family": "HistoryHit.uk",
+    "name": "History Hit",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBA2200005ZA_20250107T022602SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBA2200005ZA",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA2200005ZA",
+        "guideChannelId": "fast:samsung:GBBA2200005ZA"
+      }
+    ]
+  },
+  {
+    "id": "AutenticHistory.de@SD",
+    "family": "AutenticHistory.de",
+    "name": "Autentic History (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "SD",
+    "logo": "https://d3b6luslimvglo.cloudfront.net/images/79/rlaxximages/channels-rescaled/icon-white/autentichistory_white.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3200005SO",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3200005SO",
+        "guideChannelId": "fast:samsung:GB3200005SO"
+      }
+    ]
+  },
+  {
+    "id": "FASTworldwartv.uk@UK",
+    "family": "FASTworldwartv.uk",
+    "name": "World War TV",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/6319ee0cf78bb10007ee5e6b/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6319ee0cf78bb10007ee5e6b.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6319ee0cf78bb10007ee5e6b",
+        "guideChannelId": "fast:pluto:6319ee0cf78bb10007ee5e6b"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBD1100001UI",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD1100001UI",
+        "guideChannelId": "fast:samsung:GBBD1100001UI"
+      }
+    ]
+  },
+  {
+    "id": "FASThistoryandwarfarenow.us@US",
+    "family": "FASThistoryandwarfarenow.us",
+    "name": "History & Warfare Now",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD1200009JI_20250401T004831SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD1200009JI",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD1200009JI",
+        "guideChannelId": "fast:samsung_us:USBD1200009JI"
+      }
+    ]
+  },
+  {
+    "id": "FASTuandthepast.uk@UK",
+    "family": "FASTuandthepast.uk",
+    "name": "U&The Past",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD3100004OI_20250107T030822SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD3100004OI",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD3100004OI",
+        "guideChannelId": "fast:samsung:GBBD3100004OI"
+      }
+    ]
+  },
+  {
+    "id": "FASThistoryhunters.uk@UK",
+    "family": "FASThistoryhunters.uk",
+    "name": "History Hunters",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/65819fc1b9adc4000813f37d/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-65819fc1b9adc4000813f37d.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "65819fc1b9adc4000813f37d",
+        "guideChannelId": "fast:pluto:65819fc1b9adc4000813f37d"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB1200002ON",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1200002ON",
+        "guideChannelId": "fast:samsung:GB1200002ON"
+      }
+    ]
+  },
+  {
+    "id": "Mythbusters.us@UK",
+    "family": "Mythbusters.us",
+    "name": "Mythbusters (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/wzzjvcH.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5bd833b41843b56328bac189.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5bd833b41843b56328bac189",
+        "guideChannelId": "fast:pluto:5bd833b41843b56328bac189"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB200005LI",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB200005LI",
+        "guideChannelId": "fast:samsung:GB200005LI"
+      },
+      {
+        "url": "https://jmp2.uk/plu-66e0b4866ad04d0008fff4d8.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "66e0b4866ad04d0008fff4d8",
+        "guideChannelId": "fast:pluto_us:66e0b4866ad04d0008fff4d8"
+      }
+    ]
+  },
+  {
+    "id": "FASTmodernmarvels.uk@UK",
+    "family": "FASTmodernmarvels.uk",
+    "name": "Modern Marvels",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700009R7_20250107T031150SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2700009R7",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700009R7",
+        "guideChannelId": "fast:samsung:GB2700009R7"
+      }
+    ]
+  },
+  {
+    "id": "FASTcosmos.us@US",
+    "family": "FASTcosmos.us",
+    "name": "Cosmos",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2900025U8_20260929T044326SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2900025U8",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2900025U8",
+        "guideChannelId": "fast:samsung_us:US2900025U8"
+      }
+    ]
+  },
+  {
+    "id": "FASTxplore.us@US",
+    "family": "FASTxplore.us",
+    "name": "Xplore",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC2100008DP_20240520T214902SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC2100008DP",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC2100008DP",
+        "guideChannelId": "fast:samsung_us:USBC2100008DP"
+      }
+    ]
+  },
+  {
+    "id": "FASTwheelsandsteel.uk@UK",
+    "family": "FASTwheelsandsteel.uk",
+    "name": "Wheels & Steel",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3100002NB_20260203T045958SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3100002NB",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3100002NB",
+        "guideChannelId": "fast:samsung:GB3100002NB"
+      }
+    ]
+  },
+  {
+    "id": "FASTwildplanet.uk@UK",
+    "family": "FASTwildplanet.uk",
+    "name": "Wild Planet",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBB5000002PL_20261013T055041SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBB5000002PL",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBB5000002PL",
+        "guideChannelId": "fast:samsung:GBBB5000002PL"
+      }
+    ]
+  },
+  {
+    "id": "AdventureEarth.de@SD",
+    "family": "AdventureEarth.de",
+    "name": "Adventure Earth (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "SD",
+    "logo": "https://d3b6luslimvglo.cloudfront.net/images/79/rlaxximages/channels-rescaled/icon-white/adventureearth_white.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC900015D3",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC900015D3",
+        "guideChannelId": "fast:samsung:GBBC900015D3"
+      }
+    ]
+  },
+  {
+    "id": "NatureTime.ca@UK",
+    "family": "NatureTime.ca",
+    "name": "NatureTime UK (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/72JmyjM.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2100004H5",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2100004H5",
+        "guideChannelId": "fast:samsung:GB2100004H5"
+      }
+    ]
+  },
+  {
+    "id": "RealWild.uk@UK",
+    "family": "RealWild.uk",
+    "name": "Real Wild",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBB1000005IO_20260805T002817SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBB1000005IO",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBB1000005IO",
+        "guideChannelId": "fast:samsung:GBBB1000005IO"
+      }
+    ]
+  },
+  {
+    "id": "TerraMaterWILD.de@English",
+    "family": "TerraMaterWILD.de",
+    "name": "Terra Mater WILD English (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "English",
+    "logo": "https://i.imgur.com/EbMK3Ph.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB700006X7",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB700006X7",
+        "guideChannelId": "fast:samsung:GB700006X7"
+      }
+    ]
+  },
+  {
+    "id": "FASTearthtouch.uk@UK",
+    "family": "FASTearthtouch.uk",
+    "name": "Earth Touch",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD3200001E2_20250107T030638SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD3200001E2",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD3200001E2",
+        "guideChannelId": "fast:samsung:GBBD3200001E2"
+      }
+    ]
+  },
+  {
+    "id": "INWILD.nl@UK",
+    "family": "INWILD.nl",
+    "name": "INWILD",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBA220000751_20250107T022608SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBA220000751",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA220000751",
+        "guideChannelId": "fast:samsung:GBBA220000751"
+      }
+    ]
+  },
+  {
+    "id": "WaterBear.ch@SD",
+    "family": "WaterBear.ch",
+    "name": "WaterBear (1080p)",
+    "group": "06 DOCUMENTARIES",
+    "variant": "SD",
+    "logo": "https://framerusercontent.com/images/41VQQ7F0fYlp1MX1N4Ixog5QnPI.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC300003UQ",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC300003UQ",
+        "guideChannelId": "fast:samsung:GBBC300003UQ"
+      }
+    ]
+  },
+  {
+    "id": "LoveThePlanet.es@UK",
+    "family": "LoveThePlanet.es",
+    "name": "Love the Planet",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD500001F5_20250722T005724SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD500001F5",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD500001F5",
+        "guideChannelId": "fast:samsung:GBBD500001F5"
+      }
+    ]
+  },
+  {
+    "id": "FASTthejackhannachannel.us@US",
+    "family": "FASTthejackhannachannel.us",
+    "name": "The Jack Hanna Channel",
+    "group": "06 DOCUMENTARIES",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC2100009GT_20240520T214854SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC2100009GT",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC2100009GT",
+        "guideChannelId": "fast:samsung_us:USBC2100009GT"
+      }
+    ]
+  },
+  {
+    "id": "FASTrivermonsters.uk@UK",
+    "family": "FASTrivermonsters.uk",
+    "name": "River Monsters",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/682453731295f98347e92da8/colorLogoPNG_1747211233129.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-682453731295f98347e92da8.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "682453731295f98347e92da8",
+        "guideChannelId": "fast:pluto:682453731295f98347e92da8"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB2100006GK",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2100006GK",
+        "guideChannelId": "fast:samsung:GB2100006GK"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVAnimals.de@GB",
+    "family": "PlutoTVAnimals.de",
+    "name": "Pluto TV Animals GB",
+    "group": "06 DOCUMENTARIES",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5d767ae7b456c8cf265ce922/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ddf8ea0d000120009bcad83.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ddf8ea0d000120009bcad83",
+        "guideChannelId": "fast:pluto:5ddf8ea0d000120009bcad83"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAJ700001FH",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAJ700001FH",
+        "guideChannelId": "fast:samsung:GBAJ700001FH"
+      }
+    ]
+  },
+  {
+    "id": "FASTevolutionearth.uk@UK",
+    "family": "FASTevolutionearth.uk",
+    "name": "Evolution Earth",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700003KS_20250107T031117SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2700003KS",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700003KS",
+        "guideChannelId": "fast:samsung:GB2700003KS"
+      }
+    ]
+  },
+  {
+    "id": "FASTthewickedtunachannel.uk@UK",
+    "family": "FASTthewickedtunachannel.uk",
+    "name": "The Wicked Tuna Channel",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC900004G9_20250107T025820SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC900004G9",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC900004G9",
+        "guideChannelId": "fast:samsung:GBBC900004G9"
+      }
+    ]
+  },
+  {
+    "id": "FASTiceroadtruckers.uk@UK",
+    "family": "FASTiceroadtruckers.uk",
+    "name": "Ice Road Truckers",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/68c8201b1e5aaf77c47d9605/colorLogoPNG_1765208715103.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-68c8201b1e5aaf77c47d9605.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "68c8201b1e5aaf77c47d9605",
+        "guideChannelId": "fast:pluto:68c8201b1e5aaf77c47d9605"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB2700007YH",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700007YH",
+        "guideChannelId": "fast:samsung:GB2700007YH"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB520002173",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB520002173",
+        "guideChannelId": "fast:samsung_us:USBB520002173"
+      }
+    ]
+  },
+  {
+    "id": "FASTaxmen.uk@UK",
+    "family": "FASTaxmen.uk",
+    "name": "Ax Men",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700011DR_20250107T031058SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2700011DR",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700011DR",
+        "guideChannelId": "fast:samsung:GB2700011DR"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB5200020Z0",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB5200020Z0",
+        "guideChannelId": "fast:samsung_us:USBB5200020Z0"
+      }
+    ]
+  },
+  {
+    "id": "FASThighwaythruhell.uk@UK",
+    "family": "FASThighwaythruhell.uk",
+    "name": "Highway Thru Hell",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB500001HY_20250107T030655SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB500001HY",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB500001HY",
+        "guideChannelId": "fast:samsung:GB500001HY"
+      }
+    ]
+  },
+  {
+    "id": "FASTcopsanddocs.uk@UK",
+    "family": "FASTcopsanddocs.uk",
+    "name": "Cops & Docs",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3700008XB_20260804T051817SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3700008XB",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3700008XB",
+        "guideChannelId": "fast:samsung:GB3700008XB"
+      }
+    ]
+  },
+  {
+    "id": "FASTuntoldstoriesoftheer.uk@UK",
+    "family": "FASTuntoldstoriesoftheer.uk",
+    "name": "Untold Stories of the E.R.",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3700009AO_20251013T054436SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3700009AO",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3700009AO",
+        "guideChannelId": "fast:samsung:GB3700009AO"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US4700030X8",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700030X8",
+        "guideChannelId": "fast:samsung_us:US4700030X8"
+      }
+    ]
+  },
+  {
+    "id": "FASTmaydayairdisaster.uk@UK",
+    "family": "FASTmaydayairdisaster.uk",
+    "name": "Mayday: Air Disaster",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/6852811933a52de120f8b89d/colorLogoPNG_1762230046872.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6852811933a52de120f8b89d.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6852811933a52de120f8b89d",
+        "guideChannelId": "fast:pluto:6852811933a52de120f8b89d"
+      },
+      {
+        "url": "https://jmp2.uk/plu-64d2b6bf9b414d0008187d83.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "64d2b6bf9b414d0008187d83",
+        "guideChannelId": "fast:pluto_us:64d2b6bf9b414d0008187d83"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US33000171M",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US33000171M",
+        "guideChannelId": "fast:samsung_us:US33000171M"
+      }
+    ]
+  },
+  {
+    "id": "5Cops.us@UK",
+    "family": "5Cops.us",
+    "name": "5 Cops",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/QFPRaXK.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d2c571faeb3e2738ae27933.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d2c571faeb3e2738ae27933",
+        "guideChannelId": "fast:pluto:5d2c571faeb3e2738ae27933"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504500A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504500A",
+        "guideChannelId": "fast:samsung:GBAK3504500A"
+      }
+    ]
+  },
+  {
+    "id": "FAST5exploringbritain.uk@UK",
+    "family": "FAST5exploringbritain.uk",
+    "name": "5 Exploring Britain",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5ddf901280e3550009139c86/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ddf901280e3550009139c86.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ddf901280e3550009139c86",
+        "guideChannelId": "fast:pluto:5ddf901280e3550009139c86"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504501A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504501A",
+        "guideChannelId": "fast:samsung:GBAK3504501A"
+      }
+    ]
+  },
+  {
+    "id": "FASTuandtransport.uk@UK",
+    "family": "FASTuandtransport.uk",
+    "name": "U&Transport",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD3100001A8_20260818T051000SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD3100001A8",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD3100001A8",
+        "guideChannelId": "fast:samsung:GBBD3100001A8"
+      }
+    ]
+  },
+  {
+    "id": "FAST60daysinjail.uk@UK",
+    "family": "FAST60daysinjail.uk",
+    "name": "60 Days in Jail",
+    "group": "06 DOCUMENTARIES",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/68c8203efef6d8a2a6f13906/colorLogoPNG_1765385204159.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-68c8203efef6d8a2a6f13906.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "68c8203efef6d8a2a6f13906",
+        "guideChannelId": "fast:pluto:68c8203efef6d8a2a6f13906"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB1000002RV",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1000002RV",
+        "guideChannelId": "fast:samsung:GB1000002RV"
+      }
+    ]
+  },
+  {
+    "id": "Dateline247.us@UK",
+    "family": "Dateline247.us",
+    "name": "Dateline 24/7",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD3700001AB_20250211T013910SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD3700001AB",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD3700001AB",
+        "guideChannelId": "fast:samsung:GBBD3700001AB"
+      },
+      {
+        "url": "https://jmp2.uk/plu-637413d8531e0c0007442d6d.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "637413d8531e0c0007442d6d",
+        "guideChannelId": "fast:pluto_us:637413d8531e0c0007442d6d"
+      }
+    ]
+  },
+  {
+    "id": "ForensicFiles.us@US",
+    "family": "ForensicFiles.us",
+    "name": "Forensic Files",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5bb1af6a268cae539bcedb0a/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5bb1af6a268cae539bcedb0a.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5bb1af6a268cae539bcedb0a",
+        "guideChannelId": "fast:pluto_us:5bb1af6a268cae539bcedb0a"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB3200017MY",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3200017MY",
+        "guideChannelId": "fast:samsung_us:USBB3200017MY"
+      }
+    ]
+  },
+  {
+    "id": "FBIFiles.us@UK",
+    "family": "FBIFiles.us",
+    "name": "FBI Files",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/vzYDSLo.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5cb6f6f9a461406ffe4022cf.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5cb6f6f9a461406ffe4022cf",
+        "guideChannelId": "fast:pluto:5cb6f6f9a461406ffe4022cf"
+      }
+    ]
+  },
+  {
+    "id": "FASTworldsmostevilkillers.us@US",
+    "family": "FASTworldsmostevilkillers.us",
+    "name": "World's Most Evil Killers",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC1000002NP_20260421T133710SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC1000002NP",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC1000002NP",
+        "guideChannelId": "fast:samsung_us:USBC1000002NP"
+      }
+    ]
+  },
+  {
+    "id": "UnsolvedMysteries.us@UK",
+    "family": "UnsolvedMysteries.us",
+    "name": "Unsolved Mysteries UK",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/De3khrX.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5bd05b4694d45d266bc951f2.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5bd05b4694d45d266bc951f2",
+        "guideChannelId": "fast:pluto:5bd05b4694d45d266bc951f2"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5b4e96a0423e067bd6df6901.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5b4e96a0423e067bd6df6901",
+        "guideChannelId": "fast:pluto_us:5b4e96a0423e067bd6df6901"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB3200018Q6",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3200018Q6",
+        "guideChannelId": "fast:samsung_us:USBB3200018Q6"
+      }
+    ]
+  },
+  {
+    "id": "FASTtvonecrimeandjustice.us@US",
+    "family": "FASTtvonecrimeandjustice.us",
+    "name": "TV One Crime & Justice",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US46000120T_20260811T043638SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US46000120T",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US46000120T",
+        "guideChannelId": "fast:samsung_us:US46000120T"
+      }
+    ]
+  },
+  {
+    "id": "FASTlivingwithevil.us@US",
+    "family": "FASTlivingwithevil.us",
+    "name": "Living with Evil",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/68bb164fb3900870ec368759/colorLogoPNG_1785342013286.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-68bb164fb3900870ec368759.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "68bb164fb3900870ec368759",
+        "guideChannelId": "fast:pluto_us:68bb164fb3900870ec368759"
+      }
+    ]
+  },
+  {
+    "id": "FASTcriminalconfessions.uk@UK",
+    "family": "FASTcriminalconfessions.uk",
+    "name": "Criminal Confessions",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/650315163a0d700008bb07f8/colorLogoPNG_1775634705053.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "650315163a0d700008bb07f8",
+        "guideChannelId": "fast:pluto:650315163a0d700008bb07f8"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBD4100006KV",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD4100006KV",
+        "guideChannelId": "fast:samsung:GBBD4100006KV"
+      }
+    ]
+  },
+  {
+    "id": "DeadlyWomen.us@UK",
+    "family": "DeadlyWomen.us",
+    "name": "Deadly Women (1080p)",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/dDVZ5Vd.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ca1df0d50be2571e393ad31.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ca1df0d50be2571e393ad31",
+        "guideChannelId": "fast:pluto:5ca1df0d50be2571e393ad31"
+      }
+    ]
+  },
+  {
+    "id": "InsideCrime.us@UK",
+    "family": "InsideCrime.us",
+    "name": "Inside Crime (1080p)",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/wvQYWsj.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-61c49f1495f417000731cef0.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "61c49f1495f417000731cef0",
+        "guideChannelId": "fast:pluto:61c49f1495f417000731cef0"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBD500002R4",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD500002R4",
+        "guideChannelId": "fast:samsung:GBBD500002R4"
+      }
+    ]
+  },
+  {
+    "id": "FASTtruecrimeuk.uk@UK",
+    "family": "FASTtruecrimeuk.uk",
+    "name": "True Crime UK",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/6304fb268bd95300072d2198/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6304fb268bd95300072d2198.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6304fb268bd95300072d2198",
+        "guideChannelId": "fast:pluto:6304fb268bd95300072d2198"
+      }
+    ]
+  },
+  {
+    "id": "FASTcrimeandjustice.uk@UK",
+    "family": "FASTcrimeandjustice.uk",
+    "name": "Crime & Justice",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD260000189_20250107T030614SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD260000189",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD260000189",
+        "guideChannelId": "fast:samsung:GBBD260000189"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVCrime.de@GB",
+    "family": "PlutoTVCrime.de",
+    "name": "Pluto TV Crime GB",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5e7b6c60fd20c50007910bf5/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d767790d0438aceb41d03ae.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d767790d0438aceb41d03ae",
+        "guideChannelId": "fast:pluto:5d767790d0438aceb41d03ae"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504516A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504516A",
+        "guideChannelId": "fast:samsung:GBAK3504516A"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVInside.de@UK",
+    "family": "PlutoTVInside.de",
+    "name": "Pluto TV Inside",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBAK3504518A_20250107T022641SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504518A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504518A",
+        "guideChannelId": "fast:samsung:GBAK3504518A"
+      }
+    ]
+  },
+  {
+    "id": "FASTbloodlinedetectives.uk@UK",
+    "family": "FASTbloodlinedetectives.uk",
+    "name": "Bloodline Detectives",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/63d91cc58795f30008678e9d/colorLogoPNG_1762179946170.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-63d91cc58795f30008678e9d.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "63d91cc58795f30008678e9d",
+        "guideChannelId": "fast:pluto:63d91cc58795f30008678e9d"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB37000128Y",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB37000128Y",
+        "guideChannelId": "fast:samsung:GB37000128Y"
+      }
+    ]
+  },
+  {
+    "id": "FASTevidenceofevil.uk@UK",
+    "family": "FASTevidenceofevil.uk",
+    "name": "Evidence of Evil",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/64c37e47dac71b000809abab/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-64c37e47dac71b000809abab.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "64c37e47dac71b000809abab",
+        "guideChannelId": "fast:pluto:64c37e47dac71b000809abab"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB3700011PO",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3700011PO",
+        "guideChannelId": "fast:samsung:GB3700011PO"
+      }
+    ]
+  },
+  {
+    "id": "FASTreelzfamousandinfamous.us@US",
+    "family": "FASTreelzfamousandinfamous.us",
+    "name": "REELZ Famous & Infamous",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB3200001MG_20240520T221329SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB3200001MG",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3200001MG",
+        "guideChannelId": "fast:samsung_us:USBB3200001MG"
+      }
+    ]
+  },
+  {
+    "id": "BritBoxMysteries.us@US",
+    "family": "BritBoxMysteries.us",
+    "name": "BritBox Mysteries",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3700007E4_20260811T044013SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US3700007E4",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3700007E4",
+        "guideChannelId": "fast:samsung_us:US3700007E4"
+      }
+    ]
+  },
+  {
+    "id": "MostHaunted.uk@UK",
+    "family": "MostHaunted.uk",
+    "name": "Most Haunted (1080p)",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/66d722d31878f200081c2c64/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6081648340382e0007f73d45.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6081648340382e0007f73d45",
+        "guideChannelId": "fast:pluto:6081648340382e0007f73d45"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB4300003ZT",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB4300003ZT",
+        "guideChannelId": "fast:samsung:GB4300003ZT"
+      }
+    ]
+  },
+  {
+    "id": "FASTplutotvparanormal.uk@UK",
+    "family": "FASTplutotvparanormal.uk",
+    "name": "Pluto TV Paranormal",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5d4af2ffa9506ab29cf38c38/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d4af2ffa9506ab29cf38c38.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d4af2ffa9506ab29cf38c38",
+        "guideChannelId": "fast:pluto:5d4af2ffa9506ab29cf38c38"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBA33000362J",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA33000362J",
+        "guideChannelId": "fast:samsung:GBBA33000362J"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVConspiracy.de@GB",
+    "family": "PlutoTVConspiracy.de",
+    "name": "Pluto TV Conspiracy",
+    "group": "06 DOCUMENTARIES",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5d4ae94ef1a1bbb350ca41bb/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d4ae94ef1a1bbb350ca41bb.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d4ae94ef1a1bbb350ca41bb",
+        "guideChannelId": "fast:pluto:5d4ae94ef1a1bbb350ca41bb"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBA33000356L",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA33000356L",
+        "guideChannelId": "fast:samsung:GBBA33000356L"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVSpotlight.us@US",
+    "family": "PlutoTVSpotlight.us",
+    "name": "Pluto TV Spotlight",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5ba3fb9c4b078e0f37ad34e8/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ba3fb9c4b078e0f37ad34e8.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5ba3fb9c4b078e0f37ad34e8",
+        "guideChannelId": "fast:pluto_us:5ba3fb9c4b078e0f37ad34e8"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVTrendingNow.us@US",
+    "family": "PlutoTVTrendingNow.us",
+    "name": "Pluto TV Trending Now",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/673247127d5da5000817b4d6/colorLogoPNG_1732662634386.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-673247127d5da5000817b4d6.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "673247127d5da5000817b4d6",
+        "guideChannelId": "fast:pluto_us:673247127d5da5000817b4d6"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVIcons.us@US",
+    "family": "PlutoTVIcons.us",
+    "name": "Pluto TV Icons",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/64b585f84ea480000838e446/colorLogoPNG_1785343035531.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-64b585f84ea480000838e446.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "64b585f84ea480000838e446",
+        "guideChannelId": "fast:pluto_us:64b585f84ea480000838e446"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVStaffPicks.us@US",
+    "family": "PlutoTVStaffPicks.us",
+    "name": "Pluto TV Staff Picks",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5f4d863b98b41000076cd061/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5f4d863b98b41000076cd061.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5f4d863b98b41000076cd061",
+        "guideChannelId": "fast:pluto_us:5f4d863b98b41000076cd061"
+      }
+    ]
+  },
+  {
+    "id": "MovieSphere.us@UK",
+    "family": "MovieSphere.us",
+    "name": "MovieSphere UK (1080p)",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/h1ejU90.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBA33000557H",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA33000557H",
+        "guideChannelId": "fast:samsung:GBBA33000557H"
+      }
+    ]
+  },
+  {
+    "id": "ParamountMovieChannel.us@US",
+    "family": "ParamountMovieChannel.us",
+    "name": "Paramount Movie Channel",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ26000054W_20260804T045743SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ26000054W",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ26000054W",
+        "guideChannelId": "fast:samsung_us:USAJ26000054W"
+      }
+    ]
+  },
+  {
+    "id": "FASTplutotvaction.uk@UK",
+    "family": "FASTplutotvaction.uk",
+    "name": "Pluto TV Action",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5dbfeb961b411c00090b52b3/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5dbfeb961b411c00090b52b3.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5dbfeb961b411c00090b52b3",
+        "guideChannelId": "fast:pluto:5dbfeb961b411c00090b52b3"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504503A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504503A",
+        "guideChannelId": "fast:samsung:GBAK3504503A"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVReaction.us@US",
+    "family": "PlutoTVReaction.us",
+    "name": "Pluto TV Reaction",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/617b37b361e0fd0008cfd8c5/colorLogoPNG_1731837948814.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-617b37b361e0fd0008cfd8c5.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "617b37b361e0fd0008cfd8c5",
+        "guideChannelId": "fast:pluto_us:617b37b361e0fd0008cfd8c5"
+      }
+    ]
+  },
+  {
+    "id": "FASTuniversalaction.us@US",
+    "family": "FASTuniversalaction.us",
+    "name": "Universal Action",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/654933e253fc970008390114/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-654933e253fc970008390114.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "654933e253fc970008390114",
+        "guideChannelId": "fast:pluto_us:654933e253fc970008390114"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVDrama.us@UK",
+    "family": "PlutoTVDrama.us",
+    "name": "Pluto TV Drama",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5ddf91149880d60009d35d27/colorLogoPNG_1764596004853.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ddf91149880d60009d35d27.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ddf91149880d60009d35d27",
+        "guideChannelId": "fast:pluto:5ddf91149880d60009d35d27"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5b4e92e4694c027be6ecece1.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5b4e92e4694c027be6ecece1",
+        "guideChannelId": "fast:pluto_us:5b4e92e4694c027be6ecece1"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVRomance.us@UK",
+    "family": "PlutoTVRomance.us",
+    "name": "Pluto TV Romance",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBAK3504522A_20250107T022653SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504522A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504522A",
+        "guideChannelId": "fast:samsung:GBAK3504522A"
+      }
+    ]
+  },
+  {
+    "id": "MyTimeMovieNetwork.uk@SD",
+    "family": "MyTimeMovieNetwork.uk",
+    "name": "MyTime Movie Network (United Kingdom) (1080p)",
+    "group": "03 FILMS",
+    "variant": "SD",
+    "logo": "https://i.imgur.com/pw4NZK1.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBA3300059BU",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA3300059BU",
+        "guideChannelId": "fast:samsung:GBBA3300059BU"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBC3900018K6",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3900018K6",
+        "guideChannelId": "fast:samsung_us:USBC3900018K6"
+      }
+    ]
+  },
+  {
+    "id": "FASTsparklemovies.uk@UK",
+    "family": "FASTsparklemovies.uk",
+    "name": "Sparkle Movies",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBAJ400042T1_20250107T025804SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBAJ400042T1",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAJ400042T1",
+        "guideChannelId": "fast:samsung:GBAJ400042T1"
+      }
+    ]
+  },
+  {
+    "id": "FASTlifetimemoviesfast.uk@UK",
+    "family": "FASTlifetimemoviesfast.uk",
+    "name": "Lifetime Movies FAST",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB37000067A_20251230T031133SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB37000067A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB37000067A",
+        "guideChannelId": "fast:samsung:GB37000067A"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVComedy.us@US",
+    "family": "PlutoTVComedy.us",
+    "name": "Pluto TV Comedy",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5a4d3a00ad95e4718ae8d8db/colorLogoPNG_1731836724642.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5a4d3a00ad95e4718ae8d8db.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5a4d3a00ad95e4718ae8d8db",
+        "guideChannelId": "fast:pluto_us:5a4d3a00ad95e4718ae8d8db"
+      }
+    ]
+  },
+  {
+    "id": "FASTplutotvhorror.us@US",
+    "family": "FASTplutotvhorror.us",
+    "name": "Pluto TV Horror",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/569546031a619b8f07ce6e25/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-569546031a619b8f07ce6e25.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "569546031a619b8f07ce6e25",
+        "guideChannelId": "fast:pluto_us:569546031a619b8f07ce6e25"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVTerror.us@US",
+    "family": "PlutoTVTerror.us",
+    "name": "Pluto TV Terror",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5c6dc88fcd232425a6e0f06e/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5c6dc88fcd232425a6e0f06e.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5c6dc88fcd232425a6e0f06e",
+        "guideChannelId": "fast:pluto_us:5c6dc88fcd232425a6e0f06e"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVThrillers.us@UK",
+    "family": "PlutoTVThrillers.us",
+    "name": "Pluto TV Thrillers",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5dbfedccc563080009b60f4a/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5dbfedccc563080009b60f4a.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5dbfedccc563080009b60f4a",
+        "guideChannelId": "fast:pluto:5dbfedccc563080009b60f4a"
+      }
+    ]
+  },
+  {
+    "id": "FASThorrorbyalter.us@US",
+    "family": "FASThorrorbyalter.us",
+    "name": "Horror by ALTER",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC100001175_20240730T012800SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC100001175",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC100001175",
+        "guideChannelId": "fast:samsung_us:USBC100001175"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVFantastic.us@US",
+    "family": "PlutoTVFantastic.us",
+    "name": "Pluto TV Fantastic",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5b64a245a202b3337f09e51d/colorLogoPNG_1756834917957.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5b64a245a202b3337f09e51d.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5b64a245a202b3337f09e51d",
+        "guideChannelId": "fast:pluto_us:5b64a245a202b3337f09e51d"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBA300017PK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300017PK",
+        "guideChannelId": "fast:samsung_us:USBA300017PK"
+      }
+    ]
+  },
+  {
+    "id": "OuterSphere.us@US",
+    "family": "OuterSphere.us",
+    "name": "OuterSphere",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD1200007FE_20240611T050306SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD1200007FE",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD1200007FE",
+        "guideChannelId": "fast:samsung_us:USBD1200007FE"
+      }
+    ]
+  },
+  {
+    "id": "FASTaliennationbydust.us@US",
+    "family": "FASTaliennationbydust.us",
+    "name": "Alien Nation by DUST",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC100000630_20240730T012802SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC100000630",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC100000630",
+        "guideChannelId": "fast:samsung_us:USBC100000630"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVCultFilms.de@GB",
+    "family": "PlutoTVCultFilms.de",
+    "name": "Pluto TV Cult Films (Germany)",
+    "group": "03 FILMS",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5c5c31f2f21b553c1f673fb0/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5c5c31f2f21b553c1f673fb0.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5c5c31f2f21b553c1f673fb0",
+        "guideChannelId": "fast:pluto:5c5c31f2f21b553c1f673fb0"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5c665db3e6c01b72c4977bc2.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5c665db3e6c01b72c4977bc2",
+        "guideChannelId": "fast:pluto_us:5c665db3e6c01b72c4977bc2"
+      }
+    ]
+  },
+  {
+    "id": "FASTbritishscreenclassics.uk@UK",
+    "family": "FASTbritishscreenclassics.uk",
+    "name": "British Screen Classics",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/65031534d545e9000881ed10/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-65031534d545e9000881ed10.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "65031534d545e9000881ed10",
+        "guideChannelId": "fast:pluto:65031534d545e9000881ed10"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB32000024G",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB32000024G",
+        "guideChannelId": "fast:samsung:GB32000024G"
+      }
+    ]
+  },
+  {
+    "id": "FASTpopflix.uk@UK",
+    "family": "FASTpopflix.uk",
+    "name": "Popflix",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBAJ400045P5_20250107T025757SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBAJ400045P5",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAJ400045P5",
+        "guideChannelId": "fast:samsung:GBAJ400045P5"
+      }
+    ]
+  },
+  {
+    "id": "FASTshouttv.us@US",
+    "family": "FASTshouttv.us",
+    "name": "Shout! TV",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD1200021JM_20250401T004834SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD1200021JM",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD1200021JM",
+        "guideChannelId": "fast:samsung_us:USBD1200021JM"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVWesterns.de@GB",
+    "family": "PlutoTVWesterns.de",
+    "name": "Pluto TV Westerns (Germany)",
+    "group": "03 FILMS",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5d4bdb635ce813b38639e6a3/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d4bdb635ce813b38639e6a3.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d4bdb635ce813b38639e6a3",
+        "guideChannelId": "fast:pluto:5d4bdb635ce813b38639e6a3"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5b4e94282d4ec87bdcbb87cd.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5b4e94282d4ec87bdcbb87cd",
+        "guideChannelId": "fast:pluto_us:5b4e94282d4ec87bdcbb87cd"
+      }
+    ]
+  },
+  {
+    "id": "GrjngoWesternMovies.de@UK",
+    "family": "GrjngoWesternMovies.de",
+    "name": "Grjngo Western Movies",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD500007TG_20250107T030653SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD500007TG",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD500007TG",
+        "guideChannelId": "fast:samsung:GBBD500007TG"
+      }
+    ]
+  },
+  {
+    "id": "FASTwildwesttv.us@US",
+    "family": "FASTwildwesttv.us",
+    "name": "Wild West TV",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4500003B0_20260421T133654SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4500003B0",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4500003B0",
+        "guideChannelId": "fast:samsung_us:US4500003B0"
+      }
+    ]
+  },
+  {
+    "id": "70sCinema.us@US",
+    "family": "70sCinema.us",
+    "name": "70s Cinema",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5f4d878d3d19b30007d2e782/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5f4d878d3d19b30007d2e782.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5f4d878d3d19b30007d2e782",
+        "guideChannelId": "fast:pluto_us:5f4d878d3d19b30007d2e782"
+      }
+    ]
+  },
+  {
+    "id": "80sRewind.us@US",
+    "family": "80sRewind.us",
+    "name": "80s Rewind",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5ca525b650be2571e3943c63/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ca525b650be2571e3943c63.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5ca525b650be2571e3943c63",
+        "guideChannelId": "fast:pluto_us:5ca525b650be2571e3943c63"
+      }
+    ]
+  },
+  {
+    "id": "90sThrowback.us@US",
+    "family": "90sThrowback.us",
+    "name": "90s Throwback",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5f4d86f519358a00072b978e/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5f4d86f519358a00072b978e.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5f4d86f519358a00072b978e",
+        "guideChannelId": "fast:pluto_us:5f4d86f519358a00072b978e"
+      }
+    ]
+  },
+  {
+    "id": "00sReplay.us@US",
+    "family": "00sReplay.us",
+    "name": "00s Replay",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/62ba60f059624e000781c436/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "62ba60f059624e000781c436",
+        "guideChannelId": "fast:pluto_us:62ba60f059624e000781c436"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVCrimeMovies.us@US",
+    "family": "PlutoTVCrimeMovies.us",
+    "name": "Pluto TV Crime Movies",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5f4d8594eb979c0007706de7/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5f4d8594eb979c0007706de7.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5f4d8594eb979c0007706de7",
+        "guideChannelId": "fast:pluto_us:5f4d8594eb979c0007706de7"
+      }
+    ]
+  },
+  {
+    "id": "MaverickBlackCinema.us@US",
+    "family": "MaverickBlackCinema.us",
+    "name": "Maverick Black Cinema",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ3000007MT_20260609T214517SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ3000007MT",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ3000007MT",
+        "guideChannelId": "fast:samsung_us:USAJ3000007MT"
+      }
+    ]
+  },
+  {
+    "id": "FASTfilmrisewesterns.us@US",
+    "family": "FASTfilmrisewesterns.us",
+    "name": "FilmRise Westerns",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB32000196O_20260421T133834SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB32000196O",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB32000196O",
+        "guideChannelId": "fast:samsung_us:USBB32000196O"
+      }
+    ]
+  },
+  {
+    "id": "TheAsylum.us@US",
+    "family": "TheAsylum.us",
+    "name": "The Asylum",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ17000014C_20260421T141813SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ17000014C",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ17000014C",
+        "guideChannelId": "fast:samsung_us:USAJ17000014C"
+      }
+    ]
+  },
+  {
+    "id": "FASTiconfilmchannel.uk@UK",
+    "family": "FASTiconfilmchannel.uk",
+    "name": "Icon Film Channel",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB12000052F_20260113T032609SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB12000052F",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB12000052F",
+        "guideChannelId": "fast:samsung:GB12000052F"
+      }
+    ]
+  },
+  {
+    "id": "FASTuniversalmonsters.us@US",
+    "family": "FASTuniversalmonsters.us",
+    "name": "Universal Monsters",
+    "group": "03 FILMS",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/65a9b20f0c7ff50008d3a3b6/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-65a9b20f0c7ff50008d3a3b6.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "65a9b20f0c7ff50008d3a3b6",
+        "guideChannelId": "fast:pluto_us:65a9b20f0c7ff50008d3a3b6"
+      }
+    ]
+  },
+  {
+    "id": "FASTwedotvmovies.uk@UK",
+    "family": "FASTwedotvmovies.uk",
+    "name": "Wedo TV Movies",
+    "group": "03 FILMS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBA3300050RG_20250107T022808SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBA3300050RG",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBA3300050RG",
+        "guideChannelId": "fast:samsung:GBBA3300050RG"
+      }
+    ]
+  },
+  {
+    "id": "ElectricNow.us@US",
+    "family": "ElectricNow.us",
+    "name": "ElectricNOW",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC6000225M_20250602T231429SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC6000225M",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC6000225M",
+        "guideChannelId": "fast:samsung_us:USBC6000225M"
+      }
+    ]
+  },
+  {
+    "id": "FASTcwforever.us@US",
+    "family": "FASTcwforever.us",
+    "name": "CW Forever",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US25000075Y_20260310T031307SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US25000075Y",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US25000075Y",
+        "guideChannelId": "fast:samsung_us:US25000075Y"
+      }
+    ]
+  },
+  {
+    "id": "FASTcwgold.us@US",
+    "family": "FASTcwgold.us",
+    "name": "CW Gold",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US25000063S_20260303T070420SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US25000063S",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US25000063S",
+        "guideChannelId": "fast:samsung_us:US25000063S"
+      }
+    ]
+  },
+  {
+    "id": "FASTdemanddrama.uk@UK",
+    "family": "FASTdemanddrama.uk",
+    "name": "Demand Drama",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB900005KI_20250708T031725SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB900005KI",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB900005KI",
+        "guideChannelId": "fast:samsung:GB900005KI"
+      }
+    ]
+  },
+  {
+    "id": "Heartland.us@US",
+    "family": "Heartland.us",
+    "name": "Heartland",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/61f07513227feb00073ee6bc/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-61f07513227feb00073ee6bc.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "61f07513227feb00073ee6bc",
+        "guideChannelId": "fast:pluto_us:61f07513227feb00073ee6bc"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB2900003O3",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB2900003O3",
+        "guideChannelId": "fast:samsung_us:USBB2900003O3"
+      }
+    ]
+  },
+  {
+    "id": "FASTrookieblue.uk@UK",
+    "family": "FASTrookieblue.uk",
+    "name": "Rookie Blue",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/63fe2ec4dff38e000835f786/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-63fe2ec4dff38e000835f786.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "63fe2ec4dff38e000835f786",
+        "guideChannelId": "fast:pluto:63fe2ec4dff38e000835f786"
+      }
+    ]
+  },
+  {
+    "id": "Baywatch.us@US",
+    "family": "Baywatch.us",
+    "name": "Baywatch",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA2000001BR_20260811T043347SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA2000001BR",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA2000001BR",
+        "guideChannelId": "fast:samsung_us:USBA2000001BR"
+      }
+    ]
+  },
+  {
+    "id": "Farscape.us@UK",
+    "family": "Farscape.us",
+    "name": "Farscape",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/680bb31c56ff83bcd685d64e/colorLogoPNG_1747892593425.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-680bb31c56ff83bcd685d64e.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "680bb31c56ff83bcd685d64e",
+        "guideChannelId": "fast:pluto:680bb31c56ff83bcd685d64e"
+      }
+    ]
+  },
+  {
+    "id": "TheRifleman.us@US",
+    "family": "TheRifleman.us",
+    "name": "The Rifleman",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5e825550e758c700077b0aef/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5e825550e758c700077b0aef.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5e825550e758c700077b0aef",
+        "guideChannelId": "fast:pluto_us:5e825550e758c700077b0aef"
+      }
+    ]
+  },
+  {
+    "id": "FASTlittlehouseontheprairie.us@US",
+    "family": "FASTlittlehouseontheprairie.us",
+    "name": "Little House on the Prairie",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/654933ac986ad20008a1f406/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-654933ac986ad20008a1f406.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "654933ac986ad20008a1f406",
+        "guideChannelId": "fast:pluto_us:654933ac986ad20008a1f406"
+      }
+    ]
+  },
+  {
+    "id": "21JumpStreet.us@US",
+    "family": "21JumpStreet.us",
+    "name": "21 Jump Street",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB320000397_20241105T024257SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB320000397",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB320000397",
+        "guideChannelId": "fast:samsung_us:USBB320000397"
+      }
+    ]
+  },
+  {
+    "id": "NashBridges.us@US",
+    "family": "NashBridges.us",
+    "name": "Nash Bridges",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/6675c742ca74680008566b88/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6675c742ca74680008566b88.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "6675c742ca74680008566b88",
+        "guideChannelId": "fast:pluto_us:6675c742ca74680008566b88"
+      }
+    ]
+  },
+  {
+    "id": "TheBradyBunch.us@US",
+    "family": "TheBradyBunch.us",
+    "name": "The Brady Bunch",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3900008GK_20260428T032017SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US3900008GK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US3900008GK",
+        "guideChannelId": "fast:samsung_us:US3900008GK"
+      }
+    ]
+  },
+  {
+    "id": "MidsomerMurders.us@US",
+    "family": "MidsomerMurders.us",
+    "name": "Midsomer Murders",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC24000134A_20241014T232251SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC24000134A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC24000134A",
+        "guideChannelId": "fast:samsung_us:USBC24000134A"
+      }
+    ]
+  },
+  {
+    "id": "FASTsilentwitnessandnewtricks.us@US",
+    "family": "FASTsilentwitnessandnewtricks.us",
+    "name": "Silent Witness and New Tricks",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2600027AI_20261006T051031SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2600027AI",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2600027AI",
+        "guideChannelId": "fast:samsung_us:US2600027AI"
+      }
+    ]
+  },
+  {
+    "id": "FASTacorntvmysteries.us@US",
+    "family": "FASTacorntvmysteries.us",
+    "name": "Acorn TV Mysteries",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US35000201T_20260609T035122SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US35000201T",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US35000201T",
+        "guideChannelId": "fast:samsung_us:US35000201T"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVClassicTV.de@GB",
+    "family": "PlutoTVClassicTV.de",
+    "name": "Pluto TV Classic TV",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5d134a74ca91eedee1630faa/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5d134a74ca91eedee1630faa.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5d134a74ca91eedee1630faa",
+        "guideChannelId": "fast:pluto:5d134a74ca91eedee1630faa"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAK3504525A",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAK3504525A",
+        "guideChannelId": "fast:samsung:GBAK3504525A"
+      }
+    ]
+  },
+  {
+    "id": "TVLandSitcoms.us@US",
+    "family": "TVLandSitcoms.us",
+    "name": "TV Land Sitcoms",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/5c2d64ffbdf11b71587184b8/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5c2d64ffbdf11b71587184b8.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5c2d64ffbdf11b71587184b8",
+        "guideChannelId": "fast:pluto_us:5c2d64ffbdf11b71587184b8"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBA300019WF",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300019WF",
+        "guideChannelId": "fast:samsung_us:USBA300019WF"
+      }
+    ]
+  },
+  {
+    "id": "TVLandDrama.us@US",
+    "family": "TVLandDrama.us",
+    "name": "TV Land Drama",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB3500002FL_20260421T133608SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB3500002FL",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3500002FL",
+        "guideChannelId": "fast:samsung_us:USBB3500002FL"
+      }
+    ]
+  },
+  {
+    "id": "GritXtra.us@US",
+    "family": "GritXtra.us",
+    "name": "Grit Xtra",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC24000213P_20260421T133713SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC24000213P",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC24000213P",
+        "guideChannelId": "fast:samsung_us:USBC24000213P"
+      }
+    ]
+  },
+  {
+    "id": "FASTdeathvalleydays.us@US",
+    "family": "FASTdeathvalleydays.us",
+    "name": "Death Valley Days",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2900007HA_20260421T133754SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2900007HA",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2900007HA",
+        "guideChannelId": "fast:samsung_us:US2900007HA"
+      }
+    ]
+  },
+  {
+    "id": "FASTbetxtylerperrydrama.us@US",
+    "family": "FASTbetxtylerperrydrama.us",
+    "name": "BET x Tyler Perry Drama",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2500008CV_20260512T070303SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2500008CV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2500008CV",
+        "guideChannelId": "fast:samsung_us:US2500008CV"
+      }
+    ]
+  },
+  {
+    "id": "EbonyTVbyLionsgate.us@US",
+    "family": "EbonyTVbyLionsgate.us",
+    "name": "Ebony TV by Lionsgate",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD2500012DH_20250513T012658SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD2500012DH",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD2500012DH",
+        "guideChannelId": "fast:samsung_us:USBD2500012DH"
+      }
+    ]
+  },
+  {
+    "id": "ALLBLKGems.us@US",
+    "family": "ALLBLKGems.us",
+    "name": "ALLBLK Gems",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD300022FH_20250304T041443SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD300022FH",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD300022FH",
+        "guideChannelId": "fast:samsung_us:USBD300022FH"
+      }
+    ]
+  },
+  {
+    "id": "ShadesofBlack.pl@US",
+    "family": "ShadesofBlack.pl",
+    "name": "Shades of Black",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC1000004G8_20250415T010001SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC1000004G8",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC1000004G8",
+        "guideChannelId": "fast:samsung_us:USBC1000004G8"
+      }
+    ]
+  },
+  {
+    "id": "FoxSoul.us@US",
+    "family": "FoxSoul.us",
+    "name": "FOX SOUL",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA300032J7_20240520T214534SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA300032J7",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA300032J7",
+        "guideChannelId": "fast:samsung_us:USBA300032J7"
+      }
+    ]
+  },
+  {
+    "id": "FASTstargate.us@US",
+    "family": "FASTstargate.us",
+    "name": "Stargate",
+    "group": "04 DRAMA & COMEDY",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/620bfa7df72827000703ddb1/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-620bfa7df72827000703ddb1.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "620bfa7df72827000703ddb1",
+        "guideChannelId": "fast:pluto_us:620bfa7df72827000703ddb1"
+      }
+    ]
+  },
+  {
+    "id": "AmericasTestKitchen.us@US",
+    "family": "AmericasTestKitchen.us",
+    "name": "America's Test Kitchen",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBA3800002KI_20251125T030823SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA3800002KI",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA3800002KI",
+        "guideChannelId": "fast:samsung_us:USBA3800002KI"
+      }
+    ]
+  },
+  {
+    "id": "TheJamieOliverChannel.us@UK",
+    "family": "TheJamieOliverChannel.us",
+    "name": "The Jamie Oliver Channel",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC4000002H3_20260915T041642SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC4000002H3",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC4000002H3",
+        "guideChannelId": "fast:samsung:GBBC4000002H3"
+      }
+    ]
+  },
+  {
+    "id": "FASTgreatbritishmenu.uk@UK",
+    "family": "FASTgreatbritishmenu.uk",
+    "name": "Great British Menu",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC900014LW_20250107T022833SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC900014LW",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC900014LW",
+        "guideChannelId": "fast:samsung:GBBC900014LW"
+      }
+    ]
+  },
+  {
+    "id": "HellsKitchen.us@UK",
+    "family": "HellsKitchen.us",
+    "name": "Hell's Kitchen (1080p)",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/P9eT0O9.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5e6f38792075160007d85823.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5e6f38792075160007d85823",
+        "guideChannelId": "fast:pluto:5e6f38792075160007d85823"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB2900002Z7",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB2900002Z7",
+        "guideChannelId": "fast:samsung_us:USBB2900002Z7"
+      }
+    ]
+  },
+  {
+    "id": "FASTsweetescapes.us@US",
+    "family": "FASTsweetescapes.us",
+    "name": "Sweet Escapes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/6532e7fa045c3d0008514ca7/colorLogoPNG.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6532e7fa045c3d0008514ca7.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "6532e7fa045c3d0008514ca7",
+        "guideChannelId": "fast:pluto_us:6532e7fa045c3d0008514ca7"
+      }
+    ]
+  },
+  {
+    "id": "PlutoTVFood.de@GB",
+    "family": "PlutoTVFood.de",
+    "name": "Pluto TV Food GB",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "GB",
+    "logo": "https://images.pluto.tv/channels/5dc280c9aa218c0009724b4b/colorLogoPNG_1769092247484.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5ddf930548ff9b00090d5686.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5ddf930548ff9b00090d5686",
+        "guideChannelId": "fast:pluto:5ddf930548ff9b00090d5686"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBAJ700002OS",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAJ700002OS",
+        "guideChannelId": "fast:samsung:GBAJ700002OS"
+      }
+    ]
+  },
+  {
+    "id": "Homeful.ca@US",
+    "family": "Homeful.ca",
+    "name": "Homeful",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD700022M5_20241014T232157SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD700022M5",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD700022M5",
+        "guideChannelId": "fast:samsung_us:USBD700022M5"
+      }
+    ]
+  },
+  {
+    "id": "FASThomesunderthehammer.uk@UK",
+    "family": "FASThomesunderthehammer.uk",
+    "name": "Homes Under the Hammer",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/5c5c2e9d8002db3c3e0b1c72/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-5c5c2e9d8002db3c3e0b1c72.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "5c5c2e9d8002db3c3e0b1c72",
+        "guideChannelId": "fast:pluto:5c5c2e9d8002db3c3e0b1c72"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GBBC900013K9",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC900013K9",
+        "guideChannelId": "fast:samsung:GBBC900013K9"
+      }
+    ]
+  },
+  {
+    "id": "FASTinsideoutside.uk@UK",
+    "family": "FASTinsideoutside.uk",
+    "name": "Inside Outside",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3900003W4_20251013T054345SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3900003W4",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3900003W4",
+        "guideChannelId": "fast:samsung:GB3900003W4"
+      }
+    ]
+  },
+  {
+    "id": "FASTanewlifeinthesun.uk@UK",
+    "family": "FASTanewlifeinthesun.uk",
+    "name": "A New Life in the Sun",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/6852854bce36f0644f37d765/colorLogoPNG_1762189013725.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6852854bce36f0644f37d765.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "6852854bce36f0644f37d765",
+        "guideChannelId": "fast:pluto:6852854bce36f0644f37d765"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB60000381",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB60000381",
+        "guideChannelId": "fast:samsung:GB60000381"
+      }
+    ]
+  },
+  {
+    "id": "FASTflippingnation.uk@UK",
+    "family": "FASTflippingnation.uk",
+    "name": "Flipping Nation",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700010NQ_20251013T054339SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2700010NQ",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2700010NQ",
+        "guideChannelId": "fast:samsung:GB2700010NQ"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBD4200008RS",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD4200008RS",
+        "guideChannelId": "fast:samsung_us:USBD4200008RS"
+      }
+    ]
+  },
+  {
+    "id": "TinyHouseNation.us@UK",
+    "family": "TinyHouseNation.us",
+    "name": "Tiny House Nation",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2400006I0_20251013T054430SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2400006I0",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2400006I0",
+        "guideChannelId": "fast:samsung:GB2400006I0"
+      },
+      {
+        "url": "https://jmp2.uk/plu-601a0342dcf4370007566891.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "601a0342dcf4370007566891",
+        "guideChannelId": "fast:pluto_us:601a0342dcf4370007566891"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USAJ3400020KC",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ3400020KC",
+        "guideChannelId": "fast:samsung_us:USAJ3400020KC"
+      }
+    ]
+  },
+  {
+    "id": "FASTgardenrescue.uk@UK",
+    "family": "FASTgardenrescue.uk",
+    "name": "Garden Rescue",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200010DG_20260811T045335SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1200010DG",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1200010DG",
+        "guideChannelId": "fast:samsung:GB1200010DG"
+      }
+    ]
+  },
+  {
+    "id": "TheBobRossChannel.us@National",
+    "family": "TheBobRossChannel.us",
+    "name": "The Bob Ross Channel",
+    "group": "19 USA",
+    "variant": "National",
+    "logo": "",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD700012OA",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD700012OA",
+        "guideChannelId": "fast:samsung_us:USBD700012OA"
+      }
+    ]
+  },
+  {
+    "id": "AntiquesRoadTrip.us@UK",
+    "family": "AntiquesRoadTrip.us",
+    "name": "Antiques Road Trip",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/66f135b45e4a6e0008b80606/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-66f135b45e4a6e0008b80606.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "66f135b45e4a6e0008b80606",
+        "guideChannelId": "fast:pluto:66f135b45e4a6e0008b80606"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB3000387J",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3000387J",
+        "guideChannelId": "fast:samsung:GB3000387J"
+      },
+      {
+        "url": "https://jmp2.uk/plu-615b8ec39e878900073f419a.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "615b8ec39e878900073f419a",
+        "guideChannelId": "fast:pluto_us:615b8ec39e878900073f419a"
+      }
+    ]
+  },
+  {
+    "id": "FASTcashintheattic.uk@UK",
+    "family": "FASTcashintheattic.uk",
+    "name": "Cash in the Attic",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://images.pluto.tv/channels/65a7af553af63d000828acca/colorLogoPNG.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-65a7af553af63d000828acca.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "65a7af553af63d000828acca",
+        "guideChannelId": "fast:pluto:65a7af553af63d000828acca"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-GB1200004J4",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1200004J4",
+        "guideChannelId": "fast:samsung:GB1200004J4"
+      }
+    ]
+  },
+  {
+    "id": "FASTthehotelinspector.uk@UK",
+    "family": "FASTthehotelinspector.uk",
+    "name": "The Hotel Inspector",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB200000940_20250811T172958SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB200000940",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB200000940",
+        "guideChannelId": "fast:samsung:GB200000940"
+      }
+    ]
+  },
+  {
+    "id": "FASTobsessivecompulsivecleaners.uk@UK",
+    "family": "FASTobsessivecompulsivecleaners.uk",
+    "name": "Obsessive Compulsive Cleaners",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200011U5_20260811T045340SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1200011U5",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1200011U5",
+        "guideChannelId": "fast:samsung:GB1200011U5"
+      }
+    ]
+  },
+  {
+    "id": "FASTjournytv.uk@UK",
+    "family": "FASTjournytv.uk",
+    "name": "Journy TV",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBAJ49000197P_20260817T135219SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBAJ49000197P",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBAJ49000197P",
+        "guideChannelId": "fast:samsung:GBAJ49000197P"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBB1000003HL",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB1000003HL",
+        "guideChannelId": "fast:samsung_us:USBB1000003HL"
+      }
+    ]
+  },
+  {
+    "id": "AutenticTravel.de@SD",
+    "family": "AutenticTravel.de",
+    "name": "Autentic Travel (1080p)",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "SD",
+    "logo": "https://d3b6luslimvglo.cloudfront.net/images/79/rlaxximages/channels-rescaled/icon-white/autentictravel_white.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB3200006AZ",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB3200006AZ",
+        "guideChannelId": "fast:samsung:GB3200006AZ"
+      }
+    ]
+  },
+  {
+    "id": "INTRAVEL.nl@UK",
+    "family": "INTRAVEL.nl",
+    "name": "INTRAVEL",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB400003BM_20250107T030705SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB400003BM",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB400003BM",
+        "guideChannelId": "fast:samsung:GB400003BM"
+      }
+    ]
+  },
+  {
+    "id": "FASTtopgearfast.us@US",
+    "family": "FASTtopgearfast.us",
+    "name": "Top Gear FAST",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC2400027NG_20260421T143428SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC2400027NG",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC2400027NG",
+        "guideChannelId": "fast:samsung_us:USBC2400027NG"
+      }
+    ]
+  },
+  {
+    "id": "FASTdiscoveryturbotv.us@US",
+    "family": "FASTdiscoveryturbotv.us",
+    "name": "Discovery Turbo TV",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3600005U9_20260505T062506SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3600005U9",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3600005U9",
+        "guideChannelId": "fast:samsung_us:USBC3600005U9"
+      }
+    ]
+  },
+  {
+    "id": "VevoPop.us@UK",
+    "family": "VevoPop.us",
+    "name": "Vevo Pop",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC19000017V_20250107T025833SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC19000017V",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC19000017V",
+        "guideChannelId": "fast:samsung:GBBC19000017V"
+      },
+      {
+        "url": "https://jmp2.uk/plu-5d93b635b43dd1a399b39eee.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "5d93b635b43dd1a399b39eee",
+        "guideChannelId": "fast:pluto_us:5d93b635b43dd1a399b39eee"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBC3600008WY",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3600008WY",
+        "guideChannelId": "fast:samsung_us:USBC3600008WY"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevorock.us@US",
+    "family": "FASTvevorock.us",
+    "name": "Vevo Rock",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3000145P_20260421T141843SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3000145P",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3000145P",
+        "guideChannelId": "fast:samsung_us:USBD3000145P"
+      }
+    ]
+  },
+  {
+    "id": "VevoCountry.us@US",
+    "family": "VevoCountry.us",
+    "name": "Vevo Country",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3600001RQ_20260303T094217SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3600001RQ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3600001RQ",
+        "guideChannelId": "fast:samsung_us:USBC3600001RQ"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevocountryrewind.us@US",
+    "family": "FASTvevocountryrewind.us",
+    "name": "Vevo Country Rewind",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US400006630_20260117T020414SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US400006630",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US400006630",
+        "guideChannelId": "fast:samsung_us:US400006630"
+      }
+    ]
+  },
+  {
+    "id": "VevoHipHop.us@US",
+    "family": "VevoHipHop.us",
+    "name": "Vevo Hip-Hop",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3600002EK_20260303T094219SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3600002EK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3600002EK",
+        "guideChannelId": "fast:samsung_us:USBC3600002EK"
+      }
+    ]
+  },
+  {
+    "id": "VevoRB.us@US",
+    "family": "VevoRB.us",
+    "name": "Vevo R&B",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3900009K5_20260421T141834SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3900009K5",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3900009K5",
+        "guideChannelId": "fast:samsung_us:USBC3900009K5"
+      }
+    ]
+  },
+  {
+    "id": "Vevo70s.us@US",
+    "family": "Vevo70s.us",
+    "name": "Vevo 70s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD300011KQ_20260303T094202SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD300011KQ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD300011KQ",
+        "guideChannelId": "fast:samsung_us:USBD300011KQ"
+      }
+    ]
+  },
+  {
+    "id": "Vevo80s.us@US",
+    "family": "Vevo80s.us",
+    "name": "Vevo 80s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD300012YC_20260303T094205SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD300012YC",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD300012YC",
+        "guideChannelId": "fast:samsung_us:USBD300012YC"
+      }
+    ]
+  },
+  {
+    "id": "Vevo90s.us@US",
+    "family": "Vevo90s.us",
+    "name": "Vevo 90s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3000133M_20260303T094208SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3000133M",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3000133M",
+        "guideChannelId": "fast:samsung_us:USBD3000133M"
+      }
+    ]
+  },
+  {
+    "id": "Vevo2K.us@US",
+    "family": "Vevo2K.us",
+    "name": "Vevo 2K",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB4400015F5_20260303T094214SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB4400015F5",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB4400015F5",
+        "guideChannelId": "fast:samsung_us:USBB4400015F5"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevo2010s.us@US",
+    "family": "FASTvevo2010s.us",
+    "name": "Vevo 2010s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD120002431_20260303T094211SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD120002431",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD120002431",
+        "guideChannelId": "fast:samsung_us:USBD120002431"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevo70sand80s.uk@UK",
+    "family": "FASTvevo70sand80s.uk",
+    "name": "Vevo 70s & 80s",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD1900009UD_20250107T030827SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD1900009UD",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD1900009UD",
+        "guideChannelId": "fast:samsung:GBBD1900009UD"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevo90sand00s.uk@UK",
+    "family": "FASTvevo90sand00s.uk",
+    "name": "Vevo 90s & 00s",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC2100002HP_20250107T025831SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC2100002HP",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC2100002HP",
+        "guideChannelId": "fast:samsung:GBBC2100002HP"
+      }
+    ]
+  },
+  {
+    "id": "FASTvevohiphopandrandb.uk@UK",
+    "family": "FASTvevohiphopandrandb.uk",
+    "name": "Vevo Hip Hop & R&B",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD2300001C0_20250107T030829SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD2300001C0",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD2300001C0",
+        "guideChannelId": "fast:samsung:GBBD2300001C0"
+      }
+    ]
+  },
+  {
+    "id": "XITEHits.nl@UK",
+    "family": "XITEHits.nl",
+    "name": "XITE Hits UK (1080p)",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://i.imgur.com/N51Rp7E.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300004RH",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300004RH",
+        "guideChannelId": "fast:samsung_us:USBD3300004RH"
+      }
+    ]
+  },
+  {
+    "id": "FASTxite80sflashback.us@US",
+    "family": "FASTxite80sflashback.us",
+    "name": "XITE 80s Flashback",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB320000647_20260512T070257SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB320000647",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB320000647",
+        "guideChannelId": "fast:samsung_us:USBB320000647"
+      }
+    ]
+  },
+  {
+    "id": "XITE90sThrowback.us@US",
+    "family": "XITE90sThrowback.us",
+    "name": "XITE 90s Throwback",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB3200007AK_20260512T070259SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB3200007AK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3200007AK",
+        "guideChannelId": "fast:samsung_us:USBB3200007AK"
+      }
+    ]
+  },
+  {
+    "id": "FASTxitecountrytoday.us@US",
+    "family": "FASTxitecountrytoday.us",
+    "name": "XITE Country Today",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300006O3_20260421T141848SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300006O3",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300006O3",
+        "guideChannelId": "fast:samsung_us:USBD3300006O3"
+      }
+    ]
+  },
+  {
+    "id": "XITEClassicCountry.nl@US",
+    "family": "XITEClassicCountry.nl",
+    "name": "XITE Classic Country",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300011UT_20260421T141856SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300011UT",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300011UT",
+        "guideChannelId": "fast:samsung_us:USBD3300011UT"
+      }
+    ]
+  },
+  {
+    "id": "FASTxitechristianhits.us@US",
+    "family": "FASTxitechristianhits.us",
+    "name": "XITE Christian Hits",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US46000072L_20260421T141745SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US46000072L",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US46000072L",
+        "guideChannelId": "fast:samsung_us:US46000072L"
+      }
+    ]
+  },
+  {
+    "id": "FASTxiterandbclassicjams.us@US",
+    "family": "FASTxiterandbclassicjams.us",
+    "name": "XITE R&B Classic Jams",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD330000948_20240716T002648SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD330000948",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD330000948",
+        "guideChannelId": "fast:samsung_us:USBD330000948"
+      }
+    ]
+  },
+  {
+    "id": "XITEReggaeVibes.nl@US",
+    "family": "XITEReggaeVibes.nl",
+    "name": "XITE Reggae Vibes",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4600008JA_20260421T141748SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4600008JA",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4600008JA",
+        "guideChannelId": "fast:samsung_us:US4600008JA"
+      }
+    ]
+  },
+  {
+    "id": "XITERockxMetal.nl@US",
+    "family": "XITERockxMetal.nl",
+    "name": "XITE Rock x Metal",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB2300004KV_20240716T002654SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB2300004KV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB2300004KV",
+        "guideChannelId": "fast:samsung_us:USBB2300004KV"
+      }
+    ]
+  },
+  {
+    "id": "XITEJustChill.nl@US",
+    "family": "XITEJustChill.nl",
+    "name": "XITE Just Chill",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB2300003JZ_20240716T002652SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB2300003JZ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB2300003JZ",
+        "guideChannelId": "fast:samsung_us:USBB2300003JZ"
+      }
+    ]
+  },
+  {
+    "id": "StingrayHipHop.ca@US",
+    "family": "StingrayHipHop.ca",
+    "name": "Stingray Hip Hop",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500010MT_20260421T141910SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500010MT",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500010MT",
+        "guideChannelId": "fast:samsung_us:USBD3500010MT"
+      }
+    ]
+  },
+  {
+    "id": "StingrayEuroHits.ca@US",
+    "family": "StingrayEuroHits.ca",
+    "name": "Stingray Euro Hits",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4700002UF_20260421T143051SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4700002UF",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700002UF",
+        "guideChannelId": "fast:samsung_us:US4700002UF"
+      }
+    ]
+  },
+  {
+    "id": "StingrayNothinBut90s.ca@US",
+    "family": "StingrayNothinBut90s.ca",
+    "name": "Stingray Nothin' But 90s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD35000149S_20260421T143145SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD35000149S",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD35000149S",
+        "guideChannelId": "fast:samsung_us:USBD35000149S"
+      }
+    ]
+  },
+  {
+    "id": "StingrayRememberthe80s.ca@US",
+    "family": "StingrayRememberthe80s.ca",
+    "name": "Stingray Remember the 80s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300022QK_20260421T143132SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300022QK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300022QK",
+        "guideChannelId": "fast:samsung_us:USBD3300022QK"
+      }
+    ]
+  },
+  {
+    "id": "StingrayFlashback70s.ca@US",
+    "family": "StingrayFlashback70s.ca",
+    "name": "Stingray Flashback 70s",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500008IJ_20260421T143136SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500008IJ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500008IJ",
+        "guideChannelId": "fast:samsung_us:USBD3500008IJ"
+      }
+    ]
+  },
+  {
+    "id": "FASTstingraysofthits.us@US",
+    "family": "FASTstingraysofthits.us",
+    "name": "Stingray Soft Hits",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4700007GV_20260421T143101SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4700007GV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700007GV",
+        "guideChannelId": "fast:samsung_us:US4700007GV"
+      }
+    ]
+  },
+  {
+    "id": "StingrayJukeboxOldies.ca@US",
+    "family": "StingrayJukeboxOldies.ca",
+    "name": "Stingray Jukebox Oldies",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4700006XL_20260421T143057SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4700006XL",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700006XL",
+        "guideChannelId": "fast:samsung_us:US4700006XL"
+      }
+    ]
+  },
+  {
+    "id": "StingrayEasyListening.ca@US",
+    "family": "StingrayEasyListening.ca",
+    "name": "Stingray Easy Listening",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500011J3_20260421T143139SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500011J3",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500011J3",
+        "guideChannelId": "fast:samsung_us:USBD3500011J3"
+      }
+    ]
+  },
+  {
+    "id": "StingraySmoothJazz.ca@US",
+    "family": "StingraySmoothJazz.ca",
+    "name": "Stingray Smooth Jazz",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD35000128A_20260421T143142SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD35000128A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD35000128A",
+        "guideChannelId": "fast:samsung_us:USBD35000128A"
+      }
+    ]
+  },
+  {
+    "id": "StingrayClassicRock.ca@US",
+    "family": "StingrayClassicRock.ca",
+    "name": "Stingray Classic Rock",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD35000180U_20250630T232430SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD35000180U",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD35000180U",
+        "guideChannelId": "fast:samsung_us:USBD35000180U"
+      }
+    ]
+  },
+  {
+    "id": "FASTstingraycountrygreats.us@US",
+    "family": "FASTstingraycountrygreats.us",
+    "name": "Stingray Country Greats",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4700005EA_20260421T143054SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4700005EA",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700005EA",
+        "guideChannelId": "fast:samsung_us:US4700005EA"
+      }
+    ]
+  },
+  {
+    "id": "StingrayHotCountry.ca@US",
+    "family": "StingrayHotCountry.ca",
+    "name": "Stingray Hot Country",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300021KV_20251230T035621SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300021KV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300021KV",
+        "guideChannelId": "fast:samsung_us:USBD3300021KV"
+      }
+    ]
+  },
+  {
+    "id": "StingrayGreatestHits.ca@US",
+    "family": "StingrayGreatestHits.ca",
+    "name": "Stingray Greatest Hits",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500022DN_20251230T035623SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500022DN",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500022DN",
+        "guideChannelId": "fast:samsung_us:USBD3500022DN"
+      }
+    ]
+  },
+  {
+    "id": "QelloConcertsbyStingray.ca@US",
+    "family": "QelloConcertsbyStingray.ca",
+    "name": "Qello Concerts by Stingray",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500024YB_20260421T141917SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500024YB",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500024YB",
+        "guideChannelId": "fast:samsung_us:USBD3500024YB"
+      }
+    ]
+  },
+  {
+    "id": "StingrayDJAZZ.ca@US",
+    "family": "StingrayDJAZZ.ca",
+    "name": "Stingray DJAZZ",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500025GS_20240826T191202SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500025GS",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500025GS",
+        "guideChannelId": "fast:samsung_us:USBD3500025GS"
+      }
+    ]
+  },
+  {
+    "id": "StingrayClassica.ca@US",
+    "family": "StingrayClassica.ca",
+    "name": "Stingray Classica",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD350002623_20260421T141924SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD350002623",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD350002623",
+        "guideChannelId": "fast:samsung_us:USBD350002623"
+      }
+    ]
+  },
+  {
+    "id": "FASTstingraymoviemusic.us@US",
+    "family": "FASTstingraymoviemusic.us",
+    "name": "Stingray Movie Music",
+    "group": "11 MUSIC",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US4700003DP_20260421T141750SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US4700003DP",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US4700003DP",
+        "guideChannelId": "fast:samsung_us:US4700003DP"
+      }
+    ]
+  },
+  {
+    "id": "FASTdefjam.uk@UK",
+    "family": "FASTdefjam.uk",
+    "name": "Def Jam",
+    "group": "11 MUSIC",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBD3000004VR_20250107T030629SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBD3000004VR",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBD3000004VR",
+        "guideChannelId": "fast:samsung:GBBD3000004VR"
+      }
+    ]
+  },
+  {
+    "id": "FASTmoonbug.us@US",
+    "family": "FASTmoonbug.us",
+    "name": "Moonbug",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB11000015Q_20260414T005315SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB11000015Q",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB11000015Q",
+        "guideChannelId": "fast:samsung_us:USBB11000015Q"
+      }
+    ]
+  },
+  {
+    "id": "FASTblippi.us@US",
+    "family": "FASTblippi.us",
+    "name": "Blippi",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US9000032J_20260414T005522SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US9000032J",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US9000032J",
+        "guideChannelId": "fast:samsung_us:US9000032J"
+      }
+    ]
+  },
+  {
+    "id": "FASTbarbieandfriends.us@US",
+    "family": "FASTbarbieandfriends.us",
+    "name": "Barbie and Friends",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD490000209_20260414T005516SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD490000209",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD490000209",
+        "guideChannelId": "fast:samsung_us:USBD490000209"
+      }
+    ]
+  },
+  {
+    "id": "FASThotwheelsaction.us@US",
+    "family": "FASThotwheelsaction.us",
+    "name": "Hot Wheels Action",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2900013AY_20260421T142012SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2900013AY",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2900013AY",
+        "guideChannelId": "fast:samsung_us:US2900013AY"
+      }
+    ]
+  },
+  {
+    "id": "BabySharkTV.us@UK",
+    "family": "BabySharkTV.us",
+    "name": "Baby Shark TV",
+    "group": "09 KIDS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1700005U8_20260915T041606SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1700005U8",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1700005U8",
+        "guideChannelId": "fast:samsung:GB1700005U8"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US17000208H",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US17000208H",
+        "guideChannelId": "fast:samsung_us:US17000208H"
+      }
+    ]
+  },
+  {
+    "id": "FASTbabyeinstein.us@US",
+    "family": "FASTbabyeinstein.us",
+    "name": "Baby Einstein",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD350002338_20260414T005514SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD350002338",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD350002338",
+        "guideChannelId": "fast:samsung_us:USBD350002338"
+      }
+    ]
+  },
+  {
+    "id": "Teletubbies.uk@SD",
+    "family": "Teletubbies.uk",
+    "name": "Teletubbies (720p)",
+    "group": "09 KIDS",
+    "variant": "SD",
+    "logo": "https://i.imgur.com/J9iWjWL.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-66a10eeb46762a0008201e85.m3u8",
+        "label": "PlutoTV \u00b7 UK",
+        "guideSource": "pluto",
+        "guideId": "66a10eeb46762a0008201e85",
+        "guideChannelId": "fast:pluto:66a10eeb46762a0008201e85"
+      }
+    ]
+  },
+  {
+    "id": "FASTstrawberryshortcake.us@US",
+    "family": "FASTstrawberryshortcake.us",
+    "name": "Strawberry Shortcake",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC4400012QS_20260915T035056SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC4400012QS",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC4400012QS",
+        "guideChannelId": "fast:samsung_us:USBC4400012QS"
+      }
+    ]
+  },
+  {
+    "id": "FASThappykids.us@US",
+    "family": "FASThappykids.us",
+    "name": "HappyKids",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC44000072I_20260414T005527SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC44000072I",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC44000072I",
+        "guideChannelId": "fast:samsung_us:USBC44000072I"
+      }
+    ]
+  },
+  {
+    "id": "ZooMoo.sg@US",
+    "family": "ZooMoo.sg",
+    "name": "ZooMoo",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC2400019EF_20260414T005640SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC2400019EF",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC2400019EF",
+        "guideChannelId": "fast:samsung_us:USBC2400019EF"
+      }
+    ]
+  },
+  {
+    "id": "RevandRoll.us@US",
+    "family": "RevandRoll.us",
+    "name": "Rev and Roll",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300016AK_20260915T035106SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300016AK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300016AK",
+        "guideChannelId": "fast:samsung_us:USBD3300016AK"
+      }
+    ]
+  },
+  {
+    "id": "FASTsonicthehedgehog.us@US",
+    "family": "FASTsonicthehedgehog.us",
+    "name": "Sonic the Hedgehog",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300020PM_20260414T005621SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300020PM",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300020PM",
+        "guideChannelId": "fast:samsung_us:USBD3300020PM"
+      }
+    ]
+  },
+  {
+    "id": "FASTslugterra.us@US",
+    "family": "FASTslugterra.us",
+    "name": "Slugterra",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD33000180S_20260915T035111SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD33000180S",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD33000180S",
+        "guideChannelId": "fast:samsung_us:USBD33000180S"
+      }
+    ]
+  },
+  {
+    "id": "FASTthelegochannel.uk@UK",
+    "family": "FASTthelegochannel.uk",
+    "name": "The LEGO Channel",
+    "group": "09 KIDS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GBBC4300005AL_20250107T025817SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GBBC4300005AL",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GBBC4300005AL",
+        "guideChannelId": "fast:samsung:GBBC4300005AL"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBA2300001S8",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA2300001S8",
+        "guideChannelId": "fast:samsung_us:USBA2300001S8"
+      }
+    ]
+  },
+  {
+    "id": "FASTsensicaljr.us@US",
+    "family": "FASTsensicaljr.us",
+    "name": "Sensical Jr",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300013KV_20260804T045818SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300013KV",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300013KV",
+        "guideChannelId": "fast:samsung_us:USBD3300013KV"
+      }
+    ]
+  },
+  {
+    "id": "FASTsensicalmakers.us@US",
+    "family": "FASTsensicalmakers.us",
+    "name": "Sensical Makers",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300017XB_20250513T012703SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300017XB",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300017XB",
+        "guideChannelId": "fast:samsung_us:USBD3300017XB"
+      }
+    ]
+  },
+  {
+    "id": "FASTloolookids.uk@UK",
+    "family": "FASTloolookids.uk",
+    "name": "LooLoo Kids",
+    "group": "09 KIDS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB430000144_20250107T031148SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB430000144",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB430000144",
+        "guideChannelId": "fast:samsung:GB430000144"
+      }
+    ]
+  },
+  {
+    "id": "FASTpocoyo.uk@UK",
+    "family": "FASTpocoyo.uk",
+    "name": "Pocoyo",
+    "group": "09 KIDS",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB700004ET_20250107T031205SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB700004ET",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB700004ET",
+        "guideChannelId": "fast:samsung:GB700004ET"
+      }
+    ]
+  },
+  {
+    "id": "ToonGoggles.us@US",
+    "family": "ToonGoggles.us",
+    "name": "Toon Goggles",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1900004J9_20260414T005441SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB1900004J9",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB1900004J9",
+        "guideChannelId": "fast:samsung_us:USBB1900004J9"
+      }
+    ]
+  },
+  {
+    "id": "TGJunior.us@US",
+    "family": "TGJunior.us",
+    "name": "TG Junior",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB3600001R6_20260414T005428SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB3600001R6",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB3600001R6",
+        "guideChannelId": "fast:samsung_us:USBB3600001R6"
+      }
+    ]
+  },
+  {
+    "id": "KartoonChannel.us@US",
+    "family": "KartoonChannel.us",
+    "name": "Kartoon Channel!",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2900015RO_20260421T142016SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2900015RO",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2900015RO",
+        "guideChannelId": "fast:samsung_us:US2900015RO"
+      }
+    ]
+  },
+  {
+    "id": "RyanandFriends.us@US",
+    "family": "RyanandFriends.us",
+    "name": "Ryan & Friends",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD12000239N_20260414T005610SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD12000239N",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD12000239N",
+        "guideChannelId": "fast:samsung_us:USBD12000239N"
+      }
+    ]
+  },
+  {
+    "id": "FASTninjakidz.us@US",
+    "family": "FASTninjakidz.us",
+    "name": "Ninja Kidz",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US2200007QG_20260421T141947SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US2200007QG",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2200007QG",
+        "guideChannelId": "fast:samsung_us:US2200007QG"
+      }
+    ]
+  },
+  {
+    "id": "FASTpocketwatchgameon.us@US",
+    "family": "FASTpocketwatchgameon.us",
+    "name": "pocket.watch Game-On",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD12000153A_20260414T005645SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD12000153A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD12000153A",
+        "guideChannelId": "fast:samsung_us:USBD12000153A"
+      }
+    ]
+  },
+  {
+    "id": "BratTV.us@US",
+    "family": "BratTV.us",
+    "name": "Brat TV",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC240001823_20241014T232222SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC240001823",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC240001823",
+        "guideChannelId": "fast:samsung_us:USBC240001823"
+      }
+    ]
+  },
+  {
+    "id": "FASTbatterypop.us@US",
+    "family": "FASTbatterypop.us",
+    "name": "batteryPOP",
+    "group": "09 KIDS",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3300012VX_20250211T021653SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3300012VX",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3300012VX",
+        "guideChannelId": "fast:samsung_us:USBD3300012VX"
+      }
+    ]
+  },
+  {
+    "id": "FASTteamliquid.us@US",
+    "family": "FASTteamliquid.us",
+    "name": "Team Liquid",
+    "group": "05 ENTERTAINMENT",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US240000434_20250812T003525SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-US240000434",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US240000434",
+        "guideChannelId": "fast:samsung_us:US240000434"
+      }
+    ]
+  },
+  {
+    "id": "Loupe4K.us@US",
+    "family": "Loupe4K.us",
+    "name": "Loupe 4K",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000002TK_20260421T142928SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBB1000002TK",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBB1000002TK",
+        "guideChannelId": "fast:samsung_us:USBB1000002TK"
+      }
+    ]
+  },
+  {
+    "id": "FASTcozyvibes.uk@UK",
+    "family": "FASTcozyvibes.uk",
+    "name": "Cozy Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1900004ZY_20260528T054045SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1900004ZY",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1900004ZY",
+        "guideChannelId": "fast:samsung:GB1900004ZY"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US2900005NW",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US2900005NW",
+        "guideChannelId": "fast:samsung_us:US2900005NW"
+      }
+    ]
+  },
+  {
+    "id": "FASTstormvibes.uk@UK",
+    "family": "FASTstormvibes.uk",
+    "name": "Storm Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1900005OD_20260528T054221SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1900005OD",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1900005OD",
+        "guideChannelId": "fast:samsung:GB1900005OD"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US1400014N9",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US1400014N9",
+        "guideChannelId": "fast:samsung_us:US1400014N9"
+      }
+    ]
+  },
+  {
+    "id": "FASTrainydayvibes.uk@UK",
+    "family": "FASTrainydayvibes.uk",
+    "name": "Rainy Day Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1800010BQ_20260528T054159SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1800010BQ",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1800010BQ",
+        "guideChannelId": "fast:samsung:GB1800010BQ"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US14000030Y",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US14000030Y",
+        "guideChannelId": "fast:samsung_us:US14000030Y"
+      }
+    ]
+  },
+  {
+    "id": "FASTislandvibes.uk@UK",
+    "family": "FASTislandvibes.uk",
+    "name": "Island Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1800011SF_20260528T054108SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB1800011SF",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB1800011SF",
+        "guideChannelId": "fast:samsung:GB1800011SF"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US1400007V6",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US1400007V6",
+        "guideChannelId": "fast:samsung_us:US1400007V6"
+      }
+    ]
+  },
+  {
+    "id": "FASToceanvibes.uk@UK",
+    "family": "FASToceanvibes.uk",
+    "name": "Ocean Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB180001295_20260528T054140SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB180001295",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB180001295",
+        "guideChannelId": "fast:samsung:GB180001295"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-US700012OU",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "US700012OU",
+        "guideChannelId": "fast:samsung_us:US700012OU"
+      }
+    ]
+  },
+  {
+    "id": "FASTfireplacevibes.uk@UK",
+    "family": "FASTfireplacevibes.uk",
+    "name": "Fireplace Vibes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "UK",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2200001N2_20260609T043706SQUARE.png",
+    "country": "UK",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-GB2200001N2",
+        "label": "SamsungTVPlus \u00b7 UK",
+        "guideSource": "samsung",
+        "guideId": "GB2200001N2",
+        "guideChannelId": "fast:samsung:GB2200001N2"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBA3800004EL",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA3800004EL",
+        "guideChannelId": "fast:samsung_us:USBA3800004EL"
+      }
+    ]
+  },
+  {
+    "id": "StingrayNaturescape.ca@US",
+    "family": "StingrayNaturescape.ca",
+    "name": "Stingray Naturescape",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAK3508705A_20250630T232500SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAK3508705A",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAK3508705A",
+        "guideChannelId": "fast:samsung_us:USAK3508705A"
+      }
+    ]
+  },
+  {
+    "id": "FASTstingrayspa.us@US",
+    "family": "FASTstingrayspa.us",
+    "name": "Stingray SPA",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500013DG_20250630T232449SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500013DG",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500013DG",
+        "guideChannelId": "fast:samsung_us:USBD3500013DG"
+      }
+    ]
+  },
+  {
+    "id": "ZenLIFEbyStingray.ca@US",
+    "family": "ZenLIFEbyStingray.ca",
+    "name": "ZenLIFE by Stingray",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://images.pluto.tv/channels/696998dfa2b623e8b20125a3/colorLogoPNG_1770231337178.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-696998dfa2b623e8b20125a3.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "guideSource": "pluto_us",
+        "guideId": "696998dfa2b623e8b20125a3",
+        "guideChannelId": "fast:pluto_us:696998dfa2b623e8b20125a3"
+      },
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500027DS",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500027DS",
+        "guideChannelId": "fast:samsung_us:USBD3500027DS"
+      }
+    ]
+  },
+  {
+    "id": "StingrayHolidayscapes.ca@US",
+    "family": "StingrayHolidayscapes.ca",
+    "name": "Stingray Holidayscapes",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD3500038R6_20251230T035626SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBD3500038R6",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBD3500038R6",
+        "guideChannelId": "fast:samsung_us:USBD3500038R6"
+      }
+    ]
+  }
+]

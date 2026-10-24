@@ -73,6 +73,8 @@ def expand(channels, streams=(), inventory=None):
             result.append({'id':cid+'@National','epgId':'','family':cid,'name':meta['name'],
                 'group':group,'order':len(result),'logo':meta.get('logo',''),'variant':'National',
                 'sources':sources,'officialUrl':meta.get('website') or ''})
+    from fast_channels import expand as expand_fast
+    result = expand_fast(result)
     return label_news_countries(add_space_live(add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams)))
 
 
@@ -364,6 +366,7 @@ def add_space_live(channels):
 
 
 def channel_country(channel):
+    if channel.get('country'): return channel['country']
     cid, _, edition = channel['id'].partition('@')
     override = NEWS_COUNTRY_OVERRIDES.get(channel['id'], NEWS_COUNTRY_OVERRIDES.get(cid))
     if override: return override

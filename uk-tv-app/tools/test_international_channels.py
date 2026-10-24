@@ -106,3 +106,36 @@ class InternationalTest(unittest.TestCase):
         self.assertEqual(label_news_countries(result),result)
         self.assertEqual(result[0]['sources'],rows[0]['sources'])
         self.assertEqual(rows[0]['name'],'WION')
+
+class FastChannelTest(unittest.TestCase):
+    def fixture(self):
+        return [{'id':'Example.us@UK','family':'Example.us','name':'Example','group':'06 DOCUMENTARIES',
+                 'variant':'UK','logo':'','country':'UK','routes':[
+                 {'url':'https://jmp2.uk/stvp-GB123','label':'UK','guideSource':'samsung','guideId':'GB123','guideChannelId':'fast:samsung:GB123'},
+                 {'url':'https://jmp2.uk/stvp-US123','label':'USA','guideSource':'samsung_us','guideId':'US123','guideChannelId':'fast:samsung_us:US123'}]}]
+
+    def test_existing_identity_sources_and_input_preserved(self):
+        import copy
+        from fast_channels import expand
+        old={'id':'Example.us@UK','name':'Favourite name','sources':[{'id':'old','url':'https://example.org/live.m3u8'}]}
+        before=copy.deepcopy(old)
+        rows=expand([old],self.fixture())
+        self.assertEqual(old,before)
+        self.assertEqual(rows[0]['sources'][0],before['sources'][0])
+        self.assertEqual(rows[0]['name'],'Favourite name')
+        self.assertEqual(expand(rows,self.fixture()),rows)
+
+    def test_guides_follow_exact_provider_edition_and_expired_is_not_current(self):
+        from fast_channels import expand,add_guides
+        from export_manifest import stamp
+        rows=expand([],self.fixture())
+        data={'channels':rows,'programmes':[],'supplementalGuideSources':{}}
+        xml=lambda cid,title: f'<tv><programme channel="{cid}" start="20261024100000 +0000" stop="20261024110000 +0000"><title>{title}</title><desc>Actual description</desc></programme></tv>'.encode()
+        guides={'samsung':xml('GB123','UK episode'),'samsung_us':xml('US123','US episode')}
+        add_guides(data,guides,self.fixture(),stamp('20261024103000 +0000'))
+        self.assertEqual([p['title'] for p in data['programmes']],['UK episode'])
+        self.assertEqual({p['title'] for p in data['regionalProgrammes']},{'UK episode','US episode'})
+        self.assertEqual(data['programmes'][0]['description'],'Actual description')
+        expired={'channels':rows,'programmes':[],'supplementalGuideSources':{}}
+        add_guides(expired,guides,self.fixture(),stamp('20261025103000 +0000'))
+        self.assertEqual(expired['programmes'],[])
