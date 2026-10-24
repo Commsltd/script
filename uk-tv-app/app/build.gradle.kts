@@ -11,9 +11,10 @@ android {
         applicationId = "com.commercialoutcomes.uktelevision"
         minSdk = 23
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 13
+        versionName = "0.9.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["appLabel"] = "UK Television"
     }
     val keyFile = System.getenv("TV_KEYSTORE_PATH")
     if (!keyFile.isNullOrBlank()) {
@@ -25,10 +26,22 @@ android {
         }
     }
     buildTypes {
-        debug { applicationIdSuffix = ".preview"; versionNameSuffix = "-preview" }
+        debug {
+            applicationIdSuffix = if (project.hasProperty("candidate")) ".candidate" else ".preview"
+            versionNameSuffix = if (project.hasProperty("candidate")) "-candidate" else "-preview"
+            manifestPlaceholders["appLabel"] = if (project.hasProperty("candidate")) "UK Television Test" else "UK Television"
+        }
         release {
             isMinifyEnabled = false
             if (!keyFile.isNullOrBlank()) signingConfig = signingConfigs.getByName("privateRelease")
+        }
+        create("tvPreview") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+            matchingFallbacks += "release"
         }
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -49,6 +62,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.7.1")
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation("org.jsoup:jsoup:1.18.3")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("io.coil-kt:coil-svg:2.7.0")
     implementation("androidx.webkit:webkit:1.15.0")

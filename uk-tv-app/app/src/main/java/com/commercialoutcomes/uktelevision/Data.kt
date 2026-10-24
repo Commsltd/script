@@ -43,7 +43,8 @@ data class Snapshot(@PrimaryKey val id: Int = 1, val revision: String, val built
 
 data class StreamSource(val id: String, val url: String, val label: String, val host: String,
     val mime: String, val headers: Map<String, String>, val unsupportedDrm: Boolean,
-    val kind: String = "direct")
+    val kind: String = "direct", val livePage: String = "", val region: String = "",
+    val guideChannelId: String = "", val priority: Int = 0, val backgroundCheck: Boolean = false)
 
 fun Station.sources(): List<StreamSource> = parseSources(JSONArray(sourcesJson))
 fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()).map { index ->
@@ -52,7 +53,8 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
     StreamSource(obj.getString("id"), obj.getString("url"), obj.optString("label"),
         obj.optString("host"), obj.optString("mime", "application/x-mpegURL"),
         headers.keys().asSequence().associateWith { headers.getString(it) }, obj.optBoolean("unsupportedDrm"),
-        obj.optString("kind", "direct"))
+        obj.optString("kind", "direct"), obj.optString("livePage"), obj.optString("region"),
+        obj.optString("guideChannelId"), obj.optInt("priority"), obj.optBoolean("backgroundCheck"))
 }
 
 @Dao
@@ -70,6 +72,8 @@ interface TvDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun putSnapshot(snapshot: Snapshot)
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun addFavourite(favourite: Favourite)
     @Query("DELETE FROM favourites WHERE channelId=:id") suspend fun removeFavourite(id: String)
+    @Query("UPDATE OR REPLACE favourites SET channelId=:replacement WHERE channelId=:old")
+    suspend fun migrateFavourite(old: String, replacement: String)
     @Query("SELECT * FROM stream_health WHERE profile=:profile") suspend fun health(profile: String): List<StreamHealth>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun putHealth(health: StreamHealth)
 }
@@ -82,10 +86,10 @@ class TvApplication : Application() {
     val repository: TvRepository by lazy { TvRepository(this, database) }
     override fun onCreate() {
         super.onCreate()
-        val job = PeriodicWorkRequestBuilder<GuideWorker>(6, TimeUnit.HOURS)
+        val job = PeriodicWorkRequestBuilder<GuideWorker>(1, TimeUnit.HOURS)
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.MINUTES).build()
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("tv-guide-refresh", ExistingPeriodicWorkPolicy.KEEP, job)
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("tv-guide-refresh", ExistingPeriodicWorkPolicy.UPDATE, job)
     }
 }
 
@@ -96,7 +100,8 @@ class GuideWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
     }
 }
 
-data class Catalogue(val stations: List<Station>, val programmes: List<Programme>, val snapshot: Snapshot)
+data class Catalogue(val stations: List<Station>, val programmes: List<Programme>, val snapshot: Snapshot,
+    val aliases: Map<String, String> = emptyMap())
 
 object CatalogueParser {
     fun parse(input: InputStream): Catalogue {
@@ -120,6 +125,12 @@ object CatalogueParser {
         val stations = (0 until cs.length()).map { n ->
             val c = cs.getJSONObject(n)
             val sources = c.getJSONArray("sources")
+            val livePage = c.optString("youtubeLivePage")
+            if (livePage.isNotBlank() && parseSources(sources).none { it.kind == "youtube" }) {
+                sources.put(JSONObject().put("id",c.getString("youtubeSourceId"))
+                    .put("url",livePage).put("livePage",livePage).put("kind","youtube")
+                    .put("label",c.optString("youtubeLabel")).put("host","www.youtube.com"))
+            }
             require(sources.length() > 0) { "Channel has no sources" }
             parseSources(sources).forEach { require(it.url.startsWith("https://") || it.url.startsWith("http://")) }
             Station(c.getString("id"), c.getString("name"), c.getString("family"),
@@ -130,7 +141,12 @@ object CatalogueParser {
         require(stations.isNotEmpty() && stations.size <= 10000) { "Empty or oversized channel list" }
         require(stations.map { it.id }.distinct().size == stations.size) { "Duplicate channel identities" }
         val ids = stations.map { it.id }.toSet()
+        val aliasJson = root.optJSONObject("channelAliases") ?: JSONObject()
+        val aliases = aliasJson.keys().asSequence().associateWith { aliasJson.getString(it) }.filterValues { it in ids }
+        val guideIds = ids + aliases.keys + stations.flatMap { it.sources() }.map { it.guideChannelId }.filter { it.isNotBlank() }
         val ps = root.getJSONArray("programmes")
+        val regional = root.optJSONArray("regionalProgrammes") ?: JSONArray()
+        for (n in 0 until regional.length()) ps.put(regional.getJSONObject(n))
         require(ps.length() in 1..300000) { "Empty or oversized guide" }
         val programmes = (0 until ps.length()).map { n ->
             val p = ps.getJSONObject(n)
@@ -139,12 +155,12 @@ object CatalogueParser {
                 p.optString("description"), p.optString("details"),
                 p.optString("privacyArtwork").ifBlank { p.optString("artwork") })
         }
-        require(programmes.all { it.channelId in ids && it.stop > it.start && it.title.isNotBlank() }) { "Invalid programme data" }
+        require(programmes.all { it.channelId in guideIds && it.stop > it.start && it.title.isNotBlank() }) { "Invalid programme data" }
         val now = System.currentTimeMillis()
         return Catalogue(stations, programmes, Snapshot(revision = root.optString("sourceRevision"),
             builtAt = root.getLong("builtAt"), fetchedAt = now, guideStart = programmes.minOf { it.start },
             guideEnd = programmes.maxOf { it.stop }, descriptions = programmes.count { it.description.isNotBlank() },
-            programmeCount = programmes.size, warnings = root.optJSONArray("warnings")?.join("\n") ?: ""))
+            programmeCount = programmes.size, warnings = root.optJSONArray("warnings")?.join("\n") ?: ""), aliases)
     }
 }
 
@@ -160,7 +176,10 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
             db.dao().putStations(data.stations)
             data.programmes.chunked(500).forEach { db.dao().putProgrammes(it) }
             db.dao().putSnapshot(data.snapshot)
+            data.aliases.forEach { (old, replacement) -> db.dao().migrateFavourite(old, replacement) }
         }
+        val prefs = context.getSharedPreferences("preferences", 0)
+        data.aliases[prefs.getString("lastChannel", "")]?.let { prefs.edit().putString("lastChannel", it).apply() }
     }
     suspend fun seed() = withContext(Dispatchers.IO) {
         lock.withLock {
@@ -170,25 +189,45 @@ class TvRepository(private val context: Context, private val db: TvDatabase) {
             }
         }
     }
-    suspend fun refresh(): String? = withContext(Dispatchers.IO) {
+    private suspend fun refreshArtwork(builtAt: Long) {
+        val sync = context.getSharedPreferences("catalogue-sync", Context.MODE_PRIVATE)
+        // Retry a failed bundle on the next refresh, including an HTTP 304.
+        if (sync.getLong("artworkBuiltAt", -1L) != builtAt && ArtworkStore.refresh(context))
+            sync.edit().putLong("artworkBuiltAt", builtAt).apply()
+    }
+
+    suspend fun refresh(skipRecent: Boolean = false): String? = withContext(Dispatchers.IO) {
         lock.withLock {
+            val previous = db.dao().currentSnapshot()
+            if (skipRecent && previous != null &&
+                System.currentTimeMillis() - previous.fetchedAt in 0 until 15 * 60 * 1000L) return@withLock null
+            val sync = context.getSharedPreferences("catalogue-sync", Context.MODE_PRIVATE)
             try {
                 val connection = URL(FEED).openConnection() as java.net.HttpURLConnection
                 connection.connectTimeout = 15000
                 connection.readTimeout = 30000
                 connection.instanceFollowRedirects = true
-                connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
+                connection.setRequestProperty("User-Agent", "UKTelevision/${BuildConfig.VERSION_NAME}")
+                if (previous != null) sync.getString("etag", null)?.let { connection.setRequestProperty("If-None-Match", it) }
                 try {
-                    if (connection.responseCode != 200) throw IOException("Guide server returned HTTP ${connection.responseCode}")
+                    val code = connection.responseCode
                     if (connection.url.protocol.lowercase() != "https") {
                         throw IOException("Guide download downgraded from HTTPS")
                     }
+                    if (code == 304 && previous != null) {
+                        refreshArtwork(previous.builtAt)
+                        db.dao().putSnapshot(previous.copy(fetchedAt = System.currentTimeMillis()))
+                        return@withLock null
+                    }
+                    if (code != 200) throw IOException("Guide server returned HTTP $code")
                     val data = connection.inputStream.use { CatalogueParser.parse(it) }
-                    ArtworkStore.refresh(context)
-                    val previous = db.dao().currentSnapshot()
                     require(previous == null || data.snapshot.guideEnd >= previous.guideEnd - 86400000L) { "Older guide rejected; keeping the cached guide" }
                     require(previous == null || data.stations.size >= db.dao().stationCount() / 2) { "Truncated channel list rejected" }
-                    replace(data)
+                    refreshArtwork(data.snapshot.builtAt)
+                    if (previous?.builtAt == data.snapshot.builtAt && previous.revision == data.snapshot.revision)
+                        db.dao().putSnapshot(previous.copy(fetchedAt = System.currentTimeMillis()))
+                    else replace(data)
+                    sync.edit().putString("etag", connection.getHeaderField("ETag")).apply()
                 } finally { connection.disconnect() }
                 null
             } catch (e: CancellationException) { throw e }

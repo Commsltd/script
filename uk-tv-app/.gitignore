@@ -5,3 +5,7 @@ local.properties
 *.jks
 *.keystore
 app/src/main/assets/catalogue.json.gz
+
+app/src/main/assets/*.zip
+app/src/main/assets/status.json
+app/src/main/assets/artwork-status.json

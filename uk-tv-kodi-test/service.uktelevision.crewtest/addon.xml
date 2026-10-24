@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="service.uktelevision.crewtest" name="UK Television Crew bridge" version="0.2.0" provider-name="Commercial Outcomes">
+ <requires><import addon="xbmc.python" version="3.0.1"/><import addon="plugin.video.thecrew" version="3.2.2"/><import addon="script.module.thecrew" version="3.2.26"/><import addon="script.module.requests"/></requires>
+ <extension point="xbmc.service" library="service.py"/>
+ <extension point="xbmc.addon.metadata"><summary lang="en_GB">Local catalogue and source bridge for UK Television.</summary><description lang="en_GB">Authenticated loopback-only bridge. No playback UI and no remote access.</description><platform>all</platform><license>GPL-3.0-only</license></extension>
+</addon>

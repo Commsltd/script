@@ -51,4 +51,28 @@ class CatalogueParserTest {
         val json = fixture(); json.getJSONArray("channels").getJSONObject(0).getJSONArray("sources").getJSONObject(0).put("url","file:///private/a")
         parse(json)
     }
+    @Test fun unresolvedYoutubePageIsAddedOnlyByTheNewParser() {
+        val json=fixture()
+        val channel=json.getJSONArray("channels").getJSONObject(0)
+        channel.put("youtubeLivePage","https://www.youtube.com/@SkyNews/live")
+            .put("youtubeLabel","Sky News official YouTube").put("youtubeSourceId","sky-current")
+        val sources=parse(json).stations.single().sources()
+        assertEquals(2,sources.size)
+        assertEquals("youtube",sources.last().kind)
+        assertEquals("https://www.youtube.com/@SkyNews/live",sources.last().livePage)
+    }
+    @Test fun regionalSchedulesStaySeparateFromTheDefaultGuide() {
+        val json = fixture()
+        json.getJSONArray("channels").getJSONObject(0).getJSONArray("sources").getJSONObject(0)
+            .put("region","Wales").put("guideChannelId","A.uk@Wales").put("priority",1)
+        val regional = JSONObject(json.getJSONArray("programmes").getJSONObject(0).toString())
+            .put("channelId","A.uk@Wales").put("key","wales").put("title","Wales news")
+        json.put("regionalProgrammes",JSONArray().put(regional))
+        val data = parse(json)
+        assertEquals(1, data.stations.size)
+        assertEquals("Wales news", data.programmes.first { it.channelId == "A.uk@Wales" }.title)
+        assertEquals("Programme title", data.programmes.first { it.channelId == "A.uk@London" }.title)
+        assertEquals(1, data.stations.single().sources().single().priority)
+    }
+
 }
