@@ -61,3 +61,34 @@ class InternationalTest(unittest.TestCase):
         self.assertEqual(rows[0]['group'], '02 NEWS & POLITICS')
         self.assertEqual(len(rows[0]['sources']), 3)
         self.assertEqual(add_cgtn_english(rows, extra), rows)
+
+    def test_english_news_preserves_identity_epg_backups_and_input(self):
+        import copy
+        from international_channels import add_english_news
+        old={'id':'DWEnglish.de@SD','name':'DW English','epgId':'guide-id','group':'02 NEWS & POLITICS',
+             'sources':[{'id':'saved','url':'https://example.org/backup.m3u8'}]}
+        before=copy.deepcopy(old)
+        result=add_english_news([old])
+        self.assertEqual(old,before)
+        dw=[c for c in result if c['name']=='DW English']
+        self.assertEqual(len(dw),1)
+        self.assertEqual(dw[0]['id'],old['id'])
+        self.assertEqual(dw[0]['epgId'],'guide-id')
+        self.assertIn(old['sources'][0],dw[0]['sources'])
+        self.assertEqual(add_english_news(result),result)
+
+    def test_only_verified_english_routes_are_added(self):
+        from international_channels import add_english_news, ENGLISH_NEWS
+        url=ENGLISH_NEWS['France24.fr']['urls'][0]
+        rows=add_english_news([], [
+            {'channel':'France24.fr','feed':'French','url':url+'?wrong=language'},
+            {'channel':'France24.fr','feed':'English','url':'https://untrusted.example/live.m3u8'},
+            {'channel':'France24.fr','feed':'English','url':url+'?refreshed=1'}])
+        france=next(c for c in rows if c['family']=='France24.fr')
+        urls=[s['url'] for s in france['sources']]
+        self.assertIn(url+'?refreshed=1',urls)
+        self.assertNotIn(url+'?wrong=language',urls)
+        self.assertFalse(any('untrusted.example' in u for u in urls))
+        self.assertEqual(len(rows),10)
+        self.assertTrue(all(c['variant']=='English' and c['epgId']=='' for c in rows))
+        self.assertTrue(all(s['kind']=='direct' for c in rows for s in c['sources']))
