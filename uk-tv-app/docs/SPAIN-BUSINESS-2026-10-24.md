@@ -4,7 +4,7 @@ Checked 24 October 2026. Open **TV guide → Menu → Refresh guide** to load th
 
 ## 23 SPAIN
 
-434 channels: 188 national/regional broadcaster entries plus 246 additional Spain-edition themed streaming channels. All included routes passed audio/video probing on the Mac; this is not a Firestick or long-duration playback guarantee.
+434 channels: 188 national/regional broadcaster entries plus 246 additional Spain-edition themed streaming channels. Each added channel has at least one route that passed audio/video probing on the Mac; this is not a Firestick or long-duration playback guarantee. The hourly refresh can append further broadcaster alternatives, which are not all playback-verified.
 
 Current exact-service programme listings were found for 317 channels. The remaining 117 currently have no matching programme listings; their streams are available, but no schedule has been invented. Guides refresh through the existing hourly catalogue job.
 
