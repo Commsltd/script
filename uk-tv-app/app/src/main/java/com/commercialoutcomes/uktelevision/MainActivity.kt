@@ -502,7 +502,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun showDiagnostics() {
-        toast(LiveSourceRefresh.diagnostic())
         val row = activeRow() ?: return
         lifecycleScope.launch {
             val health = model.dao.health(model.profile).associateBy { it.streamId }
@@ -521,7 +520,7 @@ class MainActivity : ComponentActivity() {
             }
             present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — diagnostics")
                 .setMessage(listOf("UK Television ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                    ChannelDiagnostics.network(this@MainActivity), "History profile: ${model.profile}", guide,
+                    ChannelDiagnostics.network(this@MainActivity), LiveSourceRefresh.diagnostic(), "History profile: ${model.profile}", guide,
                     if (youtubeSource != null) engine.youtube.status else engine.status,
                     lines.joinToString("\n\n")).filter { it.isNotBlank() }.joinToString("\n\n"))
                 .setPositiveButton("Close", null))
@@ -534,7 +533,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val results = row.station.sources().map { source ->
                 "${source.label}\n" + if (model.privacyMode == PrivacyMode.STRICT && source.url.startsWith("http://"))
-                    "Blocked by Strict Privacy." else ChannelDiagnostics.check(source)
+                    "Blocked by Strict Privacy." else ChannelDiagnostics.check(source, model.privacyMode == PrivacyMode.STRICT, !row.station.id.startsWith("user."))
             }
             present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — source check")
                 .setMessage(ChannelDiagnostics.network(this@MainActivity) + "\n\n" + results.joinToString("\n\n"))

@@ -61,26 +61,25 @@ jobs:
         run: |
           python3 -m unittest discover -v
 
-      - name: Resolve current official YouTube live videos
+      - name: Bundle one immutable published catalogue snapshot
         run: |
-          curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/youtube-live.json"             -o "$RUNNER_TEMP/previous-youtube-live.json" || true
-          python3 uk-tv-app/tools/resolve_youtube_live.py             --previous "$RUNNER_TEMP/previous-youtube-live.json"             --output "$RUNNER_TEMP/youtube-live.json"
-          cat "$RUNNER_TEMP/youtube-live.json"
-
-      - name: Bundle current channels, guide and privacy artwork
-        run: |
-          git clone --depth 1 --single-branch --branch uk-tv-epg-output             https://github.com/Commsltd/script.git "$RUNNER_TEMP/tv-feed"
-          revision=$(git -C "$RUNNER_TEMP/tv-feed" rev-parse HEAD)
-          python3 uk-tv-app/tools/guide_supplements.py --output-dir "$RUNNER_TEMP/guides"
-          python3 uk-tv-app/tools/export_manifest.py             --source "$RUNNER_TEMP/tv-feed"             --revision "$revision"             --guides-dir "$RUNNER_TEMP/guides"             --youtube-live "$RUNNER_TEMP/youtube-live.json"             --output uk-tv-app/app/src/main/assets/catalogue.json.gz
-
-          mkdir -p "$RUNNER_TEMP/build-artwork"
-          curl -fsSL --retry 2             "https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/artwork.zip"             -o "$RUNNER_TEMP/previous-artwork.zip" || true
-          if [ -s "$RUNNER_TEMP/previous-artwork.zip" ]; then
-            unzip -q -o "$RUNNER_TEMP/previous-artwork.zip"               -d "$RUNNER_TEMP/build-artwork" || true
-          fi
-
-          python3 uk-tv-app/tools/mirror_artwork.py             --catalogue uk-tv-app/app/src/main/assets/catalogue.json.gz             --output-dir "$RUNNER_TEMP/build-artwork"             --zip uk-tv-app/app/src/main/assets/artwork.zip
+          revision=$(git ls-remote https://github.com/Commsltd/script.git refs/heads/uk-tv-app-data | cut -f1)
+          [[ "$revision" =~ ^[a-f0-9]{40}$ ]]
+          base="https://raw.githubusercontent.com/Commsltd/script/$revision"
+          assets=uk-tv-app/app/src/main/assets
+          for file in catalogue.json.gz status.json artwork.zip artwork-status.json; do
+            curl -fsSL --retry 2 --max-time 120 "$base/$file" -o "$assets/$file"
+          done
+          curl -fsSL --retry 2 --max-time 30 "$base/youtube-live.json" -o "$RUNNER_TEMP/youtube-live.json"
+          python3 - <<'PYCODE'
+          import gzip, json, time
+          from pathlib import Path
+          data = json.loads(gzip.decompress(Path("uk-tv-app/app/src/main/assets/catalogue.json.gz").read_bytes()))
+          assert len(data["channels"]) > 100 and len(data["programmes"]) > 1000
+          assert -300 <= time.time() - data["builtAt"]/1000 <= 3*86400, "Published catalogue is stale"
+          assert max(p["stop"] for p in data["programmes"]) > time.time()*1000, "Published guide has expired"
+          PYCODE
+          echo "$revision" > "$RUNNER_TEMP/catalogue-revision.txt"
 
       - name: Compile, unit test and lint
         working-directory: uk-tv-app
@@ -122,6 +121,7 @@ jobs:
           cp uk-tv-app/app/src/main/assets/status.json             delivery/catalogue-status.json
           cp uk-tv-app/app/src/main/assets/artwork-status.json             delivery/artwork-status.json 2>/dev/null || true
           cp "$RUNNER_TEMP/youtube-live.json" delivery/youtube-live.json
+          cp "$RUNNER_TEMP/catalogue-revision.txt" delivery/catalogue-revision.txt
           cp uk-tv-app/README.md delivery/README.md
 
           git archive --format=zip HEAD             uk-tv-app             .github/workflows/build-uk-tv-app.yml             .github/workflows/update-uk-tv-app-data.yml             > delivery/UK-Television-source.zip
