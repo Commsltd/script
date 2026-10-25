@@ -11,7 +11,7 @@ import re
 import unicodedata
 
 # MAIN UK is also the initial selection in installed version 0.3. Keep its key.
-GROUPS = {
+SOURCE_GROUPS = {
     'main': '01 MAIN UK',
     'news': '02 NEWS & POLITICS',
     'films': '03 FILMS',
@@ -37,6 +37,19 @@ GROUPS = {
     'spain': '23 SPAIN',
     'business': '24 BUSINESS & FINANCE',
     'other': '99 MORE CHANNELS',
+}
+
+# Display priority is independent of upstream/seed labels. Keep accepting those
+# labels so refreshing a catalogue never loses a channel's category.
+VIEWING_ORDER = (
+    'main', 'drama', 'films', 'news', 'business', 'documentaries',
+    'crime', 'entertainment', 'sport', 'events', 'lifestyle', 'music',
+    'regional', 'kids', 'world', 'faith', 'shopping', 'other',
+    'au', 'ca', 'ie', 'nz', 'spain', 'tt', 'us',
+)
+GROUPS = {
+    key: f"{index:02d} {SOURCE_GROUPS[key].split(' ', 1)[1]}"
+    for index, key in enumerate(VIEWING_ORDER, 1)
 }
 
 SERVICES = {
@@ -149,7 +162,7 @@ BUSINESS_SERVICES = {
 
 def category(channel):
     base, _, variant = channel['id'].partition('@')
-    if channel.get('group') == GROUPS['spain']: return 'spain'
+    if channel.get('group') in {GROUPS['spain'], SOURCE_GROUPS['spain']}: return 'spain'
     if base in BUSINESS_SERVICES: return 'business'
     # Preserve the existing London/default main services; do not relabel other
     # regional schedules as London or merge regional favourites/stream health.
@@ -163,7 +176,8 @@ def category(channel):
         return SERVICE_GROUP[base]
     previous = channel.get('group', '')
     return next((key for key, label in GROUPS.items() if label == previous),
-                LEGACY_GROUPS.get(previous, 'other'))
+                next((key for key, label in SOURCE_GROUPS.items() if label == previous),
+                     LEGACY_GROUPS.get(previous, 'other')))
 
 
 def natural(value):
