@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import android.view.View
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -83,6 +84,9 @@ class OnDemandActivity : ComponentActivity() {
     val isLoading: Boolean get() = loading
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this) {
+            if(shelf!="browse")openShelf("browse") else finish()
+        }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -252,11 +256,12 @@ class OnDemandActivity : ComponentActivity() {
     }
     private fun menu() {
         val labels=mutableListOf("Genre","Release year","Providers","Sort titles","Search","Favourites","My lists","New list","Clear filters","More titles","Refresh","Service status")
+        if(shelf!="browse")labels.add(0,"Back to Browse")
         if(VodProvider.CREW in browse.providers)labels.add("Browse The Crew")
         if(saved.lists.any { it.id==shelf })labels.add("Manage this list")
         choose("On Demand",labels) { i -> when(labels[i]) {
             "Genre"->genres();"Release year"->years();"Providers"->providers();"Sort titles"->sorting();"Search"->search()
-            "Favourites"->openShelf("favourites");"My lists"->myLists();"New list"->nameList();"Clear filters"->clearFilters()
+            "Favourites"->openShelf(if(shelf=="favourites")"browse" else "favourites");"Back to Browse"->openShelf("browse");"My lists"->myLists();"New list"->nameList();"Clear filters"->clearFilters()
             "Browse The Crew"->openCrew();"More titles"->more();"Refresh"->refresh();"Manage this list"->manageList();else->status()
         } }
     }
@@ -356,7 +361,7 @@ class OnDemandActivity : ComponentActivity() {
                 LibraryButton("All",browse.kind.isBlank()) { browse=browse.copy(kind="") }
                 LibraryButton("Films",browse.kind=="movie") { browse=browse.copy(kind="movie") }
                 LibraryButton("TV series",browse.kind=="show") { browse=browse.copy(kind="show") }
-                LibraryButton("★ Favourites",shelf=="favourites") { openShelf("favourites") }
+                LibraryButton(if(shelf=="favourites")"★ Favourites · show all" else "★ Favourites",shelf=="favourites") { openShelf(if(shelf=="favourites")"browse" else "favourites") }
                 LibraryButton("My lists",saved.lists.any { it.id==shelf }) { myLists() }
                 LibraryButton("Search",browse.query.isNotBlank()) { search() }
             }

@@ -28,6 +28,9 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
     private var generation=0
     private val rejected=mutableSetOf<String>()
     private var candidate=""
+    var providerPage="";private set
+    private var webUnloaded=false
+    private var restoreJob:Job?=null
     private var lastPosition=0L
     private var resumeAfterPause=false
     fun start(){enabled=true;schedule()}
@@ -60,15 +63,16 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
                         }
                     }.onFailure{diagnostic="Playlist request: ${it.javaClass.simpleName}"}.getOrDefault(false)}
                     if(matches){
-                        candidate=url;begin(url,page,agent,(snapshot.optDouble("time")*1000).toLong());return@launch
+                        candidate=url;providerPage=page;begin(url,page,agent,(snapshot.optDouble("time")*1000).toLong());return@launch
                     }
                     rejected.add(url)
                 }
             }
         }
     }
-    private fun begin(url:String,page:String,agent:String,position:Long){
+    internal fun begin(url:String,page:String,agent:String,position:Long){
         if(!enabled)return
+        candidate=url;providerPage=page
         val token=++generation
         val http=OkHttpDataSource.Factory(PublicVodHttp.client).setUserAgent(agent)
             .setDefaultRequestProperties(PublicVodHttp.referer(page)?.let { mapOf("Referer" to it) } ?: emptyMap())
@@ -86,23 +90,63 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
         web.evaluateJavascript("document.querySelectorAll('video').forEach(v=>v.pause())",null)
         web.visibility=View.INVISIBLE
         exo.addListener(object:Player.Listener{
-            override fun onRenderedFirstFrame(){if(generation==token){diagnostic="Native picture playing";watchdog?.cancel()}}
+            override fun onRenderedFirstFrame(){if(generation==token){
+                diagnostic="Native picture playing";watchdog?.cancel()
+                // Pausing a video does not release its MSE buffers or provider
+                // scripts. Drop the document after native playback succeeds.
+                if(!webUnloaded){webUnloaded=true;web.stopLoading();web.loadUrl("about:blank")}
+            }}
             override fun onPlayerError(error:PlaybackException){if(generation==token){diagnostic="Native playback: ${error.errorCodeName}";rejected.add(candidate);returnToWeb(true)}}
         })
         exo.setMediaItem(MediaItem.fromUri(url));exo.seekTo(position);exo.prepare();exo.play()
         watchdog=activity.lifecycleScope.launch{delay(20000);if(generation==token&&(exo.videoDecoderCounters?.renderedOutputBufferCount?:0)==0){rejected.add(candidate);returnToWeb(true)}}
     }
-    fun returnToWeb(resume:Boolean=true){
+    fun returnToWeb(resume:Boolean=true, ready:()->Unit={}) {
         val exo=player
         val position=exo?.currentPosition?.takeIf{it>0}?:lastPosition
-        generation++;watchdog?.cancel();job?.cancel()
-        view?.player=null;view?.let(root::removeView);view=null;exo?.release();player=null
+        lastPosition=position
+        releaseNative()
         web.visibility=View.VISIBLE
-        if(exo!=null)web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(v){v.currentTime=${position/1000.0};${if(resume)"v.play().catch(()=>{})" else "v.pause()"}}})()""",null)
-        web.requestFocus()
+        if(webUnloaded && providerPage.isNotBlank()) {
+            webUnloaded=false
+            web.loadUrl(providerPage)
+            restoreJob=activity.lifecycleScope.launch {
+                repeat(60) {
+                    delay(500)
+                    if(!enabled)return@launch
+                    val restored=suspendCancellableCoroutine<Boolean> { c ->
+                        web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(!v||v.readyState<1||!Number.isFinite(v.duration))return false;if(${position}>0)v.currentTime=Math.min(${position/1000.0},Math.max(0,v.duration-1));${if(resume)"v.play().catch(()=>{})" else "v.pause()"};return true})()""") { raw ->
+                            if(c.isActive)c.resume(raw=="true",null)
+                        }
+                    }
+                    if(restored){web.requestFocus();ready();return@launch}
+                }
+                web.requestFocus();ready()
+            }
+        } else {
+            if(exo!=null)web.evaluateJavascript("""(()=>{const v=document.querySelector('video');if(v){v.currentTime=${position/1000.0};${if(resume)"v.play().catch(()=>{})" else "v.pause()"}}})()""",null)
+            web.requestFocus();ready()
+        }
     }
-    fun pause(){job?.cancel();resumeAfterPause=player?.isPlaying==true;player?.pause()}
-    fun background(){if(player!=null){val resume=resumeAfterPause;returnToWeb(false);resumeAfterPause=resume}}
-    fun resume(){if(resumeAfterPause){if(player!=null)player?.play() else web.evaluateJavascript("document.querySelectorAll('video').forEach(v=>v.play().catch(()=>{}))",null)};resumeAfterPause=false;if(enabled&&player==null)schedule()}
-    fun close(){enabled=false;returnToWeb(false)}
+    private fun releaseNative() {
+        generation++;watchdog?.cancel();job?.cancel();restoreJob?.cancel()
+        view?.player=null;view?.let(root::removeView);view=null
+        player?.release();player=null
+    }
+    fun pause(){job?.cancel();restoreJob?.cancel();resumeAfterPause=player?.isPlaying==true;player?.pause()}
+    fun background(){
+        if(player!=null){lastPosition=player?.currentPosition?:lastPosition;releaseNative()}
+    }
+    fun resume(){
+        if(webUnloaded && player==null && candidate.isNotBlank()) {
+            begin(candidate,providerPage,web.settings.userAgentString,lastPosition)
+            if(!resumeAfterPause)player?.pause()
+        } else if(resumeAfterPause){
+            if(player!=null)player?.play()
+            else web.evaluateJavascript("document.querySelectorAll('video').forEach(v=>v.play().catch(()=>{}))",null)
+        }
+        resumeAfterPause=false
+        if(enabled&&player==null&&!webUnloaded)schedule()
+    }
+    fun close(){enabled=false;releaseNative();web.visibility=View.VISIBLE}
 }

@@ -97,19 +97,19 @@ class ChannelGroupTests(unittest.TestCase):
             self.channel('BBCParliament.uk@SD'), self.channel('GemsTV.uk@SD', '07 LOCAL & REGIONAL'),
         ])
         groups = {c['id']: c['group'] for c in rows}
-        self.assertEqual(groups['Now70s.uk@SD'], '11 MUSIC')
-        self.assertEqual(groups['MUTV.uk@SD'], '10 SPORT')
-        self.assertEqual(groups['BBCParliament.uk@SD'], '02 NEWS & POLITICS')
-        self.assertEqual(groups['GemsTV.uk@SD'], '15 SHOPPING')
+        self.assertEqual(groups['Now70s.uk@SD'], '12 MUSIC')
+        self.assertEqual(groups['MUTV.uk@SD'], '09 SPORT')
+        self.assertEqual(groups['BBCParliament.uk@SD'], '04 NEWS & POLITICS')
+        self.assertEqual(groups['GemsTV.uk@SD'], '17 SHOPPING')
 
     def test_scripted_crime_and_adult_animation_are_not_true_crime_or_kids(self):
         rows = arrange_channels([self.channel(cid, '08 INTERNATIONAL') for cid in
             ('CSICrimeSceneInvestigation.de@GB', 'SouthPark.de@GB', 'DeadlyWomen.us@UK', 'Avatar.de@GB')])
         groups = {c['id']: c['group'] for c in rows}
-        self.assertEqual(groups['CSICrimeSceneInvestigation.de@GB'], '04 DRAMA & COMEDY')
-        self.assertEqual(groups['SouthPark.de@GB'], '04 DRAMA & COMEDY')
+        self.assertEqual(groups['CSICrimeSceneInvestigation.de@GB'], '02 DRAMA & COMEDY')
+        self.assertEqual(groups['SouthPark.de@GB'], '02 DRAMA & COMEDY')
         self.assertEqual(groups['DeadlyWomen.us@UK'], '07 CRIME & MYSTERY')
-        self.assertEqual(groups['Avatar.de@GB'], '09 KIDS')
+        self.assertEqual(groups['Avatar.de@GB'], '14 KIDS')
 
     def test_regional_and_main_identities_survive_reordering(self):
         rows = [self.channel(cid, '01 MAIN UK') for cid in
@@ -119,13 +119,13 @@ class ChannelGroupTests(unittest.TestCase):
         self.assertEqual([c['id'] for c in after[:2]], ['BBCOne.uk@LondonHD', 'BBCTwo.uk@HD'])
         for c in after:
             self.assertEqual(c['group'], '01 MAIN UK' if c['id'] in
-                {'BBCOne.uk@LondonHD', 'BBCTwo.uk@HD'} else '12 REGIONAL & LOCAL')
+                {'BBCOne.uk@LondonHD', 'BBCTwo.uk@HD'} else '13 REGIONAL & LOCAL')
             self.assertEqual({k: v for k, v in c.items() if k not in {'group', 'order'}},
                              {k: v for k, v in before[c['id']].items() if k not in {'group', 'order'}})
 
     def test_intermittent_broadcasts_are_not_a_reliability_category(self):
         row = self.channel('V2BEATTV.uk@SD', '99 EXPERIMENTAL / UNRELIABLE', 'V2BEAT TV [Not 24/7]')
-        self.assertEqual(arrange_channels([row])[0]['group'], '11 MUSIC')
+        self.assertEqual(arrange_channels([row])[0]['group'], '12 MUSIC')
 
     def test_events_sort_numerically_and_arrangement_is_idempotent(self):
         rows = arrange_channels([self.channel(f'BBCRedButton{n}.uk@SD') for n in (10, 2, 1)])
@@ -155,14 +155,14 @@ class ChannelGroupTests(unittest.TestCase):
             dict(self.channel('SpanishZ.es@Spain','23 SPAIN','Zulu'),streamVerified=True,englishSubtitles=True),
             dict(self.channel('SpanishB.es@Spain','23 SPAIN','Beta'),streamVerified=False,englishSubtitles=True),
         ])
-        self.assertTrue(all(c['group']=='24 BUSINESS & FINANCE' for c in rows if c['id'].startswith(('Bloomberg','FASTbusiness'))))
+        self.assertTrue(all(c['group']=='05 BUSINESS & FINANCE' for c in rows if c['id'].startswith(('Bloomberg','FASTbusiness'))))
         self.assertEqual([c['name'] for c in rows if c['group']=='23 SPAIN'],['Zulu','Alpha','Beta'])
 
     def test_unknown_channels_are_retained_without_guessing_from_name_or_country(self):
         rows = arrange_channels([self.channel('Unknown.us@UK', name='News about film crimes'),
                                  self.channel('NewMusic.uk@HD', group='05 MUSIC')])
         self.assertEqual({c['id']: c['group'] for c in rows},
-                         {'NewMusic.uk@HD': '11 MUSIC', 'Unknown.us@UK': '99 MORE CHANNELS'})
+                         {'NewMusic.uk@HD': '12 MUSIC', 'Unknown.us@UK': '18 MORE CHANNELS'})
         self.assertEqual(arrange_channels(copy.deepcopy(rows)), rows)
 
     def test_export_preserves_distinct_regions_plus_one_streams_and_schedules(self):

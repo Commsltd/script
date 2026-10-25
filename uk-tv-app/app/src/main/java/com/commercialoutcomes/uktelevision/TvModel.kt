@@ -115,7 +115,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         val filtered = stations.filter {
             group == "ALL CHANNELS" ||
                 (group == "FAVOURITES" && it.id in favourites) ||
-                it.groupName == group || CountryGroups.group(it.id)==group
+                CategoryOrder.label(it.groupName) == group || CountryGroups.group(it.id)==group
         }
         filtered.flatMap { station ->
             val all = sourceCache[station.id] ?: station.sources()
@@ -129,7 +129,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
 
     private val visibleChannels by derivedStateOf { visibleRows.distinctBy { it.station.id } }
     private val visibleGroups by derivedStateOf {
-        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { it.groupName } + stations.mapNotNull { CountryGroups.group(it.id) }).distinct().sorted()
+        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { CategoryOrder.label(it.groupName) } + stations.mapNotNull { CountryGroups.group(it.id) }).distinct().sorted()
     }
 
     /** One row per service/variant, for the fast live overlay. */
@@ -178,7 +178,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         val merged = PlaylistImport.merge(baseStations, importedStations)
         sourceCache = merged.associate { it.id to it.sources() }
         stations = merged
-        if (group !in groups()) group = stations.firstOrNull()?.groupName ?: "01 MAIN UK"
+        if (group !in groups()) group = stations.firstOrNull()?.groupName?.let(CategoryOrder::label) ?: "01 MAIN UK"
         ensureSelection()
     }
 
@@ -413,7 +413,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     fun alignGuideToPlaying() {
         val row = playingRow ?: return
         group = if (group == "FAVOURITES" && row.station.id in favourites) "FAVOURITES"
-        else row.station.groupName
+        else CategoryOrder.label(row.station.groupName)
         val candidate = rows().firstOrNull { it.station.id == row.station.id } ?: row
         selectedKey = candidate.key
         now()
@@ -432,7 +432,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun focus(station: Station, programme: Programme? = null) {
-        group = station.groupName
+        group = CategoryOrder.label(station.groupName)
         val row = rows().firstOrNull { it.station.id == station.id } ?: return
         selectedKey = row.key
         guideZone = GuideZone.PROGRAMMES

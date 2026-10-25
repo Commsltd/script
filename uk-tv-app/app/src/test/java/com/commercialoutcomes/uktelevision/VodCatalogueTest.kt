@@ -73,12 +73,12 @@ class VodCatalogueTest {
         assertTrue(VodCatalogue.parse(VodProvider.DULO,Jsoup.parse(html.replace("https://dulo.mov/title","https://bad.example/title"),VodProvider.DULO.home)).isEmpty())
     }
     @Test fun countryViewsDoNotMisclassifyUkSpecificEditions() {
-        assertEquals("17 TRINIDAD & TOBAGO",CountryGroups.group("TTT.tt@National"))
-        assertEquals("19 USA",CountryGroups.group("ABCNewsLive.us@SD"))
+        assertEquals("24 TRINIDAD & TOBAGO",CountryGroups.group("TTT.tt@National"))
+        assertEquals("25 USA",CountryGroups.group("ABCNewsLive.us@SD"))
         assertNull(CountryGroups.group("SomeChannel.us@GB"))
         assertNull(CountryGroups.group("BBCOne.uk@London"))
         assertNull(CountryGroups.group("BloombergTV.us@Europe"))
-        assertEquals("19 USA",CountryGroups.group("FilmRiseClassicTV.us@National"))
+        assertEquals("25 USA",CountryGroups.group("FilmRiseClassicTV.us@National"))
     }
 
 }
