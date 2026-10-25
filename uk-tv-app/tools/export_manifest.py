@@ -308,8 +308,10 @@ def main():
     args.output.write_bytes(gzip.compress(encoded, mtime=0))
     summary = {k: data[k] for k in ('schemaVersion', 'sourceRevision', 'youtubeLiveSources', 'builtAt', 'guideStart', 'guideEnd', 'descriptionCount', 'channelsWithGuide', 'supplementedChannels', 'supplementalGuideSources', 'warnings')}
     summary.update(channels=len(data['channels']), programmes=len(data['programmes']), bytes=args.output.stat().st_size)
+    from live_source_feed import build as build_live_sources
+    summary['liveSources'] = build_live_sources(data)
     args.output.with_name('status.json').write_text(json.dumps(summary, indent=2) + '\n')
-    print(json.dumps(summary, indent=2))
+    print(json.dumps({k: v for k, v in summary.items() if k != 'liveSources'}, indent=2))
 
 if __name__ == '__main__':
     main()
