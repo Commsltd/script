@@ -44,7 +44,7 @@ def eligible(row):
 def seed():
     return json.loads(Path(__file__).with_name('international-seed.json').read_text())
 
-def expand(channels, streams=(), inventory=None, refresh_spain=False):
+def expand(channels, streams=(), inventory=None, refresh_spain=False, refresh_business=False):
     inventory=inventory or seed()
     result=copy.deepcopy(channels)
     metadata={c['id']:c for c in inventory['channels']}
@@ -75,6 +75,8 @@ def expand(channels, streams=(), inventory=None, refresh_spain=False):
                 'sources':sources,'officialUrl':meta.get('website') or ''})
     from fast_channels import expand as expand_fast
     result = expand_fast(result)
+    from business_channels import expand as expand_business, refreshed_inventory as refresh_business_inventory
+    result = expand_business(result, refresh_business_inventory() if refresh_business else None, streams)
     from spanish_channels import expand as expand_spain, refreshed_inventory
     result = expand_spain(result, refreshed_inventory() if refresh_spain else None)
     return label_news_countries(add_space_live(add_english_news(add_cgtn_english(add_rt_english(result, streams), streams), streams)))

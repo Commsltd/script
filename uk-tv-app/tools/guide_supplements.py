@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 
 GUIDE_URLS = {
+    'business_schwab': 'https://schwabnetwork.com/',
     'spain_pluto': 'https://i.mjh.nz/PlutoTV/es.xml.gz',
     'spain_samsung': 'https://i.mjh.nz/SamsungTVPlus/es.xml.gz',
     'tdt_spain': 'https://www.tdtchannels.com/epg/TV.xml.gz',
@@ -146,6 +147,9 @@ def download(name, output):
             data = response.read(20 * 1024 * 1024 + 1)
         if len(data) > 20 * 1024 * 1024:
             raise ValueError('Download exceeds size limit')
+        if name=='business_schwab':
+            from business_channels import schwab_xmltv
+            data=gzip.compress(schwab_xmltv(data))
         if name=='news_cbn': data=gzip.compress(cbn_xmltv(data))
         temporary = path.with_suffix('.tmp.gz')
         temporary.write_bytes(data)
