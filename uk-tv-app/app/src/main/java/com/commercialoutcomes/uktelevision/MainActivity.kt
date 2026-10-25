@@ -64,6 +64,8 @@ class MainActivity : ComponentActivity() {
     private var liveOverlay by mutableStateOf(LiveOverlay.NONE)
     private var quickGuideKey by mutableStateOf("")
     private var resizeMode by mutableIntStateOf(AspectRatioFrameLayout.RESIZE_MODE_FIT)
+    private var liveWeb by mutableStateOf<LiveWebPlayer?>(null)
+    private var vpnReturn=false
     private var youtubeSource by mutableStateOf<StreamSource?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +89,7 @@ class MainActivity : ComponentActivity() {
                     model = model,
                     engine = engine,
                     youtubeSource = youtubeSource,
+                    liveWeb = liveWeb,
                     surface = surface,
                     liveOverlay = liveOverlay,
                     quickGuideKey = quickGuideKey,
@@ -113,15 +116,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        model.activateGuide(true)
         val row = model.playingRow
         if (row != null && engine.player == null && youtubeSource == null) {
-            startPlayback(row, fullscreen = surface == TvSurface.LIVE)
+            startPlayback(row, fullscreen = surface == TvSurface.LIVE, force = vpnReturn)
+            vpnReturn=false
         }
     }
 
     override fun onStop() {
+        model.activateGuide(false)
         overlayJob?.cancel()
         engine.close()
+        liveWeb?.close();liveWeb=null
         youtubeSource = null
         super.onStop()
     }
@@ -156,9 +163,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
+        if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }
         model.markPlaying(row)
         quickGuideKey = row.station.id
         when (row.source.kind) {
+            "web" -> {
+                if(row.station.family !in LiveWebActivity.pages){toast("Broadcaster player unavailable");return}
+                engine.close();youtubeSource=null
+                if(liveWeb?.station!=row.station.family){liveWeb?.close();liveWeb=LiveWebPlayer(this,row.station.family)}
+                else if(force)liveWeb?.reload()
+            }
             "youtube" -> {
                 engine.close()
                 youtubeSource = row.source
@@ -225,12 +239,17 @@ class MainActivity : ComponentActivity() {
         val row = model.selected() ?: return
         val now = System.currentTimeMillis()
         val programme = model.highlighted()
-        if (programme != null && (programme.start > now || programme.stop <= now)) {
+        if (GuideRules.previewShowsDetails(model.guideZone, programme, now)) {
             showDetails()
             return
         }
         val alreadyPlaying = model.playingRow?.station?.id == row.station.id
-        if (alreadyPlaying) {
+        val playbackFailed = when(row.source.kind) {
+            "youtube" -> engine.youtube.failed
+            "direct" -> engine.failed || (youtubeSource != null && engine.youtube.failed)
+            else -> false
+        }
+        if (alreadyPlaying && !playbackFailed) {
             surface = TvSurface.LIVE
             showInfo()
         } else {
@@ -239,6 +258,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shortSelect() {
+        if (youtubeSource != null && GuideRules.retryOnSelect(surface, engine.youtube.failed)) { engine.youtube.retry(); return }
+        if (liveWeb == null && youtubeSource == null && GuideRules.retryOnSelect(surface, engine.failed)) { engine.pauseOrPlay(); return }
         when (surface) {
             TvSurface.LIVE -> when (liveOverlay) {
                 LiveOverlay.QUICK_GUIDE -> confirmQuickGuide()
@@ -333,8 +354,8 @@ class MainActivity : ComponentActivity() {
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
             KeyEvent.KEYCODE_MEDIA_PLAY,
             KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-                if (surface == TvSurface.LIVE && youtubeSource == null) {
-                    engine.pauseOrPlay()
+                if (surface == TvSurface.LIVE) {
+                    if (liveWeb != null) liveWeb?.showControls() else if (youtubeSource != null) engine.youtube.pauseOrPlay() else engine.pauseOrPlay()
                     showInfo()
                 } else if (surface == TvSurface.GUIDE) {
                     model.selected()?.let { startPlayback(it, fullscreen = true) }
@@ -395,24 +416,32 @@ class MainActivity : ComponentActivity() {
 
         val labels = if (surface == TvSurface.GUIDE) {
             buildList {
+                add("On Demand")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Preview channel")
                 add("Watch fullscreen")
                 add("Stream sources")
+                add("Test this channel")
+                add("Playback diagnostics")
                 add("Programme details")
                 add("Search")
                 add("Categories")
                 add("Back to now")
                 add("Refresh guide")
+                add("VPN / country")
+                if(liveWeb!=null){add("Broadcaster controls");add("Reload broadcaster")}
                 add("Settings")
             }
         } else {
             buildList {
+                add("On Demand")
                 add("Open full guide")
                 add("Quick guide")
                 add("Programme info")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Stream sources")
+                add("Test this channel")
+                add("Playback diagnostics")
                 if (model.previousRow != null) add("Previous channel")
                 if (youtubeSource == null) {
                     add("Audio tracks")
@@ -420,6 +449,8 @@ class MainActivity : ComponentActivity() {
                     add("Aspect ratio")
                     add("Prefer this source")
                 }
+                add("VPN / country")
+                if(liveWeb!=null){add("Broadcaster controls");add("Reload broadcaster")}
                 add("Settings")
             }
         }
@@ -436,6 +467,8 @@ class MainActivity : ComponentActivity() {
                         "Preview channel" -> row?.let { startPlayback(it, fullscreen = false) }
                         "Watch fullscreen" -> row?.let { startPlayback(it, fullscreen = true) }
                         "Stream sources" -> handler.post { showSources() }
+                        "Test this channel" -> handler.post { testChannel() }
+                        "Playback diagnostics" -> handler.post { showDiagnostics() }
                         "Programme details", "Programme info" -> handler.post { showDetails() }
                         "Search" -> handler.post { showSearch() }
                         "Categories" -> model.chooseGuideZone(GuideZone.CATEGORIES)
@@ -458,10 +491,54 @@ class MainActivity : ComponentActivity() {
                             engine.pinCurrent()
                             toast("Preferred for ${model.profile}")
                         }
+                        "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
+                        "VPN / country" -> handler.post { VpnShortcut.open(this,row?.station?.name?:"UK TV",row?.station?.id.orEmpty()){vpnReturn=true} }
+                        "Broadcaster controls" -> liveWeb?.showControls()
+                        "Reload broadcaster" -> liveWeb?.reload()
                         "Settings" -> handler.post { showSettings() }
                     }
                 }
         )
+    }
+
+    private fun showDiagnostics() {
+        val row = activeRow() ?: return
+        lifecycleScope.launch {
+            val health = model.dao.health(model.profile).associateBy { it.streamId }
+            val programmes = model.schedule[row.station.id].orEmpty()
+            val guide = when {
+                programmes.isEmpty() -> "No programme data supplied for this channel."
+                programmes.maxOf { it.stop } < System.currentTimeMillis() -> "Programme data has expired."
+                GuideRules.at(programmes, System.currentTimeMillis()) == null -> "Programme data has a gap at this time."
+                else -> "Programme data available (${programmes.size} listings)."
+            }
+            val lines = row.station.sources().map { source ->
+                val h = health[source.id]
+                "${source.label} · ${source.host}\n" + if (h == null) "No recorded playback test."
+                else "${h.successes} successful starts · ${h.failures} failures\n" +
+                    (if (h.lastError.isBlank()) "" else RecoveryRules.explain(h.lastError))
+            }
+            present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — diagnostics")
+                .setMessage(listOf("UK Television ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                    ChannelDiagnostics.network(this@MainActivity), LiveSourceRefresh.diagnostic(), "History profile: ${model.profile}", guide,
+                    if (youtubeSource != null) engine.youtube.status else engine.status,
+                    lines.joinToString("\n\n")).filter { it.isNotBlank() }.joinToString("\n\n"))
+                .setPositiveButton("Close", null))
+        }
+    }
+
+    private fun testChannel() {
+        val row = activeRow() ?: return
+        toast("Checking ${row.station.name}…")
+        lifecycleScope.launch {
+            val results = row.station.sources().map { source ->
+                "${source.label}\n" + if (model.privacyMode == PrivacyMode.STRICT && source.url.startsWith("http://"))
+                    "Blocked by Strict Privacy." else ChannelDiagnostics.check(source, model.privacyMode == PrivacyMode.STRICT, !row.station.id.startsWith("user."))
+            }
+            present(AlertDialog.Builder(this@MainActivity).setTitle("${row.station.name} — source check")
+                .setMessage(ChannelDiagnostics.network(this@MainActivity) + "\n\n" + results.joinToString("\n\n"))
+                .setPositiveButton("Close", null))
+        }
     }
 
     private fun showSources() {
@@ -473,13 +550,14 @@ class MainActivity : ComponentActivity() {
                 val h = health[s.id]
                 val state = when {
                     s.kind == "youtube" -> "Official YouTube · in-app fallback"
+                    s.kind == "web" -> "Broadcaster player · inside UK TV"
                     s.kind != "direct" -> "Not integrated"
                     s.unsupportedDrm -> "Provider authentication required"
                     model.privacyMode == PrivacyMode.STRICT && s.url.startsWith("http://") ->
                         "Blocked in Strict Privacy"
                     h == null -> "Not tested on this route"
                     h.lastOk > h.lastFailure -> "Last playback succeeded"
-                    else -> "Last attempt failed · ${h.lastError}"
+                    else -> "Last attempt failed · ${RecoveryRules.explain(h.lastError)}"
                 }
                 "${s.label.ifBlank { s.kind }}\n${s.host} · $state"
             }
@@ -536,12 +614,13 @@ class MainActivity : ComponentActivity() {
             setPadding(24, 16, 24, 16)
         }
         present(
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this@MainActivity)
                 .setTitle("Search your guide")
                 .setView(edit)
                 .setPositiveButton("Search") { _, _ ->
-                    val results = model.find(edit.text.toString())
-                    handler.post {
+                    val query = edit.text.toString()
+                    lifecycleScope.launch {
+                        val results = model.find(query)
                         if (results.isEmpty()) {
                             toast("No matches in the cached guide")
                         } else {
@@ -551,7 +630,7 @@ class MainActivity : ComponentActivity() {
                                     SimpleDateFormat("EEE HH:mm", Locale.UK).format(Date(p.start))
                             }
                             present(
-                                AlertDialog.Builder(this)
+                                AlertDialog.Builder(this@MainActivity)
                                     .setTitle("Search results")
                                     .setItems(labels.toTypedArray()) { _, n ->
                                         surface = TvSurface.GUIDE
@@ -576,7 +655,7 @@ class MainActivity : ComponentActivity() {
             "About and diagnostics"
         )
         present(
-            AlertDialog.Builder(this).setTitle("Settings").setItems(entries) { _, n ->
+            AlertDialog.Builder(this@MainActivity).setTitle("Settings").setItems(entries) { _, n ->
                 when (n) {
                     0 -> handler.post { showPrivacy() }
                     1 -> handler.post { showPlaylists() }
@@ -584,7 +663,7 @@ class MainActivity : ComponentActivity() {
                     3 -> model.setFailover(!model.autoFallback)
                     4 -> handler.post {
                         present(
-                            AlertDialog.Builder(this)
+                            AlertDialog.Builder(this@MainActivity)
                                 .setTitle("Playback history profile — not a VPN switch")
                                 .setItems(arrayOf("UK VPN", "Spain / no VPN", "Other route")) { _, i ->
                                     model.setProfile(arrayOf("UK VPN", "Spain / no VPN", "Other route")[i])
@@ -594,7 +673,7 @@ class MainActivity : ComponentActivity() {
                     5 -> handler.post {
                         val s = model.snapshot
                         present(
-                            AlertDialog.Builder(this)
+                            AlertDialog.Builder(this@MainActivity)
                                 .setTitle("UK Television ${BuildConfig.VERSION_NAME}")
                                 .setMessage(
                                     "${model.stations.size} services\n" +
@@ -620,7 +699,7 @@ class MainActivity : ComponentActivity() {
             "Strict privacy — HTTPS-only direct streams; mirrored artwork stays local; YouTube remains in-app"
         )
         present(
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this@MainActivity)
                 .setTitle("Privacy mode")
                 .setSingleChoiceItems(
                     labels,
@@ -652,7 +731,7 @@ class MainActivity : ComponentActivity() {
         val labels = mutableListOf("+ Add playlist", "Refresh all")
         labels += model.userPlaylists.map { "${it.name}\n${safePlaylistUrl(it.url)}" }
         present(
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this@MainActivity)
                 .setTitle("Additional playlists")
                 .setItems(labels.toTypedArray()) { _, which ->
                     when (which) {
@@ -662,7 +741,7 @@ class MainActivity : ComponentActivity() {
                             val item = model.userPlaylists[which - 2]
                             handler.post {
                                 present(
-                                    AlertDialog.Builder(this)
+                                    AlertDialog.Builder(this@MainActivity)
                                         .setTitle(item.name)
                                         .setMessage(safePlaylistUrl(item.url))
                                         .setPositiveButton("Remove") { _, _ ->
@@ -685,7 +764,7 @@ class MainActivity : ComponentActivity() {
             setPadding(24, 16, 24, 16)
         }
         present(
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this@MainActivity)
                 .setTitle("Add playlist")
                 .setView(name)
                 .setPositiveButton("Next") { _, _ ->
@@ -697,7 +776,7 @@ class MainActivity : ComponentActivity() {
                             setPadding(24, 16, 24, 16)
                         }
                         present(
-                            AlertDialog.Builder(this)
+                            AlertDialog.Builder(this@MainActivity)
                                 .setTitle(chosen.ifBlank { "Playlist URL" })
                                 .setView(url)
                                 .setPositiveButton("Add") { _, _ ->
@@ -734,7 +813,7 @@ class MainActivity : ComponentActivity() {
         }
 
         present(
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this@MainActivity)
                 .setTitle(if (type == C.TRACK_TYPE_TEXT) "Subtitles" else "Audio tracks")
                 .setItems(labels.toTypedArray()) { _, i ->
                     val parameters = player.trackSelectionParameters.buildUpon()
@@ -754,7 +833,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun chooseAspect() = present(
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(this@MainActivity)
             .setTitle("Picture size")
             .setItems(arrayOf("Fit — preserve picture", "Zoom — crop edges", "Fill — stretch")) { _, index ->
                 resizeMode = arrayOf(

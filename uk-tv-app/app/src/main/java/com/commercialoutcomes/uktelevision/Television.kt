@@ -51,6 +51,7 @@ fun Television(
     model: TvModel,
     engine: PlaybackEngine,
     youtubeSource: StreamSource?,
+    liveWeb: LiveWebPlayer?,
     surface: TvSurface,
     liveOverlay: LiveOverlay,
     quickGuideKey: String,
@@ -60,9 +61,27 @@ fun Television(
 ) {
     LaunchedEffect(Unit) {
         while (true) {
-            model.clock = System.currentTimeMillis()
+            if (model.guideActive) model.clock = System.currentTimeMillis()
             delay(30000)
         }
+    }
+
+    val currentWeb by rememberUpdatedState(liveWeb)
+    val webMedia=remember { movableContentOf {
+        currentWeb?.let { player -> key(player) { AndroidView(factory={player},modifier=Modifier.fillMaxSize()) } }
+    } }
+    val currentYoutube by rememberUpdatedState(youtubeSource)
+    val currentResize by rememberUpdatedState(resizeMode)
+    // Preserve the YouTube page/session when moving between preview and full
+    // screen. Native SurfaceViews must attach freshly at each destination:
+    // moving one while replacing its player can strand video on Fire OS.
+    val youtubeMedia = remember(model, engine) { movableContentOf {
+        MediaSurface(model, engine, currentYoutube, Modifier.fillMaxSize(), currentResize, false)
+    } }
+    val media: @Composable () -> Unit = {
+        if (currentWeb != null) webMedia()
+        else if (currentYoutube != null) youtubeMedia()
+        else MediaSurface(model, engine, null, Modifier.fillMaxSize(), currentResize, false)
     }
 
     MaterialTheme {
@@ -70,10 +89,10 @@ fun Television(
             if (surface == TvSurface.LIVE) {
                 LiveScreen(
                     model, engine, youtubeSource, liveOverlay,
-                    quickGuideKey, resizeMode
+                    quickGuideKey, media
                 )
             } else {
-                GuideScreen(model, engine, youtubeSource, resizeMode)
+                GuideScreen(model, engine, youtubeSource, media)
             }
         }
     }
@@ -93,25 +112,30 @@ private fun MediaSurface(
         if (youtubeSource != null) {
             EmbeddedYouTubePlayer(
                 source = youtubeSource,
+                controller = engine.youtube,
                 strict = model.privacyMode == PrivacyMode.STRICT,
                 modifier = Modifier.fillMaxSize(),
                 interactive = interactiveYoutube
             )
         } else {
-            AndroidView(
-                factory = { context ->
-                    PlayerView(context).apply {
-                        useController = false
-                        keepScreenOn = true
-                        isFocusable = false
+            val player = engine.player
+            key(player) {
+                AndroidView(
+                    factory = { context ->
+                        PlayerView(context).apply {
+                            useController = false
+                            keepScreenOn = true
+                            isFocusable = false
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                    onRelease = { it.player = null },
+                    update = {
+                        it.player = player
+                        it.resizeMode = resizeMode
                     }
-                },
-                modifier = Modifier.fillMaxSize(),
-                update = {
-                    it.player = engine.player
-                    it.resizeMode = resizeMode
-                }
-            )
+                )
+            }
         }
     }
 }
@@ -121,7 +145,7 @@ private fun GuideScreen(
     model: TvModel,
     engine: PlaybackEngine,
     youtubeSource: StreamSource?,
-    resizeMode: Int
+    media: @Composable () -> Unit
 ) {
     val rows = model.rows()
     val selected = model.selected()
@@ -229,16 +253,11 @@ private fun GuideScreen(
 
             Box(
                 Modifier.width(348.dp).fillMaxHeight()
-                    .clip(RoundedCornerShape(12.dp))
+                    .then(if(playing?.source?.kind=="web")Modifier else Modifier.clip(RoundedCornerShape(12.dp)))
                     .border(1.dp, if (playing != null) Mint.copy(alpha = .6f) else Soft, RoundedCornerShape(12.dp))
             ) {
                 if (playing != null) {
-                    MediaSurface(
-                        model, engine, youtubeSource,
-                        Modifier.fillMaxSize(),
-                        resizeMode,
-                        interactiveYoutube = false
-                    )
+                    media()
                     Box(
                         Modifier.align(Alignment.TopStart)
                             .padding(10.dp)
@@ -246,13 +265,15 @@ private fun GuideScreen(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            "LIVE PREVIEW  ·  ${playing.station.name}",
+                            "LIVE PREVIEW  ·  ${playing.station.name}" +
+                                (engine.source?.region?.takeIf { it.isNotBlank() }?.let { " · $it" } ?: ""),
                             color = White,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    if (engine.failed && youtubeSource == null) {
+                    if (youtubeSource == null && model.playingRow?.source?.kind!="web" &&
+                        engine.status.isNotBlank()) {
                         Box(
                             Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                                 .background(Ink.copy(alpha = .88f))
@@ -338,7 +359,11 @@ private fun CategoryRail(model: TvModel, modifier: Modifier) {
     val index = groups.indexOf(model.group).coerceAtLeast(0)
 
     LaunchedEffect(model.group, groups.size) {
-        if (groups.isNotEmpty()) state.scrollToItem(index.coerceIn(0, groups.lastIndex))
+        if (groups.isNotEmpty()) {
+            val visible = state.layoutInfo.visibleItemsInfo
+            if (visible.isEmpty() || index < visible.first().index) state.scrollToItem(index)
+            else if (index >= visible.last().index) state.scrollToItem((index - visible.size + 2).coerceAtLeast(0))
+        }
     }
 
     Column(
@@ -355,7 +380,7 @@ private fun CategoryRail(model: TvModel, modifier: Modifier) {
             items(groups, key = { it }) { group ->
                 val active = group == model.group
                 val focused = active && model.guideZone == GuideZone.CATEGORIES
-                val label = group.replace(Regex("^\\d+\\s+"), "")
+                val label = remember(group) { group.replace(Regex("^\\d+\\s+"), "") }
                 Row(
                     Modifier.fillMaxWidth()
                         .background(
@@ -412,7 +437,9 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
         val selectedIndex = rows.indexOfFirst { it.key == model.selectedKey }.coerceAtLeast(0)
         LaunchedEffect(model.selectedKey, rows.size) {
             if (rows.isNotEmpty()) {
-                state.scrollToItem((selectedIndex - 2).coerceAtLeast(0))
+                val visible = state.layoutInfo.visibleItemsInfo
+                if (visible.isEmpty() || selectedIndex < visible.first().index) state.scrollToItem(selectedIndex)
+                else if (selectedIndex >= visible.last().index) state.scrollToItem((selectedIndex - 2).coerceAtLeast(0))
             }
         }
 
@@ -438,10 +465,10 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
                         row = row,
                         programmes = model.schedule[row.station.id].orEmpty(),
                         selected = row.key == model.selectedKey,
-                        selectedProgrammeKey = model.selectedProgrammeKey,
+                        selectedProgrammeKey = if (row.key == model.selectedKey) model.selectedProgrammeKey else "",
                         guideZone = model.guideZone,
                         window = model.windowStart,
-                        cursor = model.cursor,
+                        cursor = if (row.key == model.selectedKey) model.cursor else 0L,
                         now = model.clock,
                         favourite = row.station.id in model.favourites,
                         privacyMode = model.privacyMode,
@@ -516,7 +543,7 @@ private fun ChannelLine(
                 .background(Deep)
         ) {
             val end = window + WINDOW
-            val available = GuideRules.inWindow(programmes, window, end)
+            val available = remember(programmes, window) { GuideRules.inWindow(programmes, window, end) }
             if (available.isEmpty()) {
                 Box(
                     Modifier.fillMaxSize()
@@ -626,15 +653,10 @@ private fun LiveScreen(
     youtubeSource: StreamSource?,
     overlay: LiveOverlay,
     quickGuideKey: String,
-    resizeMode: Int
+    media: @Composable () -> Unit
 ) {
     Box(Modifier.fillMaxSize().background(Color.Black)) {
-        MediaSurface(
-            model, engine, youtubeSource,
-            Modifier.fillMaxSize(),
-            resizeMode,
-            interactiveYoutube = false
-        )
+        media()
 
         when (overlay) {
             LiveOverlay.NONE -> Unit
@@ -642,7 +664,7 @@ private fun LiveScreen(
             LiveOverlay.QUICK_GUIDE -> QuickGuideOverlay(model, quickGuideKey)
         }
 
-        if (engine.failed && youtubeSource == null) {
+        if (engine.failed && youtubeSource == null && model.playingRow?.source?.kind!="web") {
             Column(
                 Modifier.align(Alignment.Center)
                     .widthIn(max = 620.dp)
@@ -667,8 +689,9 @@ private fun BoxScope.LiveInfoOverlay(
     youtubeSource: StreamSource?
 ) {
     val row = model.playingRow ?: return
-    val current = GuideRules.at(model.schedule[row.station.id].orEmpty(), model.clock)
-    val next = model.schedule[row.station.id].orEmpty().firstOrNull {
+    val schedule = model.playingSchedule(engine.source)
+    val current = GuideRules.at(schedule, model.clock)
+    val next = schedule.firstOrNull {
         current != null && it.start >= current.stop
     }
 
@@ -685,7 +708,7 @@ private fun BoxScope.LiveInfoOverlay(
             Logo(row.station.logo, row.station.name, Modifier.size(54.dp), model.privacyMode)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                Text(row.station.name, color = Mint, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                Text(row.station.name + (engine.source?.region?.takeIf { it.isNotBlank() }?.let { " · $it" } ?: ""), color = Mint, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                 Text(
                     current?.title ?: "Live television",
                     color = White,

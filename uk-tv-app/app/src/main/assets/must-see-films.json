@@ -1,0 +1,1233 @@
+{
+  "version": 1,
+  "lists": [
+    {
+      "id": "100-must-see-films",
+      "name": "100 Must See Films",
+      "type": "movie",
+      "results": [
+        {
+          "id": 15,
+          "poster_path": "/sav0jxhqiH0bPr2vZFU0Kjt2nZL.jpg",
+          "overview": "Newspaper magnate Charles Foster Kane is taken from his mother as a boy and made the ward of a rich industrialist. As a result, every well-meaning, tyrannical or self-destructive move he makes for the rest of his life appears in some way to be a reaction to that deeply wounding event.",
+          "genre_ids": [
+            9648,
+            18
+          ],
+          "title": "Citizen Kane",
+          "release_date": "1941-01-01",
+          "note": "Power, wealth, media and ambition."
+        },
+        {
+          "id": 289,
+          "poster_path": "/lGCEKlJo2CnWydQj7aamY7s1S7Q.jpg",
+          "overview": "In Casablanca, Morocco in December 1941, a cynical American expatriate meets a former lover, with unforeseen complications.",
+          "genre_ids": [
+            18,
+            10749
+          ],
+          "title": "Casablanca",
+          "release_date": "1942-01-01",
+          "note": "Romance, sacrifice and wartime morality."
+        },
+        {
+          "id": 346,
+          "poster_path": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
+          "overview": "A samurai answers a village's request for protection after he falls on hard times. The town needs protection from bandits, so the samurai gathers six others to help him teach the people how to defend themselves, and the villagers provide the soldiers with food.",
+          "genre_ids": [
+            28,
+            18
+          ],
+          "title": "Seven Samurai",
+          "release_date": "1954-01-01",
+          "note": "Japanese cinema, honour and the foundations of modern action films."
+        },
+        {
+          "id": 19,
+          "poster_path": "/kr9wXRN23zLuWJIelahas1mtnYj.jpg",
+          "overview": "In a futuristic city sharply divided between the rich and the poor, the son of the city's mastermind meets a prophet who predicts the coming of a savior to mediate their differences.",
+          "genre_ids": [
+            18,
+            878
+          ],
+          "title": "Metropolis",
+          "release_date": "1927-01-01",
+          "note": "Industrialisation, class struggle and dystopian science fiction."
+        },
+        {
+          "id": 961,
+          "poster_path": "/4NmV1Wei4LxT2lpjViCAScgCZLq.jpg",
+          "overview": "During America’s Civil War, Union spies steal engineer Johnny Gray's beloved locomotive, 'The General'—with Johnnie's lady love aboard an attached boxcar—and he single-handedly must do all in his power to both get The General back and to rescue Annabelle.",
+          "genre_ids": [
+            35,
+            10752,
+            10749
+          ],
+          "title": "The General",
+          "release_date": "1926-01-01",
+          "note": "Buster Keaton and the genius of silent comedy."
+        },
+        {
+          "id": 901,
+          "poster_path": "/bXNvzjULc9jrOVhGfjcc64uKZmZ.jpg",
+          "overview": "A tramp falls in love with a beautiful blind flower girl. His on-and-off friendship with a wealthy man allows him to be the girl's benefactor and suitor.",
+          "genre_ids": [
+            35,
+            18,
+            10749
+          ],
+          "title": "City Lights",
+          "release_date": "1931-01-01",
+          "note": "Chaplin, humanity and visual storytelling."
+        },
+        {
+          "id": 832,
+          "poster_path": "/bTdZk3q2DWpBRnLiaaItKFWOVhI.jpg",
+          "overview": "In this classic German thriller, Hans Beckert, a serial killer who preys on children, becomes the focus of a massive Berlin police manhunt. Beckert's heinous crimes are so repellant and disruptive to city life that he is even targeted by others in the seedy underworld network. With both cops and criminals in pursuit, the murderer soon realizes that people are on his trail, sending him into a tense, panicked attempt to escape justice.",
+          "genre_ids": [
+            18,
+            53,
+            80
+          ],
+          "title": "M",
+          "release_date": "1931-01-01",
+          "note": "Criminality, mob justice and German expressionism."
+        },
+        {
+          "id": 776,
+          "poster_path": "/8JOzt7uFZyshcuzCBmYU6CDJL4D.jpg",
+          "overview": "The Marquis de la Chesnaye and his wife host a weekend gala where a variety of complicated romantic and social entanglements between guests and servants lead to tragedy, all against the backdrop of a looming war.",
+          "genre_ids": [
+            18,
+            35,
+            10749
+          ],
+          "title": "The Rules of the Game",
+          "release_date": "1939-01-01",
+          "note": "French class society and social hypocrisy."
+        },
+        {
+          "id": 1092,
+          "poster_path": "/vqnFHTx1phgTAsLfxZoejSbMVHA.jpg",
+          "overview": "In postwar Vienna, Austria, Holly Martins, a writer of pulp Westerns, arrives penniless as a guest of his childhood chum Harry Lime, only to learn he has died. Martins develops a conspiracy theory after learning of a \"third man\" present at the time of Harry's death, running into interference from British officer Major Calloway, and falling head-over-heels for Harry's grief-stricken lover, Anna.",
+          "genre_ids": [
+            53,
+            9648
+          ],
+          "title": "The Third Man",
+          "release_date": "1949-01-01",
+          "note": "Post-war Europe, corruption and moral ambiguity."
+        },
+        {
+          "id": 5156,
+          "poster_path": "/iPdVqIpmR3bRvOQJPrn4pr2KR3q.jpg",
+          "overview": "Unemployed Antonio is elated when he finally finds work hanging posters around war-torn Rome. However on his first day, his bicycle—essential to his work—gets stolen. His job is doomed unless he can find the thief. With the help of his son, Antonio combs the city, becoming desperate for justice.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Bicycle Thieves",
+          "release_date": "1948-01-01",
+          "note": "Italian neorealism, poverty and dignity."
+        },
+        {
+          "id": 548,
+          "poster_path": "/ijWibsAU1iBcCD8tuIZfTmDzMVE.jpg",
+          "overview": "Four people recount different versions of the story of a man's murder and the rape of his wife.",
+          "genre_ids": [
+            80,
+            18,
+            9648
+          ],
+          "title": "Rashomon",
+          "release_date": "1950-01-01",
+          "note": "Truth, memory and conflicting perspectives."
+        },
+        {
+          "id": 599,
+          "poster_path": "/zt8aQ6ksqK6p1AopC5zVTDS9pKT.jpg",
+          "overview": "A hack screenwriter writes a screenplay for a former silent film star who has faded into Hollywood obscurity.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Sunset Boulevard",
+          "release_date": "1950-01-01",
+          "note": "Hollywood, fame and self-delusion."
+        },
+        {
+          "id": 872,
+          "poster_path": "/zjrpWniKbzu0zFR5sUI1Ptdfl9y.jpg",
+          "overview": "In 1927 Hollywood, a silent film star falls for a chorus girl just as he and his paranoid screen partner struggle to make the difficult transition to talking pictures.",
+          "genre_ids": [
+            35,
+            10749
+          ],
+          "title": "Singin' in the Rain",
+          "release_date": "1952-01-01",
+          "note": "Hollywood musicals and the arrival of sound."
+        },
+        {
+          "id": 18148,
+          "poster_path": "/g2YbTYKpY7N2yDSk7BfXZ18I5QV.jpg",
+          "overview": "The elderly Shukishi and his wife, Tomi, take the long journey from their small seaside village to visit their adult children in Tokyo. Their elder son, Koichi, a doctor, and their daughter, Shige, a hairdresser, don't have much time to spend with their aged parents, and so it falls to Noriko, the widow of their younger son who was killed in the war, to keep her in-laws company.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Tokyo Story",
+          "release_date": "1953-01-01",
+          "note": "Family, ageing and generational change."
+        },
+        {
+          "id": 567,
+          "poster_path": "/ILVF0eJxHMddjxeQhswFtpMtqx.jpg",
+          "overview": "A wheelchair-bound photographer spies on his neighbors from his apartment window and becomes convinced one of them has committed murder.",
+          "genre_ids": [
+            53,
+            9648,
+            18
+          ],
+          "title": "Rear Window",
+          "release_date": "1954-01-01",
+          "note": "Hitchcock, voyeurism and suspicion."
+        },
+        {
+          "id": 389,
+          "poster_path": "/zhG3vKWyDRaZYoaww1UVAi29T9h.jpg",
+          "overview": "The defense and the prosecution have rested and the jury is filing into the jury room to decide if a young Spanish-American is guilty or innocent of murdering his father. What begins as an open and shut case soon becomes a mini-drama of each of the jurors' prejudices and preconceptions about the trial, the accused, and each other.",
+          "genre_ids": [
+            18
+          ],
+          "title": "12 Angry Men",
+          "release_date": "1957-01-01",
+          "note": "Justice, prejudice and rational argument."
+        },
+        {
+          "id": 490,
+          "poster_path": "/wcZ21zrOsy0b52AfAF50XpTiv75.jpg",
+          "overview": "When disillusioned Swedish knight Antonius Block returns home from the Crusades to find his country in the grips of the Black Death, he challenges Death to a chess match for his life. Tormented by the belief that God does not exist, Block sets off on a journey, meeting up with traveling players Jof and his wife, Mia, and becoming determined to evade Death long enough to commit one redemptive act while he still lives.",
+          "genre_ids": [
+            14,
+            18
+          ],
+          "title": "The Seventh Seal",
+          "release_date": "1957-01-01",
+          "note": "Mortality, religion and existential philosophy."
+        },
+        {
+          "id": 426,
+          "poster_path": "/15uOEfqBNTVtDUT7hGBVCka0rZz.jpg",
+          "overview": "A retired San Francisco detective suffering from acrophobia investigates the strange activities of an old friend's wife, all the while becoming dangerously obsessed with her.",
+          "genre_ids": [
+            9648,
+            10749,
+            53
+          ],
+          "title": "Vertigo",
+          "release_date": "1958-01-01",
+          "note": "Obsession, identity and psychological manipulation."
+        },
+        {
+          "id": 239,
+          "poster_path": "/hVIKyTK13AvOGv7ICmJjK44DTzp.jpg",
+          "overview": "In Prohibition-era Chicago, musicians Joe and Jerry witness a mob hit, and flee the state in an all-female band disguised as Josephine and Daphne, but further complications set in.",
+          "genre_ids": [
+            35,
+            10749,
+            80
+          ],
+          "title": "Some Like It Hot",
+          "release_date": "1959-01-01",
+          "note": "Classic Hollywood comedy and social conventions."
+        },
+        {
+          "id": 147,
+          "poster_path": "/12PuU23kkDLvTd0nb8hMlE3oShB.jpg",
+          "overview": "For young Parisian boy Antoine Doinel, life is one difficult situation after another. Surrounded by inconsiderate adults, including his neglectful parents, Antoine spends his days with his best friend, Rene, trying to plan for a better life. When one of their schemes goes awry, Antoine ends up in trouble with the law, leading to even more conflicts with unsympathetic authority figures.",
+          "genre_ids": [
+            18
+          ],
+          "title": "The 400 Blows",
+          "release_date": "1959-01-01",
+          "note": "Childhood, alienation and the French New Wave."
+        },
+        {
+          "id": 62,
+          "poster_path": "/ve72VxNqjGM69Uky4WTo2bK6rfq.jpg",
+          "overview": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+          "genre_ids": [
+            878,
+            9648,
+            12
+          ],
+          "title": "2001: A Space Odyssey",
+          "release_date": "1968-01-01",
+          "note": "Evolution, artificial intelligence and human existence."
+        },
+        {
+          "id": 238,
+          "poster_path": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+          "overview": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "The Godfather",
+          "release_date": "1972-01-01",
+          "note": "Family, capitalism, immigration and power."
+        },
+        {
+          "id": 28,
+          "poster_path": "/gQB8Y5RCMkv2zwzFHbUJX3kAhvA.jpg",
+          "overview": "At the height of the Vietnam war, Captain Benjamin Willard is sent on a dangerous mission that, officially, \"does not exist, nor will it ever exist.\" His goal is to locate - and eliminate - a mysterious Green Beret Colonel named Walter Kurtz, who has been leading his personal army on illegal guerrilla missions into enemy territory.",
+          "genre_ids": [
+            18,
+            10752
+          ],
+          "title": "Apocalypse Now",
+          "release_date": "1979-01-01",
+          "note": "Vietnam, imperialism and the darkness of human nature."
+        },
+        {
+          "id": 539,
+          "poster_path": "/yz4QVqPx3h1hD1DfqqQkCq3rmxW.jpg",
+          "overview": "When larcenous real estate clerk Marion Crane goes on the lam with a wad of cash and hopes of starting a new life, she ends up at the notorious Bates Motel, where manager Norman Bates cares for his housebound mother.",
+          "genre_ids": [
+            27,
+            53,
+            9648
+          ],
+          "title": "Psycho",
+          "release_date": "1960-01-01",
+          "note": "Hitchcock and the reinvention of psychological horror."
+        },
+        {
+          "id": 439,
+          "poster_path": "/dZ2v0DAX4aCZartCzZdg4ZinSW2.jpg",
+          "overview": "Episodic journey of journalist Marcello who struggles to find his place in the world, torn between the allure of Rome's elite social scene and the stifling domesticity offered by his girlfriend, all the while searching for a way to become a serious writer.",
+          "genre_ids": [
+            35,
+            18
+          ],
+          "title": "La Dolce Vita",
+          "release_date": "1960-01-01",
+          "note": "Celebrity, decadence and modern Italian society."
+        },
+        {
+          "id": 269,
+          "poster_path": "/9Wx0Wdn2EOqeCZU4SP6tlS3LOml.jpg",
+          "overview": "A small-time thief steals a car and impulsively murders a motorcycle policeman. Wanted by the authorities, he attempts to persuade a girl to run away to Italy with him.",
+          "genre_ids": [
+            18,
+            80,
+            10749
+          ],
+          "title": "Breathless",
+          "release_date": "1960-01-01",
+          "note": "French New Wave and revolutionary filmmaking."
+        },
+        {
+          "id": 947,
+          "poster_path": "/AiAm0EtDvyGqNpVoieRw4u65vD1.jpg",
+          "overview": "During World War I, English officer Thomas Edward 'T.E.' Lawrence sets out to unite and lead the diverse, often warring, Arab tribes to fight the Turks.",
+          "genre_ids": [
+            12,
+            36,
+            10752
+          ],
+          "title": "Lawrence of Arabia",
+          "release_date": "1962-01-01",
+          "note": "British imperialism, identity and the Middle East."
+        },
+        {
+          "id": 595,
+          "poster_path": "/gZycFUMLx2110dzK3nBNai7gfpM.jpg",
+          "overview": "Scout Finch, 6, and her older brother Jem live in sleepy Maycomb, Alabama, spending much of their time with their friend Dill and spying on their reclusive and mysterious neighbor, Boo Radley. When Atticus, their widowed father and a respected lawyer, defends a black man named Tom Robinson against fabricated rape charges, the trial and tangent events expose the children to evils of racism and stereotyping.",
+          "genre_ids": [
+            18
+          ],
+          "title": "To Kill a Mockingbird",
+          "release_date": "1962-01-01",
+          "note": "Racial injustice and moral courage."
+        },
+        {
+          "id": 422,
+          "poster_path": "/23VIf7zNxAgaXwIlvzd3IvOd9sY.jpg",
+          "overview": "Guido Anselmi, a film director, finds himself creatively barren at the peak of his career. Urged by his doctors to rest, Anselmi heads for a luxurious resort, but a sorry group gathers—his producer, staff, actors, wife, mistress, and relatives—each one begging him to get on with the show. In retreat from their dependency, he fantasizes about past women and dreams of his childhood.",
+          "genre_ids": [
+            18
+          ],
+          "title": "8½",
+          "release_date": "1963-01-01",
+          "note": "Creativity, identity and the artistic imagination."
+        },
+        {
+          "id": 935,
+          "poster_path": "/gHm96BRW4GoI339rF1vYoYTB6Qe.jpg",
+          "overview": "After the insane General Jack D. Ripper initiates a nuclear strike on the Soviet Union, a war room full of politicians, generals and a Russian diplomat all frantically try to stop it.",
+          "genre_ids": [
+            35,
+            10752
+          ],
+          "title": "Dr. Strangelove",
+          "release_date": "1964-01-01",
+          "note": "Nuclear warfare, Cold War politics and absurdity."
+        },
+        {
+          "id": 17295,
+          "poster_path": "/2p3AFtOHFvP6OeVMqlnL1zLKOqL.jpg",
+          "overview": "Former petty criminal Ali la Pointe becomes a commander of the Algerian Front de Liberation Nationale, directing a guerilla insurgency against the colonial French occupation. Paratrooper commander Colonel Phillippe Mathieu, a veteran of World War II and the First Indochina War, is sent to Algeria to reinforce efforts to squelch the uprisings.",
+          "genre_ids": [
+            18,
+            10752,
+            36
+          ],
+          "title": "The Battle of Algiers",
+          "release_date": "1966-01-01",
+          "note": "Colonialism, insurgency and political violence."
+        },
+        {
+          "id": 797,
+          "poster_path": "/cl0HEZT8UfzLqaMrYTvGNHOfPYj.jpg",
+          "overview": "A young nurse, Alma, is put in charge of Elisabeth Vogler: an actress who is seemingly healthy in all respects, but will not talk. As they spend time together, Alma speaks to Elisabeth constantly, never receiving any answer.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Persona",
+          "release_date": "1966-01-01",
+          "note": "Psychology, consciousness and personal identity."
+        },
+        {
+          "id": 429,
+          "poster_path": "/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg",
+          "overview": "While the Civil War rages on between the Union and the Confederacy, three men – a quiet loner, a ruthless hitman, and a Mexican bandit – comb the American Southwest in search of a strongbox containing $200,000 in stolen gold.",
+          "genre_ids": [
+            37
+          ],
+          "title": "The Good, the Bad and the Ugly",
+          "release_date": "1966-01-01",
+          "note": "Sergio Leone and the spaghetti Western."
+        },
+        {
+          "id": 37247,
+          "poster_path": "/8XaDpF0COV1MLsDirJMnxmYc1Wp.jpg",
+          "overview": "A disillusioned college graduate finds himself torn between his older lover and her daughter.",
+          "genre_ids": [
+            18,
+            10749,
+            35
+          ],
+          "title": "The Graduate",
+          "release_date": "1967-01-01",
+          "note": "Generational rebellion and middle-class disillusionment."
+        },
+        {
+          "id": 335,
+          "poster_path": "/qbYgqOczabWNn2XKwgMtVrntD6P.jpg",
+          "overview": "As the railroad builders advance unstoppably through the Arizona desert on their way to the sea, Jill arrives in the small town of Flagstone with the intention of starting a new life.",
+          "genre_ids": [
+            18,
+            37
+          ],
+          "title": "Once Upon a Time in the West",
+          "release_date": "1968-01-01",
+          "note": "American mythology, capitalism and the frontier."
+        },
+        {
+          "id": 576,
+          "poster_path": "/8j9yEC3xjy1PJDSizIbaxcHaSph.jpg",
+          "overview": "An aging group of outlaws look for one last big score as the \"traditional\" American West is disappearing around them.",
+          "genre_ids": [
+            37
+          ],
+          "title": "The Wild Bunch",
+          "release_date": "1969-01-01",
+          "note": "Violence, masculinity and the decline of the Old West."
+        },
+        {
+          "id": 185,
+          "poster_path": "/4sHeTAp65WrSSuc05nRBKddhBxO.jpg",
+          "overview": "In a near-future Britain, young Alexander DeLarge and his pals get their kicks beating and raping anyone they please. When not destroying the lives of others, Alex swoons to the music of Beethoven. The state, eager to crack down on juvenile crime, gives an incarcerated Alex the option to undergo an invasive procedure that'll rob him of all personal agency. In a time when conscience is a commodity, can Alex change his tune?",
+          "genre_ids": [
+            878,
+            80
+          ],
+          "title": "A Clockwork Orange",
+          "release_date": "1971-01-01",
+          "note": "Free will, authoritarianism and behavioural control."
+        },
+        {
+          "id": 829,
+          "poster_path": "/kZRSP3FmOcq0xnBulqpUQngJUXY.jpg",
+          "overview": "Private eye Jake Gittes lives off of the murky moral climate of sunbaked, pre-World War II Southern California. Hired by a beautiful socialite to investigate her husband's extra-marital affair, Gittes is swept into a maelstrom of double dealings and deadly deceits, uncovering a web of personal and political scandals that come crashing together.",
+          "genre_ids": [
+            80,
+            9648,
+            53
+          ],
+          "title": "Chinatown",
+          "release_date": "1974-01-01",
+          "note": "Corruption, power and American political history."
+        },
+        {
+          "id": 240,
+          "poster_path": "/8a1lJs7mFyGhGhZZDT1azJUoQiZ.jpg",
+          "overview": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "The Godfather Part II",
+          "release_date": "1974-01-01",
+          "note": "Immigration, political power and moral decline."
+        },
+        {
+          "id": 510,
+          "poster_path": "/kjWsMh72V6d8KRLV4EOoSJLT1H7.jpg",
+          "overview": "A petty criminal fakes insanity to serve his sentence in a mental ward rather than prison. He soon finds himself as a leader to the other patients—and an enemy to the cruel, domineering nurse who runs the ward.",
+          "genre_ids": [
+            18
+          ],
+          "title": "One Flew Over the Cuckoo's Nest",
+          "release_date": "1975-01-01",
+          "note": "Institutional authority and individual freedom."
+        },
+        {
+          "id": 578,
+          "poster_path": "/lxM6kqilAdpdhqUl2biYp5frUxE.jpg",
+          "overview": "When the seaside community of Amity finds itself under attack by a dangerous great white shark, the town's chief of police, a young marine biologist, and a grizzled shark hunter embark on a desperate quest to kill the beast before it strikes again.",
+          "genre_ids": [
+            27,
+            53,
+            12
+          ],
+          "title": "Jaws",
+          "release_date": "1975-01-01",
+          "note": "Spielberg and the birth of the modern blockbuster."
+        },
+        {
+          "id": 103,
+          "poster_path": "/ekstpH614fwDX8DUln1a2Opz0N8.jpg",
+          "overview": "Suffering from insomnia, disturbed loner Travis Bickle takes a job as a New York City cabbie, haunting the streets nightly, growing increasingly detached from reality as he dreams of cleaning up the filthy city.",
+          "genre_ids": [
+            80,
+            18
+          ],
+          "title": "Taxi Driver",
+          "release_date": "1976-01-01",
+          "note": "Urban alienation, loneliness and violence."
+        },
+        {
+          "id": 10774,
+          "poster_path": "/qZomlHsaALUtkFeMDwdYmwS2Pbo.jpg",
+          "overview": "When veteran anchorman Howard Beale is forced to retire his 25-year post because of his age, he announces to viewers that he will kill himself during his farewell broadcast. Network executives rethink their decision when his fanatical tirade results in a spike in ratings.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Network",
+          "release_date": "1976-01-01",
+          "note": "Media manipulation, commercialisation and manufactured outrage."
+        },
+        {
+          "id": 11,
+          "poster_path": "/fai0rspsNeJCS69wHNjOdWxcI7P.jpg",
+          "overview": "Princess Leia is captured and held hostage by the evil Imperial forces in their effort to take over the galactic Empire. Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.",
+          "genre_ids": [
+            12,
+            28,
+            878
+          ],
+          "title": "Star Wars",
+          "release_date": "1977-01-01",
+          "note": "Modern mythology and popular culture."
+        },
+        {
+          "id": 348,
+          "poster_path": "/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg",
+          "overview": "During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.",
+          "genre_ids": [
+            27,
+            878
+          ],
+          "title": "Alien",
+          "release_date": "1979-01-01",
+          "note": "Science fiction, horror and corporate exploitation."
+        },
+        {
+          "id": 78,
+          "poster_path": "/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg",
+          "overview": "In the smog-choked dystopian Los Angeles of 2019, blade runner Rick Deckard is called out of retirement to terminate a quartet of replicants who have escaped to Earth seeking their creator for a way to extend their short life spans.",
+          "genre_ids": [
+            878,
+            18,
+            53
+          ],
+          "title": "Blade Runner",
+          "release_date": "1982-01-01",
+          "note": "Artificial intelligence, identity and dystopian capitalism."
+        },
+        {
+          "id": 424,
+          "poster_path": "/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+          "overview": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+          "genre_ids": [
+            18,
+            36,
+            10752
+          ],
+          "title": "Schindler's List",
+          "release_date": "1993-01-01",
+          "note": "The Holocaust, moral responsibility and individual courage."
+        },
+        {
+          "id": 680,
+          "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+          "overview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+          "genre_ids": [
+            53,
+            80,
+            35
+          ],
+          "title": "Pulp Fiction",
+          "release_date": "1994-01-01",
+          "note": "Postmodern storytelling and contemporary cinema."
+        },
+        {
+          "id": 1578,
+          "poster_path": "/1WV7WlTS8LI1L5NkCgjWT9GSW3O.jpg",
+          "overview": "The life of boxer Jake LaMotta, whose violence and temper that led him to the top in the ring destroyed his life outside of it.",
+          "genre_ids": [
+            18,
+            36
+          ],
+          "title": "Raging Bull",
+          "release_date": "1980-01-01",
+          "note": "Masculinity, jealousy and self-destruction."
+        },
+        {
+          "id": 694,
+          "poster_path": "/uAR0AWqhQL1hQa69UDEbb2rE5Wx.jpg",
+          "overview": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within.",
+          "genre_ids": [
+            27,
+            53
+          ],
+          "title": "The Shining",
+          "release_date": "1980-01-01",
+          "note": "Psychological horror and cinematic symbolism."
+        },
+        {
+          "id": 387,
+          "poster_path": "/hNfAYNCMRthp9iruF5Q6S1z4bVA.jpg",
+          "overview": "A German submarine hunts allied ships during the Second World War, but it soon becomes the hunted. The crew tries to survive below the surface, while stretching both the boat and themselves to their limits.",
+          "genre_ids": [
+            18,
+            36,
+            10752
+          ],
+          "title": "Das Boot",
+          "release_date": "1981-01-01",
+          "note": "The Second World War from the German perspective."
+        },
+        {
+          "id": 783,
+          "poster_path": "/rOXftt7SluxskrFrvU7qFJa5zeN.jpg",
+          "overview": "In the early years of the 20th century, Mohandas K. Gandhi, a British-trained lawyer, forsakes all worldly possessions to take up the cause of Indian independence. Faced with armed resistance from the British government, Gandhi adopts a policy of 'passive resistance', endeavouring to win freedom for his people without resorting to bloodshed.",
+          "genre_ids": [
+            18,
+            36
+          ],
+          "title": "Gandhi",
+          "release_date": "1982-01-01",
+          "note": "Colonialism, Indian independence and nonviolent resistance."
+        },
+        {
+          "id": 5961,
+          "poster_path": "/q8jlA3Wc1Z987hNKRFA44g5OugC.jpg",
+          "overview": "As children in the loving Ekdahl family, Fanny and Alexander enjoy a happy life with their parents, who run a theater company. After their father dies unexpectedly, however, the siblings end up in a joyless home when their mother, Emilie, marries a stern bishop. The bleak situation gradually grows worse as the bishop becomes more controlling, but dedicated relatives make a valiant attempt to aid Emilie, Fanny and Alexander.",
+          "genre_ids": [
+            14,
+            18,
+            9648
+          ],
+          "title": "Fanny and Alexander",
+          "release_date": "1982-01-01",
+          "note": "Family, religion and imagination."
+        },
+        {
+          "id": 655,
+          "poster_path": "/sP27Qm4THyRZyHjHYMfIDtJP6YE.jpg",
+          "overview": "A man wanders out of the desert not knowing who he is. His brother finds him, and helps to pull his memory back of the life he led before he walked out on his family and disappeared four years earlier.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Paris, Texas",
+          "release_date": "1984-01-01",
+          "note": "Loneliness, family and the American landscape."
+        },
+        {
+          "id": 25237,
+          "poster_path": "/qNbMsKVzigERgJUbwf8pKyZogpb.jpg",
+          "overview": "The invasion of a village in Belarus by German forces sends young Flyora into the forest to join the weary Resistance fighters, against his family's wishes. There he meets a girl, Glasha, who accompanies him back to his village. On returning home, Flyora finds his family and fellow peasants massacred. His continued survival amidst the brutal debris of war becomes increasingly nightmarish, a battle between despair and hope.",
+          "genre_ids": [
+            18,
+            10752,
+            27,
+            36
+          ],
+          "title": "Come and See",
+          "release_date": "1985-01-01",
+          "note": "The brutality of war and Nazi occupation."
+        },
+        {
+          "id": 11645,
+          "poster_path": "/dGgiXMWDcS5aJTBEFu7bmaQPNox.jpg",
+          "overview": "Shakespeare's King Lear is reimagined as a singular historical epic set in sixteenth-century Japan where an aging warlord divides his kingdom between his three sons.",
+          "genre_ids": [
+            28,
+            18,
+            36
+          ],
+          "title": "Ran",
+          "release_date": "1985-01-01",
+          "note": "Shakespeare, Japanese history and the corruption of power."
+        },
+        {
+          "id": 792,
+          "poster_path": "/m3mmFkPQKvPZq5exmh0bDuXlD9T.jpg",
+          "overview": "As a young and naive recruit in Vietnam, Chris Taylor faces a moral crisis when confronted with the horrors of war and the duality of man.",
+          "genre_ids": [
+            18,
+            10752,
+            28
+          ],
+          "title": "Platoon",
+          "release_date": "1986-01-01",
+          "note": "Vietnam and the moral consequences of warfare."
+        },
+        {
+          "id": 600,
+          "poster_path": "/kMKyx1k8hWWscYFnPbnxxN4Eqo4.jpg",
+          "overview": "A pragmatic U.S. Marine observes the dehumanizing effects the U.S.-Vietnam War has on his fellow recruits from their brutal boot camp training to the bloody street fighting in Hue.",
+          "genre_ids": [
+            18,
+            10752
+          ],
+          "title": "Full Metal Jacket",
+          "release_date": "1987-01-01",
+          "note": "Military conditioning, dehumanisation and war."
+        },
+        {
+          "id": 11216,
+          "poster_path": "/9JhfVOveaY00o8njQu2Xrp4YWud.jpg",
+          "overview": "A filmmaker recalls his childhood, when he fell in love with the movies at his village's theater and formed a deep friendship with the theater's projectionist.",
+          "genre_ids": [
+            18,
+            10749
+          ],
+          "title": "Cinema Paradiso",
+          "release_date": "1988-01-01",
+          "note": "Nostalgia, community and the importance of cinema."
+        },
+        {
+          "id": 925,
+          "poster_path": "/63rmSDPahrH7C1gEFYzRuIBAN9W.jpg",
+          "overview": "Sal is the Italian owner of a pizzeria in Brooklyn. A neighborhood local, Buggin' Out, becomes upset when he sees that the pizzeria's Wall of Fame exhibits only Italian actors. Buggin' Out believes a pizzeria in a black neighborhood should showcase black actors, but Sal disagrees. The wall becomes a symbol of racism and hate to Buggin' Out and to other people in the neighborhood, and tensions rise.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Do the Right Thing",
+          "release_date": "1989-01-01",
+          "note": "Race, policing and social tensions in America."
+        },
+        {
+          "id": 769,
+          "poster_path": "/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
+          "overview": "The true story of Henry Hill, a half-Irish, half-Sicilian Brooklyn kid who is adopted by neighbourhood gangsters at an early age and climbs the ranks of a Mafia family under the guidance of Jimmy Conway.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "Goodfellas",
+          "release_date": "1990-01-01",
+          "note": "Organised crime and the mythology of the American gangster."
+        },
+        {
+          "id": 274,
+          "poster_path": "/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
+          "overview": "Clarice Starling is a top student at the FBI's training academy.  Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath, serving life behind bars for various acts of murder and cannibalism.  Crawford believes that Lecter may have insight into a case and that Starling, as an attractive young woman, may be just the bait to draw him out.",
+          "genre_ids": [
+            80,
+            53,
+            18
+          ],
+          "title": "The Silence of the Lambs",
+          "release_date": "1991-01-01",
+          "note": "Criminal psychology and manipulation."
+        },
+        {
+          "id": 33,
+          "poster_path": "/54roTwbX9fltg85zjsmrooXAs12.jpg",
+          "overview": "William Munny is a retired, once-ruthless killer turned gentle widower and hog farmer. To help support his two motherless children, he accepts one last bounty-hunter mission to find the men who brutalized a prostitute. Joined by his former partner and a cocky greenhorn, he takes on a corrupt sheriff.",
+          "genre_ids": [
+            37
+          ],
+          "title": "Unforgiven",
+          "release_date": "1992-01-01",
+          "note": "Violence and the deconstruction of Western mythology."
+        },
+        {
+          "id": 329,
+          "poster_path": "/d9mtMGQDLANKieb9PbD3yK7xxzo.jpg",
+          "overview": "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA. Before opening day, he invites a team of experts and his two eager grandchildren to experience the park and help calm anxious investors. However, the park is anything but amusing as the security systems go off-line and the dinosaurs escape.",
+          "genre_ids": [
+            12,
+            878
+          ],
+          "title": "Jurassic Park",
+          "release_date": "1993-01-01",
+          "note": "Scientific ambition and revolutionary visual effects."
+        },
+        {
+          "id": 278,
+          "poster_path": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+          "overview": "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "The Shawshank Redemption",
+          "release_date": "1994-01-01",
+          "note": "Hope, imprisonment and human resilience."
+        },
+        {
+          "id": 13,
+          "poster_path": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
+          "overview": "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+          "genre_ids": [
+            35,
+            18,
+            10749
+          ],
+          "title": "Forrest Gump",
+          "release_date": "1994-01-01",
+          "note": "American history and cultural transformation."
+        },
+        {
+          "id": 406,
+          "poster_path": "/OHdz4GxlkcdLubyo7bSoIBkibu.jpg",
+          "overview": "After a chaotic night of rioting in a marginal suburb of Paris, three young friends, Vinz, Hubert and Saïd, wander around unoccupied waiting for news about the state of health of a mutual friend who has been seriously injured when confronting the police.",
+          "genre_ids": [
+            18
+          ],
+          "title": "La Haine",
+          "release_date": "1995-01-01",
+          "note": "French society, inequality and police violence."
+        },
+        {
+          "id": 627,
+          "poster_path": "/1jUC02qsqS2NxBMFarbIhcQtazV.jpg",
+          "overview": "Heroin addict Mark Renton stumbles through bad ideas and sobriety attempts with his unreliable friends --Sick Boy, Begbie, Spud and Tommy. He also has an underage girlfriend, Diane, along for the ride. After cleaning up and moving from Edinburgh to London, Mark finds he can't escape the life he left behind as Begbie and Sick Boy come knocking.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "Trainspotting",
+          "release_date": "1996-01-01",
+          "note": "Addiction, class and British youth culture."
+        },
+        {
+          "id": 115,
+          "poster_path": "/3bv6WAp6BSxxYvB5ozKFUYuRA8C.jpg",
+          "overview": "Jeffrey 'The Dude' Lebowski, a Los Angeles slacker who only wants to bowl and drink White Russians, is mistaken for another Jeffrey Lebowski, a wheelchair-bound millionaire, and finds himself dragged into a strange series of events involving nihilists, adult film producers, ferrets, errant toes, and large sums of money.",
+          "genre_ids": [
+            35,
+            80
+          ],
+          "title": "The Big Lebowski",
+          "release_date": "1998-01-01",
+          "note": "Absurdism, American counterculture and cult comedy."
+        },
+        {
+          "id": 603,
+          "poster_path": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+          "overview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+          "genre_ids": [
+            28,
+            878
+          ],
+          "title": "The Matrix",
+          "release_date": "1999-01-01",
+          "note": "Simulation theory, artificial intelligence and philosophy."
+        },
+        {
+          "id": 7345,
+          "poster_path": "/fa0RDkAlCec0STeMNAhPaF89q6U.jpg",
+          "overview": "Ruthless silver miner, turned oil prospector, Daniel Plainview, moves to oil-rich California. Using his son to project a trustworthy, family-man image, Plainview cons local landowners into selling him their valuable properties for a pittance. However, local preacher Eli Sunday suspects Plainview's motives and intentions, starting a slow-burning feud that threatens both their lives.",
+          "genre_ids": [
+            18
+          ],
+          "title": "There Will Be Blood",
+          "release_date": "2007-01-01",
+          "note": "Capitalism, religion and the destructive pursuit of wealth."
+        },
+        {
+          "id": 496243,
+          "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+          "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+          "genre_ids": [
+            35,
+            53,
+            18
+          ],
+          "title": "Parasite",
+          "release_date": "2019-01-01",
+          "note": "Class inequality, aspiration and social mobility."
+        },
+        {
+          "id": 872585,
+          "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+          "overview": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
+          "genre_ids": [
+            18,
+            36,
+            10752
+          ],
+          "title": "Oppenheimer",
+          "release_date": "2023-01-01",
+          "note": "Nuclear weapons, scientific responsibility and political power."
+        },
+        {
+          "id": 843,
+          "poster_path": "/8BgGbbWiLNhPtkMkN0gGTnbtvBv.jpg",
+          "overview": "In 1960s Hong Kong, two neighbors form an intimate bond after making a discovery about their spouses in this visually stunning tale of unrequited love.",
+          "genre_ids": [
+            18,
+            10749
+          ],
+          "title": "In the Mood for Love",
+          "release_date": "2000-01-01",
+          "note": "Love, restraint, memory and Hong Kong cinema."
+        },
+        {
+          "id": 77,
+          "poster_path": "/nzlv62aC0octS5AklAiWpXLX9Z0.jpg",
+          "overview": "Leonard Shelby is tracking down the man who raped and murdered his wife. The difficulty of locating his wife's killer, however, is compounded by the fact that he suffers from a rare, untreatable form of short-term memory loss. Although he can recall details of life before his accident, Leonard cannot remember what happened fifteen minutes ago, where he's going, or why.",
+          "genre_ids": [
+            9648,
+            53
+          ],
+          "title": "Memento",
+          "release_date": "2000-01-01",
+          "note": "Memory, identity and unreliable narration."
+        },
+        {
+          "id": 1018,
+          "poster_path": "/x7A59t6ySylr1L7aubOQEA480vM.jpg",
+          "overview": "Blonde Betty Elms has only just arrived in Hollywood to become a movie star when she meets an enigmatic brunette with amnesia. Meanwhile, as the two set off to solve the second woman's identity, filmmaker Adam Kesher runs into ominous trouble while casting his latest project.",
+          "genre_ids": [
+            53,
+            18,
+            9648
+          ],
+          "title": "Mulholland Drive",
+          "release_date": "2001-01-01",
+          "note": "Dreams, Hollywood, identity and surrealism."
+        },
+        {
+          "id": 129,
+          "poster_path": "/jUo8cNmU400WtZiJss45HNXlQ2e.jpg",
+          "overview": "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+          "genre_ids": [
+            16,
+            10751,
+            14
+          ],
+          "title": "Spirited Away",
+          "release_date": "2001-01-01",
+          "note": "Japanese mythology, childhood and animation as serious art."
+        },
+        {
+          "id": 598,
+          "poster_path": "/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
+          "overview": "In the poverty-stricken favelas of Rio de Janeiro in the 1970s, two young men choose different paths. Rocket is a budding photographer who documents the increasing drug-related violence of his neighborhood, while José “Zé” Pequeno is an ambitious drug dealer diving into a dangerous life of crime.",
+          "genre_ids": [
+            18,
+            80
+          ],
+          "title": "City of God",
+          "release_date": "2002-01-01",
+          "note": "Brazilian poverty, organised crime and social inequality."
+        },
+        {
+          "id": 423,
+          "poster_path": "/2hFvxCCWrTmCYwfy7yum0GKRi3Y.jpg",
+          "overview": "The true story of pianist Władysław Szpilman's experiences in Warsaw during the Nazi occupation. When the Jews of the city find themselves forced into a ghetto, Szpilman finds work playing in a café; and when his family is deported in 1942, he stays behind, works for a while as a laborer, and eventually goes into hiding in the ruins of the war-torn city.",
+          "genre_ids": [
+            18,
+            10752
+          ],
+          "title": "The Pianist",
+          "release_date": "2002-01-01",
+          "note": "The Holocaust, survival and human endurance."
+        },
+        {
+          "id": 670,
+          "poster_path": "/pWDtjs568ZfOTMbURQBYuT4Qxka.jpg",
+          "overview": "With no clue how he came to be imprisoned, drugged and tortured for 15 years, a desperate man seeks revenge on his captors.",
+          "genre_ids": [
+            53,
+            9648
+          ],
+          "title": "Oldboy",
+          "release_date": "2003-01-01",
+          "note": "Korean cinema, revenge and moral ambiguity."
+        },
+        {
+          "id": 38,
+          "poster_path": "/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
+          "overview": "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.",
+          "genre_ids": [
+            878,
+            18,
+            10749
+          ],
+          "title": "Eternal Sunshine of the Spotless Mind",
+          "release_date": "2004-01-01",
+          "note": "Memory, love and personal identity."
+        },
+        {
+          "id": 582,
+          "poster_path": "/cVUDMnskSc01rdbyH0tLATTJUdP.jpg",
+          "overview": "In 1984 East Berlin, dedicated Stasi officer Gerd Wiesler begins spying on a famous playwright and his actress-lover Christa-Maria. Wiesler becomes unexpectedly sympathetic to the couple, and faces conflicting loyalties when his superior takes a liking to Christa-Maria.",
+          "genre_ids": [
+            18,
+            53
+          ],
+          "title": "The Lives of Others",
+          "release_date": "2006-01-01",
+          "note": "East Germany, surveillance and authoritarianism."
+        },
+        {
+          "id": 1417,
+          "poster_path": "/khBQ6nN5FLfg9XgPXIZDkABJjqo.jpg",
+          "overview": "In post–civil war Spain, 10-year-old Ofelia moves with her pregnant mother to live under the control of her cruel stepfather. Drawn into a mysterious labyrinth, she meets a faun who reveals that she may be a lost princess from an underground kingdom. To return to her true father, she must complete a series of surreal and perilous tasks that blur the line between reality and fantasy.",
+          "genre_ids": [
+            14,
+            18,
+            10752
+          ],
+          "title": "Pan's Labyrinth",
+          "release_date": "2006-01-01",
+          "note": "Fascism, childhood and political allegory."
+        },
+        {
+          "id": 6977,
+          "poster_path": "/6d5XOczc226jECq0LIX0siKtgHR.jpg",
+          "overview": "Llewelyn Moss stumbles upon dead bodies, $2 million and a hoard of heroin in a Texas desert, but methodical killer Anton Chigurh comes looking for it, with local sheriff Ed Tom Bell hot on his trail. The roles of prey and predator blur as the violent pursuit of money and justice collide.",
+          "genre_ids": [
+            80,
+            53,
+            37
+          ],
+          "title": "No Country for Old Men",
+          "release_date": "2007-01-01",
+          "note": "Violence, fate and moral disorder."
+        },
+        {
+          "id": 155,
+          "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+          "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+          "genre_ids": [
+            28,
+            53,
+            80
+          ],
+          "title": "The Dark Knight",
+          "release_date": "2008-01-01",
+          "note": "Terrorism, surveillance, morality and the superhero genre."
+        },
+        {
+          "id": 8885,
+          "poster_path": "/zQaCv7lKwHsh0YSHkt1QNjIOZ1c.jpg",
+          "overview": "A film director from Israel interviews fellow veterans of the 1982 invasion of Lebanon to reconstruct his own memories of his term of service in that conflict.",
+          "genre_ids": [
+            16,
+            99,
+            18,
+            10752
+          ],
+          "title": "Waltz with Bashir",
+          "release_date": "2008-01-01",
+          "note": "War, memory and Israeli-Lebanese history."
+        },
+        {
+          "id": 37799,
+          "poster_path": "/n0ybibhJtQ5icDqTp8eRytcIHJx.jpg",
+          "overview": "In 2003, Harvard undergrad and computer programmer Mark Zuckerberg begins work on a new concept that eventually turns into the global social network known as Facebook. Six years later, Mark is one of the youngest billionaires ever, but his unprecedented success leads to both personal and legal complications when he ends up on the receiving end of two lawsuits, one involving his former friend.",
+          "genre_ids": [
+            18
+          ],
+          "title": "The Social Network",
+          "release_date": "2010-01-01",
+          "note": "Technology, ambition, social status and Silicon Valley."
+        },
+        {
+          "id": 60243,
+          "poster_path": "/xQadpnoLokxzN3hRpCPbBGpxsiz.jpg",
+          "overview": "A married couple are faced with a difficult decision – to improve the life of their child by moving to another country or to stay in Iran and look after a deteriorating parent who has Alzheimer's disease.",
+          "genre_ids": [
+            18
+          ],
+          "title": "A Separation",
+          "release_date": "2011-01-01",
+          "note": "Iranian society, religion, family and moral complexity."
+        },
+        {
+          "id": 8967,
+          "poster_path": "/l8cwuB5WJSoj4uMAsnzuHBOMaSJ.jpg",
+          "overview": "The impressionistic story of a Texas family in the 1950s. The film follows the life journey of the eldest son, Jack, through the innocence of childhood to his disillusioned adult years as he tries to reconcile a complicated relationship with his father. Jack finds himself a lost soul in the modern world, seeking answers to the origins and meaning of life while questioning the existence of faith.",
+          "genre_ids": [
+            18,
+            14
+          ],
+          "title": "The Tree of Life",
+          "release_date": "2011-01-01",
+          "note": "Existence, spirituality, family and the origins of life."
+        },
+        {
+          "id": 76203,
+          "poster_path": "/xdANQijuNrJaw1HA61rDccME4Tm.jpg",
+          "overview": "In the pre-Civil War United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery. Facing cruelty as well as unexpected kindnesses Solomon struggles not only to stay alive, but to retain his dignity. In the twelfth year of his unforgettable odyssey, Solomon’s chance meeting with a Canadian abolitionist will forever alter his life.",
+          "genre_ids": [
+            18,
+            36
+          ],
+          "title": "12 Years a Slave",
+          "release_date": "2013-01-01",
+          "note": "American slavery and institutionalised brutality."
+        },
+        {
+          "id": 120467,
+          "poster_path": "/eWdyYQreja6JGCzqHWXpWHDrrPo.jpg",
+          "overview": "The Grand Budapest Hotel tells of a legendary concierge at a famous European hotel between the wars and his friendship with a young employee who becomes his trusted protégé. The story involves the theft and recovery of a priceless Renaissance painting, the battle for an enormous family fortune and the slow and then sudden upheavals that transformed Europe during the first half of the 20th century.",
+          "genre_ids": [
+            35,
+            18
+          ],
+          "title": "The Grand Budapest Hotel",
+          "release_date": "2014-01-01",
+          "note": "European history, nostalgia and authoritarianism."
+        },
+        {
+          "id": 244786,
+          "poster_path": "/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
+          "overview": "Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity.",
+          "genre_ids": [
+            18,
+            10402,
+            53
+          ],
+          "title": "Whiplash",
+          "release_date": "2014-01-01",
+          "note": "Ambition, excellence, obsession and the cost of achievement."
+        },
+        {
+          "id": 76341,
+          "poster_path": "/ulcAi4dKpAjHwYGS08vNyx9H6I9.jpg",
+          "overview": "An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order.",
+          "genre_ids": [
+            28,
+            12,
+            878
+          ],
+          "title": "Mad Max: Fury Road",
+          "release_date": "2015-01-01",
+          "note": "Visual storytelling, environmental collapse and action cinema."
+        },
+        {
+          "id": 376867,
+          "poster_path": "/qLnfEmPrDjJfPyyddLJPkXmshkp.jpg",
+          "overview": "The tender, heartbreaking story of a young man’s struggle to find himself, told across three defining chapters in his life as he experiences the ecstasy, pain, and beauty of falling in love, while grappling with his own sexuality.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Moonlight",
+          "release_date": "2016-01-01",
+          "note": "Identity, masculinity, poverty and American society."
+        },
+        {
+          "id": 402897,
+          "poster_path": "/AqH7q89NxGRDAyRWKqsL3OBtYfV.jpg",
+          "overview": "When dictator Joseph Stalin dies, his parasitic cronies square off in a frantic power struggle to become the next Soviet leader. As they bumble, brawl and back-stab their way to the top, the question remains — just who is running the government?",
+          "genre_ids": [
+            35,
+            18,
+            36
+          ],
+          "title": "The Death of Stalin",
+          "release_date": "2017-01-01",
+          "note": "Soviet history, totalitarianism and political satire."
+        },
+        {
+          "id": 426426,
+          "poster_path": "/dtIIyQyALk57ko5bjac7hi01YQ.jpg",
+          "overview": "In 1970s Mexico City, two domestic workers help a mother of four while her husband is away for an extended period of time.",
+          "genre_ids": [
+            18
+          ],
+          "title": "Roma",
+          "release_date": "2018-01-01",
+          "note": "Mexican society, class and domestic life."
+        },
+        {
+          "id": 467244,
+          "poster_path": "/hUu9zyZmDd8VZegKi1iK1Vk0RYS.jpg",
+          "overview": "The commandant of Auschwitz, Rudolf Höss, and his wife Hedwig, strive to build a dream life for their family in a house and garden next to the camp.",
+          "genre_ids": [
+            18,
+            36,
+            10752
+          ],
+          "title": "The Zone of Interest",
+          "release_date": "2023-01-01",
+          "note": "The Holocaust, complicity and the banality of evil."
+        },
+        {
+          "id": 915935,
+          "poster_path": "/1ho0d4LNZw3Y0voeKmSvPSgJOJ2.jpg",
+          "overview": "A woman is suspected of her husband's murder, and their blind son faces a moral dilemma as the sole witness.",
+          "genre_ids": [
+            53,
+            9648,
+            80
+          ],
+          "title": "Anatomy of a Fall",
+          "release_date": "2023-01-01",
+          "note": "Justice, marriage, truth and interpretation."
+        },
+        {
+          "id": 549509,
+          "poster_path": "/vP7Yd6couiAaw9jgMd5cjMRj3hQ.jpg",
+          "overview": "When an innovative modern architect flees post-war Europe, he is given the opportunity to rebuild his legacy. Set during the dawn of the modern United States (in Pennsylvania), his wife joins him, and their lives are forever changed by a demanding, wealthy patron.",
+          "genre_ids": [
+            18
+          ],
+          "title": "The Brutalist",
+          "release_date": "2024-01-01",
+          "note": "Immigration, architecture, capitalism and post-war America."
+        },
+        {
+          "id": 933260,
+          "poster_path": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
+          "overview": "A fading celebrity decides to use a black market drug, a cell-replicating substance that temporarily creates a younger, better version of herself.",
+          "genre_ids": [
+            27,
+            878
+          ],
+          "title": "The Substance",
+          "release_date": "2024-01-01",
+          "note": "Beauty standards, ageing, celebrity and contemporary body horror."
+        }
+      ]
+    }
+  ]
+}

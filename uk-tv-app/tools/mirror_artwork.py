@@ -28,6 +28,16 @@ WORKERS = 16
 ALLOWED_RASTER = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 SVG_TYPES = {"image/svg+xml"}
 
+def write_bundle(destination: Path, directory: Path, references):
+    with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
+        # Publish only files referenced by this snapshot, never the growing cache.
+        for name in sorted({reference.removeprefix(MIRROR_PREFIX) for reference in references}):
+            item = directory / name
+            info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            archive.writestr(info, item.read_bytes())
+
+
 def key(url: str) -> str:
     return hashlib.sha256(url.encode("utf-8")).hexdigest()[:32]
 
@@ -157,10 +167,7 @@ def main() -> None:
     ))
 
     args.zip.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(args.zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-        for item in sorted(args.output_dir.iterdir()):
-            if item.is_file():
-                archive.write(item, arcname=item.name)
+    write_bundle(args.zip, args.output_dir, mirrored.values())
 
     status = {
         "channelLogoUrls": len(logo_urls),
@@ -171,6 +178,7 @@ def main() -> None:
         "programmeEntriesRewritten": programme_mirrors,
         "mirrorBytes": total_bytes,
         "bundleBytes": args.zip.stat().st_size,
+        "bundleSha256": hashlib.sha256(args.zip.read_bytes()).hexdigest(),
         "programmeArtworkCap": MAX_PROGRAMME_IMAGES,
     }
     args.output_dir.parent.joinpath("artwork-status.json").write_text(

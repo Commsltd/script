@@ -306,6 +306,8 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     encoded = json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode()
     args.output.write_bytes(gzip.compress(encoded, mtime=0))
+    from live_source_feed import write as write_live_sources
+    write_live_sources(data, args.output.with_name('live-sources.json.gz'))
     summary = {k: data[k] for k in ('schemaVersion', 'sourceRevision', 'youtubeLiveSources', 'builtAt', 'guideStart', 'guideEnd', 'descriptionCount', 'channelsWithGuide', 'supplementedChannels', 'supplementalGuideSources', 'warnings')}
     summary.update(channels=len(data['channels']), programmes=len(data['programmes']), bytes=args.output.stat().st_size)
     from live_source_feed import build as build_live_sources

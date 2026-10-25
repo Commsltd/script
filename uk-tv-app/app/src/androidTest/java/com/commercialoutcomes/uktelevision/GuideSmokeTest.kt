@@ -77,9 +77,9 @@ class GuideSmokeTest {
             scenario.onActivity {
                 val now = System.currentTimeMillis()
                 val current = model.schedule.values.flatten().firstOrNull {
-                    it.start <= now && it.stop > now && it.description.isNotBlank()
+                    it.start <= now && it.stop > now && it.description.isNotBlank() && model.stations.any { s -> s.id == it.channelId }
                 } ?: model.schedule.values.flatten().first {
-                    it.description.isNotBlank()
+                    it.description.isNotBlank() && model.stations.any { s -> s.id == it.channelId }
                 }
                 val station = model.stations.first { it.id == current.channelId }
                 stationId = station.id
@@ -126,6 +126,14 @@ class GuideSmokeTest {
                 device.wait(Until.hasObject(By.textContains("LIVE PREVIEW")), 10000)
             )
 
+            // Repeatable on a previously used emulator: a prior run may have
+            // already saved this station, changing the menu to Remove favourite.
+            runBlocking { model.dao.removeFavourite(stationId) }
+            eventually {
+                var absent = false
+                scenario.onActivity { absent = stationId !in model.favourites }
+                absent
+            }
             // Favourite is a first-class visible action.
             device.pressMenu()
             assertTrue(
@@ -201,10 +209,11 @@ class GuideSmokeTest {
                     .get(activity) as PlaybackEngine
                 model.setProfile("Instrumentation fixture")
                 model.setFailover(true)
+                val fixtureHost = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
                 val station = Station(
-                    "TestHLS.local", "Playback test fixture", "TestHLS.local", "TEST", 0, "", "",
-                    """[{"id":"fixture-missing","url":"http://10.0.2.2:8765/missing.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Deliberate HTTP 404"},
-                    {"id":"fixture-working","url":"http://10.0.2.2:8765/stream.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Generated HLS test video"}]""",
+                    "user.fixture-hls", "Playback test fixture", "user.fixture-hls", "TEST", 0, "", "",
+                    """[{"id":"fixture-missing","url":"http://$fixtureHost:8765/missing.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Deliberate HTTP 404"},
+                    {"id":"fixture-working","url":"http://$fixtureHost:8765/stream.m3u8","host":"emulator fixture","mime":"application/x-mpegURL","label":"Generated HLS test video"}]""",
                     ""
                 )
                 model.markPlaying(GuideRow(station, station.sources()[0], 0))
@@ -235,6 +244,19 @@ class GuideSmokeTest {
                         .any { it.streamId == "fixture-working" && it.successes > 0 }
                 }
             }
+            // Pausing longer than the stall timeout must not punish a healthy stream.
+            scenario.onActivity { engine.pauseOrPlay() }
+            Thread.sleep(21000)
+            scenario.onActivity {
+                assertFalse(engine.failed)
+                assertEquals("Paused", engine.status)
+                engine.pauseOrPlay()
+            }
+            Thread.sleep(21000)
+            scenario.onActivity {
+                assertFalse("Resumed stream incorrectly timed out",engine.failed)
+                assertTrue("Playback did not resume",engine.player?.isPlaying == true)
+            }
             val health = runBlocking { model.dao.health("Instrumentation fixture") }
             assertTrue(
                 "Failed source was not recorded",
@@ -246,4 +268,69 @@ class GuideSmokeTest {
             )
         }
     }
+    @Test
+    fun oneSourceReconnectsAfterTemporaryProviderFailure() {
+        val host = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
+        (java.net.URL("http://$host:8765/reset-flaky").openConnection() as java.net.HttpURLConnection).run {
+            assertEquals(204,responseCode); disconnect()
+        }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            lateinit var engine: PlaybackEngine
+            lateinit var model: TvModel
+            scenario.onActivity { a ->
+                model = ViewModelProvider(a)[TvModel::class.java]
+                engine = MainActivity::class.java.getDeclaredField("engine").apply { isAccessible=true }.get(a) as PlaybackEngine
+                model.setProfile("Recovery fixture")
+                val station = Station("user.fixture-recovery","Recovery fixture","user.fixture-recovery","TEST",0,"","",
+                    """[{"id":"fixture-recovery","url":"http://$host:8765/flaky.m3u8","host":"fixture","mime":"application/x-mpegURL"}]""","")
+                val row = GuideRow(station,station.sources()[0],0)
+                model.markPlaying(row);engine.play(row)
+            }
+            eventually(60000) {
+                var ready=false
+                scenario.onActivity { ready=engine.player?.isPlaying==true && engine.status.startsWith("Playing") }
+                ready
+            }
+            eventually(20000) {
+                runBlocking { model.dao.health("Recovery fixture").any { it.streamId=="fixture-recovery" && it.failures>0 && it.successes>0 } }
+            }
+            val health=runBlocking { model.dao.health("Recovery fixture") }.first { it.streamId=="fixture-recovery" }
+            assertEquals("HTTP_503",health.lastError)
+            scenario.onActivity { assertEquals("fixture-recovery",engine.source?.id);assertFalse(engine.failed) }
+        }
+    }
+
+    @Test fun temporaryErrorsSwitchThroughAllRegionsBeforeRetryingTheBrokenFeed() {
+        val host = InstrumentationRegistry.getArguments().getString("fixtureHost") ?: "10.0.2.2"
+        (java.net.URL("http://$host:8765/reset-flaky").openConnection() as java.net.HttpURLConnection).run {
+            assertEquals(204,responseCode); disconnect()
+        }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            lateinit var engine: PlaybackEngine
+            lateinit var model: TvModel
+            val start = System.currentTimeMillis()
+            scenario.onActivity { a ->
+                model = ViewModelProvider(a)[TvModel::class.java]
+                model.setProfile("Regional fallback fixture"); model.setFailover(true)
+                engine = MainActivity::class.java.getDeclaredField("engine").apply { isAccessible=true }.get(a) as PlaybackEngine
+                val station = Station("user.fixture-regional","BBC One","BBCOne.uk","TEST",0,"","",
+                    """[{"id":"regional-default","url":"http://$host:8765/flaky.m3u8","region":"Default","priority":0},
+                    {"id":"regional-missing","url":"http://$host:8765/missing.m3u8","region":"Region A","priority":1},
+                    {"id":"regional-working","url":"http://$host:8765/stream.m3u8","region":"Region B","priority":1}]""","")
+                val row = GuideRow(station,station.sources()[0],0)
+                model.markPlaying(row);engine.play(row,true)
+            }
+            eventually(12000) {
+                var ready=false
+                scenario.onActivity { ready=engine.source?.id=="regional-working" && engine.player?.isPlaying==true }
+                ready
+            }
+            assertTrue("Fallback took too long",System.currentTimeMillis()-start < 12000)
+            val health=runBlocking { model.dao.health("Regional fallback fixture") }
+            assertTrue(health.any { it.streamId=="regional-default" && it.lastError=="HTTP_503" })
+            assertTrue(health.any { it.streamId=="regional-missing" && it.lastError=="HTTP_404" })
+            scenario.onActivity { assertEquals("Playing · Region B",engine.status) }
+        }
+    }
+
 }

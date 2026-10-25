@@ -1,6 +1,10 @@
 package com.commercialoutcomes.uktelevision
 
 import android.content.Context
+import kotlinx.coroutines.CancellationException
+import okhttp3.Request
+import org.json.JSONObject
+import java.security.MessageDigest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -44,8 +48,21 @@ object ArtworkStore {
         val staging = File(context.filesDir, "artwork-new")
         val target = File(context.filesDir, "artwork")
         val backup = File(context.filesDir, "artwork-old")
+        val prefs = context.getSharedPreferences("artwork-sync", Context.MODE_PRIVATE)
         try {
-            download(zip)
+            val hash = remoteHash()
+            val existing = target.listFiles()?.isNotEmpty() == true
+            if (existing && hash != null && hash == prefs.getString("hash", null)) return@withContext true
+            val (changed, etag) = download(zip, prefs.getString("etag", null).takeIf { existing })
+            if (!changed) return@withContext true
+            if (hash != null) {
+                val digest = MessageDigest.getInstance("SHA-256")
+                zip.inputStream().use { input ->
+                    val bytes = ByteArray(32768)
+                    while (true) { val n = input.read(bytes); if (n < 0) break; digest.update(bytes, 0, n) }
+                }
+                require(digest.digest().joinToString("") { "%02x".format(it) } == hash) { "Artwork changed during download" }
+            }
             staging.deleteRecursively()
             staging.mkdirs()
             zip.inputStream().use { extract(it, staging) }
@@ -60,8 +77,10 @@ object ArtworkStore {
                 throw IOException("Could not activate artwork bundle")
             }
             backup.deleteRecursively()
+            prefs.edit().putString("etag", etag).putString("hash", hash).apply()
             true
-        } catch (_: Exception) {
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) {
             staging.deleteRecursively()
             if (!target.exists() && backup.exists()) backup.renameTo(target)
             false
@@ -70,46 +89,48 @@ object ArtworkStore {
         }
     }
 
-    private fun download(target: File) {
-        val connection = URL(FEED).openConnection() as HttpURLConnection
-        connection.connectTimeout = 15000
-        connection.readTimeout = 30000
-        connection.instanceFollowRedirects = true
-        connection.setRequestProperty("User-Agent", "UKTelevision/0.2")
-        try {
-            if (connection.responseCode != 200) {
-                throw IOException("Artwork server returned HTTP ${connection.responseCode}")
+    private fun remoteHash(): String? = try {
+        val request = Request.Builder().url(FEED.replace("artwork.zip", "artwork-status.json")).build()
+        PublicVodHttp.client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) null else response.body?.byteStream()?.use {
+                JSONObject(it.readBounded(65536).toString(Charsets.UTF_8)).optString("bundleSha256")
+                    .takeIf { hash -> Regex("[a-f0-9]{64}").matches(hash) }
             }
-            if (connection.url.protocol.lowercase() != "https") {
-                throw IOException("Artwork download downgraded from HTTPS")
-            }
-            var total = 0L
-            val buffer = ByteArray(32768)
-            target.outputStream().buffered().use { output ->
-                connection.inputStream.use { input ->
-                    while (true) {
-                        val n = input.read(buffer)
-                        if (n < 0) break
-                        total += n
-                        if (total > MAX_DOWNLOAD) throw IOException("Artwork bundle too large")
-                        output.write(buffer, 0, n)
+        }
+    } catch (_: IOException) { null }
+
+    private fun download(target: File, previousEtag: String?): Pair<Boolean, String?> {
+        val request = Request.Builder().url(FEED).header("User-Agent", "UKTelevision/${BuildConfig.VERSION_NAME}")
+        previousEtag?.let { request.header("If-None-Match", it) }
+        return PublicVodHttp.client.newBuilder().callTimeout(120, java.util.concurrent.TimeUnit.SECONDS).build()
+            .newCall(request.build()).execute().use { response ->
+                if (response.code == 304 && previousEtag != null) return@use false to previousEtag
+                if (response.code != 200) throw IOException("Artwork HTTP ${response.code}")
+                var total = 0L
+                val buffer = ByteArray(32768)
+                target.outputStream().buffered().use { output ->
+                    val input = response.body?.byteStream() ?: throw IOException("Empty artwork response")
+                    input.use {
+                        while (true) {
+                            val n = input.read(buffer); if (n < 0) break
+                            total += n; if (total > MAX_DOWNLOAD) throw IOException("Artwork bundle too large")
+                            output.write(buffer, 0, n)
+                        }
                     }
                 }
+                true to response.header("ETag")
             }
-        } finally {
-            connection.disconnect()
-        }
     }
 
-    private fun extract(input: java.io.InputStream, directory: File) {
+    internal fun extract(input: java.io.InputStream, directory: File) {
         var entries = 0
         var total = 0L
         ZipInputStream(input.buffered()).use { zip ->
             while (true) {
                 val entry = zip.nextEntry ?: break
                 if (entry.isDirectory || !safeName.matches(entry.name)) {
-                    zip.closeEntry()
-                    continue
+                    // closeEntry drains the entire inflated entry, bypassing our size budget.
+                    throw IOException("Unexpected artwork archive entry")
                 }
                 if (++entries > MAX_ENTRIES) throw IOException("Too many artwork files")
                 val file = File(directory, entry.name)
