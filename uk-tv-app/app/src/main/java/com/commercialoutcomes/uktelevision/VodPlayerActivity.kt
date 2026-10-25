@@ -190,7 +190,11 @@ class VodPlayerActivity : ComponentActivity() {
         customCallback?.onCustomViewHidden(); customCallback = null
     }
     private fun changeStream() {
-        nativePlayback?.returnToWeb()
+        val native=nativePlayback
+        if(native?.player!=null){native.returnToWeb(ready=::showStreamChoices);return}
+        showStreamChoices()
+    }
+    private fun showStreamChoices() {
         if(provider !in setOf(VodProvider.MOVY,VodProvider.DULO)) { chooseProvider();return }
         streamControls?.close()
         val controls=VodStreamControls(web,provider);streamControls=controls
@@ -217,11 +221,15 @@ class VodPlayerActivity : ComponentActivity() {
         AlertDialog.Builder(this).setTitle("Picture quality")
             .setItems(arrayOf("720p · recommended for this Firestick","480p · lower data use","1080p · may stutter on this Firestick")){_,index->
                 val height=listOf(720,480,1080)[index]
-                nativePlayback?.returnToWeb()
-                qualityControls?.choose(height){changed->
+                val selectQuality = {
+                  qualityControls?.choose(height){changed->
                     Toast.makeText(this,if(changed)"${height}p · playback position retained" else "That quality is not available from this source",Toast.LENGTH_LONG).show()
                     if(changed&&height<=720)nativePlayback?.start()
+                  }
+                  Unit
                 }
+                val native=nativePlayback
+                if(native?.player!=null)native.returnToWeb(ready=selectQuality) else selectQuality()
             }.setNegativeButton("Back",null).show()
     }
     private fun chooseProvider() {
@@ -250,7 +258,7 @@ class VodPlayerActivity : ComponentActivity() {
     }
     private fun duloSeries():String? {
         if(provider!=VodProvider.DULO)return null
-        val path=runCatching{java.net.URI(web.url.orEmpty()).path}.getOrDefault("")
+        val path=runCatching{java.net.URI(nativePlayback?.providerPage?.takeIf{it.isNotBlank()} ?: web.url.orEmpty()).path}.getOrDefault("")
         val id=Regex("^/(?:tv/)?watch/tv/(\\d+)/?$").matchEntire(path)?.groupValues?.get(1) ?: return null
         return "https://dulo.mov/title/tv/$id/"
     }
@@ -305,7 +313,7 @@ class VodPlayerActivity : ComponentActivity() {
                 "Consent choices" -> consentControls?.check()
                 "VPN / country" -> VpnShortcut.open(this, provider.label)
                 "Playback controls" -> tubiControls?.show()
-                "Reload this source" -> { streamControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);web.reload();prepareProviderControls() }
+                "Reload this source" -> { streamControls?.close();nativePlayback?.close();handler.removeCallbacksAndMessages(null);web.loadUrl(nativePlayback?.providerPage?.takeIf{it.isNotBlank()} ?: web.url.orEmpty());prepareProviderControls() }
                 else -> finish()
             } }.show()
     }
