@@ -1,0 +1,356 @@
+[
+  {
+    "id": "BusinessRockstars.us@SD",
+    "family": "BusinessRockstars.us",
+    "name": "Business Rockstars (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://businessrockstars.com/",
+    "routes": [
+      {
+        "url": "https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=2220",
+        "label": "Business Rockstars \u00b7 broadcaster",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "CGTNGlobalBiz.cn@SD",
+    "family": "CGTNGlobalBiz.cn",
+    "name": "CGTN Global Biz (China)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "China",
+    "logo": "",
+    "officialUrl": "https://www.cgtn.com/",
+    "routes": [
+      {
+        "url": "https://fastlive.cctvplus.com/out/v1/2b3d8a0c805d437f9dc85b764c2ac599/index.m3u8",
+        "label": "CGTN Global Biz \u00b7 broadcaster",
+        "region": "China",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "CNBCTV18.in@SD",
+    "family": "CNBCTV18.in",
+    "name": "CNBC-TV18 (India)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "India",
+    "logo": "",
+    "officialUrl": "https://www.cnbctv18.com/live-tv/",
+    "routes": [
+      {
+        "url": "https://n18syndication.akamaized.net/bpk-tv/CNBC_TV18_NW18_MOB/output01/index.m3u8",
+        "label": "CNBC-TV18 \u00b7 broadcaster",
+        "region": "India",
+        "guideSource": "news_in4",
+        "guideId": "CNBC.TV18.in",
+        "guideChannelId": "business:CNBCTV18.in"
+      }
+    ]
+  },
+  {
+    "id": "CNBCTV18PrimeHD.in@SD",
+    "family": "CNBCTV18PrimeHD.in",
+    "name": "CNBC-TV18 Prime HD (India)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "India",
+    "logo": "",
+    "officialUrl": "https://www.cnbctv18.com/live-tv/",
+    "routes": [
+      {
+        "url": "https://n18syndication.akamaized.net/bpk-tv/CNBC_Tv18_Prime_HD_NW18_MOB/output01/index.m3u8",
+        "label": "CNBC-TV18 Prime HD \u00b7 broadcaster",
+        "region": "India",
+        "guideSource": "news_in",
+        "guideId": "CNBC.TV18.Prime.in",
+        "guideChannelId": "business:CNBCTV18PrimeHD.in"
+      }
+    ]
+  },
+  {
+    "id": "DeFianceMedia.pr@SD",
+    "family": "DeFianceMedia.pr",
+    "name": "DeFiance Media (Puerto Rico)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "Puerto Rico",
+    "logo": "",
+    "officialUrl": "https://www.defiance.media/",
+    "routes": [
+      {
+        "url": "https://amg01529-defiancetv-defiancemedia-glewed-tre8x.amagi.tv/playlist.m3u8",
+        "label": "DeFiance Media \u00b7 broadcaster",
+        "region": "Puerto Rico",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "EntrepreneurTV.us@SD",
+    "family": "EntrepreneurTV.us",
+    "name": "EntrepreneurTV (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://www.entrepreneur.com/tv/",
+    "routes": [
+      {
+        "url": "https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=2506",
+        "label": "EntrepreneurTV \u00b7 source 1",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://cineverse-entrepreneurtv-entrepreneurtv-1-us.ono.wurl.tv/playlist.m3u8",
+        "label": "EntrepreneurTV \u00b7 source 2",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://a-cdn.klowdtv.com/live3/entrepreneurtv_720p/playlist.m3u8",
+        "label": "EntrepreneurTV \u00b7 source 3",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "NDTVProfit.in@SD",
+    "family": "NDTVProfit.in",
+    "name": "NDTV Profit (India)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "India",
+    "logo": "",
+    "officialUrl": "https://www.ndtvprofit.com/live-tv",
+    "routes": [
+      {
+        "url": "https://ndtvprofit.akamaized.net/hls/live/2107404/ndtvprofit/chunklist_5.m3u8",
+        "label": "NDTV Profit \u00b7 broadcaster",
+        "region": "India",
+        "guideSource": "news_in",
+        "guideId": "NDTV.Profit.in",
+        "guideChannelId": "business:NDTVProfit.in"
+      }
+    ]
+  },
+  {
+    "id": "SchwabNetwork.us@SD",
+    "family": "SchwabNetwork.us",
+    "name": "Schwab Network (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://schwabnetwork.com/",
+    "routes": [
+      {
+        "url": "https://content.uplynk.com/channel/5cac132069e64365b98eb4e6c23c1324.m3u8?tc=1&rn=1421967426&cid=5cac132069e64365b98eb4e6c23c1324&exp=1824465911&ct=c&sig=31ef7675a2d46aac34ceee15628cf2c348bef14ba0013613bfca86cd2ec802c3",
+        "label": "Schwab Network \u00b7 source 1",
+        "region": "USA",
+        "guideSource": "business_schwab",
+        "guideId": "SchwabNetwork.official",
+        "guideChannelId": "business:SchwabNetwork.us"
+      },
+      {
+        "url": "https://content.uplynk.com/channel/f9aafa1f132e40af9b9e7238bc18d128.m3u8",
+        "label": "Schwab Network \u00b7 source 2",
+        "region": "USA",
+        "guideSource": "business_schwab",
+        "guideId": "SchwabNetwork.official",
+        "guideChannelId": "business:SchwabNetwork.us"
+      }
+    ]
+  },
+  {
+    "id": "MoconomyEconomyFinanceInfotainment.us@SD",
+    "family": "MoconomyEconomyFinanceInfotainment.us",
+    "name": "Moconomy (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://www.moconomy.tv/",
+    "routes": [
+      {
+        "url": "https://amogonetworx-moconomy-2-us.tcl.wurl.tv/playlist.m3u8",
+        "label": "Moconomy \u00b7 broadcaster",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "FintechTV.us@SD",
+    "family": "FintechTV.us",
+    "name": "FINTECH.TV (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://terminal.fintech.tv/",
+    "routes": [
+      {
+        "url": "https://ftv247mtiostream1.fintech.tv/v1/master/9cd15debeb677c0b82117e43929ce181ee806d13/FINTECHTV-24-7-Main/main.m3u8",
+        "label": "FINTECH.TV \u00b7 official 24/7",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "BloombergTV.us@US",
+    "family": "BloombergTV.us",
+    "name": "Bloomberg Television (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "US",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://www.bloomberg.com/live",
+    "routes": [
+      {
+        "url": "https://bloomberg.com/media-manifest/streams/us.m3u8",
+        "label": "Bloomberg Television \u00b7 official live feed",
+        "region": "USA",
+        "guideSource": "us",
+        "guideId": "Bloomberg.HD.us2",
+        "guideChannelId": "business:BloombergTV.us@US"
+      }
+    ]
+  },
+  {
+    "id": "BloombergTV.us@USPlus",
+    "family": "BloombergTV.us",
+    "name": "Bloomberg TV+ (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "USPlus",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://www.bloomberg.com/live",
+    "routes": [
+      {
+        "url": "https://d2d98ykcmmhgd4.cloudfront.net/v1/bloomberg_bloombergtv_2/samsungheadend_us/latest/main/hls/playlist.m3u8",
+        "label": "Bloomberg TV+ \u00b7 official live feed",
+        "region": "USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ3400011A8",
+        "guideChannelId": "business:BloombergTV.us@USPlus"
+      }
+    ]
+  },
+  {
+    "id": "Tastylive.us@SD",
+    "family": "Tastylive.us",
+    "name": "tastylive (USA)",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "SD",
+    "country": "USA",
+    "logo": "",
+    "officialUrl": "https://www.tastylive.com/livestream",
+    "routes": [
+      {
+        "url": "https://cdn.jwplayer.com/live/broadcast/7lDp4jL5.m3u8",
+        "label": "tastylive \u00b7 official live feed",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "BloombergOriginals.us@US",
+    "family": "BloombergOriginals.us",
+    "name": "Bloomberg Originals",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ30000041W_20260421T133707SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ30000041W",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ30000041W",
+        "guideChannelId": "fast:samsung_us:USAJ30000041W"
+      },
+      {
+        "url": "https://www.bloomberg.com/media-manifest/streams/originals-global.m3u8",
+        "label": "Bloomberg Originals \u00b7 additional native feed",
+        "region": "Global",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ],
+    "officialUrl": "https://www.bloomberg.com/live/originals"
+  },
+  {
+    "id": "YahooFinance.us@US",
+    "family": "YahooFinance.us",
+    "name": "Yahoo Finance",
+    "group": "24 BUSINESS & FINANCE",
+    "variant": "US",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USAJ4300005PJ_20260120T230333SQUARE.png",
+    "country": "USA",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USAJ4300005PJ",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "guideSource": "samsung_us",
+        "guideId": "USAJ4300005PJ",
+        "guideChannelId": "fast:samsung_us:USAJ4300005PJ"
+      },
+      {
+        "url": "https://yahoo-plex.amagi.tv/playlist.m3u8",
+        "label": "Yahoo Finance \u00b7 additional native feed",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://yahoo-roku-us.amagi.tv/playlist.m3u8",
+        "label": "Yahoo Finance \u00b7 additional native feed",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://yahoo-samsung.amagi.tv/playlist.m3u8",
+        "label": "Yahoo Finance \u00b7 additional native feed",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ],
+    "officialUrl": "https://finance.yahoo.com/"
+  }
+]

@@ -201,4 +201,8 @@ def arrange_channels(channels):
     for order, channel in enumerate(rows):
         channel['group'] = GROUPS[category(channel)]
         channel['order'] = order
+        if channel['group'] == GROUPS['business']:
+            country = channel_country(channel)
+            if country and not channel['name'].endswith(' ('+country+')'):
+                channel['name'] += ' ('+country+')'
     return label_news_countries(rows)
