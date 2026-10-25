@@ -2,6 +2,7 @@
 import gzip
 import json
 import tempfile
+import zipfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -9,6 +10,18 @@ from unittest import mock
 import mirror_artwork
 
 class MirrorArtworkTests(unittest.TestCase):
+    def test_bundle_excludes_stale_cache_and_is_deterministic(self):
+        with tempfile.TemporaryDirectory() as td:
+            directory = Path(td)
+            (directory / "current.png").write_bytes(b"image")
+            (directory / "stale.png").write_bytes(b"stale image")
+            first, second = directory / "a.zip", directory / "b.zip"
+            mirror_artwork.write_bundle(first, directory, ["artwork://current.png"])
+            mirror_artwork.write_bundle(second, directory, ["artwork://current.png"])
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+            with zipfile.ZipFile(first) as archive:
+                self.assertEqual(["current.png"], archive.namelist())
+
     def test_key_is_stable_and_private(self):
         url = "https://images.example/logo.png?token=secret"
         self.assertEqual(mirror_artwork.key(url), mirror_artwork.key(url))

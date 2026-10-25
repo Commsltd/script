@@ -10,6 +10,8 @@ on:
     paths:
       - 'uk-tv-app/tools/export_manifest.py'
       - 'uk-tv-app/tools/channel_groups.py'
+      - 'uk-tv-app/tools/fast_channels.py'
+      - 'uk-tv-app/tools/fast-channel-seed.json'
       - 'uk-tv-app/tools/international_channels.py'
       - 'uk-tv-app/tools/international_guides.py'
       - 'uk-tv-app/tools/international-seed.json'
@@ -27,6 +29,8 @@ on:
       - 'uk-tv-app/tools/test_mirror_artwork.py'
       - 'uk-tv-app/tools/resolve_youtube_live.py'
       - 'uk-tv-app/tools/test_youtube_resolver.py'
+      - 'uk-tv-app/tools/live_source_feed.py'
+      - 'uk-tv-app/tools/test_live_source_feed.py'
       - '.github/workflows/update-uk-tv-app-data.yml'
   schedule:
     - cron: '47 * * * *'
@@ -47,7 +51,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install catalogue tooling
         run: |
@@ -56,7 +60,7 @@ jobs:
       - name: Test exporter, artwork and YouTube resolvers
         working-directory: uk-tv-app/tools
         run: |
-          python3 -m unittest -v             test_manifest.py             test_international_channels.py             test_stream_sources.py             test_guide_supplements.py             test_mirror_artwork.py             test_youtube_resolver.py
+          python3 -m unittest -v             test_manifest.py             test_international_channels.py             test_stream_sources.py             test_guide_supplements.py             test_mirror_artwork.py             test_youtube_resolver.py             test_live_source_feed.py
 
       - name: Resolve current official YouTube live videos
         run: |
@@ -92,6 +96,7 @@ jobs:
           git rm -rf . >/dev/null
 
           cp "$RUNNER_TEMP/native/catalogue.json.gz" .
+          cp "$RUNNER_TEMP/native/live-sources.json.gz" .
           cp "$RUNNER_TEMP/native/status.json" .
           cp "$RUNNER_TEMP/native/artwork.zip" .
           cp "$RUNNER_TEMP/native/artwork-status.json" .
@@ -101,6 +106,6 @@ jobs:
 
           printf '%s\n'             'UK Television native catalogue, privacy artwork bundle and resolved official live-video identities. This branch does not alter the source M3U/XMLTV feeds.'             > README.txt
 
-          git add             catalogue.json.gz             status.json             artwork.zip             artwork-status.json             youtube-live.json             youtube-status.json             guide-sources.json             README.txt
+          git add             live-sources.json.gz             catalogue.json.gz             status.json             artwork.zip             artwork-status.json             youtube-live.json             youtube-status.json             guide-sources.json             README.txt
           git commit -m 'Update UK Television native catalogue'
           git push --force origin HEAD:uk-tv-app-data

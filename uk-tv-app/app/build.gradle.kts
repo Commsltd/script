@@ -11,9 +11,10 @@ android {
         applicationId = "com.commercialoutcomes.uktelevision"
         minSdk = 23
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 21
+        versionName = "0.9.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["appLabel"] = "UK Television"
     }
     val keyFile = System.getenv("TV_KEYSTORE_PATH")
     if (!keyFile.isNullOrBlank()) {
@@ -25,10 +26,22 @@ android {
         }
     }
     buildTypes {
-        debug { applicationIdSuffix = ".preview"; versionNameSuffix = "-preview" }
+        debug {
+            applicationIdSuffix = if (project.hasProperty("candidate")) ".candidate" else ".preview"
+            versionNameSuffix = if (project.hasProperty("candidate")) "-candidate" else "-preview"
+            manifestPlaceholders["appLabel"] = if (project.hasProperty("candidate")) "UK Television Test" else "UK Television"
+        }
         release {
             isMinifyEnabled = false
             if (!keyFile.isNullOrBlank()) signingConfig = signingConfigs.getByName("privateRelease")
+        }
+        create("tvPreview") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+            matchingFallbacks += "release"
         }
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -38,6 +51,7 @@ android {
     lint { abortOnError = true; disable += "GradleDependency" }
 }
 dependencies {
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation(platform("androidx.compose:compose-bom:2025.04.01"))
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.compose.foundation:foundation")
@@ -49,6 +63,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.7.1")
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation("org.jsoup:jsoup:1.23.2")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("io.coil-kt:coil-svg:2.7.0")
     implementation("androidx.webkit:webkit:1.15.0")
@@ -56,10 +71,18 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-hls:1.8.0")
     implementation("androidx.media3:media3-exoplayer-dash:1.8.0")
     implementation("androidx.media3:media3-ui:1.8.0")
+    implementation("androidx.media3:media3-datasource-okhttp:1.8.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.json:json:20240303")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test:core:1.6.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 }
+
+// Commit resolved versions for every build and test configuration.
+dependencyLocking { lockAllConfigurations() }
+
+// Exercise guide parsing under the Firestick-sized Java heap in every CI run.
+tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach { maxHeapSize = "128m" }

@@ -204,7 +204,7 @@ object PlaylistImport {
 
                     if (rawUrl.startsWith("https://") || (rawUrl.startsWith("http://") && !strict)) {
                         val host = runCatching { URL(rawUrl).host }.getOrDefault("")
-                        val kind = if (host.endsWith("youtube.com") || host == "youtu.be") "youtube" else "direct"
+                        val kind = if ((host == "youtube.com" || host.endsWith(".youtube.com")) || host == "youtu.be") "youtube" else "direct"
                         val path = runCatching { URL(rawUrl).path.lowercase() }.getOrDefault("")
                         val mime = when {
                             kind != "direct" -> "application/x-external"

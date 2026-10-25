@@ -5,6 +5,12 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOn
 
 const val HALF_HOUR = 1800000L
 const val WINDOW = HALF_HOUR * 6
@@ -26,6 +32,14 @@ data class GuideRow(val station: Station, val source: StreamSource, val sourceIn
 }
 
 object GuideRules {
+    // A failed player must not consume OK intended for a different guide row.
+    fun retryOnSelect(surface: TvSurface, failed: Boolean): Boolean =
+        surface == TvSurface.LIVE && failed
+
+    fun previewShowsDetails(zone: GuideZone, programme: Programme?, now: Long): Boolean =
+        zone == GuideZone.PROGRAMMES && programme != null &&
+            (programme.start > now || programme.stop <= now)
+
     fun at(shows: List<Programme>, time: Long): Programme? =
         shows.firstOrNull { it.start <= time && it.stop > time }
 
@@ -41,16 +55,20 @@ object GuideRules {
     fun inWindow(shows: List<Programme>, start: Long, end: Long) =
         shows.filter { it.stop > start && it.start < end }
 
-    fun healthScore(h: StreamHealth?): Long {
+    const val FAILURE_PENALTY_WINDOW = 30 * 60 * 1000L
+    fun healthScore(h: StreamHealth?, now: Long = System.currentTimeMillis()): Long {
         if (h == null) return 0
-        val recentFailure = h.lastFailure > h.lastOk
-        return (if (h.lastOk > 0) 1000L else 0L) +
-            h.successes.coerceAtMost(30) * 10L -
-            h.failures.coerceAtMost(30) * 5L -
-            (if (recentFailure) 700L else 0L)
+        val recentFailure = h.lastFailure > h.lastOk && now - h.lastFailure < FAILURE_PENALTY_WINDOW
+        val recentSuccess = h.lastOk > 0 && now - h.lastOk < 7 * 86400000L
+        if (recentFailure) return -1000L - h.failures.coerceAtMost(30) * 5L
+        return (if (recentSuccess) 1000L else 0L) +
+            (if (recentSuccess) h.successes.coerceAtMost(30) * 10L else 0L) -
+            (if (recentFailure) 700L + h.failures.coerceAtMost(30) * 5L else 0L)
     }
+
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TvModel(application: Application) : AndroidViewModel(application) {
     private val app = application as TvApplication
     val dao = app.database.dao()
@@ -59,6 +77,9 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     private var baseStations = emptyList<Station>()
     private var importedStations = emptyList<Station>()
     private var sourceCache = emptyMap<String, List<StreamSource>>()
+
+    var guideActive by mutableStateOf(true); private set
+    fun activateGuide(active: Boolean) { guideActive = active; if (!active) schedule = emptyMap() }
 
     var stations by mutableStateOf(emptyList<Station>()); private set
     var schedule by mutableStateOf(emptyMap<String, List<Programme>>()); private set
@@ -75,7 +96,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     var cursor by mutableLongStateOf(System.currentTimeMillis())
     var clock by mutableLongStateOf(System.currentTimeMillis())
 
-    var inlineSources by mutableStateOf(prefs.getBoolean("inlineSources", true)); private set
+    var inlineSources by mutableStateOf(prefs.getBoolean("inlineSources", false)); private set
     var autoFallback by mutableStateOf(prefs.getBoolean("autoFallback", true)); private set
     private var connectionProfile by mutableStateOf(prefs.getString("profile", "UK VPN") ?: "UK VPN")
     val profile: String get() = connectionProfile
@@ -90,6 +111,32 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     var playingRow by mutableStateOf<GuideRow?>(null)
     var previousRow: GuideRow? = null
 
+    private val visibleRows by derivedStateOf {
+        val filtered = stations.filter {
+            group == "ALL CHANNELS" ||
+                (group == "FAVOURITES" && it.id in favourites) ||
+                it.groupName == group || CountryGroups.group(it.id)==group
+        }
+        filtered.flatMap { station ->
+            val all = sourceCache[station.id] ?: station.sources()
+            (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->
+                GuideRow(station, source, index)
+            }
+        }
+    }
+
+    fun rows(): List<GuideRow> = visibleRows
+
+    private val visibleChannels by derivedStateOf { visibleRows.distinctBy { it.station.id } }
+    private val visibleGroups by derivedStateOf {
+        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { it.groupName } + stations.mapNotNull { CountryGroups.group(it.id) }).distinct().sorted()
+    }
+
+    /** One row per service/variant, for the fast live overlay. */
+    fun channelRows(): List<GuideRow> = visibleChannels
+
+    fun groups(): List<String> = visibleGroups
+
     init {
         viewModelScope.launch {
             dao.stations().collect {
@@ -98,8 +145,14 @@ class TvModel(application: Application) : AndroidViewModel(application) {
             }
         }
         viewModelScope.launch {
-            dao.programmes().collect {
-                schedule = it.groupBy { p -> p.channelId }
+            snapshotFlow { Triple(guideActive, windowStart, clock / HALF_HOUR * HALF_HOUR) }
+                .flatMapLatest { (active, window, live) ->
+                    // Keep the visible three hours plus navigation margin and live
+                    // now/next. The rest stays in SQLite, including searchable synopses.
+                    if (!active) flowOf(emptyList()) else dao.windowProgrammes(window - HALF_HOUR, window + WINDOW + HALF_HOUR,
+                        live - HALF_HOUR, live + WINDOW)
+                }.map { rows -> rows.groupBy { it.channelId } }.flowOn(Dispatchers.Default).collect {
+                schedule = it
                 syncProgrammeToCursor()
             }
         }
@@ -114,7 +167,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
             try { app.repository.seed() } catch (_: Exception) {
                 message = "Downloading your channel list…"
             }
-            val core = app.repository.refresh()
+            val core = app.repository.refresh(skipRecent = true)
             val extras = refreshUserPlaylistsInternal()
             message = extras ?: core ?: "Guide ready"
             refreshing = false
@@ -122,8 +175,10 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun rebuildStations() {
-        stations = PlaylistImport.merge(baseStations, importedStations)
-        sourceCache = stations.associate { it.id to it.sources() }
+        val merged = PlaylistImport.merge(baseStations, importedStations)
+        sourceCache = merged.associate { it.id to it.sources() }
+        stations = merged
+        if (group !in groups()) group = stations.firstOrNull()?.groupName ?: "01 MAIN UK"
         ensureSelection()
     }
 
@@ -138,26 +193,6 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         rebuildStations()
         return result.warnings.takeIf { it.isNotEmpty() }?.joinToString(" · ")
     }
-
-    fun rows(): List<GuideRow> {
-        val filtered = stations.filter {
-            group == "ALL CHANNELS" ||
-                (group == "FAVOURITES" && it.id in favourites) ||
-                it.groupName == group
-        }
-        return filtered.flatMap { station ->
-            val all = sourceCache[station.id] ?: station.sources()
-            (if (inlineSources) all else all.take(1)).mapIndexed { index, source ->
-                GuideRow(station, source, index)
-            }
-        }
-    }
-
-    /** One row per service/variant, for the fast live overlay. */
-    fun channelRows(): List<GuideRow> = rows().distinctBy { it.station.id }
-
-    fun groups(): List<String> =
-        listOf("FAVOURITES", "ALL CHANNELS") + stations.map { it.groupName }.distinct()
 
     fun ensureSelection() {
         val rows = rows()
@@ -194,6 +229,12 @@ class TvModel(application: Application) : AndroidViewModel(application) {
 
     fun nowProgramme(row: GuideRow? = selected()): Programme? =
         row?.let { GuideRules.at(schedule[it.station.id].orEmpty(), clock) }
+
+    fun playingSchedule(source: StreamSource?): List<Programme> {
+        val id = if (!source?.region.isNullOrBlank()) source?.guideChannelId
+            else playingRow?.station?.id
+        return schedule[id].orEmpty()
+    }
 
     fun nextProgramme(row: GuideRow? = selected()): Programme? {
         val current = nowProgramme(row)
@@ -379,21 +420,14 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         guideZone = GuideZone.PROGRAMMES
     }
 
-    fun find(query: String): List<Pair<Station, Programme?>> {
+    suspend fun find(query: String): List<Pair<Station, Programme?>> {
         val q = query.trim()
         if (q.length < 2) return emptyList()
         val channels = stations.filter { it.name.contains(q, true) }
             .take(20).map { it to null }
         val byId = stations.associateBy { it.id }
-        val programmes = schedule.values.asSequence().flatten()
-            .filter {
-                it.stop > clock &&
-                    (it.title.contains(q, true) ||
-                        it.subtitle.contains(q, true) ||
-                        it.description.contains(q, true))
-            }
-            .sortedBy { it.start }.take(80)
-            .mapNotNull { p -> byId[p.channelId]?.let { it to p } }.toList()
+        val programmes = dao.searchProgrammes(q, clock)
+            .mapNotNull { p -> byId[p.channelId]?.let { it to p } }
         return channels + programmes
     }
 

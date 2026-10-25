@@ -6,6 +6,21 @@ import org.junit.Test
 class GuideRulesTest {
     private fun programme(start: Long, stop: Long) = Programme("p$start", "a", start, stop, "Programme", "", "Synopsis", "", "")
     private fun station(id: String) = Station(id, id, "BBCOne.uk", "01 MAIN UK", 0, "", "", "[]", "")
+    @Test fun failedPlaybackDoesNotStealGuideSelection() {
+        assertFalse(GuideRules.retryOnSelect(TvSurface.GUIDE, true))
+        assertTrue(GuideRules.retryOnSelect(TvSurface.LIVE, true))
+        assertFalse(GuideRules.retryOnSelect(TvSurface.LIVE, false))
+    }
+    @Test fun channelSelectionPreviewsEvenWhenItsNearestProgrammeIsNotLive() {
+        val future=programme(300,400)
+        val past=programme(100,200)
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.CHANNELS,future,250))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.CHANNELS,past,250))
+        assertTrue(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,future,250))
+        assertTrue(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,past,250))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,past,150))
+        assertFalse(GuideRules.previewShowsDetails(GuideZone.PROGRAMMES,null,250))
+    }
     @Test fun scheduleBoundsAreHalfOpen() {
         val p = programme(100, 200)
         assertEquals(p, GuideRules.at(listOf(p), 100))
@@ -27,10 +42,13 @@ class GuideRulesTest {
         assertTrue(GuideRules.canAutoFallback(station("BBCOne.uk@London"), station("BBCOne.uk@London")))
     }
     @Test fun recentlyWorkingSourceOutranksNeverTestedSource() {
-        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100)) > GuideRules.healthScore(null))
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100), now=101) > GuideRules.healthScore(null))
     }
     @Test fun failuresAffectPreferenceNotGlobalDeletion() {
-        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100)) < GuideRules.healthScore(null))
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",failures=1,lastFailure=100), now=101) < GuideRules.healthScore(null))
+    }
+    @Test fun latestFailureOutranksAnOlderSuccess() {
+        assertTrue(GuideRules.healthScore(StreamHealth("a","UK",lastOk=100,lastFailure=200), now=201) < 0)
     }
     @Test fun strictPrivacyRejectsHttpDirectButHardenedKeepsIt() {
         val http = StreamSource("a","http://example/live.m3u8","A","example","application/x-mpegURL", emptyMap(), false)
