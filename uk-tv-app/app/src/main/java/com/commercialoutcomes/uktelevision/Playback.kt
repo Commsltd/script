@@ -13,7 +13,6 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.upstream.DefaultLoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import kotlinx.coroutines.*
@@ -174,12 +173,12 @@ class PlaybackEngine(
             else androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(
                 PublicStreamHttp.playbackClient(model.privacyMode == PrivacyMode.STRICT, next))
                 .setUserAgent("UKTelevision/${BuildConfig.VERSION_NAME}").setDefaultRequestProperties(next.headers)
-        val media = DefaultMediaSourceFactory(http)
-            .setLoadErrorHandlingPolicy(object : DefaultLoadErrorHandlingPolicy() {
+        val media = PlaybackMediaSources.create(http,
+            MediaItem.Builder().setUri(next.url).setMimeType(next.mime).build(),
+            object : DefaultLoadErrorHandlingPolicy() {
                 override fun getRetryDelayMsFor(info: LoadErrorHandlingPolicy.LoadErrorInfo): Long =
                     if (hasBackup) C.TIME_UNSET else super.getRetryDelayMsFor(info)
             })
-            .createMediaSource(MediaItem.Builder().setUri(next.url).setMimeType(next.mime).build())
         // Keep live-TV buffering bounded on the 1 GB Firestick. Start after one
         // second, retain enough runway for brief VPN/network interruptions.
         val loadControl = DefaultLoadControl.Builder()
