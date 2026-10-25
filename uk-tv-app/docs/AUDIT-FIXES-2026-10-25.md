@@ -24,6 +24,6 @@ Prepared 25 October 2026, versionCode 21. The original audit records the pre-fix
 
 ## Remaining limits
 
-These local checks do not establish sustained Firestick performance under real-provider playback. The Firestick has not been navigated or restarted during these changes. Installation requires a viewing-safe opportunity; playback acceptance remains with the user.
+These local checks do not establish sustained Firestick performance under real-provider playback. After explicit permission, the normal 0.9.9-preview / versionCode 21 was installed successfully. Package inspection confirms it is nondebuggable. The app was left unopened; playback acceptance remains with the user.
 
 CI source reconciliation is submitted separately because remote main had the old app source. A stable CI signing credential is still needed before that pipeline can publish an upgrade matching the installed identity. Existing debug-derived signing identity is retained for compatibility, not presented as a newly hardened production key. Checksum bootstrapping pins the retrieved artifacts; it is not an independent authenticity audit of every upstream dependency. R8 remains disabled pending provider/Kodi compatibility testing. Fire OS, Kodi/add-ons and external provider pages remain separate trust and reliability boundaries.

@@ -126,6 +126,14 @@ class GuideSmokeTest {
                 device.wait(Until.hasObject(By.textContains("LIVE PREVIEW")), 10000)
             )
 
+            // Repeatable on a previously used emulator: a prior run may have
+            // already saved this station, changing the menu to Remove favourite.
+            runBlocking { model.dao.removeFavourite(stationId) }
+            eventually {
+                var absent = false
+                scenario.onActivity { absent = stationId !in model.favourites }
+                absent
+            }
             // Favourite is a first-class visible action.
             device.pressMenu()
             assertTrue(
