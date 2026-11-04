@@ -152,6 +152,8 @@ def download(name, output):
             from business_channels import schwab_xmltv
             data=gzip.compress(schwab_xmltv(data))
         if name=='news_cbn': data=gzip.compress(cbn_xmltv(data))
+        if name=='koryofront' and not data.startswith(b'\x1f\x8b'):
+            data=gzip.compress(data)
         temporary = path.with_suffix('.tmp.gz')
         temporary.write_bytes(data)
         xml = load_guide(temporary)
