@@ -6023,5 +6023,62 @@
         "guideChannelId": ""
       }
     ]
+  },
+  {
+    "id": "KCTV.kp@Native",
+    "family": "KCTV.kp",
+    "name": "KCTV (North Korea)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "North Korea",
+    "logo": "https://koryofront.org/kctv-logo.png",
+    "routes": [
+      {
+        "url": "https://live.koryocdn.org/kctv/index.m3u8",
+        "label": "Koryo Front \u00b7 live",
+        "region": "North Korea",
+        "guideSource": "koryofront",
+        "guideId": "KCTV",
+        "guideChannelId": "fast:koryofront:KCTV"
+      }
+    ]
+  },
+  {
+    "id": "AthleticTV.kp@Native",
+    "family": "AthleticTV.kp",
+    "name": "Athletic TV (North Korea)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "North Korea",
+    "logo": "https://koryofront.org/sports-logo.png",
+    "routes": [
+      {
+        "url": "https://live.koryocdn.org/sports/index.m3u8",
+        "label": "Koryo Front \u00b7 live",
+        "region": "North Korea",
+        "guideSource": "koryofront",
+        "guideId": "SportsTV",
+        "guideChannelId": "fast:koryofront:SportsTV"
+      }
+    ]
+  },
+  {
+    "id": "RyongnamsanTV.kp@Native",
+    "family": "RyongnamsanTV.kp",
+    "name": "Ryongnamsan TV (North Korea)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "North Korea",
+    "logo": "https://koryofront.org/ryongnamsan-logo.png",
+    "routes": [
+      {
+        "url": "https://live.koryocdn.org/ryongnamsan/index.m3u8",
+        "label": "Koryo Front \u00b7 live",
+        "region": "North Korea",
+        "guideSource": "koryofront",
+        "guideId": "Ryongnamsan",
+        "guideChannelId": "fast:koryofront:Ryongnamsan"
+      }
+    ]
   }
 ]

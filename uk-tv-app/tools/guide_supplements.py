@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 
 GUIDE_URLS = {
+    'koryofront': 'https://koryofront.org/api/epg',
     'business_schwab': 'https://schwabnetwork.com/',
     'spain_pluto': 'https://i.mjh.nz/PlutoTV/es.xml.gz',
     'spain_samsung': 'https://i.mjh.nz/SamsungTVPlus/es.xml.gz',
