@@ -6,6 +6,22 @@ name matching at runtime. Never replace existing identities or alternatives.
 import copy
 import json
 import time
+import re
+from functools import lru_cache
+from urllib.request import Request, urlopen
+
+@lru_cache(maxsize=1)
+def knr_live_url():
+    """Refresh the exact KNR1 embed; the channel /live URL may resolve KNR2."""
+    try:
+        request = Request("https://www.knr.gl/en/tv/live", headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(request, timeout=12) as response:
+            page = response.read(2 * 1024 * 1024).decode("utf-8", "replace")
+        match = re.search(r"youtube\.com/embed/([A-Za-z0-9_-]{11})(?:[?\"\'])", page)
+        return "https://www.youtube.com/watch?v=" + match[1] if match else None
+    except Exception:
+        return None
+
 from pathlib import Path
 from stream_sources import source
 
@@ -25,7 +41,10 @@ def expand(channels, inventory=None):
             rows.append(channel)
             by_id[channel['id']] = channel
         for route in spec['routes']:
-            entry = source(route['url'], route.get('headers',{}), route['label'], 1)
+            url = (knr_live_url() or route['url']) if spec['family'] == 'KNR1.gl' else route['url']
+            entry = source(url, route.get('headers',{}), route['label'], 1)
+            if route.get('kind') == 'youtube':
+                entry.update(kind='youtube', mime='application/x-external', backgroundCheck=False)
             entry['guideChannelId'] = route['guideChannelId']
             entry['region'] = route.get('region') or ('UK' if route['guideSource'] in ('pluto', 'samsung') else 'USA')
             existing = next((s for s in channel['sources'] if s['id'] == entry['id']), None)

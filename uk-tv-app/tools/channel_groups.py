@@ -162,6 +162,7 @@ BUSINESS_SERVICES = {
 
 def category(channel):
     base, _, variant = channel['id'].partition('@')
+    if base == 'SpainFASTwildearth.es': return 'documentaries'
     if channel.get('group') in {GROUPS['spain'], SOURCE_GROUPS['spain']}: return 'spain'
     if base in BUSINESS_SERVICES: return 'business'
     # Preserve the existing London/default main services; do not relabel other
@@ -193,6 +194,8 @@ def arrange_channels(channels):
     def key(channel):
         group = category(channel)
         base, _, variant = channel['id'].partition('@')
+        if group == 'sport':
+            return (ranks[group], natural(channel['name']), natural(base), natural(variant), channel['id'])
         if group == 'spain':
             return (ranks[group], not channel.get('streamVerified',False),
                     not channel.get('englishSubtitles',False),

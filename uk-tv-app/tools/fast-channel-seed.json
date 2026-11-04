@@ -5727,5 +5727,263 @@
         "guideChannelId": "fast:samsung_us:USBC3200020QF"
       }
     ]
+  },
+  {
+    "id": "CanaldoBoi.br@Native",
+    "family": "CanaldoBoi.br",
+    "name": "Canal do Boi (Brazil)",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "Native",
+    "country": "Brazil",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://aovivo3.equipea.com.br:5443/aovivort/streams/FGPjVZA1EidEnBCn5502382962900440.m3u8",
+        "label": "Canal do Boi (Brazil) \u00b7 live stream",
+        "region": "Brazil",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "OutdoorAmerica.us@Native",
+    "family": "OutdoorAmerica.us",
+    "name": "Outdoor America (USA)",
+    "group": "10 SPORT",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://linear-600.frequency.stream/dist/viewnexa/600/hls/master/playlist-1.m3u8",
+        "label": "Outdoor America (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://d1e354daam8g5r.cloudfront.net/playlist.m3u8",
+        "label": "Outdoor America (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://linear-600.frequency.stream/dist/xumo/600/hls/master/playlist.m3u8",
+        "label": "Outdoor America (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "MNB.mn@Native",
+    "family": "MNB.mn",
+    "name": "MNB (Mongolia)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "Mongolia",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://live.mnb.mn/hls/mnb.stream.m3u8",
+        "label": "MNB (Mongolia) \u00b7 live stream",
+        "region": "Mongolia",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "FNX.us@Native",
+    "family": "FNX.us",
+    "name": "FNX \u2013 First Nations Experience (USA)",
+    "group": "19 USA",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://fnx.lls.pbs.org/index.m3u8",
+        "label": "FNX \u2013 First Nations Experience (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://castus-vod-dev.s3.amazonaws.com/vod_clients/kvcr/live/ch1/video.m3u8",
+        "label": "FNX \u2013 First Nations Experience (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "DDKisan.in@Native",
+    "family": "DDKisan.in",
+    "name": "DD Kisan (India)",
+    "group": "08 FOOD & LIFESTYLE",
+    "variant": "Native",
+    "country": "India",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://d2lk5u59tns74c.cloudfront.net/out/v1/4f053f2c12a24641bf701fb7f2376750/index.m3u8",
+        "label": "DD Kisan (India) \u00b7 live stream",
+        "region": "India",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://mumbai-edge.smartplaytv.in/DDKisan/index.m3u8",
+        "label": "DD Kisan (India) \u00b7 live stream",
+        "region": "India",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
+        "url": "https://cdn.pishow.tv/ott/live/9/master.m3u8",
+        "label": "DD Kisan (India) \u00b7 live stream",
+        "region": "India",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "RUV2.is@Native",
+    "family": "RUV2.is",
+    "name": "R\u00daV2 (Iceland)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "Iceland",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://ruvlive.akamaized.net/out/v1/2ff7673de40f419fa5164498fae89089/index.m3u8",
+        "label": "R\u00daV2 (Iceland) \u00b7 live stream",
+        "region": "Iceland",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "C44Adelaide.au@Native",
+    "family": "C44Adelaide.au",
+    "name": "C44 Adelaide",
+    "group": "21 AUSTRALIA",
+    "variant": "Native",
+    "country": "Australia",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://d1k6kax80wecy5.cloudfront.net/WFqZJc/index.m3u8",
+        "label": "C44 Adelaide \u00b7 live stream",
+        "region": "Australia",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "AlQuranAlKareemTV.sa@Native",
+    "family": "AlQuranAlKareemTV.sa",
+    "name": "Makkah \u2013 Quran TV (Saudi Arabia)",
+    "group": "14 FAITH",
+    "variant": "Native",
+    "country": "Saudi Arabia",
+    "logo": "",
+    "routes": [
+      {
+        "url": "http://m.live.net.sa:1935/live/quran/gmswf.m3u8",
+        "label": "Makkah \u2013 Quran TV (Saudi Arabia) \u00b7 live stream",
+        "region": "Saudi Arabia",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "AlSunnahAlNabawiyahTV.sa@Native",
+    "family": "AlSunnahAlNabawiyahTV.sa",
+    "name": "Madinah \u2013 Sunnah TV (Saudi Arabia)",
+    "group": "14 FAITH",
+    "variant": "Native",
+    "country": "Saudi Arabia",
+    "logo": "",
+    "routes": [
+      {
+        "url": "http://m.live.net.sa:1935/live/sunnah/gmswf.m3u8",
+        "label": "Madinah \u2013 Sunnah TV (Saudi Arabia) \u00b7 live stream",
+        "region": "Saudi Arabia",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "CourtTV.us@Native",
+    "family": "CourtTV.us",
+    "name": "Court TV (USA)",
+    "group": "07 CRIME & MYSTERY",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBA34000049Z",
+        "label": "Court TV (USA) \u00b7 Samsung USA",
+        "region": "USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBA34000049Z",
+        "guideChannelId": "fast:samsung_us:USBA34000049Z"
+      },
+      {
+        "url": "https://pb-2rv53xe17yzvq.akamaized.net/Court_TV_US.m3u8",
+        "label": "Court TV (USA) \u00b7 live stream",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "KNR1.gl@Native",
+    "family": "KNR1.gl",
+    "name": "KNR1 (Greenland)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "Greenland",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://www.youtube.com/watch?v=xP4IQFTgVQU",
+        "kind": "youtube",
+        "label": "KNR1 \u00b7 official YouTube live",
+        "region": "Greenland",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
   }
 ]

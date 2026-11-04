@@ -205,3 +205,21 @@ class ChannelGroupTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class SportsAlphabeticalTests(unittest.TestCase):
+    def test_sports_name_precedes_country_and_featured_priority(self):
+        from channel_groups import GROUPS
+        rows=[{'id':id,'name':name,'country':country,'group':GROUPS['sport']} for id,name,country in [('SkySportsNews.uk','Sky Sports News','UK'),('ABC.us','ABC Sports','USA'),('Z.nz','Zulu Sport','New Zealand'),('BBCSport.uk','BBC Sport','UK')]]
+        result=arrange_channels(rows)
+        self.assertEqual([c['id'] for c in result],['ABC.us','BBCSport.uk','SkySportsNews.uk','Z.nz'])
+
+class KnrNativePlayerTests(unittest.TestCase):
+    def test_knr_is_youtube_and_uses_exact_broadcaster_embed(self):
+        from unittest.mock import patch
+        from fast_channels import seed, expand
+        spec=[s for s in seed() if s['family']=='KNR1.gl']
+        with patch('fast_channels.knr_live_url',return_value='https://www.youtube.com/watch?v=abcdefghijk'):
+            stream=expand([],spec)[0]['sources'][0]
+        self.assertEqual(stream['kind'],'youtube')
+        self.assertFalse(stream['backgroundCheck'])
+        self.assertEqual(stream['url'],'https://www.youtube.com/watch?v=abcdefghijk')
