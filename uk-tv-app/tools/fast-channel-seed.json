@@ -5985,5 +5985,43 @@
         "guideChannelId": ""
       }
     ]
+  },
+  {
+    "id": "NevisTelevision.kn@Native",
+    "family": "NevisTelevision.kn",
+    "name": "Nevis Television (St Kitts & Nevis)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "St Kitts & Nevis",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://media.slactech.com:1936/NTvDirect/ngrp:NTvDirect_all/playlist.m3u8",
+        "label": "Nevis Television \u00b7 official live",
+        "region": "St Kitts & Nevis",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "ZIZTV.kn@Native",
+    "family": "ZIZTV.kn",
+    "name": "ZIZ TV \u2014 Channel 5 (St Kitts & Nevis)",
+    "group": "13 WORLD & LANGUAGES",
+    "variant": "Native",
+    "country": "St Kitts & Nevis",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://media.slactech.com:1936/ZIZDirect/ZIZDirect/playlist.m3u8",
+        "label": "ZIZ TV \u2014 Channel 5 \u00b7 official live",
+        "region": "St Kitts & Nevis",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
   }
 ]
