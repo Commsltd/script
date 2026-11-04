@@ -5689,5 +5689,43 @@
         "guideChannelId": "fast:samsung_us:USBD3500038R6"
       }
     ]
+  },
+  {
+    "id": "PBRRidePass.us@US",
+    "family": "PBRRidePass.us",
+    "name": "PBR RidePass",
+    "group": "10 SPORT",
+    "variant": "US",
+    "country": "USA",
+    "logo": "https://images.pluto.tv/channels/60d39387706fe50007fda8e8/colorLogoPNG.png",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-60d39387706fe50007fda8e8.m3u8",
+        "label": "PlutoTV \u00b7 USA",
+        "region": "USA",
+        "guideSource": "pluto_us",
+        "guideId": "60d39387706fe50007fda8e8",
+        "guideChannelId": "fast:pluto_us:60d39387706fe50007fda8e8"
+      }
+    ]
+  },
+  {
+    "id": "WesternBound.us@US",
+    "family": "WesternBound.us",
+    "name": "Western Bound",
+    "group": "10 SPORT",
+    "variant": "US",
+    "country": "USA",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3200020QF_20250623T224734SQUARE.png",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/stvp-USBC3200020QF",
+        "label": "SamsungTVPlus \u00b7 USA",
+        "region": "USA",
+        "guideSource": "samsung_us",
+        "guideId": "USBC3200020QF",
+        "guideChannelId": "fast:samsung_us:USBC3200020QF"
+      }
+    ]
   }
 ]
