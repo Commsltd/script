@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 mkdir -p delivery/player-fixture
-if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi
+echo 'Checking playback fixture encoder'
+if ! command -v ffmpeg >/dev/null; then
+  timeout 120 sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update -qq
+  timeout 180 sudo apt-get install -y -qq ffmpeg
+fi
 # Bound fixture preparation so encoder trouble cannot stall the whole TV test.
 echo 'Preparing deterministic playback fixture'
 timeout 120 ffmpeg -nostdin -y -hide_banner -loglevel warning -filter_threads 1 -f lavfi -i 'testsrc2=size=640x360:rate=25' -f lavfi -i 'sine=frequency=440:sample_rate=44100' -t 90 -c:v libx264 -threads 1 -preset ultrafast -pix_fmt yuv420p -b:v 900k -g 100 -c:a aac -b:a 96k -f hls -hls_time 4 -hls_list_size 0 -hls_playlist_type vod delivery/player-fixture/stream.m3u8
