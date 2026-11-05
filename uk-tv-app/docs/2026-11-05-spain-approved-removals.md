@@ -1,0 +1,195 @@
+# Approved Spain catalogue removals
+
+Removed exactly the 191 Spanish-market identities approved by the user on 5 November 2026. Retained all other seed records unchanged, including 28 Spanish streaming services, 26 uncertain streaming services and 188 TDT-derived channels. Existing English/UK editions elsewhere are unchanged. Toros remains in Spain; the separate app change adds its Sports shelf using the same identity.
+
+- Rebelde — `SpainFASTrebelde.es@Spain`
+- Embrujadas — `SpainFASTembrujadas.es@Spain`
+- Medium — `SpainFASTmedium.es@Spain`
+- Pluto TV Paranormal — `SpainFASTplutotvparanormal.es@Spain`
+- Pluto TV Horror — `SpainFASTplutotvhorror.es@Spain`
+- Pluto TV Zombies — `SpainFASTplutotvzombies.es@Spain`
+- Pluto TV Series de Terror — `SpainFASTplutotvseriesdeterror.es@Spain`
+- Pluto TV Terror Clásico — `SpainFASTplutotvterrorclasico.es@Spain`
+- Archivos Forenses — `SpainFASTarchivosforenses.es@Spain`
+- Los archivos del FBI — `SpainFASTlosarchivosdelfbi.es@Spain`
+- Pluto TV True Crime — `SpainFASTplutotvtruecrime.es@Spain`
+- Los nuevos detectives — `SpainFASTlosnuevosdetectives.es@Spain`
+- Crimen & Historia — `SpainFASTcrimenhistoria.es@Spain`
+- Pluto TV Invasión Alien — `SpainFASTplutotvinvasionalien.es@Spain`
+- Los misterios de Murdoch — `SpainFASTlosmisteriosdemurdoch.es@Spain`
+- Los Misteriosos asesinatos de Miss Fisher — `SpainFASTlosmisteriososasesinatosdemissfisher.es@Spain`
+- Poirot & Miss Marple — `SpainFASTpoirotmissmarple.es@Spain`
+- Unidad de investigación — `SpainFASTunidaddeinvestigacion.es@Spain`
+- Los Asesinatos de Midsomer — `SpainFASTlosasesinatosdemidsomer.es@Spain`
+- Alice Nevers — `SpainFASTalicenevers.es@Spain`
+- Cherif — `SpainFASTcherif.es@Spain`
+- Pluto TV Series criminales — `SpainFASTplutotvseriescriminales.es@Spain`
+- Rookie Blue — `SpainFASTrookieblue.es@Spain`
+- El Detective Endeavour — `SpainFASTeldetectiveendeavour.es@Spain`
+- Melrose Place — `SpainFASTmelroseplace.es@Spain`
+- Gata salvaje — `SpainFASTgatasalvaje.es@Spain`
+- Pluto TV Telenovelas Clásicas — `SpainFASTplutotvtelenovelasclasicas.es@Spain`
+- ¡Llama a la Comadrona! — `SpainFASTllamaalacomadrona.es@Spain`
+- Pluto TV K-Drama — `SpainFASTplutotvkdrama.es@Spain`
+- BBC Series — `SpainFASTbbcseries.es@Spain`
+- Primeval — `SpainFASTprimeval.es@Spain`
+- Pluto TV Series Sci-Fi — `SpainFASTplutotvseriesscifi.es@Spain`
+- Empeños a lo bestia — `SpainFASTempenosalobestia.es@Spain`
+- Top Gear — `SpainFASTtopgear.es@Spain`
+- Cazasubastas — `SpainFASTcazasubastas.es@Spain`
+- COPS — `SpainFASTcops.es@Spain`
+- Pluto TV Motor — `SpainFASTplutotvmotor.es@Spain`
+- El encantador de perros — `SpainFASTelencantadordeperros.es@Spain`
+- La fiebre del Jade — `SpainFASTlafiebredeljade.es@Spain`
+- Pluto TV Impacto — `SpainFASTplutotvimpacto.es@Spain`
+- Ice Pilots — `SpainFASTicepilots.es@Spain`
+- Pluto TV Gasolina — `SpainFASTplutotvgasolina.es@Spain`
+- Sí quiero ese vestido — `SpainFASTsiquieroesevestido.es@Spain`
+- America's Next Top Model — `SpainFASTamericasnexttopmodel.es@Spain`
+- Paramount Network de Pluto TV — `SpainFASTparamountnetworkdeplutotv.es@Spain`
+- Pluto TV Cine Acción — `SpainFASTplutotvcineaccion.es@Spain`
+- Pluto TV Western — `SpainFASTplutotvwestern.es@Spain`
+- Pluto TV Cine Estelar — `SpainFASTplutotvcineestelar.es@Spain`
+- Pluto TV Cine Comedia — `SpainFASTplutotvcinecomedia.es@Spain`
+- Pluto TV Thrillers — `SpainFASTplutotvthrillers.es@Spain`
+- Pluto TV Sci-Fi — `SpainFASTplutotvscifi.es@Spain`
+- Pluto TV Catástrofes — `SpainFASTplutotvcatastrofes.es@Spain`
+- Pluto TV Psycho — `SpainFASTplutotvpsycho.es@Spain`
+- Pluto TV Cine Clásico — `SpainFASTplutotvcineclasico.es@Spain`
+- Pluto TV Cine Romántico — `SpainFASTplutotvcineromantico.es@Spain`
+- Pluto TV Comedias Románticas — `SpainFASTplutotvcomediasromanticas.es@Spain`
+- Pluto TV Cine Drama — `SpainFASTplutotvcinedrama.es@Spain`
+- Pluto TV Cine de autor — `SpainFASTplutotvcinedeautor.es@Spain`
+- Dragon Ball Z — `SpainFASTdragonballz.es@Spain`
+- Detective Conan — `SpainFASTdetectiveconan.es@Spain`
+- Dragon Ball — `SpainFASTdragonball.es@Spain`
+- One Piece — `SpainFASTonepiece.es@Spain`
+- Los caballeros del Zodiaco — `SpainFASTloscaballerosdelzodiaco.es@Spain`
+- Yu-Gi-Oh! — `SpainFASTyugioh.es@Spain`
+- Pluto TV Anime — `SpainFASTplutotvanime.es@Spain`
+- Inazuma Eleven — `SpainFASTinazumaeleven.es@Spain`
+- Lupin — `SpainFASTlupin.es@Spain`
+- South Park — `SpainFASTsouthpark.es@Spain`
+- Terapia con Charlie — `SpainFASTterapiaconcharlie.es@Spain`
+- Comedia a lo bestia de Pluto TV — `SpainFASTcomediaalobestiadeplutotv.es@Spain`
+- South Park Versión Original — `SpainFASTsouthparkversionoriginal.es@Spain`
+- FailArmy — `SpainFASTfailarmy.es@Spain`
+- Wipeout — `SpainFASTwipeout.es@Spain`
+- MTV Vergüenza ajena — `SpainFASTmtvverguenzaajena.es@Spain`
+- MTV Jerseys — `SpainFASTmtvjerseys.es@Spain`
+- MTV Embarazada a los 16 — `SpainFASTmtvembarazadaalos16.es@Spain`
+- MTV Originals — `SpainFASTmtvoriginals.es@Spain`
+- MTV Ink Master — `SpainFASTmtvinkmaster.es@Spain`
+- MTV Reality — `SpainFASTmtvreality.es@Spain`
+- Bob Esponja — `SpainFASTbobesponja.es@Spain`
+- iCarly — `SpainFASTicarly.es@Spain`
+- Pluto TV Teen — `SpainFASTplutotvteen.es@Spain`
+- Pippi Calzaslargas — `SpainFASTpippicalzaslargas.es@Spain`
+- El Reino Infantil — `SpainFASTelreinoinfantil.es@Spain`
+- Érase una vez... — `SpainFASTeraseunavez.es@Spain`
+- Mr. Bean — `SpainFASTmrbean.es@Spain`
+- Heidi — `SpainFASTheidi.es@Spain`
+- Rugrats — `SpainFASTrugrats.es@Spain`
+- Las Tortugas Ninja — `SpainFASTlastortugasninja.es@Spain`
+- Winx Club — `SpainFASTwinxclub.es@Spain`
+- Monster High — `SpainFASTmonsterhigh.es@Spain`
+- Los Pitufos — `SpainFASTlospitufos.es@Spain`
+- Pluto TV Kids Classics — `SpainFASTplutotvkidsclassics.es@Spain`
+- Pluto TV Kids — `SpainFASTplutotvkids.es@Spain`
+- Mattel Junior — `SpainFASTmatteljunior.es@Spain`
+- Barbie & Friends — `SpainFASTbarbiefriends.es@Spain`
+- Pluto TV Animales — `SpainFASTplutotvanimales.es@Spain`
+- Pluto TV Cocina — `SpainFASTplutotvcocina.es@Spain`
+- Pluto TV Historia — `SpainFASTplutotvhistoria.es@Spain`
+- Pluto TV Diseño — `SpainFASTplutotvdiseno.es@Spain`
+- Space Live — `SpainFASTspacelive.es@Spain`
+- Metal Rocks — `SpainFASTmetalrocks.es@Spain`
+- World Poker Tour — `SpainFASTworldpokertour.es@Spain`
+- FIFA+ — `SpainFASTfifa.es@Spain`
+- UFC — `SpainFASTufc.es@Spain`
+- Tennis Channel — `SpainFASTtennischannel.es@Spain`
+- NFL Channel — `SpainFASTnflchannel.es@Spain`
+- Pluto TV Snooker 900 — `SpainFASTplutotvsnooker900.es@Spain`
+- MODUS Super Series Darts — `SpainFASTmodussuperseriesdarts.es@Spain`
+- Dominance FC TV — `SpainFASTdominancefctv.es@Spain`
+- Euronews — `SpainFASTeuronews.es@Spain`
+- MTV Cribs — `SpainFASTmtvcribs.es@Spain`
+- Beyblade — `SpainFASTbeyblade.es@Spain`
+- BBC Lifestyle — `SpainFASTbbclifestyle.es@Spain`
+- Azteca Internacional — `SpainFASTaztecainternacional.es@Spain`
+- Encantador de Perros — `SpainFASTencantadordeperros.es@Spain`
+- Estilo y Vida – Rakuten TV — `SpainFASTestiloyvidarakutentv.es@Spain`
+- 2M — `SpainFAST2m.es@Spain`
+- CJ ENM K-Novela en Español — `SpainFASTcjenmknovelaenespanol.es@Spain`
+- Series K DRAMA — `SpainFASTserieskdrama.es@Spain`
+- K-Drama+ — `SpainFASTkdrama.es@Spain`
+- Series K COMEDIA ROMÁNTICA — `SpainFASTserieskcomediaromantica.es@Spain`
+- Euronews EN DIRECTO — `SpainFASTeuronewsendirecto.es@Spain`
+- CNN en Español — `SpainFASTcnnenespanol.es@Spain`
+- Forensic Files — `SpainFASTforensicfiles.es@Spain`
+- DATELINE 24/7 — `SpainFASTdateline247.es@Spain`
+- Crimenes Reales — `SpainFASTcrimenesreales.es@Spain`
+- Crimen - Rakuten TV — `SpainFASTcrimenrakutentv.es@Spain`
+- Alerta Cobra — `SpainFASTalertacobra.es@Spain`
+- Red Bull TV — `SpainFASTredbulltv.es@Spain`
+- Rugby Challenge — `SpainFASTrugbychallenge.es@Spain`
+- Motorvision — `SpainFASTmotorvision.es@Spain`
+- Rally.TV FAST+ — `SpainFASTrallytvfast.es@Spain`
+- LooLoo Kids — `SpainFASTloolookids.es@Spain`
+- Pitufo TV — `SpainFASTpitufotv.es@Spain`
+- BABY SHARK TV — `SpainFASTbabysharktv.es@Spain`
+- duckTV — `SpainFASTducktv.es@Spain`
+- Teletubbies — `SpainFASTteletubbies.es@Spain`
+- La Abeja Maya — `SpainFASTlaabejamaya.es@Spain`
+- Rabbids : La invasion — `SpainFASTrabbidslainvasion.es@Spain`
+- Pingu — `SpainFASTpingu.es@Spain`
+- Runtime Familia — `SpainFASTruntimefamilia.es@Spain`
+- En Familia - Rakuten TV — `SpainFASTenfamiliarakutentv.es@Spain`
+- MyTime Movie Network — `SpainFASTmytimemovienetwork.es@Spain`
+- Runtime — `SpainFASTruntime.es@Spain`
+- Runtime Romance — `SpainFASTruntimeromance.es@Spain`
+- Películas Románticas - Rakuten TV — `SpainFASTpeliculasromanticasrakutentv.es@Spain`
+- Runtime Comedia — `SpainFASTruntimecomedia.es@Spain`
+- Comedia - Rakuten TV — `SpainFASTcomediarakutentv.es@Spain`
+- Grjngo - Películas Del Oeste — `SpainFASTgrjngopeliculasdeloeste.es@Spain`
+- Cine Western — `SpainFASTcinewestern.es@Spain`
+- Bigtime - Películas Gratis — `SpainFASTbigtimepeliculasgratis.es@Spain`
+- Runtime Clásicos — `SpainFASTruntimeclasicos.es@Spain`
+- FreeTV Clásico — `SpainFASTfreetvclasico.es@Spain`
+- NEW K-MOVIES — `SpainFASTnewkmovies.es@Spain`
+- Action Movie Channel — `SpainFASTactionmoviechannel.es@Spain`
+- Sci-Fi - Rakuten TV — `SpainFASTscifirakutentv.es@Spain`
+- Acción - Rakuten TV — `SpainFASTaccionrakutentv.es@Spain`
+- Halloween - Rakuten TV — `SpainFASThalloweenrakutentv.es@Spain`
+- Runtime Acción — `SpainFASTruntimeaccion.es@Spain`
+- Vevo Latino — `SpainFASTvevolatino.es@Spain`
+- Vevo Retro — `SpainFASTvevoretro.es@Spain`
+- Vevo Pop — `SpainFASTvevopop.es@Spain`
+- Trace Latina — `SpainFASTtracelatina.es@Spain`
+- Trace Urban — `SpainFASTtraceurban.es@Spain`
+- Concerto — `SpainFASTconcerto.es@Spain`
+- Cool Summer Channel — `SpainFASTcoolsummerchannel.es@Spain`
+- Rolling Stones Takeover — `SpainFASTrollingstonestakeover.es@Spain`
+- CLIPS don't lie — `SpainFASTclipsdontlie.es@Spain`
+- NEW KPOP — `SpainFASTnewkpop.es@Spain`
+- CJ ENM K-POP — `SpainFASTcjenmkpop.es@Spain`
+- Deluxe Lounge HD — `SpainFASTdeluxeloungehd.es@Spain`
+- Cozy Vibes — `SpainFASTcozyvibes.es@Spain`
+- Storm Vibes — `SpainFASTstormvibes.es@Spain`
+- Rainy Day Vibes — `SpainFASTrainydayvibes.es@Spain`
+- Fall Vibes — `SpainFASTfallvibes.es@Spain`
+- Island Vibes — `SpainFASTislandvibes.es@Spain`
+- Ocean Vibes — `SpainFASToceanvibes.es@Spain`
+- Fireplace Vibes — `SpainFASTfireplacevibes.es@Spain`
+- Journy TV — `SpainFASTjournytv.es@Spain`
+- BBC Food — `SpainFASTbbcfood.es@Spain`
+- Mayday: Catástrofe Aérea — `SpainFASTmaydaycatastrofeaerea.es@Spain`
+- BBC Historia — `SpainFASTbbchistoria.es@Spain`
+- Royalworld - Nobleza y Dinastias — `SpainFASTroyalworldnoblezaydinastias.es@Spain`
+- Planeta Salvaje — `SpainFASTplanetasalvaje.es@Spain`
+- Love the Planet — `SpainFASTlovetheplanet.es@Spain`
+- WaterBear — `SpainFASTwaterbear.es@Spain`
+- MTV Catfish — `SpainFASTmtvcatfish.es@Spain`
+- People Are Awesome — `SpainFASTpeopleareawesome.es@Spain`
+- The Pet Collective — `SpainFASTthepetcollective.es@Spain`
+- Just For Laughs — `SpainFASTjustforlaughs.es@Spain`
