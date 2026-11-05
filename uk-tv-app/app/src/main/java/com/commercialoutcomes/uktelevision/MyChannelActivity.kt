@@ -104,10 +104,26 @@ class MyChannelActivity : Activity() {
                     parser.next()
                 }
                 require(headlines.isNotEmpty())
-                "${when(index){2->"El País";3->"NASA";else->"BBC"}} · Updated ${java.text.SimpleDateFormat("HH:mm",java.util.Locale.getDefault()).format(java.util.Date())}\n\n"+headlines.joinToString("\n\n")
+                extraData(index)+"${when(index){2->"El País";3->"NASA";else->"BBC"}} · Updated ${java.text.SimpleDateFormat("HH:mm",java.util.Locale.getDefault()).format(java.util.Date())}\n\n"+headlines.joinToString("\n\n")
             }.getOrNull()
             handler.post { if(active && generation==token) { if(result!=null) info.text=result else if(info.text.startsWith("Refreshing"))info.text="Information unavailable — retrying in five minutes" else info.text=info.text.toString().substringBefore("\n\nRefresh failed")+"\n\nRefresh failed · previous headlines retained";handler.postDelayed(refresh,300000) } }
         }
+    }
+    private fun extraData(index:Int):String {
+        if(index!=0 && index!=3)return ""
+        return runCatching {
+            val url=if(index==0) "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml" else "https://services.swpc.noaa.gov/json/planetary_k_index_1m.json"
+            val c=URL(url).openConnection().apply {connectTimeout=8000;readTimeout=8000}
+            val raw=c.getInputStream().use { input -> val out=java.io.ByteArrayOutputStream();val b=ByteArray(8192);while(true){val n=input.read(b);if(n<0)break;require(out.size()+n<=1000000);out.write(b,0,n)};out.toString("UTF-8") }
+            if(index==3) {
+                val readings=org.json.JSONArray(raw);val last=readings.getJSONObject(readings.length()-1)
+                "NOAA Kp: ${last.optString("kp_index")} · ${last.optString("time_tag")} UTC\n\n"
+            } else {
+                val xml=Xml.newPullParser();xml.setInput(raw.reader());val rates=mutableListOf<String>();var date=""
+                while(xml.eventType!=XmlPullParser.END_DOCUMENT){if(xml.eventType==XmlPullParser.START_TAG){xml.getAttributeValue(null,"time")?.let{date=it};val currency=xml.getAttributeValue(null,"currency");if(currency in listOf("GBP","USD"))rates.add("$currency ${xml.getAttributeValue(null,"rate")}")};xml.next()}
+                "ECB daily reference · $date\nEUR 1 = ${rates.joinToString(" / ")}\n\n"
+            }
+        }.getOrDefault("${if(index==0) "Currency rates" else "Space weather"} unavailable\n\n")
     }
     override fun onKeyDown(keyCode:Int,event:KeyEvent):Boolean {
         if(event.repeatCount>0)return super.onKeyDown(keyCode,event)
