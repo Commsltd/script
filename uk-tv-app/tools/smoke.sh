@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 mkdir -p delivery/player-fixture
-if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi
-ffmpeg -y -hide_banner -loglevel error -f lavfi -i 'testsrc2=size=640x360:rate=25' -f lavfi -i 'sine=frequency=440:sample_rate=44100' -t 90 -c:v libx264 -preset ultrafast -pix_fmt yuv420p -b:v 900k -g 100 -c:a aac -b:a 96k -f hls -hls_time 4 -hls_list_size 0 -hls_playlist_type vod delivery/player-fixture/stream.m3u8
+echo 'Checking playback fixture encoder'
+if ! command -v ffmpeg >/dev/null; then
+  timeout 120 sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update -qq
+  timeout 180 sudo apt-get install -y -qq ffmpeg
+fi
+# Bound fixture preparation so encoder trouble cannot stall the whole TV test.
+echo 'Preparing deterministic playback fixture'
+timeout 120 ffmpeg -nostdin -y -hide_banner -loglevel warning -filter_threads 1 -f lavfi -i 'testsrc2=size=640x360:rate=25' -f lavfi -i 'sine=frequency=440:sample_rate=44100' -t 90 -c:v libx264 -threads 1 -preset ultrafast -pix_fmt yuv420p -b:v 900k -g 100 -c:a aac -b:a 96k -f hls -hls_time 4 -hls_list_size 0 -hls_playlist_type vod delivery/player-fixture/stream.m3u8
+echo 'Playback fixture ready; starting emulator checks'
 python3 uk-tv-app/tools/fixture_server.py --port 8765 --bind 0.0.0.0 --directory delivery/player-fixture >delivery/fixture-server.log 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true' EXIT
@@ -26,7 +33,7 @@ set +e
 adb shell am instrument -w -r -e class com.commercialoutcomes.uktelevision.BundledCatalogueTest,com.commercialoutcomes.uktelevision.GuideSmokeTest,com.commercialoutcomes.uktelevision.PrivacyStorageTest com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
 instrument_status=${PIPESTATUS[0]}
 adb logcat -d -s AndroidRuntime:E > delivery/android-crashes.log
-for name in guide options quick-guide playback-test; do
+for name in guide options quick-guide playback-test my-channel; do
   adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
 done
 adb shell uiautomator dump /sdcard/final-ui.xml

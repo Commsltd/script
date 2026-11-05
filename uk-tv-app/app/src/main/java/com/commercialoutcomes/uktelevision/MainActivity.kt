@@ -156,6 +156,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun openMyChannel() {
+        engine.close()
+        liveWeb?.close(); liveWeb=null
+        youtubeSource=null
+        model.activateGuide(false)
+        startActivityForResult(android.content.Intent(this, MyChannelActivity::class.java),77)
+    }
+
+    @Deprecated("Internal channel return")
+    override fun onActivityResult(requestCode:Int,resultCode:Int,data:android.content.Intent?) {
+        super.onActivityResult(requestCode,resultCode,data)
+        if(requestCode==77 && resultCode==RESULT_OK){
+            val delta=data?.getIntExtra("channelDelta",0) ?: 0
+            val rows=model.channelRows();val index=rows.indexOfFirst{it.station.id=="personal.my-channel"}
+            if(delta!=0 && rows.isNotEmpty()){val next=(index+delta).coerceIn(0,rows.lastIndex);if(rows[next].station.id!="personal.my-channel")handler.post{startPlayback(rows[next],true)}}
+        }
+    }
+
     private fun showInfo() {
         if (surface != TvSurface.LIVE) return
         liveOverlay = LiveOverlay.INFO
@@ -163,6 +181,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
+        if (row.station.id == "personal.my-channel") {
+            openMyChannel()
+            return
+        }
         if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }
         model.markPlaying(row)
         quickGuideKey = row.station.id
@@ -416,6 +438,7 @@ class MainActivity : ComponentActivity() {
 
         val labels = if (surface == TvSurface.GUIDE) {
             buildList {
+                add("My Channel")
                 add("On Demand")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Preview channel")
@@ -434,6 +457,7 @@ class MainActivity : ComponentActivity() {
             }
         } else {
             buildList {
+                add("My Channel")
                 add("On Demand")
                 add("Open full guide")
                 add("Quick guide")
@@ -491,6 +515,7 @@ class MainActivity : ComponentActivity() {
                             engine.pinCurrent()
                             toast("Preferred for ${model.profile}")
                         }
+                        "My Channel" -> openMyChannel()
                         "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
                         "VPN / country" -> handler.post { VpnShortcut.open(this,row?.station?.name?:"UK TV",row?.station?.id.orEmpty()){vpnReturn=true} }
                         "Broadcaster controls" -> liveWeb?.showControls()
