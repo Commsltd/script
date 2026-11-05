@@ -293,7 +293,7 @@ class VodPlayerActivity : ComponentActivity() {
     private fun showServices() {
         if(webFailed||servicesDialog?.isShowing==true)return
         val labels=buildList {
-            if(intent.hasExtra("personal-queue-key"))add("Next queued programme")
+            if(!intent.getStringExtra("personal-queue-key").isNullOrBlank())add("Next queued programme")
             if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))add("Change stream · poor copy or buffering")
             if(provider==VodProvider.MOVY)add("Picture quality")
             if(duloSeries()!=null)add("Choose season / episode")
@@ -360,7 +360,7 @@ class VodPlayerActivity : ComponentActivity() {
         }
     }
     override fun onPause() { consentControls?.close();qualityControls?.close();streamControls?.close();handler.removeCallbacksAndMessages(null);tubiControls?.pause();nativePlayback?.pause();if(::web.isInitialized&&!webFailed)web.onPause(); super.onPause() }
-    override fun onResume() { super.onResume();if(intent.hasExtra("personal-queue-key"))handler.postDelayed(queueMonitor,5000);qualityControls?.resume();if(provider==VodProvider.PLEX&&!webFailed)consentControls?.start();tubiControls?.resume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
+    override fun onResume() { super.onResume();if(!intent.getStringExtra("personal-queue-key").isNullOrBlank())handler.postDelayed(queueMonitor,5000);qualityControls?.resume();if(provider==VodProvider.PLEX&&!webFailed)consentControls?.start();tubiControls?.resume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
     override fun onStop() { nativePlayback?.background(); super.onStop() }
     override fun onDestroy() { consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();if(!webFailed)nativePlayback?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized&&!webFailed){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
 }
