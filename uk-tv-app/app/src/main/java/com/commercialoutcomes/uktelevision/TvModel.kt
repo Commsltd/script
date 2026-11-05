@@ -176,7 +176,8 @@ class TvModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun rebuildStations() {
-        val merged = PlaylistImport.merge(baseStations, importedStations)
+        val personal = Station("personal.my-channel", "My Channel", "personal.my-channel", "01 MAIN UK", -1, "", "", """[{"id":"personal.my-channel","url":"","label":"Personal channel","kind":"personal"}]""", "")
+        val merged = listOf(personal) + PlaylistImport.merge(baseStations, importedStations)
         sourceCache = merged.associate { it.id to it.sources() }
         stations = merged
         if (group !in groups()) group = stations.firstOrNull()?.groupName?.let(CategoryOrder::label) ?: "01 MAIN UK"

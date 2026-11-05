@@ -163,6 +163,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
+        if (row.station.id == "personal.my-channel") {
+            if (fullscreen) startActivity(android.content.Intent(this, MyChannelActivity::class.java))
+            return
+        }
         if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }
         model.markPlaying(row)
         quickGuideKey = row.station.id
@@ -416,6 +420,7 @@ class MainActivity : ComponentActivity() {
 
         val labels = if (surface == TvSurface.GUIDE) {
             buildList {
+                add("My Channel")
                 add("On Demand")
                 if (favouriteLabel != null) add(favouriteLabel)
                 add("Preview channel")
@@ -434,6 +439,7 @@ class MainActivity : ComponentActivity() {
             }
         } else {
             buildList {
+                add("My Channel")
                 add("On Demand")
                 add("Open full guide")
                 add("Quick guide")
@@ -491,6 +497,7 @@ class MainActivity : ComponentActivity() {
                             engine.pinCurrent()
                             toast("Preferred for ${model.profile}")
                         }
+                        "My Channel" -> startActivity(android.content.Intent(this, MyChannelActivity::class.java))
                         "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
                         "VPN / country" -> handler.post { VpnShortcut.open(this,row?.station?.name?:"UK TV",row?.station?.id.orEmpty()){vpnReturn=true} }
                         "Broadcaster controls" -> liveWeb?.showControls()
