@@ -156,6 +156,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun openMyChannel() {
+        engine.close()
+        liveWeb?.close(); liveWeb=null
+        youtubeSource=null
+        model.activateGuide(false)
+        startActivity(android.content.Intent(this, MyChannelActivity::class.java))
+    }
+
     private fun showInfo() {
         if (surface != TvSurface.LIVE) return
         liveOverlay = LiveOverlay.INFO
@@ -164,7 +172,7 @@ class MainActivity : ComponentActivity() {
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
         if (row.station.id == "personal.my-channel") {
-            if (fullscreen) startActivity(android.content.Intent(this, MyChannelActivity::class.java))
+            if (fullscreen) openMyChannel()
             return
         }
         if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }
@@ -497,7 +505,7 @@ class MainActivity : ComponentActivity() {
                             engine.pinCurrent()
                             toast("Preferred for ${model.profile}")
                         }
-                        "My Channel" -> startActivity(android.content.Intent(this, MyChannelActivity::class.java))
+                        "My Channel" -> openMyChannel()
                         "On Demand" -> startActivity(android.content.Intent(this, OnDemandActivity::class.java))
                         "VPN / country" -> handler.post { VpnShortcut.open(this,row?.station?.name?:"UK TV",row?.station?.id.orEmpty()){vpnReturn=true} }
                         "Broadcaster controls" -> liveWeb?.showControls()

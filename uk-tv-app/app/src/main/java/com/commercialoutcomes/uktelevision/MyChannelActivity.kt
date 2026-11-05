@@ -61,10 +61,10 @@ class MyChannelActivity : Activity() {
         body.addView(video,LinearLayout.LayoutParams(0,-1,2f));body.addView(info,LinearLayout.LayoutParams(0,-1,1f))
         root.addView(title);root.addView(body,LinearLayout.LayoutParams(-1,0,1f));root.addView(footer);setContentView(root)
     }
-    override fun onStart() { super.onStart();active=true;select(selected) }
-    override fun onStop() {
+    override fun onResume() { super.onResume();active=true;select(selected) }
+    override fun onPause() {
         active=false;generation++;dataJob?.cancel(true);handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
-        super.onStop()
+        super.onPause()
     }
     override fun onDestroy() { worker.shutdownNow();super.onDestroy() }
     private fun select(index:Int) {
