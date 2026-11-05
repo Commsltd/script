@@ -39,6 +39,7 @@ class MyChannelActivity : Activity() {
     private var automatic = true
     private var active = false
     private var generation = 0
+    private var dataJob: java.util.concurrent.Future<*>? = null
     private var routes = emptyList<Pair<String,String>>()
     private var route = 0
     private val rotate = Runnable { if (active && automatic) select((0..3).filter { it != selected }.random()) }
@@ -61,12 +62,12 @@ class MyChannelActivity : Activity() {
     }
     override fun onStart() { super.onStart();active=true;select(selected) }
     override fun onStop() {
-        active=false;generation++;handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
+        active=false;generation++;dataJob?.cancel(true);handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
         super.onStop()
     }
     override fun onDestroy() { worker.shutdownNow();super.onDestroy() }
     private fun select(index:Int) {
-        selected=index;generation++;handler.removeCallbacksAndMessages(null)
+        selected=index;generation++;dataJob?.cancel(true);handler.removeCallbacksAndMessages(null)
         getSharedPreferences("my-channel",MODE_PRIVATE).edit().putInt("preset",selected).putBoolean("auto",automatic).apply()
         title.text="MY CHANNEL  •  ${names[selected]}"
         footer.text="← → Change screen   •   OK Auto: ${if(automatic) "ON · 15 minutes" else "OFF"}   •   MENU Next source   •   BACK Guide"
@@ -91,7 +92,7 @@ class MyChannelActivity : Activity() {
     private fun nextRoute() { route++;playRoute() }
     private fun refreshData() {
         val token=generation;val index=selected
-        worker.execute {
+        dataJob=worker.submit {
             val result=runCatching {
                 val address=when(index) { 2 -> "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/espana/portada";3 -> "https://www.nasa.gov/feed/";else -> "https://feeds.bbci.co.uk/news/${feeds[index]}/rss.xml" }
                 val connection=URL(address).openConnection().apply { connectTimeout=8000;readTimeout=8000 }

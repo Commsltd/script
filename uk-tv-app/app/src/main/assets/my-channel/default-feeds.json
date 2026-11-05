@@ -79,6 +79,12 @@
   "classics": {
     "video": [
       {
+        "name": "Mr Bean \u2014 Animated",
+        "urls": [
+          "https://d2t1w90tnft92.cloudfront.net/Mr_Bean_Animated.m3u8"
+        ]
+      },
+      {
         "name": "Mr Bean \u2014 Live Action",
         "urls": [
           "https://amg00627-amg00627c39-samsung-gb-5569.playouts.now.amagi.tv/playlist.m3u8"
