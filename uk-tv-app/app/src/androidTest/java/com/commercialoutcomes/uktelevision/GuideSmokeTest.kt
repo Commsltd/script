@@ -141,7 +141,11 @@ class GuideSmokeTest {
                 device.wait(Until.hasObject(By.textContains("Add favourite")), 10000)
             )
             device.takeScreenshot(File(directory, "options.png"))
-            device.findObject(By.textContains("Add favourite")).click()
+            // Exercise the TV remote path rather than tapping the Leanback list.
+            device.waitForIdle()
+            repeat(2) { device.pressDPadDown() }
+            assertTrue("Favourite action did not gain remote focus", device.wait(Until.hasObject(By.textContains("Add favourite").focused(true)), 5000))
+            device.pressDPadCenter()
             eventually {
                 var favourite = false
                 scenario.onActivity { favourite = stationId in model.favourites }

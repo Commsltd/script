@@ -43,6 +43,7 @@ class MyChannelActivity : Activity() {
     private var routes = emptyList<Pair<String,String>>()
     private var route = 0
     private val rotate = Runnable { if (active && automatic) select((0..3).filter { it != selected }.random()) }
+    private val retry = Runnable { if(active){route=0;playRoute()} }
     private val timeout = Runnable { if (active) nextRoute() }
     private val refresh = Runnable { if (active) refreshData() }
     override fun onCreate(state: Bundle?) {
@@ -77,10 +78,11 @@ class MyChannelActivity : Activity() {
         route=0;playRoute();refreshData();if(automatic)handler.postDelayed(rotate,900000)
     }
     private fun playRoute() {
-        handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
-        if(route>=routes.size) { title.text="MY CHANNEL  •  ${names[selected]} · Video unavailable";handler.postDelayed({if(active){route=0;playRoute()}},60000);return }
+        handler.removeCallbacks(retry);handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
+        if(route>=routes.size) { title.text="MY CHANNEL  •  ${names[selected]} · Video unavailable";handler.postDelayed(retry,60000);return }
         val entry=routes[route];title.text="MY CHANNEL  •  ${names[selected]}  |  ${entry.first}"
-        val p=ExoPlayer.Builder(this).setLoadControl(DefaultLoadControl.Builder().setBufferDurationsMs(5000,15000,1000,2000).build()).build()
+        val p=ExoPlayer.Builder(this).setLoadControl(DefaultLoadControl.Builder().setBufferDurationsMs(5000,15000,1000,2000).setTargetBufferBytes(8 * 1024 * 1024).setPrioritizeTimeOverSizeThresholds(false).build()).build()
+        p.trackSelectionParameters=p.trackSelectionParameters.buildUpon().setMaxVideoSize(1280,720).build()
         player=p;video.player=p
         p.addListener(object:Player.Listener {
             override fun onPlayerError(error:PlaybackException) { if(player===p) nextRoute() }
