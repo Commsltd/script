@@ -137,7 +137,7 @@ class MyChannelActivity : Activity() {
     private fun refreshData() {
         val token=generation;val domain=keys[selected]
         dataJob=worker.submit {
-            val result=runCatching { PersonalFeedClient.snapshot(domain).take(8000) }.getOrNull()
+            val result=runCatching { PersonalFeedClient.snapshot(domain,prefs.getBoolean("context.$domain",true),prefs.getBoolean("headlines.$domain",true)).take(8000) }.getOrNull()
             handler.post {
                 if(active && token==generation){
                     if(result!=null){fetchFailures=0;info.text=result;prefs.edit().putString("cached.$domain",result).apply()}
@@ -214,12 +214,13 @@ class MyChannelActivity : Activity() {
             if(i<7){pool=if(i in pool)pool-i else pool+i;if(pool.isEmpty()){pool=listOf(selected);automatic=false};rotation.reset();saveSettings();choosePool()}else{updateChrome();scheduleRotation()}
         }
     }
-    private fun information():Unit=sheet("Information & layout",listOf("${if(cards.visibility==View.VISIBLE) "Hide" else "Show"} information · picture only","Sources & freshness","Refresh information","Local weather / cameras")){i->
+    private fun information():Unit=sheet("Information & layout",listOf("${if(cards.visibility==View.VISIBLE) "Hide" else "Show"} information · picture only","Sources & freshness","Refresh information","Local weather / cameras","Headlines: ${if(prefs.getBoolean("headlines.${keys[selected]}",true)) "On" else "Off"}","Context readings: ${if(prefs.getBoolean("context.${keys[selected]}",true)) "On" else "Off"}")){i->
         when(i){
             0->{prefs.edit().putBoolean("pictureOnly.${keys[selected]}",cards.visibility==View.VISIBLE).apply();updateChrome()}
             1->sheet("Sources & freshness",listOf("Headlines: BBC / El País / NASA · publication source","Currencies: ECB · daily reference, not live prices","Space weather: NOAA · observation time in UTC","Live quotes / FTSE 100: not connected","Crucix / World Monitor: optional, not connected")){ }
             2->{handler.removeCallbacks(refresh);dataJob?.cancel(true);refreshData()}
             3->sheet("Local connections",listOf("No home location or private camera is assumed","AEMET needs an explicit area and source connection","Windy discovery needs an API connection","Space Live / Sen is available under World and Space")){ }
+            4,5->{val setting="${if(i==4) "headlines" else "context"}.${keys[selected]}";prefs.edit().putBoolean(setting,!prefs.getBoolean(setting,true)).remove("cached.${keys[selected]}").apply();info.text="Refreshing selected panels…";dataJob?.cancel(true);handler.removeCallbacks(refresh);refreshData()}
         }
     }
     private fun lists() {
@@ -292,7 +293,7 @@ class MyChannelActivity : Activity() {
         if(keyCode in listOf(KeyEvent.KEYCODE_CHANNEL_UP,KeyEvent.KEYCODE_CHANNEL_DOWN)){setResult(RESULT_OK,Intent().putExtra("channelDelta",if(keyCode==KeyEvent.KEYCODE_CHANNEL_UP)1 else -1));finish();return true}
         if(keyCode==KeyEvent.KEYCODE_MENU){if(event.repeatCount==0)menu();return true}
         if(keyCode==KeyEvent.KEYCODE_DPAD_CENTER && event.repeatCount==1){sources();return true}
-        if(keyCode==KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE && event.repeatCount==0){paused=!paused;player?.playWhenReady=!paused;if(!paused)player?.seekToDefaultPosition();scheduleRotation();strip.text=if(paused)"Paused · resuming live returns to the live edge" else "Live picture resumed";return true}
+        if(keyCode==KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE && event.repeatCount==0){if(!paused)remaining=(deadline-System.currentTimeMillis()).coerceAtLeast(1000);paused=!paused;player?.playWhenReady=!paused;if(!paused)player?.seekToDefaultPosition();scheduleRotation();strip.text=if(paused)"Paused · resuming live returns to the live edge" else "Live picture resumed";return true}
         if(keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER,KeyEvent.KEYCODE_ENTER,KeyEvent.KEYCODE_DPAD_LEFT,KeyEvent.KEYCODE_DPAD_RIGHT,KeyEvent.KEYCODE_DPAD_UP,KeyEvent.KEYCODE_DPAD_DOWN)) {
             if(controls.visibility!=View.VISIBLE){showControls();return true}
             handler.removeCallbacks(hideControls);handler.postDelayed(hideControls,8000)
