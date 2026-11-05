@@ -186,7 +186,7 @@ class MyChannelActivity : Activity() {
     private fun sources() {
         val names=routes.map{it.first}.distinct()
         sheet("Picture / source · ${this.names[selected]}",names+"Try next route for this picture"){i->
-            if(i==names.size)nextRoute() else {route=routes.indexOfFirst{it.first==names[i]};prefs.edit().putString("source.${keys[selected]}",names[i]).apply();playRoute()}
+            if(i==names.size)nextRoute() else {failureRounds=0;route=routes.indexOfFirst{it.first==names[i]};prefs.edit().putString("source.${keys[selected]}",names[i]).apply();playRoute()}
         }
     }
     private fun autoMenu():Unit=sheet("Auto change",listOf("Auto: ${if(automatic) "On" else "Off"}","Included domains (${pool.size})","Order: ${if(randomOrder) "Shuffle without repeats" else "In order"}","Live picture interval: $interval minutes","Skip once","Stay on this")){i->
@@ -194,9 +194,19 @@ class MyChannelActivity : Activity() {
             0->{automatic=!automatic;remaining=interval*60000L;saveSettings();scheduleRotation();updateChrome()}
             1->choosePool()
             2->{randomOrder=!randomOrder;rotation.reset();saveSettings();autoMenu()}
-            3->sheet("Change live pictures on a timer",listOf("5 minutes","15 minutes","30 minutes")){interval=listOf(5,15,30)[it];remaining=interval*60000L;saveSettings();scheduleRotation();updateChrome()}
+            3->sheet("Change live pictures on a timer",listOf("5 minutes","15 minutes","30 minutes","Custom duration")){if(it==3)customInterval() else {interval=listOf(5,15,30)[it];remaining=interval*60000L;saveSettings();scheduleRotation();updateChrome()}}
             4->advance()
             5->{automatic=false;saveSettings();scheduleRotation();updateChrome()}
+        }
+    }
+    private fun customInterval() {
+        handler.removeCallbacks(rotate)
+        val input=android.widget.EditText(this).apply {inputType=android.text.InputType.TYPE_CLASS_NUMBER;setText(interval.toString());selectAll()}
+        val d=AlertDialog.Builder(this).setTitle("Live rotation · 1–120 minutes").setView(input).setPositiveButton("Save",null).setNegativeButton("Back",null).create()
+        dialog=d;d.setOnDismissListener{dialog=null;scheduleRotation();showControls()};d.show()
+        d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val value=input.text.toString().toIntOrNull()
+            if(value==null||value !in 1..120)input.error="Use 1–120 minutes" else {interval=value;remaining=value*60000L;saveSettings();d.dismiss();updateChrome()}
         }
     }
     private fun choosePool() {
