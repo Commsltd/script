@@ -48,6 +48,26 @@ class GuideSmokeTest {
     }
 
     @Test
+    fun personalChannelRemoteAndDecoderLifecycleWork() {
+        val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        ActivityScenario.launch(MyChannelActivity::class.java).use { scenario ->
+            assertTrue(device.wait(Until.hasObject(By.textContains("MY CHANNEL")),10000))
+            device.pressDPadRight()
+            device.pressDPadCenter()
+            assertTrue(device.wait(Until.hasObject(By.textContains("Auto:")),5000))
+            scenario.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
+            scenario.onActivity { activity ->
+                val field=MyChannelActivity::class.java.getDeclaredField("player").apply { isAccessible=true }
+                assertNull("Decoder retained while personal channel is paused",field.get(activity))
+            }
+            scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+            assertTrue(device.wait(Until.hasObject(By.textContains("MY CHANNEL")),10000))
+            val directory=InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null)!!
+            device.takeScreenshot(File(directory,"my-channel.png"))
+        }
+    }
+
+    @Test
     fun guidePreviewFavouritesSourcesNavigationAndLiveOverlayWork() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val device = UiDevice.getInstance(instrumentation)
