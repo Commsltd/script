@@ -115,9 +115,10 @@ class TvModel(application: Application) : AndroidViewModel(application) {
         val filtered = stations.filter {
             group == "ALL CHANNELS" ||
                 (group == "FAVOURITES" && it.id in favourites) ||
-                CategoryOrder.label(it.groupName) == group || CountryGroups.group(it.id)==group
+                CategoryOrder.label(it.groupName) == group || SecondaryGroups.group(it.id)==group
         }
-        filtered.flatMap { station ->
+        val ordered = if (group == "09 SPORT") filtered.sortedBy { it.name.lowercase() } else filtered
+        ordered.flatMap { station ->
             val all = sourceCache[station.id] ?: station.sources()
             (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->
                 GuideRow(station, source, index)
@@ -129,7 +130,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
 
     private val visibleChannels by derivedStateOf { visibleRows.distinctBy { it.station.id } }
     private val visibleGroups by derivedStateOf {
-        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { CategoryOrder.label(it.groupName) } + stations.mapNotNull { CountryGroups.group(it.id) }).distinct().sorted()
+        listOf("FAVOURITES", "ALL CHANNELS") + (stations.map { CategoryOrder.label(it.groupName) } + stations.mapNotNull { SecondaryGroups.group(it.id) }).distinct().sorted()
     }
 
     /** One row per service/variant, for the fast live overlay. */
