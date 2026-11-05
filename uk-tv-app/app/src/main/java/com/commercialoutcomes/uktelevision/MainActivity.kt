@@ -172,7 +172,7 @@ class MainActivity : ComponentActivity() {
 
     private fun startPlayback(row: GuideRow, fullscreen: Boolean, force: Boolean = false) {
         if (row.station.id == "personal.my-channel") {
-            if (fullscreen) openMyChannel()
+            openMyChannel()
             return
         }
         if(row.source.kind!="web") { liveWeb?.close();liveWeb=null }

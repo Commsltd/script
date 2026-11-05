@@ -97,7 +97,7 @@ class MyChannelActivity : Activity() {
         dataJob=worker.submit {
             val result=runCatching {
                 val address=when(index) { 2 -> "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/espana/portada";3 -> "https://www.nasa.gov/feed/";else -> "https://feeds.bbci.co.uk/news/${feeds[index]}/rss.xml" }
-                val connection=URL(address).openConnection().apply { connectTimeout=8000;readTimeout=8000 }
+                val connection=URL(address).openConnection().apply { connectTimeout=8000;readTimeout=8000;setRequestProperty("User-Agent","UKTelevision/0.9.10") }
                 val bytes=connection.getInputStream().use { input -> val out=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192);while(true){val n=input.read(buffer);if(n<0)break;require(out.size()+n<=1000000);out.write(buffer,0,n)};out.toByteArray() }
                 val parser=Xml.newPullParser();parser.setInput(bytes.inputStream(),null)
                 val headlines=mutableListOf<String>();var item=false
@@ -116,7 +116,7 @@ class MyChannelActivity : Activity() {
         if(index!=0 && index!=3)return ""
         return runCatching {
             val url=if(index==0) "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml" else "https://services.swpc.noaa.gov/json/planetary_k_index_1m.json"
-            val c=URL(url).openConnection().apply {connectTimeout=8000;readTimeout=8000}
+            val c=URL(url).openConnection().apply {connectTimeout=8000;readTimeout=8000;setRequestProperty("User-Agent","UKTelevision/0.9.10")}
             val raw=c.getInputStream().use { input -> val out=java.io.ByteArrayOutputStream();val b=ByteArray(8192);while(true){val n=input.read(b);if(n<0)break;require(out.size()+n<=1000000);out.write(b,0,n)};out.toString("UTF-8") }
             if(index==3) {
                 val readings=org.json.JSONArray(raw);val last=readings.getJSONObject(readings.length()-1)
