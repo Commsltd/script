@@ -3,8 +3,12 @@ import org.json.JSONObject
 import java.net.URL
 import java.util.Locale
 object PersonalFeedClient {
- fun snapshot(domain:String,context:Boolean=true,headlines:Boolean=true):String {
-  fun get(url:String):String {val request=okhttp3.Request.Builder().url(url).build();return PublicVodHttp.client.newCall(request).execute().use {r->check(r.isSuccessful);r.body!!.byteStream().use{it.readBounded(262144)}.toString(Charsets.UTF_8)}}
+ fun snapshot(domain:String,context:Boolean=true,headlines:Boolean=true,onCall:(okhttp3.Call?)->Unit={}):String {
+  fun get(url:String):String {
+   if(Thread.currentThread().isInterrupted)throw java.io.InterruptedIOException()
+   val call=PublicVodHttp.client.newCall(okhttp3.Request.Builder().url(url).build());onCall(call)
+   return try {call.execute().use {r->check(r.isSuccessful);r.body!!.byteStream().use{it.readBounded(262144)}.toString(Charsets.UTF_8)}} finally {onCall(null)}
+  }
   val data=runCatching {JSONObject(get("https://raw.githubusercontent.com/Commsltd/script/uk-tv-app-data/youtube-status.json")).getJSONObject("personalFeeds")}.getOrElse {JSONObject(get("https://raw.githubusercontent.com/Commsltd/script/uk-tv-personal-data/feeds.json"))};val cards=mutableListOf<String>()
   if(context && domain=="business") {
    val fx=data.optJSONObject("fx");val rates=fx?.optJSONObject("rates");val gbp=rates?.optDouble("GBP",Double.NaN) ?: Double.NaN;val usd=rates?.optDouble("USD",Double.NaN) ?: Double.NaN

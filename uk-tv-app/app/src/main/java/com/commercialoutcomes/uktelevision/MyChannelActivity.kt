@@ -65,6 +65,7 @@ class MyChannelActivity : Activity() {
     private var automatic = true
     private var active = false
     private var generation = 0
+    @Volatile private var feedCall: okhttp3.Call?=null
     private var dataJob: java.util.concurrent.Future<*>? = null
     private var routes = emptyList<Pair<String,String>>()
     private var route = 0
@@ -102,12 +103,12 @@ class MyChannelActivity : Activity() {
     }
     override fun onResume() { super.onResume();active=true;select(selected) }
     override fun onPause() {
-        active=false;dialog?.dismiss();dialog=null;generation++;dataJob?.cancel(true);handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
+        active=false;dialog?.dismiss();dialog=null;generation++;dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
         super.onPause()
     }
     override fun onDestroy() { worker.shutdownNow();super.onDestroy() }
     private fun select(index:Int) {
-        selected=index;paused=false;failureRounds=0;generation++;dataJob?.cancel(true);handler.removeCallbacksAndMessages(null)
+        selected=index;paused=false;failureRounds=0;generation++;dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacksAndMessages(null)
         getSharedPreferences("my-channel",MODE_PRIVATE).edit().putInt("preset",selected).putBoolean("auto",automatic).apply()
         title.text="MY CHANNEL  •  ${names[selected]}"
         updateChrome()
@@ -137,7 +138,7 @@ class MyChannelActivity : Activity() {
     private fun refreshData() {
         val token=generation;val domain=keys[selected]
         dataJob=worker.submit {
-            val result=runCatching { PersonalFeedClient.snapshot(domain,prefs.getBoolean("context.$domain",true),prefs.getBoolean("headlines.$domain",true)).take(8000) }.getOrNull()
+            val result=runCatching { PersonalFeedClient.snapshot(domain,prefs.getBoolean("context.$domain",true),prefs.getBoolean("headlines.$domain",true)){feedCall=it}.take(8000) }.getOrNull()
             handler.post {
                 if(active && token==generation){
                     if(result!=null){fetchFailures=0;info.text=result;prefs.edit().putString("cached.$domain",result).apply()}
@@ -218,9 +219,9 @@ class MyChannelActivity : Activity() {
         when(i){
             0->{prefs.edit().putBoolean("pictureOnly.${keys[selected]}",cards.visibility==View.VISIBLE).apply();updateChrome()}
             1->sheet("Sources & freshness",listOf("Headlines: BBC / El País / NASA · publication source","Currencies: ECB · daily reference, not live prices","Space weather: NOAA · observation time in UTC","Live quotes / FTSE 100: not connected","Crucix / World Monitor: optional, not connected")){ }
-            2->{handler.removeCallbacks(refresh);dataJob?.cancel(true);refreshData()}
+            2->{handler.removeCallbacks(refresh);dataJob?.cancel(true);feedCall?.cancel();refreshData()}
             3->sheet("Local connections",listOf("No home location or private camera is assumed","AEMET needs an explicit area and source connection","Windy discovery needs an API connection","Space Live / Sen is available under World and Space")){ }
-            4,5->{val setting="${if(i==4) "headlines" else "context"}.${keys[selected]}";prefs.edit().putBoolean(setting,!prefs.getBoolean(setting,true)).remove("cached.${keys[selected]}").apply();info.text="Refreshing selected panels…";dataJob?.cancel(true);handler.removeCallbacks(refresh);refreshData()}
+            4,5->{val setting="${if(i==4) "headlines" else "context"}.${keys[selected]}";prefs.edit().putBoolean(setting,!prefs.getBoolean(setting,true)).remove("cached.${keys[selected]}").apply();info.text="Refreshing selected panels…";dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacks(refresh);refreshData()}
         }
     }
     private fun lists() {
