@@ -460,7 +460,13 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
                 state = state,
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
-                itemsIndexed(rows, key = { _, it -> it.key }) { _, row ->
+                itemsIndexed(rows, key = { _, it -> it.key }) { index, row ->
+                    Column {
+                    if (model.group == "09 SPORT" && (index == 0 ||
+                        SportsSections.label(rows[index - 1].station.id) != SportsSections.label(row.station.id))) {
+                        Text(SportsSections.label(row.station.id), color = Muted, fontSize = 14.sp,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp))
+                    }
                     ChannelLine(
                         row = row,
                         programmes = model.schedule[row.station.id].orEmpty(),
@@ -474,6 +480,7 @@ private fun GuideGrid(model: TvModel, rows: List<GuideRow>, modifier: Modifier) 
                         privacyMode = model.privacyMode,
                         modifier = Modifier.fillMaxWidth().height(49.dp)
                     )
+                    }
                 }
             }
         }

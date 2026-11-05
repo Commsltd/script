@@ -117,7 +117,7 @@ class TvModel(application: Application) : AndroidViewModel(application) {
                 (group == "FAVOURITES" && it.id in favourites) ||
                 CategoryOrder.label(it.groupName) == group || SecondaryGroups.group(it.id)==group
         }
-        val ordered = if (group == "09 SPORT") filtered.sortedBy { it.name.lowercase() } else filtered
+        val ordered = if (group == "09 SPORT") filtered.sortedWith(compareBy<Station> { SportsSections.rank(it.id) }.thenBy { it.name.lowercase() }) else filtered
         ordered.flatMap { station ->
             val all = sourceCache[station.id] ?: station.sources()
             (if (inlineSources && station.family !in setOf("BBCOne.uk", "BBCTwo.uk")) all else all.take(1)).mapIndexed { index, source ->

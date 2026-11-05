@@ -36,6 +36,7 @@ SOURCE_GROUPS = {
     'nz': '22 NEW ZEALAND',
     'spain': '23 SPAIN',
     'business': '24 BUSINESS & FINANCE',
+    'outdoors': '06 OUTDOORS & NATURE',
     'other': '99 MORE CHANNELS',
 }
 
@@ -160,9 +161,13 @@ BUSINESS_SERVICES = {
 }
 
 
+OUTDOOR_SERVICES = set('''OutdoorAmerica.us WaypointTV.us WildTV.ca DuckHuntingTV.us XtremeOutdoor.us PursuitUP.us FASToutside.us FASTearthtouch.uk FASTevolutionearth.uk INWILD.nl NatureTime.ca PlutoTVAnimals.de RealWild.uk FASTwildplanet.uk AdventureEarth.de TerraMaterWILD.de SpainFASTwildearth.es AnimalPlanet.uk'''.split())
+# Add the new shelf without renumbering existing categories or country shelves.
+GROUPS['outdoors'] = '06 OUTDOORS & NATURE'
+
 def category(channel):
     base, _, variant = channel['id'].partition('@')
-    if base == 'SpainFASTwildearth.es': return 'documentaries'
+    if base in OUTDOOR_SERVICES: return 'outdoors'
     if channel.get('group') in {GROUPS['spain'], SOURCE_GROUPS['spain']}: return 'spain'
     if base in BUSINESS_SERVICES: return 'business'
     # Preserve the existing London/default main services; do not relabel other
@@ -190,6 +195,7 @@ def arrange_channels(channels):
     """Return a stable list with only its group and sort order updated."""
     rows = list(channels)
     ranks = {group: i for i, group in enumerate(GROUPS)}
+    ranks['outdoors'] = ranks['documentaries'] + 0.5
 
     def key(channel):
         group = category(channel)

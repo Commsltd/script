@@ -1111,6 +1111,14 @@
     "country": "USA",
     "routes": [
       {
+        "url": "https://waypoint-waypointtv-firetv.amagi.tv/playlist.m3u8",
+        "label": "Waypoint \u00b7 Fire TV",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      },
+      {
         "url": "https://jmp2.uk/stvp-USBB440002055",
         "label": "SamsungTVPlus \u00b7 USA",
         "guideSource": "samsung_us",
@@ -5750,7 +5758,7 @@
   {
     "id": "OutdoorAmerica.us@Native",
     "family": "OutdoorAmerica.us",
-    "name": "Outdoor America (USA)",
+    "name": "Outdoor America / Field & Stream TV (USA)",
     "group": "10 SPORT",
     "variant": "Native",
     "country": "USA",
@@ -6078,6 +6086,82 @@
         "guideSource": "koryofront",
         "guideId": "Ryongnamsan",
         "guideChannelId": "fast:koryofront:Ryongnamsan"
+      }
+    ]
+  },
+  {
+    "id": "WildTV.ca@Native",
+    "family": "WildTV.ca",
+    "name": "Wild TV",
+    "group": "06 OUTDOORS & NATURE",
+    "variant": "Native",
+    "country": "Canada",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://dfhsahpa45kk2.cloudfront.net/scheduler/scheduleMaster/476.m3u8",
+        "label": "Wild TV \u00b7 live",
+        "region": "Canada",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "DuckHuntingTV.us@Native",
+    "family": "DuckHuntingTV.us",
+    "name": "Duck Hunting TV",
+    "group": "06 OUTDOORS & NATURE",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://main.duckhunting.playout.vju.tv/duckhuntingtv/main.m3u8",
+        "label": "Duck Hunting TV \u00b7 live",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
+  },
+  {
+    "id": "XtremeOutdoor.us@Native",
+    "family": "XtremeOutdoor.us",
+    "name": "Xtreme Outdoor by HISTORY",
+    "group": "06 OUTDOORS & NATURE",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://jmp2.uk/plu-6000a6f4c3f8550008fc9b91.m3u8",
+        "label": "Xtreme Outdoor by HISTORY \u00b7 live",
+        "region": "USA",
+        "guideSource": "pluto_us",
+        "guideId": "6000a6f4c3f8550008fc9b91",
+        "guideChannelId": "fast:pluto_us:6000a6f4c3f8550008fc9b91"
+      }
+    ]
+  },
+  {
+    "id": "PursuitUP.us@Native",
+    "family": "PursuitUP.us",
+    "name": "Pursuit UP",
+    "group": "06 OUTDOORS & NATURE",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://linear-205.frequency.stream/dist/xumo/205/hls/master/playlist.m3u8",
+        "label": "Xumo \u00b7 USA",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
       }
     ]
   }
