@@ -163,7 +163,6 @@ BUSINESS_SERVICES = {
 def category(channel):
     base, _, variant = channel['id'].partition('@')
     if base == 'SpainFASTwildearth.es': return 'documentaries'
-    if base == 'TDTextremaduratoroscanalextremadura.es': return 'sport'
     if channel.get('group') in {GROUPS['spain'], SOURCE_GROUPS['spain']}: return 'spain'
     if base in BUSINESS_SERVICES: return 'business'
     # Preserve the existing London/default main services; do not relabel other
