@@ -6164,5 +6164,24 @@
         "guideChannelId": ""
       }
     ]
+  },
+  {
+    "id": "HuntFishTV.us@Native",
+    "family": "HuntFishTV.us",
+    "name": "Hunt Fish TV",
+    "group": "06 OUTDOORS & NATURE",
+    "variant": "Native",
+    "country": "USA",
+    "logo": "",
+    "routes": [
+      {
+        "url": "https://streams2.sofast.tv/sofastplayout/WiseM3U8_2/master.m3u8",
+        "label": "SoFAST \u00b7 English",
+        "region": "USA",
+        "guideSource": "",
+        "guideId": "",
+        "guideChannelId": ""
+      }
+    ]
   }
 ]
