@@ -127,10 +127,15 @@ class MyChannelActivity : Activity() {
         val p=ExoPlayer.Builder(this).setMediaSourceFactory(androidx.media3.exoplayer.source.DefaultMediaSourceFactory(androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(PublicVodHttp.client))).setLoadControl(DefaultLoadControl.Builder().setBufferDurationsMs(5000,15000,1000,2000).setTargetBufferBytes(8 * 1024 * 1024).setPrioritizeTimeOverSizeThresholds(false).build()).build()
         p.trackSelectionParameters=p.trackSelectionParameters.buildUpon().setMaxVideoSize(1280,720).build()
         player=p;video.player=p
+        var renderedFrame=false
         p.addListener(object:Player.Listener {
             override fun onPlayerError(error:PlaybackException) { if(player===p) nextRoute() }
-            override fun onRenderedFirstFrame() { if(player===p) {handler.removeCallbacks(timeout);cooldown.remove(selected)} }
-            override fun onPlaybackStateChanged(state:Int) { if(player===p && state==Player.STATE_BUFFERING) { handler.removeCallbacks(timeout);handler.postDelayed(timeout,20000) } }
+            override fun onRenderedFirstFrame() { if(player===p) {renderedFrame=true;handler.removeCallbacks(timeout);cooldown.remove(selected)} }
+            override fun onPlaybackStateChanged(state:Int) {
+                if(player!==p)return
+                if(state==Player.STATE_BUFFERING){handler.removeCallbacks(timeout);handler.postDelayed(timeout,20000)}
+                else if(state==Player.STATE_READY && renderedFrame)handler.removeCallbacks(timeout)
+            }
         })
         p.setMediaItem(MediaItem.fromUri(entry.second));p.prepare();p.playWhenReady=true;handler.postDelayed(timeout,20000)
     }
