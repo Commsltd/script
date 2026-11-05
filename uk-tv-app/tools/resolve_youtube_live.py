@@ -114,6 +114,8 @@ def main() -> None:
     status = {"configured": len(CHANNELS), "resolved": len(result),
               "missing": sorted(set(CHANNELS) - set(result)),
               "status": "ok" if len(result) == len(CHANNELS) else "degraded"}
+    from personal_feed_snapshot import collect as collect_personal_feeds
+    status["personalFeeds"] = collect_personal_feeds()
     args.output.with_name("youtube-status.json").write_text(json.dumps(status, indent=2)+"\n")
     if len(result) != len(CHANNELS):
         print("::warning::Some official live videos could not be resolved; see youtube-status.json")

@@ -36,7 +36,8 @@ class OnDemandActivity : ComponentActivity() {
     private var message by mutableStateOf("Loading free films and TV series through your current connection…")
     private var pendingTitle: VodTitle? = null
     private val playerLauncher=registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode==RESULT_FIRST_USER)pendingTitle?.let { details(it) }
+        if(intent.hasExtra("personal-queue-key")){setResult(result.resultCode,result.data);finish()}
+        else if(result.resultCode==RESULT_FIRST_USER)pendingTitle?.let { details(it) }
     }
     private val crewLauncher=registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
         val cached=crewTitles()
@@ -102,8 +103,15 @@ class OnDemandActivity : ComponentActivity() {
             saved=BritishClassics.install(saved,collections,false)
             libraryPreferences.edit().putString("saved",VodSavedCodec.encode(saved)).putBoolean("must-see-films-v1",true).apply()
         }
+        intent.getStringExtra("initial-shelf")?.takeIf { id -> saved.lists.any { it.id==id } }?.let { shelf=it }
         browse=browse.copy(providers=VodProviderSelection.decode(libraryPreferences.getString("providers",null)))
         setContent { Library() }
+        intent.getStringExtra("personal-queue-key")?.let { key ->
+            val title=saved.titles.firstOrNull{it.key==key}
+            val source=title?.sources?.firstOrNull{it.provider in browse.providers && it.provider!=VodProvider.CREW}
+            if(title!=null && source!=null)play(title,source) else {setResult(RESULT_CANCELED);finish()}
+            return // Queue resolution must not launch a catalogue refresh that cancels playback.
+        }
         catalogue=VodResult(VodCatalogue.merge(VodSavedCodec.decode(libraryPreferences.getString("catalogue-cache","").orEmpty()).titles+crewTitles()),mapOf(VodProvider.CREW to "Browse The Crew for its live catalogue"))
         if(catalogue.titles.isEmpty() || System.currentTimeMillis()-libraryPreferences.getLong("catalogue-time",0)>15*60*1000)refresh()
         else message="Browse cached titles or search online for any film or series"
@@ -282,8 +290,9 @@ class OnDemandActivity : ComponentActivity() {
         val sources=title.sources.filter { it.provider in browse.providers }
         val actions=sources.map { "${if(it.provider==VodProvider.CREW) "Check sources" else if(title.kind=="show") "Choose episode" else "Watch"} · ${it.provider.label}" }+
             listOf(if(saved.isFavourite(title))"★ Remove from favourites" else "☆ Add to favourites","Save to lists","About this title")+
-            (if(saved.lists.any { it.id==shelf })listOf("Remove from this list") else emptyList())
+            (if(saved.lists.any { it.id==shelf })listOf("Remove from this list") else emptyList())+(if(title.kind !in setOf("show","season"))listOf("Add to My Channel queue") else emptyList())
         AlertDialog.Builder(this).setTitle(title.title).setItems(actions.toTypedArray()) { _,i -> when {
+            actions[i]=="Add to My Channel queue"->save(PersonalQueue.add(saved,title))
             i<sources.size->if(sources[i].provider==VodProvider.CREW) {
                 val uri=java.net.URI(sources[i].url)
                 startActivity(Intent(this,CrewTestActivity::class.java).putExtra("tmdb",uri.path.trim('/')).putExtra("type",uri.host).putExtra("title",title.title))
@@ -302,7 +311,7 @@ class OnDemandActivity : ComponentActivity() {
             episodes.onSuccess { rows ->
                 if(rows.isEmpty()) failure("${source.provider.label} did not supply an episode list on this connection.")
                 else AlertDialog.Builder(this@OnDemandActivity).setTitle(title.title)
-                    .setItems(rows.map { it.title }.toTypedArray()) { _,i -> if(rows[i].kind=="season")showEpisodes(rows[i],rows[i].sources.first()) else play(rows[i],rows[i].sources.first()) }
+                    .setItems(rows.map { it.title }.toTypedArray()) { _,i -> if(rows[i].kind=="season")showEpisodes(rows[i],rows[i].sources.first()) else if(intent.getBooleanExtra("personal-channel",false))details(rows[i],true) else play(rows[i],rows[i].sources.first()) }
                     .setNegativeButton("Back",null).show()
             }.onFailure { failure(it.message.orEmpty()) }
             message="${catalogue.titles.size} titles · Free with adverts"
@@ -317,7 +326,7 @@ class OnDemandActivity : ComponentActivity() {
                 val alternatives=title.sources.filter { it.provider in browse.providers && it.provider!=VodProvider.CREW }
                 pendingTitle=title
                 playerLauncher.launch(Intent(this@OnDemandActivity,VodPlayerActivity::class.java)
-                    .putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",alternatives.size-1)
+                    .putExtra("personal-queue-key",intent.getStringExtra("personal-queue-key")).putExtra("url",url).putExtra("provider",source.provider.name).putExtra("title",title.title).putExtra("alternativeCount",alternatives.size-1)
                     .putExtra("sourceUrls",alternatives.map { it.url }.toTypedArray()).putExtra("sourceProviders",alternatives.map { it.provider.name }.toTypedArray())
                     .putExtra("sourceIndex",alternatives.indexOf(source)).putExtra("seriesUrl",if(source.provider==VodProvider.DULO && title.kind=="episode") "https://dulo.mov/title/tv/"+java.net.URL(source.url).path.substringAfterLast('/')+"/" else ""))
             }.onFailure { failure(it.message.orEmpty()) }

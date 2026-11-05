@@ -51,17 +51,17 @@ class GuideSmokeTest {
     fun personalChannelRemoteAndDecoderLifecycleWork() {
         val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         ActivityScenario.launch(MyChannelActivity::class.java).use { scenario ->
-            assertTrue(device.wait(Until.hasObject(By.textContains("MY CHANNEL")),10000))
+            assertTrue(device.wait(Until.hasObject(By.textContains("My Channel")),10000))
             device.pressDPadRight()
             device.pressDPadCenter()
-            assertTrue(device.wait(Until.hasObject(By.textContains("Auto:")),5000))
+            assertTrue(device.wait(Until.hasObject(By.textContains("Picture / source ·")),5000))
             scenario.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
             scenario.onActivity { activity ->
                 val field=MyChannelActivity::class.java.getDeclaredField("player").apply { isAccessible=true }
                 assertNull("Decoder retained while personal channel is paused",field.get(activity))
             }
             scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
-            assertTrue(device.wait(Until.hasObject(By.textContains("MY CHANNEL")),10000))
+            assertTrue(device.wait(Until.hasObject(By.textContains("My Channel")),10000))
             val directory=InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null)!!
             device.takeScreenshot(File(directory,"my-channel.png"))
         }
@@ -163,7 +163,9 @@ class GuideSmokeTest {
             device.takeScreenshot(File(directory, "options.png"))
             // Exercise the TV remote path rather than tapping the Leanback list.
             device.waitForIdle()
-            repeat(2) { device.pressDPadDown() }
+            var moves=0
+            while(!device.hasObject(By.textContains("Add favourite").selected(true)) && moves++<8) {device.pressDPadDown();device.waitForIdle()}
+            assertTrue("Favourite action was not selected",device.hasObject(By.textContains("Add favourite").selected(true)))
             device.pressDPadCenter()
             eventually {
                 var favourite = false

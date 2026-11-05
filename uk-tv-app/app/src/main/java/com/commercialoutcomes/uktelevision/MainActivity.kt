@@ -161,7 +161,17 @@ class MainActivity : ComponentActivity() {
         liveWeb?.close(); liveWeb=null
         youtubeSource=null
         model.activateGuide(false)
-        startActivity(android.content.Intent(this, MyChannelActivity::class.java))
+        startActivityForResult(android.content.Intent(this, MyChannelActivity::class.java),77)
+    }
+
+    @Deprecated("Internal channel return")
+    override fun onActivityResult(requestCode:Int,resultCode:Int,data:android.content.Intent?) {
+        super.onActivityResult(requestCode,resultCode,data)
+        if(requestCode==77 && resultCode==RESULT_OK){
+            val delta=data?.getIntExtra("channelDelta",0) ?: 0
+            val rows=model.channelRows();val index=rows.indexOfFirst{it.station.id=="personal.my-channel"}
+            if(delta!=0 && rows.isNotEmpty()){val next=(index+delta).coerceIn(0,rows.lastIndex);if(rows[next].station.id!="personal.my-channel")handler.post{startPlayback(rows[next],true)}}
+        }
     }
 
     private fun showInfo() {

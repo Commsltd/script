@@ -26,7 +26,7 @@ set +e
 adb shell am instrument -w -r -e class com.commercialoutcomes.uktelevision.BundledCatalogueTest,com.commercialoutcomes.uktelevision.GuideSmokeTest,com.commercialoutcomes.uktelevision.PrivacyStorageTest com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
 instrument_status=${PIPESTATUS[0]}
 adb logcat -d -s AndroidRuntime:E > delivery/android-crashes.log
-for name in guide options quick-guide playback-test; do
+for name in guide options quick-guide playback-test my-channel; do
   adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
 done
 adb shell uiautomator dump /sdcard/final-ui.xml

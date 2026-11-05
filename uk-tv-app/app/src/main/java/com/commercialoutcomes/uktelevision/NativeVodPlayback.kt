@@ -98,7 +98,9 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
             }}
             override fun onPlayerError(error:PlaybackException){if(generation==token){diagnostic="Native playback: ${error.errorCodeName}";rejected.add(candidate);returnToWeb(true)}}
         })
-        exo.setMediaItem(MediaItem.fromUri(url));exo.seekTo(position);exo.prepare();exo.play()
+        val queueKey=activity.intent.getStringExtra("personal-queue-key")
+        val resume=queueKey?.let { activity.getSharedPreferences("vod-library",0).getLong("queue-position.$it",position) } ?: position
+        exo.setMediaItem(MediaItem.fromUri(url));exo.seekTo(resume);exo.prepare();exo.play()
         watchdog=activity.lifecycleScope.launch{delay(20000);if(generation==token&&(exo.videoDecoderCounters?.renderedOutputBufferCount?:0)==0){rejected.add(candidate);returnToWeb(true)}}
     }
     fun returnToWeb(resume:Boolean=true, ready:()->Unit={}) {

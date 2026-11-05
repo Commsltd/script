@@ -199,7 +199,7 @@ private fun GuideScreen(
                     )
                     Spacer(Modifier.height(5.dp))
                     Text(
-                        programme?.title ?: "No programme information",
+                        programme?.title ?: if(selected?.station?.id=="personal.my-channel") "Your personal television channel" else "No programme information",
                         color = White,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -218,7 +218,7 @@ private fun GuideScreen(
                     Spacer(Modifier.height(7.dp))
                     Text(
                         programme?.description?.ifBlank { "No synopsis supplied for this programme." }
-                            ?: "Select a channel or programme to see its details.",
+                            ?: if(selected?.station?.id=="personal.my-channel") "Seven domains · live pictures and dated information · automatic rotation. Press OK to watch; MENU to customise." else "Select a channel or programme to see its details.",
                         color = White.copy(alpha = .92f),
                         fontSize = 13.sp,
                         lineHeight = 18.sp,
