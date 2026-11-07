@@ -1,0 +1,176 @@
+[
+  {
+    "source": "koryofront",
+    "channels": 5,
+    "programmes": 383,
+    "ok": true
+  },
+  {
+    "source": "business_schwab",
+    "channels": 1,
+    "programmes": 1,
+    "ok": true
+  },
+  {
+    "source": "spain_pluto",
+    "channels": 152,
+    "programmes": 3702,
+    "ok": true
+  },
+  {
+    "source": "spain_samsung",
+    "channels": 189,
+    "programmes": 1638,
+    "ok": true
+  },
+  {
+    "source": "tdt_spain",
+    "channels": 186,
+    "programmes": 11056,
+    "ok": true
+  },
+  {
+    "source": "samsung_us",
+    "channels": 593,
+    "programmes": 5076,
+    "ok": true
+  },
+  {
+    "source": "news_cbn",
+    "channels": 0,
+    "programmes": 245,
+    "ok": true
+  },
+  {
+    "source": "news_in",
+    "channels": 946,
+    "programmes": 101266,
+    "ok": true
+  },
+  {
+    "source": "news_in4",
+    "channels": 557,
+    "programmes": 20640,
+    "ok": true
+  },
+  {
+    "source": "news_kr",
+    "channels": 258,
+    "programmes": 645,
+    "ok": true
+  },
+  {
+    "source": "news_sg",
+    "channels": 165,
+    "programmes": 15419,
+    "ok": true
+  },
+  {
+    "source": "news_za",
+    "channels": 145,
+    "programmes": 15569,
+    "ok": true
+  },
+  {
+    "source": "news_ng",
+    "channels": 130,
+    "programmes": 5983,
+    "ok": true
+  },
+  {
+    "source": "news_il",
+    "channels": 119,
+    "programmes": 10855,
+    "ok": true
+  },
+  {
+    "source": "news_aje",
+    "channels": 2,
+    "programmes": 148,
+    "ok": true
+  },
+  {
+    "source": "rakuten",
+    "channels": 1640,
+    "programmes": 172671,
+    "ok": true
+  },
+  {
+    "source": "au",
+    "channels": 345,
+    "programmes": 57186,
+    "ok": true
+  },
+  {
+    "source": "ca",
+    "channels": 696,
+    "programmes": 67392,
+    "ok": true
+  },
+  {
+    "source": "ie",
+    "channels": 175,
+    "programmes": 17899,
+    "ok": true
+  },
+  {
+    "source": "nz",
+    "channels": 100,
+    "programmes": 9093,
+    "ok": true
+  },
+  {
+    "source": "us",
+    "channels": 792,
+    "programmes": 81793,
+    "ok": true
+  },
+  {
+    "source": "jm",
+    "channels": 25,
+    "programmes": 2426,
+    "ok": true
+  },
+  {
+    "source": "nz_mjh",
+    "channels": 46,
+    "programmes": 10859,
+    "ok": true
+  },
+  {
+    "source": "pluto_us",
+    "channels": 458,
+    "programmes": 9291,
+    "ok": true
+  },
+  {
+    "source": "openepg",
+    "channels": 566,
+    "programmes": 31922,
+    "ok": true
+  },
+  {
+    "source": "uk1",
+    "channels": 487,
+    "programmes": 42416,
+    "ok": true
+  },
+  {
+    "source": "epgpw",
+    "channels": 755,
+    "programmes": 53127,
+    "ok": true
+  },
+  {
+    "source": "pluto",
+    "channels": 182,
+    "programmes": 4247,
+    "ok": true
+  },
+  {
+    "source": "samsung",
+    "channels": 278,
+    "programmes": 2600,
+    "ok": true
+  }
+]
