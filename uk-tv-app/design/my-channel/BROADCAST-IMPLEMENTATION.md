@@ -14,7 +14,7 @@ Composition reference: Bloomberg Open Interest, 13 March 2025, visible at https:
 | Space & Earth | Space Live / Sen | ISS position marker on a land outline; orbital altitude, speed and coordinates; NOAA Kp history; NASA news and USGS observations |
 | British Classics | Midsomer Murders | Porridge, Minder and Only Fools and Horses synopses/casts; My Lists; programme queue and a programme-information ticker |
 | Practical Living | Garden Rescue | Gardening/environment reporting; Homestead Rescue reference; labelled Seville outdoor conditions and forecast; My Lists/queue controls |
-| Technology & AI | Modern Marvels | BBC/Guardian technology news; arXiv AI research; official VS Code release rundown; programme queue |
+| Technology & AI | Modern Marvels | BBC/Guardian technology news; arXiv AI research; recent official VS Code, Node.js, Ollama and Android Media3 releases; programme queue |
 
 Weather cities are labelled defaults, not an inferred home location. TVmaze spotlights are programme reference, not claims about the current broadcast or VOD availability. Currency values are daily ECB references, not live trading quotes. Headlines retain publisher and publication dates; full source detail is remote accessible.
 
@@ -24,7 +24,7 @@ World defaults to the Android-verified Truckee camera. Alternatives include Old 
 
 ## Data, playback and resource limits
 
-The 29 public feed definitions live in `app/src/main/assets/my-channel/panel-feeds.json`. The current domain alone fetches data, at most two requests at a time. Each request has a 15-second limit and 512 KiB body cap. Models retain at most eight records and 40 chart points (30 per currency pair); each disk cache is bounded to 64 KiB. Refreshes cancel when changing domain/backgrounding. Failures back off to 16 minutes plus jitter. Cached observations and unavailable feeds are distinguished. RSS publication-age limits reject obsolete articles; the defunct RTVE feed was replaced with El Mundo.
+The 32 public feed definitions live in `app/src/main/assets/my-channel/panel-feeds.json`. The current domain alone fetches data, at most two requests at a time. Each request has a 15-second limit and 512 KiB body cap. Models retain at most eight records and 40 chart points (30 per currency pair); each disk cache is bounded to 64 KiB. Refreshes cancel when changing domain/backgrounding. Failures back off to 16 minutes plus jitter. Cached observations and unavailable feeds are distinguished. RSS publication-age limits reject obsolete articles; the defunct RTVE feed was replaced with El Mundo.
 
 Currency histories use ECB observations via Frankfurter, with the ECB XML feed as an alternative. Native HLS MIME is explicit, including redirect URLs without file extensions; otherwise Media3 can wrongly treat those manifests as progressive media. Recovery tries alternatives for the selected programme/camera and re-resolves expiring camera links. Choosing another title remains explicit.
 

@@ -254,6 +254,33 @@
       "url": "https://github.com/microsoft/vscode/releases.atom",
       "ttl": 3600,
       "maxAge": 7776000
+    },
+    "node-releases": {
+      "id": "node-releases",
+      "kind": "rss",
+      "title": "Node.js releases",
+      "source": "Node.js · official GitHub",
+      "url": "https://github.com/nodejs/node/releases.atom",
+      "ttl": 1800,
+      "maxAge": 7776000
+    },
+    "ollama-releases": {
+      "id": "ollama-releases",
+      "kind": "rss",
+      "title": "Ollama releases",
+      "source": "Ollama · official GitHub",
+      "url": "https://github.com/ollama/ollama/releases.atom",
+      "ttl": 1800,
+      "maxAge": 7776000
+    },
+    "media3-releases": {
+      "id": "media3-releases",
+      "kind": "rss",
+      "title": "Android Media3 releases",
+      "source": "Android Media3 · official GitHub",
+      "url": "https://github.com/androidx/media/releases.atom",
+      "ttl": 1800,
+      "maxAge": 7776000
     }
   },
   "domains": {
@@ -372,7 +399,10 @@
         "research"
       ],
       [
-        "github-releases"
+        "github-releases",
+        "node-releases",
+        "ollama-releases",
+        "media3-releases"
       ],
       [
         "rundown"

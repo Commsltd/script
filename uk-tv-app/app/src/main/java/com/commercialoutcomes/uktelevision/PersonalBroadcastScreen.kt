@@ -142,7 +142,8 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
                 list(rundown,"TECHNOLOGY BRIEFING",entries("bbc-tech","guardian-tech"),2)
                 list(agenda,"AI RESEARCH  /  arXiv",entries("research"),3)
                 list(bulletin,"YOUR PROGRAMMING",entries("rundown"),1)
-                railTitle.text="SOFTWARE RELEASES";data["github-releases"]?.let{p->metricItems=p.items.take(5).map{p to it.copy(metric="VS CODE",number=it.headline)}}
+                railTitle.text="RELEASE WATCH"
+                metricItems=listOf("github-releases" to "VS CODE","node-releases" to "NODE.JS","ollama-releases" to "OLLAMA","media3-releases" to "ANDROID MEDIA3").mapNotNull{(id,label)->data[id]?.let{p->p to p.items.first().copy(metric=label,number=p.items.first().headline)}}
                 bandTexts[0].text="TECHNOLOGY & AI";bandTexts[1].text="RESEARCH · arXiv cs.AI";bandTexts[2].text="RELEASES · OFFICIAL GITHUB"
             }
         }
