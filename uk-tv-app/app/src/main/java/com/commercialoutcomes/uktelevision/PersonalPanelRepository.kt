@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class PersonalPanelRepository(context:Context) : AutoCloseable {
     private val config=JSONObject(context.assets.open("my-channel/panel-feeds.json").bufferedReader().use{it.readText()})
     val specs=config.getJSONObject("feeds").let{o->o.keys().asSequence().associateWith{PersonalFeed.decode(o.getJSONObject(it))}}
-    private val directory=File(context.cacheDir,"personal-panels-v2").apply{mkdirs()}
+    private val directory=File(context.cacheDir,"personal-panels-v4").apply{mkdirs()}
     private val executor=Executors.newFixedThreadPool(2)
     private val calls=java.util.Collections.newSetFromMap(ConcurrentHashMap<Call,Boolean>())
     private val failures=ConcurrentHashMap<String,Int>()
@@ -40,12 +40,20 @@ class PersonalPanelRepository(context:Context) : AutoCloseable {
             }
             tasks+=executor.submit {
                 if(token!=generation)return@submit
-                val result=runCatching {
-                    val call=client.newCall(Request.Builder().url(spec.url).header("User-Agent","UKTelevision/0.9.12 personal-channel").build());calls.add(call)
-                    if(token!=generation){call.cancel();calls.remove(call);return@submit}
-                    val raw=try{call.execute().use{r->check(r.isSuccessful){"HTTP ${r.code}"};r.body!!.byteStream().use{it.readBounded(524288)}.toString(Charsets.UTF_8)}}finally{calls.remove(call)}
-                    PersonalPanelParser.parse(spec,raw)
-                }.getOrElse {previous?.copy(stale=true) ?: unavailable(spec)}
+                var loaded:PersonalPanel?=null
+                for(candidate in listOf(spec)+spec.alternatives){
+                    if(token!=generation || Thread.currentThread().isInterrupted)return@submit
+                    loaded=runCatching {
+                        val from=java.text.SimpleDateFormat("yyyy-MM-dd",java.util.Locale.UK).apply{timeZone=java.util.TimeZone.getTimeZone("UTC")}.format(java.util.Date(System.currentTimeMillis()-90L*86400000))
+                        val url=candidate.url.replace("{from90}",from)
+                        val call=client.newCall(Request.Builder().url(url).header("User-Agent","UKTelevision/0.9.12 personal-channel").build());calls.add(call)
+                        if(token!=generation){call.cancel();calls.remove(call);return@submit}
+                        val raw=try{call.execute().use{r->check(r.isSuccessful){"HTTP ${r.code}"};r.body!!.byteStream().use{it.readBounded(524288)}.toString(Charsets.UTF_8)}}finally{calls.remove(call)}
+                        PersonalPanelParser.parse(candidate.copy(url=url),raw)
+                    }.getOrNull()
+                    if(loaded!=null)break
+                }
+                val result=loaded ?: previous?.copy(stale=true) ?: unavailable(spec)
                 if(token==generation && !Thread.currentThread().isInterrupted){
                     if(result.stale){val count=((failures[spec.id] ?: 0)+1).coerceAtMost(5);failures[spec.id]=count;retryAt[spec.id]=System.currentTimeMillis()+(60000L shl (count-1))+(Math.random()*15000).toLong()}
                     else {failures.remove(spec.id);retryAt.remove(spec.id)}
@@ -55,6 +63,6 @@ class PersonalPanelRepository(context:Context) : AutoCloseable {
             }
         }
     }
-    private fun unavailable(spec:PersonalFeed)=PersonalPanel(spec.id,spec.title,spec.source,listOf(PersonalItem("Temporarily unavailable","Other panels and the picture continue. Retry from MENU.")),stale=true)
+    private fun unavailable(spec:PersonalFeed)=PersonalPanel(spec.id,spec.title,spec.source,listOf(PersonalItem("Temporarily unavailable","Other panels and the picture continue. Retry from MENU.")),stale=true,available=false)
     override fun close(){cancel();executor.shutdownNow()}
 }

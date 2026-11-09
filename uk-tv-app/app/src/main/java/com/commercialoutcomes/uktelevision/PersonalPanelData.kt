@@ -9,19 +9,19 @@ import java.util.Locale
 import java.util.TimeZone
 
 /** Bounded data, independent from the views, network and video lifecycle. */
-data class PersonalItem(val headline:String,val body:String="",val observed:String="",val url:String="")
+data class PersonalItem(val headline:String,val body:String="",val observed:String="",val url:String="",val metric:String="",val number:String="",val change:Double?=null,val history:List<Double> = emptyList())
 data class PersonalPanel(val id:String,val title:String,val source:String,val items:List<PersonalItem>,
-    val fetchedAt:Long=System.currentTimeMillis(),val stale:Boolean=false,val series:List<Double> = emptyList(),val seriesLabel:String="") {
-    fun json():String = JSONObject().put("id",id).put("title",title).put("source",source).put("fetchedAt",fetchedAt).put("stale",stale)
-        .put("items",JSONArray(items.take(8).map { JSONObject().put("headline",it.headline).put("body",it.body).put("observed",it.observed).put("url",it.url) }))
+    val fetchedAt:Long=System.currentTimeMillis(),val stale:Boolean=false,val series:List<Double> = emptyList(),val seriesLabel:String="",val available:Boolean=true) {
+    fun json():String = JSONObject().put("id",id).put("title",title).put("source",source).put("fetchedAt",fetchedAt).put("stale",stale).put("available",available)
+        .put("items",JSONArray(items.take(8).map { JSONObject().put("headline",it.headline).put("body",it.body).put("observed",it.observed).put("url",it.url).put("metric",it.metric).put("number",it.number).put("change",it.change).put("history",JSONArray(it.history.takeLast(30))) }))
         .put("series",JSONArray(series.takeLast(40))).put("seriesLabel",seriesLabel).toString()
     companion object { fun decode(raw:String):PersonalPanel {
         val o=JSONObject(raw);val rows=o.getJSONArray("items");require(rows.length()>0);val points=o.optJSONArray("series") ?: JSONArray()
-        return PersonalPanel(o.getString("id"),o.getString("title"),o.getString("source"),(0 until minOf(rows.length(),8)).map{val r=rows.getJSONObject(it);PersonalItem(r.optString("headline").take(240),r.optString("body").take(700),r.optString("observed").take(80),r.optString("url").take(1000))},o.getLong("fetchedAt"),o.optBoolean("stale"),(0 until minOf(points.length(),40)).map{points.getDouble(it)}.filter{it.isFinite()},o.optString("seriesLabel"))
+        return PersonalPanel(o.getString("id"),o.getString("title"),o.getString("source"),(0 until minOf(rows.length(),8)).map{val r=rows.getJSONObject(it);PersonalItem(r.optString("headline").take(240),r.optString("body").take(700),r.optString("observed").take(80),r.optString("url").take(1000),r.optString("metric"),r.optString("number"),r.optDouble("change").takeIf{it.isFinite()},r.optJSONArray("history")?.let{a->(0 until minOf(a.length(),30)).map{a.getDouble(it)}.filter{it.isFinite()}} ?: emptyList())},o.getLong("fetchedAt"),o.optBoolean("stale"),(0 until minOf(points.length(),40)).map{points.getDouble(it)}.filter{it.isFinite()},o.optString("seriesLabel"),o.optBoolean("available",true))
     }}
 }
-data class PersonalFeed(val id:String,val kind:String,val title:String,val source:String,val url:String,val ttl:Long) {
-    companion object {fun decode(o:JSONObject)=PersonalFeed(o.getString("id"),o.getString("kind"),o.getString("title"),o.getString("source"),o.getString("url"),o.optLong("ttl",300)*1000)}
+data class PersonalFeed(val id:String,val kind:String,val title:String,val source:String,val url:String,val ttl:Long,val maxAge:Long=0,val alternatives:List<PersonalFeed> = emptyList()) {
+    companion object {fun decode(o:JSONObject):PersonalFeed=PersonalFeed(o.getString("id"),o.getString("kind"),o.getString("title"),o.getString("source"),o.getString("url"),o.optLong("ttl",300)*1000,o.optLong("maxAge",0)*1000,o.optJSONArray("alternatives")?.let{a->(0 until a.length()).map{decode(a.getJSONObject(it).put("id",o.getString("id")).put("title",o.getString("title")))}} ?: emptyList())}
 }
 object PersonalPanelParser {
     fun clean(s:String)=Jsoup.parse(s).text().replace(Regex("\\s+")," ").trim()
@@ -30,24 +30,39 @@ object PersonalPanelParser {
         val rows:List<PersonalItem> = when(spec.kind) {
             "rss" -> {
                 val doc=Jsoup.parse(raw,"",Parser.xmlParser())
-                doc.select("item, entry").take(8).map { e ->
+                doc.select("item, entry").take(24).map { e ->
                     val date=e.selectFirst("pubDate, published, updated")?.text().orEmpty()
                     PersonalItem(clean(e.selectFirst("title")?.text().orEmpty()).take(240),"",date,
                         e.selectFirst("link")?.let{it.attr("href").ifBlank{it.text()}}.orEmpty())
-                }.filter{it.headline.isNotBlank()}.distinctBy{it.headline.lowercase(Locale.ROOT)}
+                }.filter{it.headline.isNotBlank() && !(spec.id=="nasa" && (it.url.contains("/es/") || Regex("(?i)^(la nasa |el |los |las |¿|¡)").containsMatchIn(it.headline)))}
+                .filter{spec.maxAge==0L || publishedTime(it.observed)?.let{stamp->now-stamp<=spec.maxAge && stamp-now<86400000}==true}
+                .distinctBy{it.headline.lowercase(Locale.ROOT)}.take(8)
             }
-            "fx" -> {
-                val dates=Jsoup.parse(raw,"",Parser.xmlParser()).select("Cube[time]")
-                val latest=dates.maxByOrNull{it.attr("time")} ?: error("No currency observations")
-                fun rate(e:org.jsoup.nodes.Element,c:String)=e.children().first{it.attr("currency")==c}.attr("rate").toDouble().also{require(it.isFinite()&&it>0)}
-                val gbp=rate(latest,"GBP");val usd=rate(latest,"USD");val date=latest.attr("time")
-                points=dates.sortedBy{it.attr("time")}.takeLast(30).map{1/rate(it,"GBP")};label="GBP / EUR · 30 observations"
-                listOf(PersonalItem("£1 = €${fmt(1/gbp,4)}","Daily reference · not a live quote",date,spec.url),PersonalItem("£1 = $${fmt(usd/gbp,4)}","GBP / USD · daily reference",date,spec.url),PersonalItem("€1 = $${fmt(usd,4)}","EUR / USD · daily reference",date,spec.url))
+            "fx", "fx-json" -> {
+                val observations=sortedMapOf<String,MutableMap<String,Double>>()
+                if(spec.kind=="fx")Jsoup.parse(raw,"",Parser.xmlParser()).select("Cube[time]").forEach{day->
+                    observations[day.attr("time")]=day.children().associate{it.attr("currency") to it.attr("rate").toDouble()}.toMutableMap()
+                }else{val a=JSONArray(raw);for(i in 0 until a.length()){val r=a.getJSONObject(i);require(r.getString("base").equals("EUR",true));observations.getOrPut(r.getString("date")){mutableMapOf()}[r.getString("quote").uppercase(Locale.ROOT)]=r.getDouble("rate")}}
+                require(observations.isNotEmpty())
+                val date=observations.lastKey();val result=mutableListOf<PersonalItem>()
+                val pairs=listOf(Triple("GBP / EUR","GBP","EUR"),Triple("GBP / USD","GBP","USD"),Triple("EUR / USD","EUR","USD"),Triple("EUR / JPY","EUR","JPY"),Triple("EUR / CHF","EUR","CHF"))
+                fun symbol(c:String)=when(c){"GBP"->"£";"EUR"->"€";"USD"->"$";else->c+" "}
+                for((name,base,quote) in pairs){
+                    val history=observations.values.mapNotNull{rates->val a=if(base=="EUR")1.0 else rates[base];val b=if(quote=="EUR")1.0 else rates[quote];if(a!=null && b!=null && a>0 && b>0 && a.isFinite() && b.isFinite())b/a else null}.takeLast(30)
+                    if(history.isEmpty())continue
+                    val rate=history.last();val change=if(history.size>1)(rate/history[history.lastIndex-1]-1)*100 else null
+                    result+=PersonalItem("${symbol(base)}1 = ${symbol(quote)}${fmt(rate,4)}","Daily reference · not a live quote",date,spec.url,name,fmt(rate,4),change,history)
+                }
+                points=result.first().history;label="GBP / EUR · 30 observations";result
             }
             "weather" -> {
                 val o=JSONObject(raw);val c=o.getJSONObject("current");val d=o.getJSONObject("daily");val units=o.getJSONObject("current_units");val zone=o.optString("timezone")
                 val dates=d.getJSONArray("time");val hi=d.getJSONArray("temperature_2m_max");val lo=d.getJSONArray("temperature_2m_min");val rain=d.getJSONArray("precipitation_probability_max")
-                listOf(PersonalItem("${fmt(c.getDouble("temperature_2m"),0)}°C · ${weather(c.optInt("weather_code"))}","Wind ${fmt(c.getDouble("wind_speed_10m"),0)} ${units.optString("wind_speed_10m")}  ·  Humidity ${c.optInt("relative_humidity_2m")}%",c.getString("time")+" · "+zone,spec.url)) + (0 until minOf(3,dates.length())).map{i->PersonalItem("${dates.getString(i)} · ${fmt(lo.getDouble(i),0)}–${fmt(hi.getDouble(i),0)}°C","Rain chance ${rain.optInt(i)}%  ·  Sunrise ${d.getJSONArray("sunrise").getString(i).substringAfter('T')} / sunset ${d.getJSONArray("sunset").getString(i).substringAfter('T')}","Forecast · "+zone,spec.url)}
+                val location=spec.id.uppercase(Locale.ROOT)
+                listOf(PersonalItem("${fmt(c.getDouble("temperature_2m"),0)}°C · ${weather(c.optInt("weather_code"))}","${weather(c.optInt("weather_code"))} · wind ${fmt(c.getDouble("wind_speed_10m"),0)} ${units.optString("wind_speed_10m")} · humidity ${c.optInt("relative_humidity_2m")}%",c.getString("time")+" · "+zone,spec.url,"NOW · $location","${fmt(c.getDouble("temperature_2m"),0)}°C")) + (0 until minOf(3,dates.length())).map{i->
+                    val day=SimpleDateFormat("EEE d MMM",Locale.UK).format(SimpleDateFormat("yyyy-MM-dd",Locale.UK).parse(dates.getString(i))!!).uppercase(Locale.ROOT)
+                    PersonalItem("$day · ${fmt(lo.getDouble(i),0)}–${fmt(hi.getDouble(i),0)}°C","Rain ${rain.optInt(i)}% · sunrise ${d.getJSONArray("sunrise").getString(i).substringAfter('T')} / sunset ${d.getJSONArray("sunset").getString(i).substringAfter('T')}","Forecast · "+zone,spec.url,day,"${fmt(lo.getDouble(i),0)}–${fmt(hi.getDouble(i),0)}°C")
+                }
             }
             "kp" -> {
                 val a=JSONArray(raw);val samples=(0 until a.length()).map{a.getJSONObject(it)}.sortedBy{it.optString("time_tag")};val r=samples.last()
@@ -56,7 +71,13 @@ object PersonalPanelParser {
             }
             "iss" -> {
                 val o=JSONObject(raw);val stamp=utc(o.getLong("timestamp")*1000)
-                listOf(PersonalItem("ISS · ${o.optString("visibility")}","${fmt(o.getDouble("latitude"),2)}° latitude  ·  ${fmt(o.getDouble("longitude"),2)}° longitude",stamp,spec.url),PersonalItem("${fmt(o.getDouble("altitude"),0)} km above Earth","Speed ${fmt(o.getDouble("velocity"),0)} km/h",stamp,spec.url))
+                listOf(
+                    PersonalItem("ISS · ${o.optString("visibility")}","Observed position, not a flight prediction",stamp,spec.url,"ILLUMINATION",o.optString("visibility").uppercase(Locale.ROOT)),
+                    PersonalItem("${fmt(o.getDouble("altitude"),0)} km above Earth","ISS altitude",stamp,spec.url,"ALTITUDE","${fmt(o.getDouble("altitude"),0)} km"),
+                    PersonalItem("${fmt(o.getDouble("velocity"),0)} km/h","ISS orbital speed",stamp,spec.url,"SPEED","${fmt(o.getDouble("velocity"),0)} km/h"),
+                    PersonalItem("Latitude ${fmt(o.getDouble("latitude"),2)}°","ISS latitude",stamp,spec.url,"LATITUDE",fmt(o.getDouble("latitude"),2)),
+                    PersonalItem("Longitude ${fmt(o.getDouble("longitude"),2)}°","ISS longitude",stamp,spec.url,"LONGITUDE",fmt(o.getDouble("longitude"),2))
+                )
             }
             "show" -> {
                 val o=JSONObject(raw);val cast=o.optJSONObject("_embedded")?.optJSONArray("cast") ?: JSONArray()
@@ -71,6 +92,10 @@ object PersonalPanelParser {
         }
         require(rows.isNotEmpty()){"No valid records"}
         return PersonalPanel(spec.id,spec.title,spec.source,rows,now,series=points,seriesLabel=label)
+    }
+    fun publishedTime(raw:String):Long? {
+        val normalized=raw.trim().replace(Regex("Z$"),"+0000").replace(Regex("([+-]\\d{2}):(\\d{2})$"),"$1$2")
+        return listOf("EEE, dd MMM yyyy HH:mm:ss Z","yyyy-MM-dd'T'HH:mm:ssZ","yyyy-MM-dd'T'HH:mm:ss.SSSZ","yyyy-MM-dd").firstNotNullOfOrNull{pattern->runCatching{SimpleDateFormat(pattern,Locale.ENGLISH).apply{isLenient=false;timeZone=TimeZone.getTimeZone("UTC")}.parse(normalized)?.time}.getOrNull()}
     }
     fun utc(time:Long)=SimpleDateFormat("d MMM HH:mm 'UTC'",Locale.UK).apply{timeZone=TimeZone.getTimeZone("UTC")}.format(java.util.Date(time))
     private fun fmt(n:Double,d:Int):String {require(n.isFinite());return String.format(Locale.UK,"%.${d}f",n)}

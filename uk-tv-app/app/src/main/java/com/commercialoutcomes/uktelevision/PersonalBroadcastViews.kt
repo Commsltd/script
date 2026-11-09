@@ -16,41 +16,14 @@ import android.widget.TextView
 import android.text.TextUtils
 
 object PersonalStyle {
-    val background=Color.rgb(8,18,28);val panel=Color.rgb(17,34,47);val foreground=Color.rgb(236,244,246);val muted=Color.rgb(156,180,193);val mint=Color.rgb(91,222,191)
+    val background=Color.rgb(5,8,12);val panel=Color.rgb(13,18,24);val foreground=Color.rgb(236,244,246);val muted=Color.rgb(156,180,193);val mint=Color.rgb(255,145,45)
     fun dp(c:Context,n:Int)=(n*c.resources.displayMetrics.density).toInt()
     fun focusBackground(c:Context):StateListDrawable {
-        fun shape(focused:Boolean)=GradientDrawable().apply{setColor(if(focused) Color.rgb(28,65,77) else panel);cornerRadius=dp(c,5).toFloat();setStroke(dp(c,if(focused)2 else 1),if(focused)mint else Color.rgb(32,53,67))}
+        fun shape(focused:Boolean)=GradientDrawable().apply{setColor(if(focused) Color.rgb(52,39,23) else panel);cornerRadius=0f;setStroke(dp(c,if(focused)2 else 1),if(focused)mint else Color.rgb(31,40,49))}
         return StateListDrawable().apply{addState(intArrayOf(android.R.attr.state_focused),shape(true));addState(intArrayOf(android.R.attr.state_pressed),shape(true));addState(intArrayOf(),shape(false))}
     }
     fun label(c:Context,size:Float,color:Int=foreground)=TextView(c).apply{textSize=size;setTextColor(color);includeFontPadding=false}
     fun action(c:Context,text:String,click:()->Unit)=label(c,16f).apply{this.text=text;gravity=Gravity.CENTER;isFocusable=true;isClickable=true;background=focusBackground(c);setPadding(dp(c,12),dp(c,8),dp(c,12),dp(c,8));setOnClickListener{click()}}
-}
-class PersonalCard(context:Context):LinearLayout(context) {
-    val heading=PersonalStyle.label(context,13f,PersonalStyle.mint)
-    val value=PersonalStyle.label(context,19f)
-    val detail=PersonalStyle.label(context,14f,PersonalStyle.muted)
-    val origin=PersonalStyle.label(context,11f,PersonalStyle.muted)
-    private val graph=PersonalSparkline(context)
-    var detailText=""
-    init {
-        orientation=VERTICAL;setPadding(d(12),d(9),d(12),d(8));background=PersonalStyle.focusBackground(context);isFocusable=true;isClickable=true
-        heading.maxLines=1;heading.ellipsize=TextUtils.TruncateAt.END;value.maxLines=3;value.ellipsize=TextUtils.TruncateAt.END
-        detail.maxLines=1;detail.ellipsize=TextUtils.TruncateAt.END;origin.maxLines=1;origin.ellipsize=TextUtils.TruncateAt.END
-        addView(heading);addView(value,LayoutParams(-1,0,1f).apply{topMargin=d(5)});addView(graph,LayoutParams(-1,d(28)));addView(detail);addView(origin,LayoutParams(-1,-2).apply{topMargin=d(4)})
-    }
-    private fun d(n:Int)=PersonalStyle.dp(context,n)
-    fun show(panel:PersonalPanel,index:Int,chart:Boolean=false){
-        val item=panel.items[(if(chart && panel.series.size>1)0 else index).mod(panel.items.size)]
-        heading.text=panel.title.uppercase(java.util.Locale.ROOT)
-        value.text=item.headline
-        detail.text=item.body.take(150)
-        detail.visibility=if(item.body.isBlank() || chart)GONE else VISIBLE
-        origin.text=(if(panel.stale) "CACHED · " else "")+panel.source+" · "+item.observed.ifBlank{PersonalPanelParser.utc(panel.fetchedAt)}
-        graph.visibility=if(chart && panel.series.size>1)VISIBLE else GONE
-        if(graph.visibility==VISIBLE){value.maxLines=1;graph.setPoints(panel.series);detail.text=panel.seriesLabel;detail.visibility=VISIBLE}else value.maxLines=if(height>d(150))3 else 2
-        detailText=panel.title+"\n\n"+item.headline+"\n\n"+item.body+"\n\n"+origin.text+"\nFetched "+PersonalPanelParser.utc(panel.fetchedAt)+"\n"+item.url
-        contentDescription=panel.title+". "+item.headline+". "+origin.text
-    }
 }
 class PersonalSparkline(context:Context):View(context){
     private val paint=Paint(Paint.ANTI_ALIAS_FLAG).apply{color=PersonalStyle.mint;strokeWidth=2*resources.displayMetrics.density;style=Paint.Style.STROKE}
@@ -65,7 +38,7 @@ class PersonalTicker(context:Context):View(context){
     private val paint=Paint(Paint.ANTI_ALIAS_FLAG).apply{color=PersonalStyle.foreground;textSize=18*resources.displayMetrics.scaledDensity}
     private var line="";private var lineWidth=0f;private var offset=0f;private var last=0L
     private var running=false;var held=false;var reducedMotion=false;var speed=32f
-    init {isFocusable=true;isClickable=true;setBackgroundColor(Color.rgb(18,43,57))}
+    init {isFocusable=true;isClickable=true;setBackgroundColor(Color.rgb(14,18,23))}
     fun setHeadlines(text:String){val next=text.take(3500);if(next!=line){line=next;lineWidth=paint.measureText(line);offset=0f;contentDescription=text;invalidate()}}
     fun start(){running=true;last=0;invalidate()}
     fun stop(){running=false;last=0}

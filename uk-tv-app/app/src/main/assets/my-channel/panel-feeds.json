@@ -7,7 +7,8 @@
       "title": "Business headlines",
       "source": "BBC",
       "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "guardian-business": {
       "id": "guardian-business",
@@ -15,7 +16,8 @@
       "title": "Business & economy",
       "source": "The Guardian",
       "url": "https://www.theguardian.com/uk/business/rss",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "bbc-world": {
       "id": "bbc-world",
@@ -23,7 +25,8 @@
       "title": "World headlines",
       "source": "BBC",
       "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "guardian-world": {
       "id": "guardian-world",
@@ -31,7 +34,8 @@
       "title": "World reporting",
       "source": "The Guardian",
       "url": "https://www.theguardian.com/world/rss",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "bbc-tech": {
       "id": "bbc-tech",
@@ -39,7 +43,8 @@
       "title": "Technology news",
       "source": "BBC",
       "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "guardian-tech": {
       "id": "guardian-tech",
@@ -47,7 +52,8 @@
       "title": "Technology & AI",
       "source": "The Guardian",
       "url": "https://www.theguardian.com/uk/technology/rss",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "guardian-gardens": {
       "id": "guardian-gardens",
@@ -55,7 +61,8 @@
       "title": "Gardening & outdoors",
       "source": "The Guardian",
       "url": "https://www.theguardian.com/lifeandstyle/gardens/rss",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 2592000
     },
     "bbc-science": {
       "id": "bbc-science",
@@ -63,15 +70,17 @@
       "title": "Science & environment",
       "source": "BBC",
       "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "spain-rtve": {
       "id": "spain-rtve",
       "kind": "rss",
       "title": "España · titulares",
-      "source": "RTVE",
-      "url": "https://api2.rtve.es/rss/temas_noticias.xml",
-      "ttl": 300
+      "source": "El Mundo",
+      "url": "https://e00-elmundo.uecdn.es/elmundo/rss/espana.xml",
+      "ttl": 300,
+      "maxAge": 604800
     },
     "spain-elpais": {
       "id": "spain-elpais",
@@ -79,7 +88,8 @@
       "title": "España · actualidad",
       "source": "El País",
       "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/espana/portada",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "nasa": {
       "id": "nasa",
@@ -87,7 +97,8 @@
       "title": "Space & missions",
       "source": "NASA",
       "url": "https://www.nasa.gov/feed/",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 604800
     },
     "boe": {
       "id": "boe",
@@ -95,15 +106,24 @@
       "title": "Policy & economy",
       "source": "Bank of England",
       "url": "https://www.bankofengland.co.uk/rss/news",
-      "ttl": 300
+      "ttl": 300,
+      "maxAge": 7776000
     },
     "fx": {
       "id": "fx",
-      "kind": "fx",
+      "kind": "fx-json",
       "title": "Currency reference",
-      "source": "ECB",
-      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml",
-      "ttl": 3600
+      "source": "ECB via Frankfurter",
+      "url": "https://api.frankfurter.dev/v2/providers/ecb/rates?base=EUR&quotes=GBP,USD,JPY,CHF&from={from90}",
+      "ttl": 3600,
+      "alternatives": [
+        {
+          "kind": "fx",
+          "source": "ECB",
+          "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml",
+          "ttl": 3600
+        }
+      ]
     },
     "kp": {
       "id": "kp",
@@ -127,7 +147,8 @@
       "title": "AI research · new papers",
       "source": "arXiv · cs.AI",
       "url": "https://export.arxiv.org/api/query?search_query=cat:cs.AI&sortBy=submittedDate&sortOrder=descending&max_results=5",
-      "ttl": 1800
+      "ttl": 1800,
+      "maxAge": 2592000
     },
     "releases": {
       "id": "releases",
@@ -231,7 +252,8 @@
       "title": "Software releases",
       "source": "GitHub · VS Code",
       "url": "https://github.com/microsoft/vscode/releases.atom",
-      "ttl": 3600
+      "ttl": 3600,
+      "maxAge": 7776000
     }
   },
   "domains": {
@@ -332,7 +354,8 @@
         "bbc-science"
       ],
       [
-        "library"
+        "library",
+        "seville"
       ],
       [
         "rundown"

@@ -37,6 +37,7 @@ for name in guide options quick-guide playback-test my-channel my-channel-busine
   adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
 done
 adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/my-channel-memory.log" delivery/my-channel-memory.log
+adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/my-channel-feeds.json" delivery/my-channel-feeds.json
 adb shell uiautomator dump /sdcard/final-ui.xml
 adb pull /sdcard/final-ui.xml delivery/final-ui.xml
 adb exec-out screencap -p > delivery/final-screen.png

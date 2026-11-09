@@ -1,35 +1,41 @@
 # My Channel broadcast build — 0.9.12
 
-This implements the seven-domain broadcast screen inside the existing UK Television guide. It replaces the sparse single-text panel with three right-hand panels, two lower panels, a persistent headline ticker and local/domain clocks. Native Android views and one ExoPlayer are used; there is no embedded dashboard, second video, Mac server or new paid service.
+My Channel remains a channel inside the existing UK Television app. The revised native screen follows a broadcast hierarchy: full-aspect picture and story rundown at left, an editorial column, a narrower numerical/reference column, local/domain clocks, a separate data strip and a scrolling ticker. It replaces the rejected five-card layout. Rectangular rules, condensed type, complete measured text rows and source dates keep several records visible at once.
 
-## Defaults
+Composition reference: Bloomberg Open Interest, 13 March 2025, visible at https://www.cato.org/multimedia/media-highlights-tv/johan-norberg-discusses-swedens-response-covid-19-pandemic-bloomberg . No reference screenshot or Bloomberg branding was copied into app assets.
 
-| Domain | Default picture | Information |
+## Domains and defaults
+
+| Domain | Default picture | Native information presentation |
 |---|---|---|
-| Business & Markets | Bloomberg Europe | ECB currency references and 30-observation history; BBC/Guardian business; ONS releases; Bank of England announcements |
-| World Window | Old Faithful, Yellowstone | Camera location/publisher/timezone; BBC/Guardian world news; matching Open-Meteo weather; USGS earthquakes |
-| Spain & Local | Canal Sur Andalucía | Madrid and Seville reference weather, RTVE and El País headlines; these are labelled cities, not an inferred home location |
-| Space & Earth | Space Live / Sen | ISS position; NASA news; NOAA planetary Kp and history; USGS earthquakes |
-| British Classics | Midsomer Murders | Porridge, Minder and Only Fools and Horses programme/cast reference; existing My Lists and programme queue |
-| Practical Living | Garden Rescue | Homestead Rescue reference, gardening/environment headlines, My Lists and programme queue |
-| Technology & AI | Modern Marvels | BBC/Guardian technology; arXiv papers; official VS Code releases; programme queue |
+| Business & Markets | Bloomberg Europe | BBC/Guardian rundown; four dated ONS releases; Bank of England policy bulletin; five ECB currency pairs with daily change and 30-observation histories; local/London clocks |
+| World Window | Truckee, California | Ground-camera location map and context; BBC/Guardian world news; matching local conditions and three-day forecasts; USGS earthquake bulletin |
+| Spain & Local | Canal Sur Andalucía | El País rundown; El Mundo reporting; Madrid forecast; Seville conditions; current weather strip |
+| Space & Earth | Space Live / Sen | ISS position marker on a land outline; orbital altitude, speed and coordinates; NOAA Kp history; NASA news and USGS observations |
+| British Classics | Midsomer Murders | Porridge, Minder and Only Fools and Horses synopses/casts; My Lists; programme queue and a programme-information ticker |
+| Practical Living | Garden Rescue | Gardening/environment reporting; Homestead Rescue reference; labelled Seville outdoor conditions and forecast; My Lists/queue controls |
+| Technology & AI | Modern Marvels | BBC/Guardian technology news; arXiv AI research; official VS Code release rundown; programme queue |
 
-First use starts Business and shuffles Business/World/Spain/Space every 15 minutes. Existing settings survive. MENU provides all seven domains, rotation pool/order/interval, Stay, source choice, picture-only layout and queue controls. Ticker speed, pause and reduced-motion paging are configurable. Focused information opens a scrollable source/date detail view. Existing explicit episode queue/completion behavior is preserved; live rotation never operates while the On Demand player is in front.
+Weather cities are labelled defaults, not an inferred home location. TVmaze spotlights are programme reference, not claims about the current broadcast or VOD availability. Currency values are daily ECB references, not live trading quotes. Headlines retain publisher and publication dates; full source detail is remote accessible.
 
-World alternatives include Truckee, underwater Scripps Pier and Greenhorn Ranch horse arena. Public camera player metadata is resolved on opening; signed/expiring routes are not persisted. Attribution, natural silence and darkness are explained. Native video is preferred at 720p; cameras offering only a 1080p rendition remain single-decoder playback and require Firestick memory measurement.
+First use opens Business and shuffles Business/World/Spain/Space every 15 minutes. Existing preferences survive. MENU exposes all seven domains, rotation pool/order/interval, Stay, source choice, picture-only mode and explicit episode queues. Ticker speed, pause and reduced-motion paging are configurable. Live rotation stops while On Demand playback is in front.
 
-## Data and recovery
+World defaults to the Android-verified Truckee camera. Alternatives include Old Faithful, Scripps Pier underwater and Greenhorn Ranch horse arena. Old Faithful responds with a valid manifest but did not render in the local Android decoder check; it is retained as an optional source, not the default. Public camera metadata is resolved on opening; signed media URLs are not saved. Camera silence/darkness are explained. The small bundled Natural Earth map outline is public domain and draws natively; no tile service or browser is used.
 
-29 public feed definitions are in `app/src/main/assets/my-channel/panel-feeds.json`. Only visible-domain feeds are fetched, with at most two concurrent requests, 15-second call limits, 512 KiB responses, eight records and 40 chart points per feed. Caches are independent and bounded. Requests stop on domain exit/backgrounding; errors back off up to 16 minutes plus jitter. Original observation/publication dates remain visible; retrieved time is separate. ECB values are daily reference rates, not live trading prices. Programme spotlights are reference metadata, not claims about the current broadcast or catalogue availability.
+## Data, playback and resource limits
 
-Video recovery tries alternative routes belonging to the selected programme. Choosing another programme/camera is explicit. Last working routes are preferred; expired camera URLs are re-resolved. Picture and data failures are independent. Menus and Back remain usable on failure. The active video buffer target is 8 MiB and the player is released before replacement or backgrounding.
+The 29 public feed definitions live in `app/src/main/assets/my-channel/panel-feeds.json`. The current domain alone fetches data, at most two requests at a time. Each request has a 15-second limit and 512 KiB body cap. Models retain at most eight records and 40 chart points (30 per currency pair); each disk cache is bounded to 64 KiB. Refreshes cancel when changing domain/backgrounding. Failures back off to 16 minutes plus jitter. Cached observations and unavailable feeds are distinguished. RSS publication-age limits reject obsolete articles; the defunct RTVE feed was replaced with El Mundo.
 
-The existing HTTPS-only public-network restrictions and redirect/DNS protections apply to feeds and media. No private device endpoints, credentials, scraped account sessions or external-app launches are introduced.
+Currency histories use ECB observations via Frankfurter, with the ECB XML feed as an alternative. Native HLS MIME is explicit, including redirect URLs without file extensions; otherwise Media3 can wrongly treat those manifests as progressive media. Recovery tries alternatives for the selected programme/camera and re-resolves expiring camera links. Choosing another title remains explicit.
 
-## Evidence and remaining qualification
+There is one ExoPlayer, an 8 MiB buffer target, 15-second maximum time buffer and a 720p preference where available. Some cameras offer only 1080p. Player and requests are released on backgrounding. Maps are static Canvas paths; charts rebuild only on data/size change. The ticker reuses its measured text and stops when hidden or paused. No dashboard WebView, second decoder, external app, paid service or Mac server is added.
 
-Local tests cover parser bounds, dates, cache round trips, unsafe camera URLs and captured live responses. TV instrumentation exercises all seven native layouts, 21 rapid changes, clocks and player release on background; screenshots and process-memory samples are collected. Such emulator results do not establish Firestick A/V performance or a long-duration memory soak.
+Existing HTTPS/public-network and DNS/redirect protections apply. There are no credentials or scraped account sessions in this feature.
 
-The exact 0.9.10 APK backup and the previously installed/tested 0.9.11 APK are retained outside the repository. Install the local APK signed with the existing app identity using replacement, never uninstall or clear data.
+## Qualification and rollback
 
-Live stock indices/FTSE quotes, keyed official weather alerts, private telemetry and automatically selecting the next unwatched episode of an arbitrary series are not implemented in this build. Existing explicit episode queues remain available. Those wider roadmap items must not be represented as verified simply because their menus or reference metadata exist.
+Unit checks cover bounds, date filtering, currency calculations/history, cache round trips and unsafe camera routes. Captured live feed responses are parsed separately. Native instrumentation records actual decoded pictures and each feed's availability, captures all seven screens, performs 21 rapid domain changes and verifies decoder release on background. Local visual review uses a 1 GiB API 28 arm64 emulator with a 1920×1080 TV display profile; that is not a physical Firestick.
+
+The prior 0.9.10 and 0.9.11 APK backups remain outside the repository. The final local APK must retain the installed signing identity. Replace in place, never uninstall or clear the user's data. No Firestick installation is part of this off-device review.
+
+Physical Firestick playback, long-duration memory behavior and user acceptance remain separate qualification steps. Live stock-index/FTSE quotes, private telemetry, keyed alert services and automatically finding the next unwatched episode of an arbitrary series remain outside this build; explicit episode queues are preserved.

@@ -20,6 +20,19 @@ class PersonalPanelParserTest {
         assertEquals(url,PersonalMediaResolver.parse("pixelcaster","{\"signed_url\":\"$url\"}"))
     }
     @Test(expected=IllegalArgumentException::class) fun camerasCannotReturnCleartext(){PersonalMediaResolver.parse("pixelcaster","{\"signed_url\":\"http://example.com/video.m3u8\"}")}
+    @Test fun fxJsonKeepsPairHistoryAndDailyChangeTogether(){
+        val raw="""[{"date":"2026-11-05","base":"EUR","quote":"GBP","rate":1.0},{"date":"2026-11-06","base":"EUR","quote":"GBP","rate":0.8}]"""
+        val p=PersonalPanelParser.parse(spec("fx-json"),raw)
+        assertEquals("GBP / EUR",p.items.first().metric);assertEquals(25.0,p.items.first().change!!,0.001)
+        assertEquals(listOf(1.0,1.25),p.items.first().history)
+        assertEquals(p,PersonalPanel.decode(p.json()))
+    }
+    @Test fun staleNewsDoesNotMasqueradeAsCurrent(){
+        val now=PersonalPanelParser.publishedTime("2026-11-09T12:00:00Z")!!
+        val raw="<rss><item><title>Old</title><pubDate>2022-04-01</pubDate></item><item><title>Current</title><pubDate>Mon, 09 Nov 2026 10:00:00 GMT</pubDate></item></rss>"
+        val p=PersonalPanelParser.parse(spec("rss").copy(maxAge=86400000),raw,now)
+        assertEquals(listOf("Current"),p.items.map{it.headline})
+    }
     @Test fun checkedLiveFeedFixturesAllParse(){
         val root=System.getenv("PERSONAL_LIVE_FIXTURES") ?: return
         val config=JSONObject(File("src/main/assets/my-channel/panel-feeds.json").readText()).getJSONObject("feeds")

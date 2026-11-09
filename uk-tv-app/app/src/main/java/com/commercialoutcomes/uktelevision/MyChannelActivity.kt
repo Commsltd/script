@@ -42,7 +42,6 @@ class MyChannelActivity : Activity() {
     private lateinit var defaults: JSONObject
     private lateinit var video: PlayerView
     private lateinit var title: TextView
-    private lateinit var footer: TextView
     private val prefs by lazy { getSharedPreferences("my-channel",MODE_PRIVATE) }
     private lateinit var root: LinearLayout
     private lateinit var body: LinearLayout
@@ -50,14 +49,13 @@ class MyChannelActivity : Activity() {
     private lateinit var controls: LinearLayout
     private lateinit var strip: TextView
     private lateinit var clock: TextView
-    private lateinit var lower: LinearLayout
     private lateinit var ticker: PersonalTicker
     private lateinit var panels: PersonalPanelRepository
-    private val panelViews=mutableListOf<PersonalCard>()
+    private lateinit var broadcast:PersonalBroadcastScreen
     private val panelData=mutableMapOf<String,PersonalPanel>()
     private var page=0
     private val clockTick=object:Runnable {override fun run(){if(active){updateClock();handler.postDelayed(this,10000)}}}
-    private val pageTick=object:Runnable {override fun run(){if(active){if(!paused && dialog==null && panelViews.none{it.hasFocus()} && !ticker.hasFocus()){page++;renderPanels()};handler.postDelayed(this,25000)}}}
+    private val pageTick=object:Runnable {override fun run(){if(active){if(!paused && dialog==null && !broadcast.hasInformationFocus() && !ticker.hasFocus()){page++;renderPanels()};handler.postDelayed(this,25000)}}}
     private val panelRefresh=object:Runnable {override fun run(){if(active){refreshData();handler.postDelayed(this,60000)}}}
     private val localTick=object:Runnable {override fun run(){if(active){updateLocalPanels();handler.postDelayed(this,60000)}}}
 
@@ -72,7 +70,7 @@ class MyChannelActivity : Activity() {
     private var deadline=0L
     private var remaining=900000L
     private val cooldown=mutableMapOf<Int,Long>()
-    private val hideControls=Runnable { if(dialog==null && panelViews.none{it.hasFocus()} && !ticker.hasFocus()){controls.visibility=View.GONE;footer.visibility=View.GONE;video.requestFocus()} }
+    private val hideControls=Runnable { if(dialog==null && !broadcast.hasInformationFocus() && !ticker.hasFocus()){controls.visibility=View.GONE;video.requestFocus()} }
     private fun dp(n:Int)=(n*resources.displayMetrics.density).toInt()
     private var player: ExoPlayer? = null
     private var selected = 0
@@ -96,41 +94,17 @@ class MyChannelActivity : Activity() {
         interval=prefs.getInt("interval",15).coerceIn(1,120)
         randomOrder=prefs.getBoolean("shuffle",true)
         panels=PersonalPanelRepository(this)
-        root=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setPadding(dp(28),dp(20),dp(28),dp(18));setBackgroundColor(PersonalStyle.background)}
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        val header=LinearLayout(this).apply{gravity=android.view.Gravity.CENTER_VERTICAL}
-        title=PersonalStyle.label(this,20f).apply{typeface=Typeface.create("sans-serif-medium",Typeface.NORMAL);maxLines=1}
-        clock=PersonalStyle.label(this,14f,PersonalStyle.muted).apply{gravity=android.view.Gravity.END;maxLines=2}
-        header.addView(title,LinearLayout.LayoutParams(0,dp(40),1f));header.addView(clock,LinearLayout.LayoutParams(dp(260),dp(40)))
-        footer=PersonalStyle.label(this,13f,PersonalStyle.muted)
         video=PlayerView(this).apply{useController=false;isFocusable=true;setBackgroundColor(Color.BLACK)}
-        body=LinearLayout(this)
-        val left=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL}
-        val videoFrame=android.widget.FrameLayout(this)
-        videoFrame.addView(video,android.widget.FrameLayout.LayoutParams(-1,-1))
         pictureStatus=PersonalStyle.label(this,18f).apply{gravity=android.view.Gravity.CENTER;setPadding(dp(24),dp(20),dp(24),dp(70));setBackgroundColor(Color.rgb(8,18,28))}
-        videoFrame.addView(pictureStatus,android.widget.FrameLayout.LayoutParams(-1,-1))
         controls=LinearLayout(this).apply{setPadding(dp(6),dp(6),dp(6),dp(6));setBackgroundColor(Color.rgb(8,18,28))}
         fun action(label:String,block:()->Unit){controls.addView(PersonalStyle.action(this,label,block),LinearLayout.LayoutParams(0,dp(48),1f).apply{setMargins(dp(3),0,dp(3),0)})}
         action("Domains"){domains()};action("Sources"){sources()};action("Next"){advance()};action("Stay"){automatic=false;saveSettings();scheduleRotation();updateChrome()};action("Menu"){menu()}
-        videoFrame.addView(controls,android.widget.FrameLayout.LayoutParams(-1,dp(60),android.view.Gravity.BOTTOM))
-        left.addView(videoFrame,LinearLayout.LayoutParams(-1,0,1f))
-        lower=LinearLayout(this)
-        cards=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL}
-        repeat(5){i->val card=PersonalCard(this);card.setOnClickListener{showPanelDetails(card)};panelViews.add(card)
-            if(i<3)cards.addView(card,LinearLayout.LayoutParams(-1,0,1f).apply{if(i>0)topMargin=dp(6)})
-            else lower.addView(card,LinearLayout.LayoutParams(0,-1,1f).apply{if(i>3)leftMargin=dp(6)})
-        }
-        left.addView(lower,LinearLayout.LayoutParams(-1,dp(124)).apply{topMargin=dp(6)})
-        body.addView(left,LinearLayout.LayoutParams(0,-1,68f));body.addView(cards,LinearLayout.LayoutParams(0,-1,32f).apply{leftMargin=dp(8)})
-        strip=PersonalStyle.label(this,12f,PersonalStyle.muted).apply{gravity=android.view.Gravity.CENTER_VERTICAL;maxLines=1}
-        ticker=PersonalTicker(this).apply{setOnClickListener{showTickerDetails()}}
-        footer.text="OK Controls    MENU Customise    HOLD OK Sources    BACK Guide"
-        root.addView(header);root.addView(body,LinearLayout.LayoutParams(-1,0,1f));root.addView(strip,LinearLayout.LayoutParams(-1,dp(25)));root.addView(ticker,LinearLayout.LayoutParams(-1,dp(34)))
-        val frame=android.widget.FrameLayout(this);frame.addView(root)
-        footer.visibility=View.GONE
-        setContentView(frame)
+        broadcast=PersonalBroadcastScreen(this,video,pictureStatus,controls){showTextDetails(it)}
+        root=broadcast;body=broadcast.body;cards=broadcast.middle;title=broadcast.title;clock=broadcast.clock;strip=broadcast.strip;ticker=broadcast.ticker
+        ticker.setOnClickListener{showTickerDetails()}
+        setContentView(broadcast)
     }
 
     override fun onResume() { super.onResume();active=true;select(selected) }
@@ -190,7 +164,7 @@ class MyChannelActivity : Activity() {
                 else if(state==Player.STATE_ENDED)nextRoute()
             }
         })
-        p.setMediaItem(MediaItem.fromUri(url));p.prepare();p.playWhenReady=!paused;handler.postDelayed(timeout,20000)
+        p.setMediaItem(MediaItem.Builder().setUri(url).setMimeType(androidx.media3.common.MimeTypes.APPLICATION_M3U8).build());p.prepare();p.playWhenReady=!paused;handler.postDelayed(timeout,20000)
     }
     private fun pictureUnavailable(){
         cancelSource();handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
@@ -211,15 +185,10 @@ class MyChannelActivity : Activity() {
     }
     private fun renderPanels() {
         val groups=panelGroups()
-        groups.forEachIndexed{i,ids->
-            val choices=ids.mapNotNull{panelData[it]}
-            val data=if(choices.isEmpty())PersonalPanel(ids.first(),panels.specs[ids.first()]?.title ?: if(ids.first()=="library")"My Lists" else "Up next","My Channel",listOf(PersonalItem("Connecting…","Your picture plays independently."))) else choices[page.mod(choices.size)]
-            val index=(if(choices.size>1)page/choices.size else page)+(if(i>=3 && ids.any{it in groups.take(3).flatten()})1 else 0)
-            panelViews[i].show(data,index,chart=i==3)
-        }
+        broadcast.bind(keys[selected],panelData,page)
         val news=groups.take(3).flatten().distinct().mapNotNull{panelData[it]}.filter{panels.specs[it.id]?.kind=="rss"}
         val items=news.flatMap{p->p.items.take(4).map{p.source+(if(p.stale)" [cached]" else "")+"  •  "+it.headline}}
-            .distinct().ifEmpty{panelData["library"]?.items?.map{it.headline}.orEmpty()+listOf("${names[selected]}  •  MENU for your mix, sources and information")}
+            .distinct().ifEmpty{listOf("porridge","minder","ofah").mapNotNull{panelData[it]?.items?.firstOrNull()?.let{item->item.headline+" · "+item.body}}.ifEmpty{panelData["library"]?.items?.map{it.headline}.orEmpty()+listOf(names[selected])}}
         ticker.setHeadlines(if(ticker.reducedMotion)items[page.mod(items.size)] else items.joinToString("      ◆      "))
     }
     private fun updateLocalPanels() {
@@ -242,15 +211,15 @@ class MyChannelActivity : Activity() {
     private fun updateClock(){
         fun time(zone:String)=java.text.SimpleDateFormat("HH:mm",java.util.Locale.UK).apply{timeZone=java.util.TimeZone.getTimeZone(zone)}.format(java.util.Date())
         val second=when(selected){0->"London "+time("Europe/London");1->videoMetadata[routes.getOrNull(route)?.first]?.let{it.optString("place")+" "+time(it.optString("timezone","UTC"))} ?: "UTC "+time("UTC");3->"UTC "+time("UTC");else->java.text.SimpleDateFormat("EEE d MMM",java.util.Locale.UK).format(java.util.Date())}
-        clock.text=time(java.util.TimeZone.getDefault().id)+" LOCAL  ·  "+second
+        clock.text=time(java.util.TimeZone.getDefault().id)+" LOCAL\n"+second
         if(pictureProblem.isNotBlank()){strip.text=pictureProblem;return}
         if(automatic && deadline>0 && !paused && dialog==null){val seconds=((deadline-System.currentTimeMillis())/1000).coerceAtLeast(0);strip.text="${routes.getOrNull(route)?.first ?: names[selected]}   ·   ${if(seconds<=10) "Changing domain in ${seconds}s · OK → Stay" else "Your mix · next in ${seconds/60}m ${seconds%60}s"}"}
     }
-    private fun showPanelDetails(card:PersonalCard){
+    private fun showTextDetails(detail:String){
         if(dialog!=null)return
         val opener=currentFocus;remaining=if(deadline>0)(deadline-System.currentTimeMillis()).coerceAtLeast(1000) else interval*60000L
         handler.removeCallbacks(rotate);handler.removeCallbacks(hideControls);ticker.stop()
-        val text=PersonalStyle.label(this,18f).apply{this.text=card.detailText;setPadding(dp(24),dp(16),dp(24),dp(16))}
+        val text=PersonalStyle.label(this,18f).apply{this.text=detail;setPadding(dp(24),dp(16),dp(24),dp(16))}
         val scroll=ScrollView(this).apply{addView(text);isFocusable=true}
         val d=AlertDialog.Builder(this).setTitle("Information · source & freshness").setView(scroll).setPositiveButton("Refresh"){_,_->refreshData(true)}.setNegativeButton("Back",null).create()
         dialog=d;d.setOnDismissListener{dialog=null;scheduleRotation();showControls(opener);if(active)ticker.start()};d.show();d.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(PersonalStyle.background));scroll.requestFocus()
@@ -260,9 +229,10 @@ class MyChannelActivity : Activity() {
         prefs.edit().putBoolean("auto",automatic).putString("pool",pool.joinToString(",")).putBoolean("shuffle",randomOrder).putInt("interval",interval).apply()
     }
     private fun updateChrome() {
-        title.text="My Channel  /  ${names[selected]}"
+        title.text=names[selected].uppercase(java.util.Locale.ROOT)
         val pictureOnly=prefs.getBoolean("pictureOnly.${keys[selected]}",false)
-        cards.visibility=if(pictureOnly)View.GONE else View.VISIBLE;lower.visibility=cards.visibility
+        broadcast.pictureOnly(pictureOnly)
+        broadcast.tickerVisible(prefs.getBoolean("ticker",true))
         ticker.visibility=if(pictureOnly || !prefs.getBoolean("ticker",true))View.GONE else View.VISIBLE
         ticker.reducedMotion=prefs.getBoolean("tickerReduced",false);ticker.speed=prefs.getFloat("tickerSpeed",32f)
         if(ticker.visibility==View.VISIBLE && active && !paused)ticker.start() else ticker.stop()
@@ -270,7 +240,7 @@ class MyChannelActivity : Activity() {
         updateClock()
     }
     private fun showControls(focusView:View?=null) {
-        controls.visibility=View.VISIBLE;footer.visibility=View.VISIBLE
+        controls.visibility=View.VISIBLE
         (focusView ?: controls.getChildAt(0)).requestFocus();handler.removeCallbacks(hideControls);handler.postDelayed(hideControls,8000)
     }
     private fun scheduleRotation() {

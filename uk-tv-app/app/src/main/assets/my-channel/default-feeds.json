@@ -23,19 +23,6 @@
   "world": {
     "video": [
       {
-        "name": "Old Faithful · Yellowstone",
-        "urls": [
-          "https://pixelcaster.com/live/token/?stream=faithful.stream&variant=dvr"
-        ],
-        "resolver": "pixelcaster",
-        "publisher": "National Park Service / Yellowstone Forever · Pixelcaster",
-        "page": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm",
-        "timezone": "America/Denver",
-        "place": "Yellowstone",
-        "weather": "yellowstone",
-        "description": "Old Faithful geyser, Wyoming, USA. Live camera; naturally silent. Darkness and gaps between eruptions are normal."
-      },
-      {
         "name": "Truckee · California",
         "urls": [
           "https://hdontap.com/stream/657648/downtown-truckee-california-live-webcam/"
@@ -46,6 +33,19 @@
         "place": "Truckee",
         "weather": "truckee",
         "description": "Live street and railway view in Truckee, California, USA. Naturally silent."
+      },
+      {
+        "name": "Old Faithful · Yellowstone",
+        "urls": [
+          "https://pixelcaster.com/live/token/?stream=faithful.stream&variant=live"
+        ],
+        "resolver": "pixelcaster",
+        "publisher": "National Park Service / Yellowstone Forever · Pixelcaster",
+        "page": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm",
+        "timezone": "America/Denver",
+        "place": "Yellowstone",
+        "weather": "yellowstone",
+        "description": "Old Faithful geyser, Wyoming, USA. Live camera; naturally silent. Darkness and gaps between eruptions are normal."
       },
       {
         "name": "Scripps Pier · Underwater",
