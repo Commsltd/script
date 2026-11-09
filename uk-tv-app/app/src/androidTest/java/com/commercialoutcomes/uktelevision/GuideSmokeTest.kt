@@ -163,9 +163,16 @@ class GuideSmokeTest {
             device.takeScreenshot(File(directory, "options.png"))
             // Exercise the TV remote path rather than tapping the Leanback list.
             device.waitForIdle()
-            var moves=0
-            while(!device.hasObject(By.textContains("Add favourite").selected(true)) && moves++<8) {device.pressDPadDown();device.waitForIdle()}
-            assertTrue("Favourite action was not selected",device.hasObject(By.textContains("Add favourite").selected(true)))
+            val favouriteAction = By.textContains("Add favourite").selected(true)
+            var selected = device.wait(Until.hasObject(favouriteAction), 500)
+            var moves = 0
+            // ListView accessibility selection can arrive after waitForIdle().
+            // Observe each move before sending another remote key.
+            while (!selected && moves++ < 8) {
+                device.pressDPadDown()
+                selected = device.wait(Until.hasObject(favouriteAction), 1000)
+            }
+            assertTrue("Favourite action was not selected", selected)
             device.pressDPadCenter()
             eventually {
                 var favourite = false
