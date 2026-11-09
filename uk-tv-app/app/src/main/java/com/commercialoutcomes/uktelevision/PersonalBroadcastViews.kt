@@ -40,7 +40,7 @@ class PersonalCard(context:Context):LinearLayout(context) {
     }
     private fun d(n:Int)=PersonalStyle.dp(context,n)
     fun show(panel:PersonalPanel,index:Int,chart:Boolean=false){
-        val item=panel.items[index.mod(panel.items.size)]
+        val item=panel.items[(if(chart && panel.series.size>1)0 else index).mod(panel.items.size)]
         heading.text=panel.title.uppercase(java.util.Locale.ROOT)
         value.text=item.headline
         detail.text=item.body.take(150)

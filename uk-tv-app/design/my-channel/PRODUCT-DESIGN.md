@@ -1,6 +1,6 @@
 # Current implementation
 
-See [Connected defaults](CONNECTED-DEFAULTS.md) for implemented video/data sources and validation. This supersedes prototype-only source statements below. Android integration remains outstanding.
+See [Broadcast implementation — 0.9.12](BROADCAST-IMPLEMENTATION.md) for the current native Android screen, seven domain defaults, independent feeds and validation scope. Firestick qualification of this new build remains pending. [Connected defaults](CONNECTED-DEFAULTS.md) records the earlier browser prototype. The original product design below remains a design reference; it is not a claim that every roadmap integration is complete.
 
 ## Updated default experience
 

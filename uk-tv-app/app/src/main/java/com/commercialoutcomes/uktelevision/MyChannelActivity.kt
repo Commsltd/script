@@ -228,6 +228,7 @@ class MyChannelActivity : Activity() {
             val meta=videoMetadata[routes.getOrNull(route)?.first]
             if(meta!=null)panelData["picture"]=PersonalPanel("picture","Your window",meta.optString("publisher"),listOf(PersonalItem(meta.getString("name"),meta.optString("description"),"Live camera · "+meta.optString("timezone"),meta.optString("page").ifBlank{routes[route].second})))
         }
+        if(panelGroups().flatten().none{it=="library" || it=="rundown"}){renderPanels();return}
         worker.submit {
             val saved=PersonalQueue.saved(this)
             val relevant=saved.lists.filter { l->if(domain=="classics")Regex("classic|comedy|british",RegexOption.IGNORE_CASE).containsMatchIn(l.name) else Regex("practical|homestead|outdoor|ranch|garden",RegexOption.IGNORE_CASE).containsMatchIn(l.name)}
