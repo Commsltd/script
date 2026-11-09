@@ -257,10 +257,10 @@
     },
     "node-releases": {
       "id": "node-releases",
-      "kind": "rss",
+      "kind": "github-release",
       "title": "Node.js releases",
       "source": "Node.js · official GitHub",
-      "url": "https://github.com/nodejs/node/releases.atom",
+      "url": "https://api.github.com/repos/nodejs/node/releases/latest",
       "ttl": 1800,
       "maxAge": 7776000
     },

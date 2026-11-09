@@ -38,6 +38,10 @@ object PersonalPanelParser {
                 .filter{spec.maxAge==0L || publishedTime(it.observed)?.let{stamp->now-stamp<=spec.maxAge && stamp-now<86400000}==true}
                 .distinctBy{it.headline.lowercase(Locale.ROOT)}.take(8)
             }
+            "github-release" -> {
+                val o=JSONObject(raw);require(!o.optBoolean("draft"))
+                listOf(PersonalItem(o.getString("tag_name"),if(o.optBoolean("prerelease"))"Pre-release" else "Published release",o.getString("published_at"),o.getString("html_url")))
+            }
             "fx", "fx-json" -> {
                 val observations=sortedMapOf<String,MutableMap<String,Double>>()
                 if(spec.kind=="fx")Jsoup.parse(raw,"",Parser.xmlParser()).select("Cube[time]").forEach{day->

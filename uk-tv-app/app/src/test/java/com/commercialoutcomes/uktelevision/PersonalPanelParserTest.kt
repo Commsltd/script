@@ -33,6 +33,10 @@ class PersonalPanelParserTest {
         val p=PersonalPanelParser.parse(spec("rss").copy(maxAge=86400000),raw,now)
         assertEquals(listOf("Current"),p.items.map{it.headline})
     }
+    @Test fun releaseMetadataKeepsVersionAndPublicationDate(){
+        val p=PersonalPanelParser.parse(spec("github-release"),"""{"tag_name":"v26.13.0","published_at":"2026-10-28T16:57:41Z","html_url":"https://github.com/nodejs/node/releases/tag/v26.13.0","draft":false,"prerelease":false}""")
+        assertEquals("v26.13.0",p.items.single().headline);assertEquals("2026-10-28T16:57:41Z",p.items.single().observed)
+    }
     @Test fun checkedLiveFeedFixturesAllParse(){
         val root=System.getenv("PERSONAL_LIVE_FIXTURES") ?: return
         val config=JSONObject(File("src/main/assets/my-channel/panel-feeds.json").readText()).getJSONObject("feeds")
