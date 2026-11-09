@@ -1,0 +1,359 @@
+{
+  "schema": 1,
+  "feeds": {
+    "bbc-business": {
+      "id": "bbc-business",
+      "kind": "rss",
+      "title": "Business headlines",
+      "source": "BBC",
+      "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "ttl": 300
+    },
+    "guardian-business": {
+      "id": "guardian-business",
+      "kind": "rss",
+      "title": "Business & economy",
+      "source": "The Guardian",
+      "url": "https://www.theguardian.com/uk/business/rss",
+      "ttl": 300
+    },
+    "bbc-world": {
+      "id": "bbc-world",
+      "kind": "rss",
+      "title": "World headlines",
+      "source": "BBC",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "ttl": 300
+    },
+    "guardian-world": {
+      "id": "guardian-world",
+      "kind": "rss",
+      "title": "World reporting",
+      "source": "The Guardian",
+      "url": "https://www.theguardian.com/world/rss",
+      "ttl": 300
+    },
+    "bbc-tech": {
+      "id": "bbc-tech",
+      "kind": "rss",
+      "title": "Technology news",
+      "source": "BBC",
+      "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "ttl": 300
+    },
+    "guardian-tech": {
+      "id": "guardian-tech",
+      "kind": "rss",
+      "title": "Technology & AI",
+      "source": "The Guardian",
+      "url": "https://www.theguardian.com/uk/technology/rss",
+      "ttl": 300
+    },
+    "guardian-gardens": {
+      "id": "guardian-gardens",
+      "kind": "rss",
+      "title": "Gardening & outdoors",
+      "source": "The Guardian",
+      "url": "https://www.theguardian.com/lifeandstyle/gardens/rss",
+      "ttl": 300
+    },
+    "bbc-science": {
+      "id": "bbc-science",
+      "kind": "rss",
+      "title": "Science & environment",
+      "source": "BBC",
+      "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+      "ttl": 300
+    },
+    "spain-rtve": {
+      "id": "spain-rtve",
+      "kind": "rss",
+      "title": "España · titulares",
+      "source": "RTVE",
+      "url": "https://api2.rtve.es/rss/temas_noticias.xml",
+      "ttl": 300
+    },
+    "spain-elpais": {
+      "id": "spain-elpais",
+      "kind": "rss",
+      "title": "España · actualidad",
+      "source": "El País",
+      "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/espana/portada",
+      "ttl": 300
+    },
+    "nasa": {
+      "id": "nasa",
+      "kind": "rss",
+      "title": "Space & missions",
+      "source": "NASA",
+      "url": "https://www.nasa.gov/feed/",
+      "ttl": 300
+    },
+    "boe": {
+      "id": "boe",
+      "kind": "rss",
+      "title": "Policy & economy",
+      "source": "Bank of England",
+      "url": "https://www.bankofengland.co.uk/rss/news",
+      "ttl": 300
+    },
+    "fx": {
+      "id": "fx",
+      "kind": "fx",
+      "title": "Currency reference",
+      "source": "ECB",
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml",
+      "ttl": 3600
+    },
+    "kp": {
+      "id": "kp",
+      "kind": "kp",
+      "title": "Space weather",
+      "source": "NOAA SWPC",
+      "url": "https://services.swpc.noaa.gov/json/planetary_k_index_1m.json",
+      "ttl": 300
+    },
+    "iss": {
+      "id": "iss",
+      "kind": "iss",
+      "title": "ISS · live position",
+      "source": "Where the ISS at",
+      "url": "https://api.wheretheiss.at/v1/satellites/25544",
+      "ttl": 120
+    },
+    "research": {
+      "id": "research",
+      "kind": "rss",
+      "title": "AI research · new papers",
+      "source": "arXiv · cs.AI",
+      "url": "https://export.arxiv.org/api/query?search_query=cat:cs.AI&sortBy=submittedDate&sortOrder=descending&max_results=5",
+      "ttl": 1800
+    },
+    "releases": {
+      "id": "releases",
+      "kind": "ons",
+      "title": "Economic releases",
+      "source": "Office for National Statistics",
+      "url": "https://www.ons.gov.uk/releasecalendar?view=upcoming",
+      "ttl": 3600
+    },
+    "porridge": {
+      "id": "porridge",
+      "kind": "show",
+      "title": "Programme spotlight",
+      "source": "TVmaze · CC BY-SA",
+      "url": "https://api.tvmaze.com/shows/1776?embed=cast",
+      "ttl": 86400
+    },
+    "minder": {
+      "id": "minder",
+      "kind": "show",
+      "title": "Programme spotlight",
+      "source": "TVmaze · CC BY-SA",
+      "url": "https://api.tvmaze.com/shows/6085?embed=cast",
+      "ttl": 86400
+    },
+    "ofah": {
+      "id": "ofah",
+      "kind": "show",
+      "title": "Programme spotlight",
+      "source": "TVmaze · CC BY-SA",
+      "url": "https://api.tvmaze.com/shows/2094?embed=cast",
+      "ttl": 86400
+    },
+    "homestead": {
+      "id": "homestead",
+      "kind": "show",
+      "title": "Programme spotlight",
+      "source": "TVmaze · CC BY-SA",
+      "url": "https://api.tvmaze.com/shows/18180?embed=cast",
+      "ttl": 86400
+    },
+    "madrid": {
+      "id": "madrid",
+      "kind": "weather",
+      "title": "Madrid · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=40.4168&longitude=-3.7038&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=Europe%2FMadrid",
+      "ttl": 900
+    },
+    "seville": {
+      "id": "seville",
+      "kind": "weather",
+      "title": "Seville · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=37.3891&longitude=-5.9845&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=Europe%2FMadrid",
+      "ttl": 900
+    },
+    "quakes": {
+      "id": "quakes",
+      "kind": "quakes",
+      "title": "Earth · latest earthquakes",
+      "source": "USGS",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+      "ttl": 900
+    },
+    "yellowstone": {
+      "id": "yellowstone",
+      "kind": "weather",
+      "title": "Yellowstone · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=44.46&longitude=-110.83&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=America%2FDenver",
+      "ttl": 900
+    },
+    "truckee": {
+      "id": "truckee",
+      "kind": "weather",
+      "title": "Truckee, California · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=39.33&longitude=-120.18&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=America%2FLos_Angeles",
+      "ttl": 900
+    },
+    "scripps": {
+      "id": "scripps",
+      "kind": "weather",
+      "title": "La Jolla, California · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=32.87&longitude=-117.26&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=America%2FLos_Angeles",
+      "ttl": 900
+    },
+    "greenhorn": {
+      "id": "greenhorn",
+      "kind": "weather",
+      "title": "Quincy, California · weather",
+      "source": "Open-Meteo · CC BY 4.0",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=39.94&longitude=-120.83&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&forecast_days=3&timezone=America%2FLos_Angeles",
+      "ttl": 900
+    },
+    "github-releases": {
+      "id": "github-releases",
+      "kind": "rss",
+      "title": "Software releases",
+      "source": "GitHub · VS Code",
+      "url": "https://github.com/microsoft/vscode/releases.atom",
+      "ttl": 3600
+    }
+  },
+  "domains": {
+    "business": [
+      [
+        "fx"
+      ],
+      [
+        "bbc-business",
+        "guardian-business"
+      ],
+      [
+        "releases"
+      ],
+      [
+        "fx"
+      ],
+      [
+        "boe"
+      ]
+    ],
+    "world": [
+      [
+        "picture"
+      ],
+      [
+        "bbc-world"
+      ],
+      [
+        "guardian-world"
+      ],
+      [
+        "camera-weather"
+      ],
+      [
+        "quakes"
+      ]
+    ],
+    "spain": [
+      [
+        "madrid"
+      ],
+      [
+        "spain-rtve"
+      ],
+      [
+        "spain-elpais"
+      ],
+      [
+        "seville"
+      ],
+      [
+        "madrid"
+      ]
+    ],
+    "space": [
+      [
+        "iss"
+      ],
+      [
+        "nasa"
+      ],
+      [
+        "kp"
+      ],
+      [
+        "kp"
+      ],
+      [
+        "quakes"
+      ]
+    ],
+    "classics": [
+      [
+        "porridge"
+      ],
+      [
+        "minder"
+      ],
+      [
+        "ofah"
+      ],
+      [
+        "library"
+      ],
+      [
+        "rundown"
+      ]
+    ],
+    "practical": [
+      [
+        "homestead"
+      ],
+      [
+        "guardian-gardens"
+      ],
+      [
+        "bbc-science"
+      ],
+      [
+        "library"
+      ],
+      [
+        "rundown"
+      ]
+    ],
+    "technology": [
+      [
+        "bbc-tech"
+      ],
+      [
+        "guardian-tech"
+      ],
+      [
+        "research"
+      ],
+      [
+        "github-releases"
+      ],
+      [
+        "rundown"
+      ]
+    ]
+  }
+}

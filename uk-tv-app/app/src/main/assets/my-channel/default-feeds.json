@@ -10,6 +10,7 @@
       {
         "name": "Bloomberg Originals",
         "urls": [
+          "https://www.bloomberg.com/media-manifest/streams/originals-global.m3u8",
           "https://jmp2.uk/stvp-USAJ30000041W"
         ]
       }
@@ -22,19 +23,53 @@
   "world": {
     "video": [
       {
-        "name": "Space Live / Sen \u2014 Earth view",
+        "name": "Old Faithful · Yellowstone",
         "urls": [
-          "https://linear-1224.frequency.stream/dist/lg-uk/1224/hls/master/playlist.m3u8",
-          "https://d111bsx9oooqoh.cloudfront.net/playlist.m3u8"
-        ]
+          "https://pixelcaster.com/live/token/?stream=faithful.stream&variant=dvr"
+        ],
+        "resolver": "pixelcaster",
+        "publisher": "National Park Service / Yellowstone Forever · Pixelcaster",
+        "page": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm",
+        "timezone": "America/Denver",
+        "place": "Yellowstone",
+        "weather": "yellowstone",
+        "description": "Old Faithful geyser, Wyoming, USA. Live camera; naturally silent. Darkness and gaps between eruptions are normal."
       },
       {
-        "name": "Adventure Earth",
+        "name": "Truckee · California",
         "urls": [
-          "https://a57e9c69976649b582a8d7604c00e69a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AdventureEarth/playlist.m3u8",
-          "https://autentic-adventure-earth-1-eu.rakuten.wurl.tv/playlist.m3u8",
-          "https://autentic-adventure-earth-1-gb.samsung.wurl.tv/playlist.m3u8"
-        ]
+          "https://hdontap.com/stream/657648/downtown-truckee-california-live-webcam/"
+        ],
+        "resolver": "hdontap",
+        "publisher": "HDOnTap · Downtown Truckee",
+        "timezone": "America/Los_Angeles",
+        "place": "Truckee",
+        "weather": "truckee",
+        "description": "Live street and railway view in Truckee, California, USA. Naturally silent."
+      },
+      {
+        "name": "Scripps Pier · Underwater",
+        "urls": [
+          "https://hdontap.com/stream/018408/scripps-pier-underwater-live-webcam/"
+        ],
+        "resolver": "hdontap",
+        "publisher": "HDOnTap · Scripps Pier",
+        "timezone": "America/Los_Angeles",
+        "place": "San Diego",
+        "weather": "scripps",
+        "description": "Live underwater camera at Scripps Pier, La Jolla, California. Visibility varies; naturally silent."
+      },
+      {
+        "name": "Greenhorn Ranch · Horse arena",
+        "urls": [
+          "https://hdontap.com/stream/679471/greenhorn-ranch-live-horse-arena-cam/"
+        ],
+        "resolver": "hdontap",
+        "publisher": "HDOnTap · Greenhorn Ranch",
+        "timezone": "America/Los_Angeles",
+        "place": "Quincy",
+        "weather": "greenhorn",
+        "description": "Live horse arena at Greenhorn Ranch near Quincy, California. Activity varies by time of day; naturally silent."
       }
     ],
     "data": [
@@ -44,14 +79,14 @@
   "spain": {
     "video": [
       {
-        "name": "Canal Sur Andaluc\u00eda",
+        "name": "Canal Sur Andalucía",
         "urls": [
           "https://dfk2a268yviz9.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-ddiii1m6jt6of/CanalSurAndaluciaES.m3u8",
           "https://jmp2.uk/stvp-ESBD3000002GP"
         ]
       },
       {
-        "name": "Canal Sur M\u00e1s Noticias",
+        "name": "Canal Sur Más Noticias",
         "urls": [
           "https://rtva-channel42.flumotion.cloud/playlist.m3u8"
         ]
@@ -79,20 +114,31 @@
   "classics": {
     "video": [
       {
-        "name": "Mr Bean \u2014 Animated",
+        "name": "Midsomer Murders",
         "urls": [
-          "https://jmp2.uk/plu-69fca9f9b9c0f0d444f631ca.m3u8"
+          "https://all3media-midsomer-1-us.roku.wurl.tv/playlist.m3u8",
+          "https://aegis-cloudfront-1.tubi.video/d76934f9-bea8-4cc2-a812-c2e8a9c5d40a/playlist.m3u8",
+          "https://all3media-midsomer-1-us.xumo.wurl.tv/playlist.m3u8",
+          "https://jmp2.uk/stvp-USBC24000134A"
+        ],
+        "description": "English-language linear Midsomer Murders feed. Alternative routes may follow different regional schedules."
+      },
+      {
+        "name": "Silent Witness and New Tricks",
+        "urls": [
+          "https://jmp2.uk/stvp-US2600027AI"
         ]
       },
       {
-        "name": "Mr Bean \u2014 Live Action",
+        "name": "Mr Bean — Live Action",
         "urls": [
           "https://amg00627-amg00627c39-samsung-gb-5569.playouts.now.amagi.tv/playlist.m3u8"
         ]
       },
       {
-        "name": "Mr Bean \u2014 Animated",
+        "name": "Mr Bean — Animated",
         "urls": [
+          "https://jmp2.uk/plu-69fca9f9b9c0f0d444f631ca.m3u8",
           "https://amg00627-amg00627c23-samsung-gb-3927.playouts.now.amagi.tv/playlist.m3u8"
         ]
       }
@@ -139,7 +185,7 @@
   "technology": {
     "video": [
       {
-        "name": "Modern Marvels \u2014 engineering",
+        "name": "Modern Marvels — engineering",
         "urls": [
           "https://jmp2.uk/stvp-GB2700009R7"
         ]
@@ -151,8 +197,9 @@
         ]
       },
       {
-        "name": "Bloomberg Originals \u2014 business & technology",
+        "name": "Bloomberg Originals — business & technology",
         "urls": [
+          "https://www.bloomberg.com/media-manifest/streams/originals-global.m3u8",
           "https://jmp2.uk/stvp-USAJ30000041W"
         ]
       }

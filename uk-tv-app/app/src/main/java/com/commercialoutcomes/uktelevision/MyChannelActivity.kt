@@ -3,7 +3,6 @@ package com.commercialoutcomes.uktelevision
 import android.app.Activity
 import android.app.AlertDialog
 import android.view.View
-import android.widget.Button
 import android.widget.ScrollView
 import android.graphics.Typeface
 import android.content.Intent
@@ -22,58 +21,70 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.ui.PlayerView
 import org.json.JSONObject
-import java.net.URL
 import java.util.concurrent.Executors
-import android.util.Xml
-import org.xmlpull.v1.XmlPullParser
 
 /** One decoder; no WebView or external computer required. */
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 class MyChannelActivity : Activity() {
     private val handler = Handler(Looper.getMainLooper())
     private val worker = Executors.newSingleThreadExecutor()
+    private val sourceWorker = Executors.newSingleThreadExecutor()
+    @Volatile private var sourceCall:okhttp3.Call?=null
+    private var sourceJob:java.util.concurrent.Future<*>?=null
+    private var sourceGeneration=0
+    private lateinit var pictureStatus:TextView
+    private var videoMetadata=emptyMap<String,JSONObject>()
+    private var pictureProblem=""
+    private fun cameraWeather()=videoMetadata[routes.getOrNull(route)?.first]?.optString("weather")?.ifBlank{null} ?: "yellowstone"
+    private fun panelGroups()=panels.groups(keys[selected],cameraWeather())
     private val names = listOf("Business & Markets", "World Window", "Spain & Local", "Space & Earth", "British Classics", "Practical Living", "Technology & AI")
     private val keys = listOf("business", "world", "spain", "space", "classics", "practical", "technology")
-    private val feeds = listOf("business", "world", "", "", "entertainment_and_arts", "science_and_environment", "technology")
     private lateinit var defaults: JSONObject
     private lateinit var video: PlayerView
     private lateinit var title: TextView
-    private lateinit var info: TextView
     private lateinit var footer: TextView
     private val prefs by lazy { getSharedPreferences("my-channel",MODE_PRIVATE) }
     private lateinit var root: LinearLayout
     private lateinit var body: LinearLayout
-    private lateinit var cards: ScrollView
+    private lateinit var cards: LinearLayout
     private lateinit var controls: LinearLayout
     private lateinit var strip: TextView
+    private lateinit var clock: TextView
+    private lateinit var lower: LinearLayout
+    private lateinit var ticker: PersonalTicker
+    private lateinit var panels: PersonalPanelRepository
+    private val panelViews=mutableListOf<PersonalCard>()
+    private val panelData=mutableMapOf<String,PersonalPanel>()
+    private var page=0
+    private val clockTick=object:Runnable {override fun run(){if(active){updateClock();handler.postDelayed(this,10000)}}}
+    private val pageTick=object:Runnable {override fun run(){if(active){if(!paused && dialog==null && panelViews.none{it.hasFocus()} && !ticker.hasFocus()){page++;renderPanels()};handler.postDelayed(this,25000)}}}
+    private val panelRefresh=object:Runnable {override fun run(){if(active){refreshData();handler.postDelayed(this,60000)}}}
+    private val localTick=object:Runnable {override fun run(){if(active){updateLocalPanels();handler.postDelayed(this,60000)}}}
+
     private var dialog: AlertDialog?=null
     private var pool=listOf(0,1,2,3)
     private var interval=15
     private var randomOrder=true
     private val rotation=PersonalRotation()
-    private var fetchFailures=0
     private var paused=false
     private var selectDown=0L
     private var revealedControls=false
     private var deadline=0L
     private var remaining=900000L
     private val cooldown=mutableMapOf<Int,Long>()
-    private val hideControls=Runnable { if(dialog==null){controls.visibility=View.GONE;footer.visibility=View.GONE} }
+    private val hideControls=Runnable { if(dialog==null && panelViews.none{it.hasFocus()} && !ticker.hasFocus()){controls.visibility=View.GONE;footer.visibility=View.GONE;video.requestFocus()} }
     private fun dp(n:Int)=(n*resources.displayMetrics.density).toInt()
     private var player: ExoPlayer? = null
     private var selected = 0
     private var automatic = true
     private var active = false
     private var generation = 0
-    @Volatile private var feedCall: okhttp3.Call?=null
-    private var dataJob: java.util.concurrent.Future<*>? = null
     private var routes = emptyList<Pair<String,String>>()
     private var route = 0
     private var failureRounds=0
     private val rotate = Runnable { if(active && automatic && !paused && dialog==null) advance() }
-    private val retry = Runnable { if(active){route=0;playRoute()} }
+    private val retry = Runnable { if(active){route=routes.indexOfFirst{it.first==routes.getOrNull(route)?.first}.coerceAtLeast(0);playRoute()} }
     private val timeout = Runnable { if (active) nextRoute() }
-    private val refresh = Runnable { if (active) refreshData() }
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -84,85 +95,178 @@ class MyChannelActivity : Activity() {
         pool=prefs.getString("pool","0,1,2,3").orEmpty().split(',').mapNotNull{it.toIntOrNull()}.filter{it in 0..6}.ifEmpty{listOf(0,1,2,3)}
         interval=prefs.getInt("interval",15).coerceIn(1,120)
         randomOrder=prefs.getBoolean("shuffle",true)
-        root = LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(dp(40),dp(24),dp(40),dp(24)); setBackgroundColor(Color.rgb(18,32,34)) }
+        panels=PersonalPanelRepository(this)
+        root=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setPadding(dp(28),dp(20),dp(28),dp(18));setBackgroundColor(PersonalStyle.background)}
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        fun label(size:Float) = TextView(this).apply { setTextColor(Color.WHITE); textSize=size; setPadding(8,8,8,8) }
-        title=label(24f).apply { typeface=Typeface.create("serif",Typeface.NORMAL);setTextColor(Color.rgb(222,233,214)) }
-        footer=label(14f); info=label(18f)
-        video=PlayerView(this).apply { useController=false }
+        val header=LinearLayout(this).apply{gravity=android.view.Gravity.CENTER_VERTICAL}
+        title=PersonalStyle.label(this,20f).apply{typeface=Typeface.create("sans-serif-medium",Typeface.NORMAL);maxLines=1}
+        clock=PersonalStyle.label(this,14f,PersonalStyle.muted).apply{gravity=android.view.Gravity.END;maxLines=2}
+        header.addView(title,LinearLayout.LayoutParams(0,dp(40),1f));header.addView(clock,LinearLayout.LayoutParams(dp(260),dp(40)))
+        footer=PersonalStyle.label(this,13f,PersonalStyle.muted)
+        video=PlayerView(this).apply{useController=false;isFocusable=true;setBackgroundColor(Color.BLACK)}
         body=LinearLayout(this)
-        cards=ScrollView(this).apply { setPadding(dp(18),dp(10),dp(8),dp(10));setBackgroundColor(Color.rgb(27,45,43));addView(info) }
-        body.addView(video,LinearLayout.LayoutParams(0,-1,7f));body.addView(cards,LinearLayout.LayoutParams(0,-1,3f))
-        strip=label(15f).apply { setTextColor(Color.rgb(188,210,194)) }
-        controls=LinearLayout(this)
-        fun action(text:String,block:()->Unit){controls.addView(Button(this).apply { this.text=text;isAllCaps=false;textSize=15f;minHeight=dp(48);setOnClickListener{block()} },LinearLayout.LayoutParams(0,dp(52),1f))}
-        action("Domains"){domains()};action("Picture / source"){sources()};action("Skip"){advance()};action("Stay on this"){automatic=false;saveSettings();scheduleRotation();updateChrome()};action("Menu"){menu()}
-        root.addView(title);root.addView(body,LinearLayout.LayoutParams(-1,0,1f));root.addView(strip);root.addView(controls);root.addView(footer);setContentView(root)
-
+        val left=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL}
+        val videoFrame=android.widget.FrameLayout(this)
+        videoFrame.addView(video,android.widget.FrameLayout.LayoutParams(-1,-1))
+        pictureStatus=PersonalStyle.label(this,18f).apply{gravity=android.view.Gravity.CENTER;setPadding(dp(24),dp(20),dp(24),dp(70));setBackgroundColor(Color.rgb(8,18,28))}
+        videoFrame.addView(pictureStatus,android.widget.FrameLayout.LayoutParams(-1,-1))
+        controls=LinearLayout(this).apply{setPadding(dp(6),dp(6),dp(6),dp(6));setBackgroundColor(Color.rgb(8,18,28))}
+        fun action(label:String,block:()->Unit){controls.addView(PersonalStyle.action(this,label,block),LinearLayout.LayoutParams(0,dp(48),1f).apply{setMargins(dp(3),0,dp(3),0)})}
+        action("Domains"){domains()};action("Sources"){sources()};action("Next"){advance()};action("Stay"){automatic=false;saveSettings();scheduleRotation();updateChrome()};action("Menu"){menu()}
+        videoFrame.addView(controls,android.widget.FrameLayout.LayoutParams(-1,dp(60),android.view.Gravity.BOTTOM))
+        left.addView(videoFrame,LinearLayout.LayoutParams(-1,0,1f))
+        lower=LinearLayout(this)
+        cards=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL}
+        repeat(5){i->val card=PersonalCard(this);card.setOnClickListener{showPanelDetails(card)};panelViews.add(card)
+            if(i<3)cards.addView(card,LinearLayout.LayoutParams(-1,0,1f).apply{if(i>0)topMargin=dp(6)})
+            else lower.addView(card,LinearLayout.LayoutParams(0,-1,1f).apply{if(i>3)leftMargin=dp(6)})
+        }
+        left.addView(lower,LinearLayout.LayoutParams(-1,dp(124)).apply{topMargin=dp(6)})
+        body.addView(left,LinearLayout.LayoutParams(0,-1,68f));body.addView(cards,LinearLayout.LayoutParams(0,-1,32f).apply{leftMargin=dp(8)})
+        strip=PersonalStyle.label(this,12f,PersonalStyle.muted).apply{gravity=android.view.Gravity.CENTER_VERTICAL;maxLines=1}
+        ticker=PersonalTicker(this).apply{setOnClickListener{showTickerDetails()}}
+        footer.text="OK Controls    MENU Customise    HOLD OK Sources    BACK Guide"
+        root.addView(header);root.addView(body,LinearLayout.LayoutParams(-1,0,1f));root.addView(strip,LinearLayout.LayoutParams(-1,dp(25)));root.addView(ticker,LinearLayout.LayoutParams(-1,dp(34)))
+        val frame=android.widget.FrameLayout(this);frame.addView(root)
+        footer.visibility=View.GONE
+        setContentView(frame)
     }
+
     override fun onResume() { super.onResume();active=true;select(selected) }
     override fun onPause() {
-        active=false;dialog?.dismiss();dialog=null;generation++;dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
+        active=false;panels.cancel();ticker.stop();dialog?.dismiss();dialog=null;generation++;cancelSource();handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
         super.onPause()
     }
-    override fun onDestroy() { worker.shutdownNow();super.onDestroy() }
+    override fun onDestroy() { panels.close();worker.shutdownNow();sourceWorker.shutdownNow();super.onDestroy() }
     private fun select(index:Int) {
-        selected=index;paused=false;failureRounds=0;generation++;dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacksAndMessages(null)
+        selected=index;page=0;panels.cancel();panelData.clear();paused=false;failureRounds=0;generation++;cancelSource();handler.removeCallbacksAndMessages(null)
         getSharedPreferences("my-channel",MODE_PRIVATE).edit().putInt("preset",selected).putBoolean("auto",automatic).apply()
         title.text="MY CHANNEL  •  ${names[selected]}"
         updateChrome()
-        info.text=prefs.getString("cached.${keys[selected]}",null)?.let { "Saved information · refreshing\n\n$it" } ?: "Refreshing information…"
         val sources=defaults.getJSONObject(keys[selected]).getJSONArray("video")
-        routes=buildList { for(i in 0 until sources.length()) { val source=sources.getJSONObject(i);val urls=source.getJSONArray("urls");for(j in 0 until urls.length()) add(source.getString("name") to urls.getString(j)) } }
+        videoMetadata=(0 until sources.length()).associate{sources.getJSONObject(it).let{s->s.getString("name") to s}}
+        routes=videoMetadata.flatMap{(name,source)->val urls=source.getJSONArray("urls");val healthy=prefs.getString("healthy.${keys[selected]}.$name","");(0 until urls.length()).map{urls.getString(it)}.sortedBy{if(it==healthy)0 else 1}.map{name to it}}
         val source=prefs.getString("source.${keys[selected]}","")
         route=routes.indexOfFirst{it.first==source}.coerceAtLeast(0)
         remaining=interval*60000L
-        playRoute();refreshData();scheduleRotation();updateChrome();showControls()
+        playRoute();refreshData();updateLocalPanels();scheduleRotation();updateChrome();showControls();handler.post(clockTick);handler.postDelayed(pageTick,25000);handler.postDelayed(panelRefresh,60000);handler.postDelayed(localTick,60000)
     }
+    private fun cancelSource(){sourceGeneration++;sourceJob?.cancel(true);sourceCall?.cancel();sourceCall=null}
     private fun playRoute() {
+        cancelSource();pictureProblem=""
         handler.removeCallbacks(retry);handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
-        if(route>=routes.size) { title.text="My Channel  /  ${names[selected]}";strip.text="Picture unavailable · MENU for sources · Retrying in one minute";cooldown[selected]=System.currentTimeMillis()+300000;if(++failureRounds<2)handler.postDelayed(retry,60000) else {automatic=false;saveSettings();handler.removeCallbacks(rotate);strip.text="Picture unavailable · MENU to choose a source or retry"};return }
-        val entry=routes[route];title.text="My Channel  /  ${names[selected]}";updateChrome()
+        val entry=routes.getOrNull(route) ?: return pictureUnavailable()
+        pictureStatus.text="Connecting to ${entry.first}…";pictureStatus.visibility=View.VISIBLE;updateChrome()
+        val meta=videoMetadata[entry.first];val resolver=meta?.optString("resolver").orEmpty()
+        if(resolver.isNotBlank()){
+            refreshData();updateLocalPanels()
+            val token=sourceGeneration
+            sourceJob=sourceWorker.submit {
+                val url=runCatching {
+                    val call=PublicVodHttp.client.newBuilder().callTimeout(15,java.util.concurrent.TimeUnit.SECONDS).build().newCall(okhttp3.Request.Builder().url(entry.second).build());sourceCall=call
+                    if(token!=sourceGeneration){call.cancel();return@submit}
+                    val text=call.execute().use{r->check(r.isSuccessful);r.body!!.byteStream().use{it.readBounded(524288)}.toString(Charsets.UTF_8)}
+                    PersonalMediaResolver.parse(resolver,text)
+                }.getOrNull()
+                handler.post{if(active && sourceGeneration==token){if(url==null)nextRoute()else startVideo(url)}}
+            }
+        }else startVideo(entry.second)
+    }
+    private fun startVideo(url:String){
+        if(!active)return
         val p=ExoPlayer.Builder(this).setMediaSourceFactory(androidx.media3.exoplayer.source.DefaultMediaSourceFactory(androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(PublicVodHttp.client))).setLoadControl(DefaultLoadControl.Builder().setBufferDurationsMs(5000,15000,1000,2000).setTargetBufferBytes(8 * 1024 * 1024).setPrioritizeTimeOverSizeThresholds(false).build()).build()
-        p.trackSelectionParameters=p.trackSelectionParameters.buildUpon().setMaxVideoSize(1280,720).build()
+        // Prefer 720p where offered. Some live cameras publish a single 1080p rendition.
+        p.trackSelectionParameters=p.trackSelectionParameters.buildUpon().setMaxVideoSize(1280,720).setMaxVideoBitrate(3000000).build()
         player=p;video.player=p
         var renderedFrame=false
         p.addListener(object:Player.Listener {
             override fun onPlayerError(error:PlaybackException) { if(player===p) nextRoute() }
-            override fun onRenderedFirstFrame() { if(player===p) {renderedFrame=true;handler.removeCallbacks(timeout);cooldown.remove(selected)} }
+            override fun onRenderedFirstFrame() { if(player===p) {renderedFrame=true;pictureStatus.visibility=View.GONE;pictureProblem="";handler.removeCallbacks(timeout);cooldown.remove(selected);routes.getOrNull(route)?.let{prefs.edit().putString("healthy.${keys[selected]}.${it.first}",it.second).apply()}} }
             override fun onPlaybackStateChanged(state:Int) {
                 if(player!==p)return
                 if(state==Player.STATE_BUFFERING){handler.removeCallbacks(timeout);handler.postDelayed(timeout,20000)}
                 else if(state==Player.STATE_READY && renderedFrame)handler.removeCallbacks(timeout)
+                else if(state==Player.STATE_ENDED)nextRoute()
             }
         })
-        p.setMediaItem(MediaItem.fromUri(entry.second));p.prepare();p.playWhenReady=true;handler.postDelayed(timeout,20000)
+        p.setMediaItem(MediaItem.fromUri(url));p.prepare();p.playWhenReady=!paused;handler.postDelayed(timeout,20000)
     }
-    private fun nextRoute() { route++;playRoute() }
-    private fun refreshData() {
+    private fun pictureUnavailable(){
+        cancelSource();handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
+        pictureProblem="Picture unavailable · Sources to retry or choose another"
+        pictureStatus.text="${routes.getOrNull(route)?.first ?: names[selected]} is unavailable.\n\nYour information panels are still running.\nOK → Sources to retry or choose another picture."
+        pictureStatus.visibility=View.VISIBLE;cooldown[selected]=System.currentTimeMillis()+300000
+        if(++failureRounds<2)handler.postDelayed(retry,60000)
+        updateChrome()
+    }
+    private fun nextRoute() {
+        // Recovery stays on the same programme/camera. Another title is an explicit source choice.
+        if(routes.getOrNull(route+1)?.first==routes.getOrNull(route)?.first){route++;playRoute()}else pictureUnavailable()
+    }
+    private fun refreshData(force:Boolean=false) {
+        val token=generation
+        panels.refresh(keys[selected],force,cameraWeather()){id,result->handler.post{if(active && generation==token){panelData[id]=result;renderPanels()}}}
+        renderPanels()
+    }
+    private fun renderPanels() {
+        val groups=panelGroups()
+        groups.forEachIndexed{i,ids->
+            val choices=ids.mapNotNull{panelData[it]}
+            val data=if(choices.isEmpty())PersonalPanel(ids.first(),panels.specs[ids.first()]?.title ?: if(ids.first()=="library")"My Lists" else "Up next","My Channel",listOf(PersonalItem("Connecting…","Your picture plays independently."))) else choices[page.mod(choices.size)]
+            val index=(if(choices.size>1)page/choices.size else page)+(if(i>=3 && ids.any{it in groups.take(3).flatten()})1 else 0)
+            panelViews[i].show(data,index,chart=i==3)
+        }
+        val news=groups.take(3).flatten().distinct().mapNotNull{panelData[it]}.filter{panels.specs[it.id]?.kind=="rss"}
+        val items=news.flatMap{p->p.items.take(4).map{p.source+(if(p.stale)" [cached]" else "")+"  •  "+it.headline}}
+            .distinct().ifEmpty{panelData["library"]?.items?.map{it.headline}.orEmpty()+listOf("${names[selected]}  •  MENU for your mix, sources and information")}
+        ticker.setHeadlines(if(ticker.reducedMotion)items[page.mod(items.size)] else items.joinToString("      ◆      "))
+    }
+    private fun updateLocalPanels() {
         val token=generation;val domain=keys[selected]
-        dataJob=worker.submit {
-            val result=runCatching { PersonalFeedClient.snapshot(domain,prefs.getBoolean("context.$domain",true),prefs.getBoolean("headlines.$domain",true)){feedCall=it}.take(8000) }.getOrNull()
-            handler.post {
-                if(active && token==generation){
-                    if(result!=null){fetchFailures=0;info.text=result;prefs.edit().putString("cached.$domain",result).apply()}
-                    else {fetchFailures=(fetchFailures+1).coerceAtMost(4);info.text=prefs.getString("cached.$domain",null)?.let{"CACHED · refresh unavailable\n\n$it"} ?: "Information unavailable · retrying. Picture playback is independent."}
-                    handler.postDelayed(refresh,if(result!=null)300000L else (60000L shl fetchFailures).coerceAtMost(900000L))
-                }
-            }
+        if(domain=="world"){
+            val meta=videoMetadata[routes.getOrNull(route)?.first]
+            if(meta!=null)panelData["picture"]=PersonalPanel("picture","Your window",meta.optString("publisher"),listOf(PersonalItem(meta.getString("name"),meta.optString("description"),"Live camera · "+meta.optString("timezone"),meta.optString("page").ifBlank{routes[route].second})))
+        }
+        worker.submit {
+            val saved=PersonalQueue.saved(this)
+            val relevant=saved.lists.filter { l->if(domain=="classics")Regex("classic|comedy|british",RegexOption.IGNORE_CASE).containsMatchIn(l.name) else Regex("practical|homestead|outdoor|ranch|garden",RegexOption.IGNORE_CASE).containsMatchIn(l.name)}
+            val titles=relevant.flatMap{saved.listTitles(it.id,emptyList())}.distinctBy{it.key}.take(8)
+            val queue=saved.listTitles(PersonalQueue.ID,emptyList()).drop(prefs.getInt("queueCursor",0)).take(3)
+            val library=PersonalPanel("library","Your programme lists","My Lists",titles.map{PersonalItem(it.title,it.description.take(500),it.year?.toString().orEmpty())}.ifEmpty{listOf(PersonalItem("Your saved programmes","Open Up next & My Lists to choose a programme. Catalogue entries do not guarantee playback."))})
+            val next=PersonalPanel("rundown","Up next","Your mix",queue.map{PersonalItem(it.title,it.description.take(400),it.year?.toString().orEmpty())}.ifEmpty{listOf(PersonalItem(if(automatic)"Automatic mix · $interval minutes" else "Staying on this domain",pool.joinToString("  ·  "){names[it]}))})
+            handler.post{if(active && token==generation){panelData["library"]=library;panelData["rundown"]=next;renderPanels()}}
         }
     }
+    private fun updateClock(){
+        fun time(zone:String)=java.text.SimpleDateFormat("HH:mm",java.util.Locale.UK).apply{timeZone=java.util.TimeZone.getTimeZone(zone)}.format(java.util.Date())
+        val second=when(selected){0->"London "+time("Europe/London");1->videoMetadata[routes.getOrNull(route)?.first]?.let{it.optString("place")+" "+time(it.optString("timezone","UTC"))} ?: "UTC "+time("UTC");3->"UTC "+time("UTC");else->java.text.SimpleDateFormat("EEE d MMM",java.util.Locale.UK).format(java.util.Date())}
+        clock.text=time(java.util.TimeZone.getDefault().id)+" LOCAL  ·  "+second
+        if(pictureProblem.isNotBlank()){strip.text=pictureProblem;return}
+        if(automatic && deadline>0 && !paused && dialog==null){val seconds=((deadline-System.currentTimeMillis())/1000).coerceAtLeast(0);strip.text="${routes.getOrNull(route)?.first ?: names[selected]}   ·   ${if(seconds<=10) "Changing domain in ${seconds}s · OK → Stay" else "Your mix · next in ${seconds/60}m ${seconds%60}s"}"}
+    }
+    private fun showPanelDetails(card:PersonalCard){
+        if(dialog!=null)return
+        val opener=currentFocus;remaining=if(deadline>0)(deadline-System.currentTimeMillis()).coerceAtLeast(1000) else interval*60000L
+        handler.removeCallbacks(rotate);handler.removeCallbacks(hideControls);ticker.stop()
+        val text=PersonalStyle.label(this,18f).apply{this.text=card.detailText;setPadding(dp(24),dp(16),dp(24),dp(16))}
+        val scroll=ScrollView(this).apply{addView(text);isFocusable=true}
+        val d=AlertDialog.Builder(this).setTitle("Information · source & freshness").setView(scroll).setPositiveButton("Refresh"){_,_->refreshData(true)}.setNegativeButton("Back",null).create()
+        dialog=d;d.setOnDismissListener{dialog=null;scheduleRotation();showControls(opener);if(active)ticker.start()};d.show();d.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(PersonalStyle.background));scroll.requestFocus()
+    }
+    private fun showTickerDetails(){sheet("Ticker controls",listOf(if(ticker.held)"Resume scrolling" else "Pause scrolling","Reduced motion: ${if(ticker.reducedMotion)"On" else "Off"}","Slow / normal speed")){i->when(i){0->ticker.held=!ticker.held;1->{ticker.reducedMotion=!ticker.reducedMotion;prefs.edit().putBoolean("tickerReduced",ticker.reducedMotion).apply()};2->{ticker.speed=if(ticker.speed==32f)20f else 32f;prefs.edit().putFloat("tickerSpeed",ticker.speed).apply()}};renderPanels();ticker.invalidate()}}
     private fun saveSettings() {
         prefs.edit().putBoolean("auto",automatic).putString("pool",pool.joinToString(",")).putBoolean("shuffle",randomOrder).putInt("interval",interval).apply()
     }
     private fun updateChrome() {
         title.text="My Channel  /  ${names[selected]}"
         val pictureOnly=prefs.getBoolean("pictureOnly.${keys[selected]}",false)
-        cards.visibility=if(pictureOnly)View.GONE else View.VISIBLE
-        strip.visibility=if(pictureOnly)View.GONE else View.VISIBLE
-        strip.text="WATCHING  ${routes.getOrNull(route)?.first ?: names[selected]}    •    ${if(automatic) "YOUR MIX  ${if(randomOrder) "Shuffle" else "In order"} · ${interval}m" else "STAYING ON THIS"}"
-        footer.text="OK Controls    MENU Customise    HOLD OK Sources    BACK Guide"
+        cards.visibility=if(pictureOnly)View.GONE else View.VISIBLE;lower.visibility=cards.visibility
+        ticker.visibility=if(pictureOnly || !prefs.getBoolean("ticker",true))View.GONE else View.VISIBLE
+        ticker.reducedMotion=prefs.getBoolean("tickerReduced",false);ticker.speed=prefs.getFloat("tickerSpeed",32f)
+        if(ticker.visibility==View.VISIBLE && active && !paused)ticker.start() else ticker.stop()
+        strip.text="${routes.getOrNull(route)?.first ?: names[selected]}   ·   ${if(automatic) "Your mix · ${if(randomOrder) "Shuffle" else "In order"} · ${interval}m" else "Staying on this"}"
+        updateClock()
     }
     private fun showControls(focusView:View?=null) {
         controls.visibility=View.VISIBLE;footer.visibility=View.VISIBLE
@@ -184,15 +288,17 @@ class MyChannelActivity : Activity() {
         remaining=if(deadline>0)(deadline-System.currentTimeMillis()).coerceAtLeast(1000) else interval*60000L
         handler.removeCallbacks(rotate);handler.removeCallbacks(hideControls)
         val d=AlertDialog.Builder(this).setTitle(name).setItems(items.toTypedArray()){_,index-> handler.post{choose(index)} }.setNegativeButton("Back",null).create()
-        dialog=d
-        d.setOnDismissListener {dialog=null;scheduleRotation();showControls(opener)}
+        dialog=d; ticker.stop()
+        d.setOnDismissListener {dialog=null;scheduleRotation();showControls(opener);if(active)ticker.start()}
         d.show()
+        d.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(PersonalStyle.background))
+        d.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(PersonalStyle.mint)
     }
     private fun domains()=sheet("Choose your domain",names.mapIndexed {i,n->if(i==selected)"✓ $n" else n}){select(it)}
     private fun sources() {
         val names=routes.map{it.first}.distinct()
-        sheet("Picture / source · ${this.names[selected]}",names+"Try next route for this picture"){i->
-            if(i==names.size)nextRoute() else {failureRounds=0;route=routes.indexOfFirst{it.first==names[i]};prefs.edit().putString("source.${keys[selected]}",names[i]).apply();playRoute()}
+        sheet("Picture / source · ${this.names[selected]}",names+"Retry this picture (all its alternative routes)"){i->
+            if(i==names.size){failureRounds=0;route=routes.indexOfFirst{it.first==routes.getOrNull(route)?.first}.coerceAtLeast(0);playRoute()} else {failureRounds=0;route=routes.indexOfFirst{it.first==names[i]};prefs.edit().putString("source.${keys[selected]}",names[i]).apply();playRoute()}
         }
     }
     private fun autoMenu():Unit=sheet("Auto change",listOf("Auto: ${if(automatic) "On" else "Off"}","Included domains (${pool.size})","Order: ${if(randomOrder) "Shuffle without repeats" else "In order"}","Live picture interval: $interval minutes","Skip once","Stay on this")){i->
@@ -220,13 +326,13 @@ class MyChannelActivity : Activity() {
             if(i<7){pool=if(i in pool)pool-i else pool+i;if(pool.isEmpty()){pool=listOf(selected);automatic=false};rotation.reset();saveSettings();choosePool()}else{updateChrome();scheduleRotation()}
         }
     }
-    private fun information():Unit=sheet("Information & layout",listOf("${if(cards.visibility==View.VISIBLE) "Hide" else "Show"} information · picture only","Sources & freshness","Refresh information","Local weather / cameras","Headlines: ${if(prefs.getBoolean("headlines.${keys[selected]}",true)) "On" else "Off"}","Context readings: ${if(prefs.getBoolean("context.${keys[selected]}",true)) "On" else "Off"}")){i->
+    private fun information():Unit=sheet("Information & layout",listOf("${if(cards.visibility==View.VISIBLE) "Picture only" else "Broadcast layout · panels, ticker & clock"}","Sources & freshness","Refresh information","Ticker: ${if(prefs.getBoolean("ticker",true))"On" else "Off"}","Ticker speed / motion")){i->
         when(i){
             0->{prefs.edit().putBoolean("pictureOnly.${keys[selected]}",cards.visibility==View.VISIBLE).apply();updateChrome()}
-            1->sheet("Sources & freshness",listOf("Headlines: BBC / El País / NASA · publication source","Currencies: ECB · daily reference, not live prices","Space weather: NOAA · observation time in UTC","Live quotes / FTSE 100: not connected","Crucix / World Monitor: optional, not connected")){ }
-            2->{handler.removeCallbacks(refresh);dataJob?.cancel(true);feedCall?.cancel();refreshData()}
-            3->sheet("Local connections",listOf("No home location or private camera is assumed","AEMET needs an explicit area and source connection","Windy discovery needs an API connection","Space Live / Sen is available under World and Space")){ }
-            4,5->{val setting="${if(i==4) "headlines" else "context"}.${keys[selected]}";prefs.edit().putBoolean(setting,!prefs.getBoolean(setting,true)).remove("cached.${keys[selected]}").apply();info.text="Refreshing selected panels…";dataJob?.cancel(true);feedCall?.cancel();handler.removeCallbacks(refresh);refreshData()}
+            1->sheet("Sources & freshness",panelGroups().flatten().distinct().mapNotNull{panels.specs[it]}.map{spec->val data=panelData[spec.id];spec.source+" · "+spec.title+"\n"+(data?.let{"Fetched "+PersonalPanelParser.utc(it.fetchedAt)+(if(it.stale)" · cached / retrying" else "")} ?: "Connecting")+"\n"+spec.url}){}
+            2->refreshData(true)
+            3->{prefs.edit().putBoolean("ticker",!prefs.getBoolean("ticker",true)).apply();updateChrome()}
+            4->showTickerDetails()
         }
     }
     private fun lists() {
@@ -299,7 +405,7 @@ class MyChannelActivity : Activity() {
         if(keyCode in listOf(KeyEvent.KEYCODE_CHANNEL_UP,KeyEvent.KEYCODE_CHANNEL_DOWN)){setResult(RESULT_OK,Intent().putExtra("channelDelta",if(keyCode==KeyEvent.KEYCODE_CHANNEL_UP)1 else -1));finish();return true}
         if(keyCode==KeyEvent.KEYCODE_MENU){if(event.repeatCount==0)menu();return true}
         if(keyCode==KeyEvent.KEYCODE_DPAD_CENTER && event.repeatCount==1){sources();return true}
-        if(keyCode==KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE && event.repeatCount==0){if(!paused)remaining=(deadline-System.currentTimeMillis()).coerceAtLeast(1000);paused=!paused;player?.playWhenReady=!paused;if(!paused)player?.seekToDefaultPosition();scheduleRotation();strip.text=if(paused)"Paused · resuming live returns to the live edge" else "Live picture resumed";return true}
+        if(keyCode==KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE && event.repeatCount==0){if(!paused)remaining=(deadline-System.currentTimeMillis()).coerceAtLeast(1000);paused=!paused;if(paused)ticker.stop()else ticker.start();player?.playWhenReady=!paused;if(!paused)player?.seekToDefaultPosition();scheduleRotation();strip.text=if(paused)"Paused · resuming live returns to the live edge" else "Live picture resumed";return true}
         if(keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER,KeyEvent.KEYCODE_ENTER,KeyEvent.KEYCODE_DPAD_LEFT,KeyEvent.KEYCODE_DPAD_RIGHT,KeyEvent.KEYCODE_DPAD_UP,KeyEvent.KEYCODE_DPAD_DOWN)) {
             if(controls.visibility!=View.VISIBLE){showControls();return true}
             handler.removeCallbacks(hideControls);handler.postDelayed(hideControls,8000)

@@ -30,12 +30,13 @@ adb install -r "${preview_apks[0]}"
 adb install -r delivery/uk-tv-tests.apk
 adb logcat -c
 set +e
-adb shell am instrument -w -r -e class com.commercialoutcomes.uktelevision.BundledCatalogueTest,com.commercialoutcomes.uktelevision.GuideSmokeTest,com.commercialoutcomes.uktelevision.PrivacyStorageTest com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
+adb shell am instrument -w -r -e class com.commercialoutcomes.uktelevision.BundledCatalogueTest,com.commercialoutcomes.uktelevision.GuideSmokeTest,com.commercialoutcomes.uktelevision.PrivacyStorageTest,com.commercialoutcomes.uktelevision.PersonalBroadcastSmokeTest com.commercialoutcomes.uktelevision.preview.test/androidx.test.runner.AndroidJUnitRunner | tee delivery/instrumentation.log
 instrument_status=${PIPESTATUS[0]}
 adb logcat -d -s AndroidRuntime:E > delivery/android-crashes.log
-for name in guide options quick-guide playback-test my-channel; do
+for name in guide options quick-guide playback-test my-channel my-channel-business my-channel-world my-channel-spain my-channel-space my-channel-classics my-channel-practical my-channel-technology; do
   adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/$name.png" "delivery/$name.png"
 done
+adb pull "/sdcard/Android/data/com.commercialoutcomes.uktelevision.preview/files/my-channel-memory.log" delivery/my-channel-memory.log
 adb shell uiautomator dump /sdcard/final-ui.xml
 adb pull /sdcard/final-ui.xml delivery/final-ui.xml
 adb exec-out screencap -p > delivery/final-screen.png
