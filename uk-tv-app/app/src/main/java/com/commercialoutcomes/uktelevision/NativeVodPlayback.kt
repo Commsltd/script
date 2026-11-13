@@ -76,8 +76,9 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
         val token=++generation
         val http=OkHttpDataSource.Factory(PublicVodHttp.client).setUserAgent(agent)
             .setDefaultRequestProperties(PublicVodHttp.referer(page)?.let { mapOf("Referer" to it) } ?: emptyMap())
-        val buffer=DefaultLoadControl.Builder().setBufferDurationsMs(15000,45000,1500,4000)
-            .setTargetBufferBytes(24*1024*1024).setPrioritizeTimeOverSizeThresholds(false).build()
+        val personalQueue=!activity.intent.getStringExtra("personal-queue-key").isNullOrBlank()
+        val buffer=DefaultLoadControl.Builder().setBufferDurationsMs(if(personalQueue)5000 else 15000,if(personalQueue)15000 else 45000,1500,4000)
+            .setTargetBufferBytes((if(personalQueue)8 else 24)*1024*1024).setPrioritizeTimeOverSizeThresholds(false).build()
         val exo=ExoPlayer.Builder(activity,DefaultRenderersFactory(activity).setEnableDecoderFallback(true))
             .setMediaSourceFactory(DefaultMediaSourceFactory(http)).setLoadControl(buffer).build()
         player=exo;lastPosition=position;diagnostic="Native player preparing"
@@ -98,7 +99,9 @@ class NativeVodPlayback(private val activity:ComponentActivity,private val root:
             }}
             override fun onPlayerError(error:PlaybackException){if(generation==token){diagnostic="Native playback: ${error.errorCodeName}";rejected.add(candidate);returnToWeb(true)}}
         })
-        exo.setMediaItem(MediaItem.fromUri(url));exo.seekTo(position);exo.prepare();exo.play()
+        val queueKey=activity.intent.getStringExtra("personal-queue-key")
+        val resume=queueKey?.let { activity.getSharedPreferences("vod-progress",0).getLong("queue-position.$it",position) } ?: position
+        exo.setMediaItem(MediaItem.fromUri(url));exo.seekTo(resume);exo.prepare();exo.play()
         watchdog=activity.lifecycleScope.launch{delay(20000);if(generation==token&&(exo.videoDecoderCounters?.renderedOutputBufferCount?:0)==0){rejected.add(candidate);returnToWeb(true)}}
     }
     fun returnToWeb(resume:Boolean=true, ready:()->Unit={}) {

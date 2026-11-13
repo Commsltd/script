@@ -1,0 +1,50 @@
+{
+  "status": "Design contracts only; endpoints not deployed",
+  "channel": {
+    "id": "personal.my-channel",
+    "kind": "personal_channel",
+    "name": "My Channel",
+    "placement": "after existing priority broadcasters in Main UK",
+    "preset": "business",
+    "layout": "picture_and_information",
+    "sourceRef": {"kind": "existing_station", "stationId": "BloombergTV.us@US"},
+    "panels": ["currency_reference", "selected_headlines"],
+    "rotation": {
+      "enabled": false,
+      "scope": "selected_presets",
+      "items": ["business", "world", "spain", "space"],
+      "order": "shuffle_bag",
+      "liveIntervalSeconds": 900,
+      "vodBoundary": "episode_end",
+      "avoidImmediateRepeat": true,
+      "pauseWhenControlsOpen": true,
+      "pauseWhenBackgrounded": true
+    }
+  },
+  "feedEnvelopeExample": {
+    "feedId": "weather.local",
+    "status": "not_configured",
+    "source": {"name": "AEMET", "sourceUrl": "https://opendata.aemet.es/"},
+    "observedAt": null,
+    "publishedAt": null,
+    "fetchedAt": null,
+    "validUntil": null,
+    "cadenceSeconds": 900,
+    "items": [],
+    "reason": "Explicit location and API key required"
+  },
+  "cameraContract": {
+    "id": "stable registry identity, never a signed URL",
+    "typeEnum": ["live_video", "periodic_image", "timelapse", "replay"],
+    "required": ["name", "publisher", "country", "timezone", "attribution", "type", "status"],
+    "optional": ["latitude", "longitude", "capturedAt", "periodStart", "periodEnd"],
+    "route": {"resolutionStrategy": "provider_adapter", "expiresAt": null, "playbackVerifiedAt": null, "testRegion": null},
+    "healthEnum": ["not_configured", "unverified", "available", "stale", "offline", "access_refused", "geo_restricted_confirmed"]
+  },
+  "queueContract": {
+    "contentIdentity": ["seriesId", "season", "episode", "providerTitleRefs"],
+    "preferences": ["excludedProviders", "minimumQuality", "audioLanguage", "subtitles"],
+    "progress": ["positionMs", "completedAt"],
+    "failureRule": "try eligible route for same episode; never silently substitute another episode"
+  }
+}

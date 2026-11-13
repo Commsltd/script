@@ -1,0 +1,158 @@
+{
+  "business": {
+    "video": [
+      {
+        "name": "Bloomberg Europe",
+        "urls": [
+          "https://bloomberg.com/media-manifest/streams/eu.m3u8"
+        ]
+      },
+      {
+        "name": "Bloomberg Originals",
+        "urls": [
+          "https://jmp2.uk/stvp-USAJ30000041W"
+        ]
+      }
+    ],
+    "data": [
+      "fx",
+      "business"
+    ]
+  },
+  "world": {
+    "video": [
+      {
+        "name": "Space Live / Sen \u2014 Earth view",
+        "urls": [
+          "https://linear-1224.frequency.stream/dist/lg-uk/1224/hls/master/playlist.m3u8",
+          "https://d111bsx9oooqoh.cloudfront.net/playlist.m3u8"
+        ]
+      },
+      {
+        "name": "Adventure Earth",
+        "urls": [
+          "https://a57e9c69976649b582a8d7604c00e69a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AdventureEarth/playlist.m3u8",
+          "https://autentic-adventure-earth-1-eu.rakuten.wurl.tv/playlist.m3u8",
+          "https://autentic-adventure-earth-1-gb.samsung.wurl.tv/playlist.m3u8"
+        ]
+      }
+    ],
+    "data": [
+      "world"
+    ]
+  },
+  "spain": {
+    "video": [
+      {
+        "name": "Canal Sur Andaluc\u00eda",
+        "urls": [
+          "https://dfk2a268yviz9.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-ddiii1m6jt6of/CanalSurAndaluciaES.m3u8",
+          "https://jmp2.uk/stvp-ESBD3000002GP"
+        ]
+      },
+      {
+        "name": "Canal Sur M\u00e1s Noticias",
+        "urls": [
+          "https://rtva-channel42.flumotion.cloud/playlist.m3u8"
+        ]
+      }
+    ],
+    "data": [
+      "spain"
+    ]
+  },
+  "space": {
+    "video": [
+      {
+        "name": "Space Live / Sen",
+        "urls": [
+          "https://linear-1224.frequency.stream/dist/lg-uk/1224/hls/master/playlist.m3u8",
+          "https://d111bsx9oooqoh.cloudfront.net/playlist.m3u8"
+        ]
+      }
+    ],
+    "data": [
+      "kp",
+      "space"
+    ]
+  },
+  "classics": {
+    "video": [
+      {
+        "name": "Mr Bean \u2014 Live Action",
+        "urls": [
+          "https://amg00627-amg00627c39-samsung-gb-5569.playouts.now.amagi.tv/playlist.m3u8"
+        ]
+      },
+      {
+        "name": "Mr Bean \u2014 Animated",
+        "urls": [
+          "https://amg00627-amg00627c23-samsung-gb-3927.playouts.now.amagi.tv/playlist.m3u8"
+        ]
+      }
+    ],
+    "data": [
+      "classics"
+    ]
+  },
+  "practical": {
+    "video": [
+      {
+        "name": "Garden Rescue",
+        "urls": [
+          "https://jmp2.uk/stvp-GB1200010DG"
+        ]
+      },
+      {
+        "name": "Tiny House Nation",
+        "urls": [
+          "https://jmp2.uk/stvp-GB2400006I0",
+          "https://jmp2.uk/plu-601a0342dcf4370007566891.m3u8"
+        ]
+      },
+      {
+        "name": "Top Gear",
+        "urls": [
+          "https://jmp2.uk/plu-620234d766314700075cac86.m3u8",
+          "https://d1daq1khzqxpku.cloudfront.net/playlist.m3u8"
+        ]
+      },
+      {
+        "name": "Adventure Earth",
+        "urls": [
+          "https://a57e9c69976649b582a8d7604c00e69a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RlaxxTV-eu_AdventureEarth/playlist.m3u8",
+          "https://autentic-adventure-earth-1-eu.rakuten.wurl.tv/playlist.m3u8",
+          "https://autentic-adventure-earth-1-gb.samsung.wurl.tv/playlist.m3u8"
+        ]
+      }
+    ],
+    "data": [
+      "practical"
+    ]
+  },
+  "technology": {
+    "video": [
+      {
+        "name": "Modern Marvels \u2014 engineering",
+        "urls": [
+          "https://jmp2.uk/stvp-GB2700009R7"
+        ]
+      },
+      {
+        "name": "Bloomberg Europe",
+        "urls": [
+          "https://bloomberg.com/media-manifest/streams/eu.m3u8"
+        ]
+      },
+      {
+        "name": "Bloomberg Originals \u2014 business & technology",
+        "urls": [
+          "https://jmp2.uk/stvp-USAJ30000041W"
+        ]
+      }
+    ],
+    "data": [
+      "technology"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+name: Refresh My Channel information
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: personal-channel-information
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Collect bounded public snapshots
+        env:
+          PERSONAL_FEED_DIR: ${{ runner.temp }}/personal
+        run: |
+          mkdir -p "$PERSONAL_FEED_DIR"
+          curl -fsSL --max-time 15 https://raw.githubusercontent.com/Commsltd/script/uk-tv-personal-data/feeds.json -o "$PERSONAL_FEED_DIR/feeds.json" || true
+          python3 uk-tv-app/tools/personal_feed_snapshot.py
+      - name: Publish public data only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan personal-publish
+          git rm -rf . >/dev/null
+          cp "$RUNNER_TEMP/personal/feeds.json" .
+          git add feeds.json
+          git commit -m 'Refresh dated public My Channel information'
+          git push --force origin HEAD:uk-tv-personal-data

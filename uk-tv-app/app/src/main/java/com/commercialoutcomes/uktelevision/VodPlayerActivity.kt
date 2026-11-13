@@ -293,6 +293,7 @@ class VodPlayerActivity : ComponentActivity() {
     private fun showServices() {
         if(webFailed||servicesDialog?.isShowing==true)return
         val labels=buildList {
+            if(!intent.getStringExtra("personal-queue-key").isNullOrBlank())add("Next queued programme")
             if(provider in setOf(VodProvider.MOVY,VodProvider.DULO))add("Change stream · poor copy or buffering")
             if(provider==VodProvider.MOVY)add("Picture quality")
             if(duloSeries()!=null)add("Choose season / episode")
@@ -308,6 +309,7 @@ class VodPlayerActivity : ComponentActivity() {
                 "Change stream · poor copy or buffering" -> changeStream()
                 "Picture quality" -> changeQuality()
                 "Choose season / episode" -> chooseEpisode()
+                "Next queued programme" -> {setResult(RESULT_OK);finish()}
                 "Sound on" -> soundOn()
                 "Choose another provider" -> chooseProvider()
                 "Consent choices" -> consentControls?.check()
@@ -345,8 +347,20 @@ class VodPlayerActivity : ComponentActivity() {
         }
         return super.onKeyDown(keyCode,event)
     }
+    private val queueMonitor=object:Runnable {
+        override fun run() {
+            val key=intent.getStringExtra("personal-queue-key") ?: return
+            val p=nativePlayback?.player
+            if(p!=null){
+                if(p.playbackState==androidx.media3.common.Player.STATE_ENDED){getSharedPreferences("vod-progress",MODE_PRIVATE).edit().remove("queue-position.$key").apply();setResult(RESULT_OK,android.content.Intent().putExtra("personal-ended",true));finish();return}
+                if(p.currentPosition>0)getSharedPreferences("vod-progress",MODE_PRIVATE).edit().putLong("queue-position.$key",p.currentPosition).apply()
+            }
+            // Providers without a native completion event require explicit Next; never infer end from buffering or an advert.
+            handler.postDelayed(this,5000)
+        }
+    }
     override fun onPause() { consentControls?.close();qualityControls?.close();streamControls?.close();handler.removeCallbacksAndMessages(null);tubiControls?.pause();nativePlayback?.pause();if(::web.isInitialized&&!webFailed)web.onPause(); super.onPause() }
-    override fun onResume() { super.onResume();qualityControls?.resume();if(provider==VodProvider.PLEX&&!webFailed)consentControls?.start();tubiControls?.resume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
+    override fun onResume() { super.onResume();if(!intent.getStringExtra("personal-queue-key").isNullOrBlank())handler.postDelayed(queueMonitor,5000);qualityControls?.resume();if(provider==VodProvider.PLEX&&!webFailed)consentControls?.start();tubiControls?.resume();nativePlayback?.resume();if(::web.isInitialized&&!webFailed)web.onResume() }
     override fun onStop() { nativePlayback?.background(); super.onStop() }
     override fun onDestroy() { consentControls?.close();streamControls?.close();qualityControls?.close();tubiControls?.close();if(!webFailed)nativePlayback?.close();handler.removeCallbacksAndMessages(null); closeFullscreen(); if(::web.isInitialized&&!webFailed){ root.removeView(web); web.stopLoading(); web.destroy() }; super.onDestroy() }
 }

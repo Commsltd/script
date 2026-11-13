@@ -64,6 +64,9 @@ fun parseSources(array: JSONArray): List<StreamSource> = (0 until array.length()
 
 @Dao
 interface TvDao {
+    @Query("SELECT p.* FROM programmes p INNER JOIN stations s ON s.id=p.channelId WHERE s.name=:name AND p.stop>:now ORDER BY p.start LIMIT 3")
+    suspend fun personalNowNext(name:String,now:Long):List<Programme>
+
     @Query("SELECT * FROM stations ORDER BY sortOrder") fun stations(): Flow<List<Station>>
     @Query("SELECT * FROM programmes ORDER BY start") fun programmes(): Flow<List<Programme>>
     @Query("""SELECT * FROM programmes WHERE
