@@ -91,11 +91,11 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
         when(domain){
             "business"->{
                 list(rundown,"IN FOCUS · BUSINESS",entries("brief",body=true),1,true)
-                list(agenda,"CURRENCY PERSPECTIVE",entries("context",body=true),2,true)
+                if(page%2==0)list(agenda,"NEXT · UK ECONOMIC CALENDAR",entries("calendar",body=true),3,true) else list(agenda,"CURRENCY PERSPECTIVE",entries("context",body=true),2,true)
                 list(bulletin,"POLICY & ECONOMIC BULLETINS",entries("boe","releases",body=true),1,true)
-                railTitle.text="CURRENCIES · DAILY";data["fx"]?.let{p->metricItems=p.items.take(5).map{p to it}}
+                railTitle.text="MARKETS & CURRENCIES";metricItems=listOf("ftse","sp500","ibex").mapNotNull{id->data[id]?.takeIf{it.available}?.let{it to it.items.first()}};data["fx"]?.let{p->metricItems+=p.items.take(2).map{p to it}}
                 bandTexts[0].text="REFERENCE  /  ${data["fx"]?.items?.firstOrNull()?.observed ?: "CONNECTING"}"
-                bandTexts[1].text="ECB  ·  DAILY CHANGE";bandTexts[2].text="30 OBSERVATIONS  ·  FX HISTORY"
+                bandTexts[1].text="INDICES · DELAYED QUOTES";bandTexts[2].text="FX · DAILY ECB REFERENCE"
             }
             "world"->{
                 list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
@@ -113,13 +113,13 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
             "spain"->{
                 list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
                 list(agenda,"ALSO IN SPAIN",entries("spain-rtve",body=true),2,true)
-                list(bulletin,"ANDALUCÍA · CONDITIONS",entries("seville",body=true),1,true)
+                list(bulletin,"AEMET · SPAIN WARNINGS",entries("aemet",body=true),1,true)
                 railTitle.text="MADRID · FORECAST";data["madrid"]?.let{p->metricItems=p.items.map{p to it}}
                 bandTexts[0].text="MADRID · "+(data["madrid"]?.items?.firstOrNull()?.headline ?: "CONNECTING");bandTexts[1].text="SEVILLE · "+(data["seville"]?.items?.firstOrNull()?.headline ?: "CONNECTING");bandTexts[2].text="WEATHER · OPEN-METEO"
             }
             "space"->{
                 list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
-                list(agenda,"EARTH WATCH / USGS",entries("quakes"),2)
+                list(agenda,"NEXT · SPACE LAUNCHES",entries("launches",body=true),2,true)
                 val position=data["iss"]?.items.orEmpty()
                 locationMap.position(position.find{it.metric=="LATITUDE"}?.number?.toDoubleOrNull(),position.find{it.metric=="LONGITUDE"}?.number?.toDoubleOrNull(),"ISS · "+(position.firstOrNull()?.observed ?: "CONNECTING"))
                 list(bulletin,"ORBITAL CONDITIONS",entries("iss").take(1),1)
@@ -132,7 +132,8 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
                 list(rundown,"NOW WATCHING",entries("onair",body=true).take(1),1,true)
                 list(agenda,"DISCOVER FROM MY LISTS",entries("library",body=true),2,true)
                 list(bulletin,"YOUR PROGRAMMING",entries("rundown",body=true),1,true)
-                railTitle.text="YOUR NEXT PROGRAMMES";data["rundown"]?.let{p->metricItems=p.items.map{p to it}}
+                railTitle.text="ON THIS CHANNEL · NEXT";data["onair"]?.let{p->metricItems=p.items.drop(1).map{p to it}}
+                if(metricItems.isEmpty())data["rundown"]?.let{p->metricItems=p.items.map{p to it}}
                 bandTexts[0].text="BRITISH COMEDY & DRAMA";bandTexts[1].text="MY LISTS · YOUR SAVED PROGRAMMES";bandTexts[2].text="REFERENCE · TVMAZE / CC BY-SA"
             }
             "practical"->{
@@ -145,9 +146,9 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
             else->{
                 list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
                 list(agenda,"RESEARCH · WHAT THE PAPER STUDIES",entries("research",body=true),2,true)
-                list(bulletin,"TOOL UPDATE · RELEASE NOTES",entries("github-releases","node-releases","ollama-releases","media3-releases",body=true),1,true)
+                list(bulletin,"TOOL UPDATE · RELEASE NOTES",entries("ollama-releases","node-releases","media3-releases",body=true),1,true)
                 railTitle.text="RELEASE WATCH"
-                metricItems=listOf("github-releases" to "VS CODE","node-releases" to "NODE.JS","ollama-releases" to "OLLAMA","media3-releases" to "ANDROID MEDIA3").mapNotNull{(id,label)->data[id]?.let{p->p to p.items.first().copy(metric=label,number=p.items.first().headline)}}
+                metricItems=listOf("github-releases" to "VS CODE","node-releases" to "NODE.JS","ollama-releases" to "OLLAMA","media3-releases" to "ANDROID MEDIA3").mapNotNull{(id,label)->data[id]?.let{p->p to p.items.first().copy(metric=label,number=p.items.first().headline,body=p.items.first().observed)}}
                 bandTexts[0].text="TECHNOLOGY & AI";bandTexts[1].text="RESEARCH · arXiv cs.AI";bandTexts[2].text="RELEASES · OFFICIAL GITHUB"
             }
         }
@@ -189,21 +190,21 @@ class BroadcastRundown(context:Context,private val details:(String)->Unit):Linea
     }
 }
 class BroadcastMetric(context:Context,private val details:(String)->Unit):LinearLayout(context){
-    private val label=PersonalStyle.label(context,10f,PersonalStyle.mint)
-    private val value=PersonalStyle.label(context,20f).apply{typeface=Typeface.create("sans-serif-condensed",Typeface.BOLD);maxLines=2}
-    private val change=PersonalStyle.label(context,11f)
+    private val label=PersonalStyle.label(context,9f,PersonalStyle.mint)
+    private val value=PersonalStyle.label(context,18f).apply{includeFontPadding=false;typeface=Typeface.create("sans-serif-condensed",Typeface.BOLD);maxLines=2}
+    private val change=PersonalStyle.label(context,9f).apply{includeFontPadding=false}
     private val chart=PersonalSparkline(context)
-    private val note=PersonalStyle.label(context,9f,PersonalStyle.muted).apply{maxLines=3}
+    private val note=PersonalStyle.label(context,8f,PersonalStyle.muted).apply{includeFontPadding=false;maxLines=2}
     private var text=""
-    init{orientation=VERTICAL;setPadding(d(6),d(5),d(6),d(3));background=PersonalStyle.focusBackground(context);isFocusable=true;isClickable=true;addView(label);addView(value);addView(change);addView(chart,LayoutParams(-1,0,1f));addView(note);setOnClickListener{details(text)}}
+    init{orientation=VERTICAL;setPadding(d(6),d(2),d(6),d(2));background=PersonalStyle.focusBackground(context);isFocusable=true;isClickable=true;addView(label);addView(value);addView(change);addView(chart,LayoutParams(-1,0,1f));addView(note);setOnClickListener{details(text)}}
     private fun d(n:Int)=PersonalStyle.dp(context,n)
     fun bind(p:PersonalPanel?,i:PersonalItem?){
         label.text=i?.metric?.ifBlank{p?.title?.uppercase(Locale.ROOT)} ?: "DATA FEED"
-        value.text=i?.number?.ifBlank{i.headline} ?: "Connecting…";value.textSize=if(i?.number?.isNotBlank()==true)20f else 14f
+        value.text=i?.number?.ifBlank{i.headline} ?: "Connecting…";value.textSize=if(i?.number?.isNotBlank()==true)18f else 14f
         val delta=i?.change;change.visibility=if(delta==null)GONE else VISIBLE
-        if(delta!=null){change.text=String.format(Locale.UK,"%+.2f%%  daily",delta);change.setTextColor(if(delta>=0)Color.rgb(65,214,156)else Color.rgb(255,100,91))}
+        if(delta!=null){change.text=String.format(Locale.UK,"%+.2f%%  %s",delta,if(p?.id in setOf("ftse","sp500","ibex"))"vs prior close" else "daily");change.setTextColor(if(delta>=0)Color.rgb(65,214,156)else Color.rgb(255,100,91))}
         chart.visibility=if((i?.history?.size ?: 0)>1)VISIBLE else GONE;if(chart.visibility==VISIBLE)chart.setPoints(i!!.history)
-        note.text=if(i?.history?.isNotEmpty()==true)i.observed else i?.body?.ifBlank{i.observed} ?: "";note.visibility=if(note.text.isBlank() || i?.history?.isNotEmpty()==true)GONE else VISIBLE
+        note.text=if(i?.history?.isNotEmpty()==true)i.observed else i?.body?.ifBlank{i.observed} ?: "";note.visibility=if(note.text.isBlank())GONE else VISIBLE
         text=(i?.headline ?: "Connecting")+"\n\n"+(i?.body ?: "")+"\n\n"+(p?.source ?: "")+" · "+(i?.observed ?: "")+"\n"+(i?.url ?: "")
         contentDescription=text
     }

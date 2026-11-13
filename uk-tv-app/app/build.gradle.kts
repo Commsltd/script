@@ -11,8 +11,8 @@ android {
         applicationId = "com.commercialoutcomes.uktelevision"
         minSdk = 23
         targetSdk = 35
-        versionCode = 22
-        versionName = "0.9.12"
+        versionCode = 23
+        versionName = "0.9.13"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appLabel"] = "UK Television"
     }

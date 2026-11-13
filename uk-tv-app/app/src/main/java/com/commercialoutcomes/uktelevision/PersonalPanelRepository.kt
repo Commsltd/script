@@ -46,7 +46,7 @@ class PersonalPanelRepository(context:Context) : AutoCloseable {
                     loaded=runCatching {
                         val from=java.text.SimpleDateFormat("yyyy-MM-dd",java.util.Locale.UK).apply{timeZone=java.util.TimeZone.getTimeZone("UTC")}.format(java.util.Date(System.currentTimeMillis()-90L*86400000))
                         val url=candidate.url.replace("{from90}",from)
-                        val call=client.newCall(Request.Builder().url(url).header("User-Agent","UKTelevision/0.9.12 personal-channel").build());calls.add(call)
+                        val call=client.newCall(Request.Builder().url(url).header("User-Agent","UKTelevision/0.9.13 personal-channel").build());calls.add(call)
                         if(token!=generation){call.cancel();calls.remove(call);return@submit}
                         val raw=try{call.execute().use{r->check(r.isSuccessful){"HTTP ${r.code}"};r.body!!.byteStream().use{it.readBounded(524288)}.toString(Charsets.UTF_8)}}finally{calls.remove(call)}
                         PersonalPanelParser.parse(candidate.copy(url=url),raw)

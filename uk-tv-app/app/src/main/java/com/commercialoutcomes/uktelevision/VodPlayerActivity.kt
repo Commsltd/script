@@ -352,7 +352,7 @@ class VodPlayerActivity : ComponentActivity() {
             val key=intent.getStringExtra("personal-queue-key") ?: return
             val p=nativePlayback?.player
             if(p!=null){
-                if(p.playbackState==androidx.media3.common.Player.STATE_ENDED){getSharedPreferences("vod-progress",MODE_PRIVATE).edit().remove("queue-position.$key").apply();setResult(RESULT_OK);finish();return}
+                if(p.playbackState==androidx.media3.common.Player.STATE_ENDED){getSharedPreferences("vod-progress",MODE_PRIVATE).edit().remove("queue-position.$key").apply();setResult(RESULT_OK,android.content.Intent().putExtra("personal-ended",true));finish();return}
                 if(p.currentPosition>0)getSharedPreferences("vod-progress",MODE_PRIVATE).edit().putLong("queue-position.$key",p.currentPosition).apply()
             }
             // Providers without a native completion event require explicit Next; never infer end from buffering or an advert.

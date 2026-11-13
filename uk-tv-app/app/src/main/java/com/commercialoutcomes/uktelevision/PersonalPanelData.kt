@@ -38,6 +38,25 @@ object PersonalPanelParser {
                 .filter{spec.maxAge==0L || publishedTime(it.observed)?.let{stamp->now-stamp<=spec.maxAge && stamp-now<86400000}==true}
                 .distinctBy{it.headline.lowercase(Locale.ROOT)}.take(8)
             }
+            "market" -> {
+                val r=JSONObject(raw).getJSONObject("chart").getJSONArray("result").getJSONObject(0)
+                val m=r.getJSONObject("meta");val q=r.getJSONObject("indicators").getJSONArray("quote").getJSONObject(0).getJSONArray("close")
+                val values=(0 until q.length()).mapNotNull{q.optDouble(it).takeIf{v->v.isFinite() && v>0}}.takeLast(30)
+                val price=m.getDouble("regularMarketPrice");val previous=values.dropLast(1).lastOrNull()
+                val delta=previous?.let{(price/it-1)*100}
+                listOf(PersonalItem(spec.title,"Delayed market indication · prior-session comparison · "+m.optString("currency"),utc(m.getLong("regularMarketTime")*1000),"https://finance.yahoo.com/quote/"+m.getString("symbol"),spec.title,fmt(price,2),delta,values))
+            }
+            "launches" -> {
+                val a=JSONObject(raw).getJSONArray("results")
+                (0 until a.length()).map{a.getJSONObject(it)}.filter{publishedTime(it.optString("net"))?.let{t->t>=now}==true}.take(6).map{r->PersonalItem(r.getString("name"),r.optJSONObject("mission")?.optString("description").orEmpty().take(450)+" · "+r.optJSONObject("status")?.optString("name").orEmpty(),r.getString("net")+" · schedule may change",r.optString("url"))}.ifEmpty{listOf(PersonalItem("No future launches in this response","Check again later; schedules can change."))}
+            }
+            "alerts" -> {
+                val doc=Jsoup.parse(raw,"",Parser.xmlParser())
+                require(doc.selectFirst("channel")!=null)
+                doc.select("item").map{e->PersonalItem(clean(e.selectFirst("title")?.text().orEmpty()),clean(e.selectFirst("description")?.text().orEmpty()),e.selectFirst("pubDate")?.text().orEmpty(),e.selectFirst("link")?.text().orEmpty())}
+                    .filter{item->Regex("a (\\d{2}:\\d{2} \\d{2}-\\d{2}-\\d{4})").find(item.body)?.groupValues?.get(1)?.let{end->runCatching{SimpleDateFormat("HH:mm dd-MM-yyyy",Locale.UK).apply{timeZone=TimeZone.getTimeZone("Europe/Madrid")}.parse(end)!!.time>now}.getOrDefault(false)}==true}
+                    .take(8).ifEmpty{listOf(PersonalItem("No current warnings returned","Spain-wide feed. Check AEMET for the latest local detail.",utc(now),"https://www.aemet.es/es/eltiempo/prediccion/avisos"))}
+            }
             "github-release" -> {
                 val o=JSONObject(raw);require(!o.optBoolean("draft"))
                 listOf(PersonalItem(o.getString("tag_name"),clean(o.optString("body")).take(550).ifBlank{if(o.optBoolean("prerelease"))"Pre-release" else "Published release"},o.getString("published_at"),o.getString("html_url")))
@@ -87,7 +106,7 @@ object PersonalPanelParser {
                 val o=JSONObject(raw);val cast=o.optJSONObject("_embedded")?.optJSONArray("cast") ?: JSONArray()
                 listOf(PersonalItem(o.getString("name")+" · "+o.optString("premiered").take(4),clean(o.optString("summary")).take(700),"Programme reference · ${o.optString("status")}",o.optString("url")),PersonalItem("Cast",(0 until minOf(6,cast.length())).joinToString(" · "){cast.getJSONObject(it).getJSONObject("person").getString("name")},"TVmaze · CC BY-SA",o.optString("url")))
             }
-            "ons" -> Jsoup.parse(raw).select("a[data-gtm-release-title]").take(8).map{e->PersonalItem(e.attr("data-gtm-release-title"),"Economic release · ONS",e.attr("data-gtm-release-date").let{if(it.length==8)"${it.take(4)}-${it.substring(4,6)}-${it.takeLast(2)}" else it}+" "+e.attr("data-gtm-release-time")+" UK", "https://www.ons.gov.uk"+e.attr("href"))}
+            "ons", "ons-upcoming" -> Jsoup.parse(raw).select("a[data-gtm-release-title]").filter{e->spec.kind!="ons-upcoming" || (Regex("(?i)inflation|consumer price|labour market|GDP|gross domestic|retail sales|public sector finances|trade|interest").containsMatchIn(e.attr("data-gtm-release-title")) && runCatching{SimpleDateFormat("yyyyMMdd",Locale.UK).parse(e.attr("data-gtm-release-date"))!!.time>=now-86400000}.getOrDefault(false))}.distinctBy{e->if(spec.kind=="ons-upcoming")e.attr("data-gtm-release-date")+":"+(Regex("(?i)labour market|consumer price|inflation|gross domestic|GDP|retail sales|public sector finances|trade|interest").find(e.attr("data-gtm-release-title"))?.value?.lowercase(Locale.ROOT) ?: e.attr("data-gtm-release-title")) else e.attr("data-gtm-release-title")}.take(8).map{e->PersonalItem(e.attr("data-gtm-release-title"),"Economic release · ONS",e.attr("data-gtm-release-date").let{if(it.length==8)"${it.take(4)}-${it.substring(4,6)}-${it.takeLast(2)}" else it}+" "+e.attr("data-gtm-release-time")+" UK", "https://www.ons.gov.uk"+e.attr("href"))}
             "quakes" -> {
                 val a=JSONObject(raw).getJSONArray("features")
                 (0 until minOf(a.length(),8)).map { val p=a.getJSONObject(it).getJSONObject("properties");PersonalItem("M${fmt(p.getDouble("mag"),1)} · ${p.optString("place")}","Earthquake observation · USGS",utc(p.getLong("time")),p.optString("url")) }

@@ -163,16 +163,12 @@ class GuideSmokeTest {
             device.takeScreenshot(File(directory, "options.png"))
             // Exercise the TV remote path rather than tapping the Leanback list.
             device.waitForIdle()
-            val favouriteAction = By.textContains("Add favourite").selected(true)
-            var selected = device.wait(Until.hasObject(favouriteAction), 500)
-            var moves = 0
-            // ListView accessibility selection can arrive after waitForIdle().
-            // Observe each move before sending another remote key.
-            while (!selected && moves++ < 8) {
-                device.pressDPadDown()
-                selected = device.wait(Until.hasObject(favouriteAction), 1000)
-            }
-            assertTrue("Favourite action was not selected", selected)
+            // Anchor the native list at its first row. Android TV and the
+            // phone emulator expose row selection differently to accessibility.
+            // The observable result below remains the actual saved favourite.
+            repeat(12){device.pressDPadUp()}
+            device.pressDPadDown() // On Demand
+            device.pressDPadDown() // Add favourite
             device.pressDPadCenter()
             eventually {
                 var favourite = false

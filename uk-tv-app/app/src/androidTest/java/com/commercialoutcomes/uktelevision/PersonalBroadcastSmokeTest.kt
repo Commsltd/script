@@ -15,6 +15,39 @@ import java.io.File
 /** Real native TV layout, all seven modes, rapid changes and background cleanup. */
 @RunWith(AndroidJUnit4::class)
 class PersonalBroadcastSmokeTest {
+    @Test fun personalMixPersistsAndOnlyCompletionMarksWatched() {
+        val context=InstrumentationRegistry.getInstrumentation().targetContext
+        val library=context.getSharedPreferences("vod-library",0)
+        val progress=context.getSharedPreferences("vod-progress",0)
+        val settings=context.getSharedPreferences("my-channel",0)
+        val oldMigration=library.getBoolean(BritishClassics.MIGRATION,false)
+        val oldSaved=library.getString("saved",null);val oldProviders=library.getString("providers",null)
+        val oldCompleted=progress.getStringSet("personal-completed",emptySet()).orEmpty().toSet()
+        val film=VodTitle("Personal programme test",2026,"movie","",sources=listOf(VodSource(VodProvider.MOVY,"https://www.movy.sx/movie/1")))
+        val saved=VodSaved(listOf(film),lists=listOf(VodList("test-classics","British classics",setOf(film.key))))
+        library.edit().putString("saved",VodSavedCodec.encode(saved)).putBoolean(BritishClassics.MIGRATION,true).remove("providers").commit()
+        settings.edit().putInt("preset",4).putBoolean("auto",false).putBoolean("queueAuto",false).putInt("queueCursor",0).commit()
+        try {
+            ActivityScenario.launch(MyChannelActivity::class.java).use { scenario ->
+                scenario.onActivity{a->MyChannelActivity::class.java.getDeclaredMethod("buildProgrammeMix").apply{isAccessible=true}.invoke(a)}
+                val deadline=System.currentTimeMillis()+10000
+                while(PersonalQueue.saved(context).listTitles(PersonalQueue.ID,emptyList()).isEmpty() && System.currentTimeMillis()<deadline)Thread.sleep(100)
+                assertEquals(film.key,PersonalQueue.saved(context).listTitles(PersonalQueue.ID,emptyList()).single().key)
+                fun result(ended:Boolean){
+                    settings.edit().putInt("queueCursor",0).commit()
+                    scenario.onActivity{a->MyChannelActivity::class.java.getDeclaredMethod("onActivityResult",Int::class.javaPrimitiveType,Int::class.javaPrimitiveType,android.content.Intent::class.java).apply{isAccessible=true}.invoke(a,41,android.app.Activity.RESULT_OK,android.content.Intent().putExtra("personal-ended",ended))}
+                }
+                result(false)
+                assertFalse(progress.getStringSet("personal-completed",emptySet()).orEmpty().contains(film.key))
+                result(true)
+                assertTrue(progress.getStringSet("personal-completed",emptySet()).orEmpty().contains(film.key))
+            }
+        } finally {
+            library.edit().putString("saved",oldSaved).putString("providers",oldProviders).putBoolean(BritishClassics.MIGRATION,oldMigration).commit()
+            progress.edit().putStringSet("personal-completed",oldCompleted).commit()
+            settings.edit().putInt("queueCursor",0).commit()
+        }
+    }
     @Test fun sevenBroadcastDomainsAndRepeatedSwitching() {
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         val context=instrumentation.targetContext

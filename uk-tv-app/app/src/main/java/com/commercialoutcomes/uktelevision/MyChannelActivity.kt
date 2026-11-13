@@ -28,6 +28,7 @@ import java.util.concurrent.Executors
 class MyChannelActivity : Activity() {
     private val handler = Handler(Looper.getMainLooper())
     private val worker = Executors.newSingleThreadExecutor()
+    private var programmeJob:java.util.concurrent.Future<*>?=null
     private val sourceWorker = Executors.newSingleThreadExecutor()
     @Volatile private var sourceCall:okhttp3.Call?=null
     private var sourceJob:java.util.concurrent.Future<*>?=null
@@ -90,10 +91,16 @@ class MyChannelActivity : Activity() {
         selected = prefs.getInt("preset",0).coerceIn(0,6)
         automatic = prefs.getBoolean("auto",true)
         defaults = JSONObject(assets.open("my-channel/default-feeds.json").bufferedReader().use { it.readText() })
-        pool=prefs.getString("pool","0,1,2,3").orEmpty().split(',').mapNotNull{it.toIntOrNull()}.filter{it in 0..6}.ifEmpty{listOf(0,1,2,3)}
+        pool=prefs.getString("pool","0,1,2,3,4,5,6").orEmpty().split(',').mapNotNull{it.toIntOrNull()}.filter{it in 0..6}.ifEmpty{listOf(0,1,2,3,4,5,6)}
         interval=prefs.getInt("interval",15).coerceIn(1,120)
         randomOrder=prefs.getBoolean("shuffle",true)
         panels=PersonalPanelRepository(this)
+        val library=getSharedPreferences("vod-library",MODE_PRIVATE)
+        if(!library.getBoolean(BritishClassics.MIGRATION,false)) {
+            val collections=assets.open("british-classics.json").bufferedReader().use{BritishClassics.collections(it.readText())}
+            val seeded=BritishClassics.install(PersonalQueue.saved(this),collections,false)
+            library.edit().putString("saved",VodSavedCodec.encode(seeded)).putBoolean(BritishClassics.MIGRATION,true).apply()
+        }
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         video=PlayerView(this).apply{useController=false;isFocusable=true;setBackgroundColor(Color.BLACK)}
@@ -109,12 +116,12 @@ class MyChannelActivity : Activity() {
 
     override fun onResume() { super.onResume();active=true;select(selected) }
     override fun onPause() {
-        active=false;panels.cancel();ticker.stop();dialog?.dismiss();dialog=null;generation++;cancelSource();handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
+        active=false;programmeJob?.cancel(true);panels.cancel();ticker.stop();dialog?.dismiss();dialog=null;generation++;cancelSource();handler.removeCallbacksAndMessages(null);video.player=null;player?.release();player=null
         super.onPause()
     }
     override fun onDestroy() { panels.close();worker.shutdownNow();sourceWorker.shutdownNow();super.onDestroy() }
     private fun select(index:Int) {
-        selected=index;page=0;panels.cancel();panelData.clear();paused=false;failureRounds=0;generation++;cancelSource();handler.removeCallbacksAndMessages(null)
+        programmeJob?.cancel(true);selected=index;page=0;panels.cancel();panelData.clear();paused=false;failureRounds=0;generation++;cancelSource();handler.removeCallbacksAndMessages(null)
         getSharedPreferences("my-channel",MODE_PRIVATE).edit().putInt("preset",selected).putBoolean("auto",automatic).apply()
         title.text="MY CHANNEL  •  ${names[selected]}"
         updateChrome()
@@ -123,6 +130,14 @@ class MyChannelActivity : Activity() {
         routes=videoMetadata.flatMap{(name,source)->val urls=source.getJSONArray("urls");val healthy=prefs.getString("healthy.${keys[selected]}.$name","");(0 until urls.length()).map{urls.getString(it)}.sortedBy{if(it==healthy)0 else 1}.map{name to it}}
         val source=prefs.getString("source.${keys[selected]}","")
         route=routes.indexOfFirst{it.first==source}.coerceAtLeast(0)
+        // A pinned camera always wins. Otherwise give each return to the world
+        // domain a different window, keeping its map, local clock and weather together.
+        if(keys[selected]=="world" && source.isNullOrBlank()) {
+            val cameras=videoMetadata.keys.filterNot{it.startsWith("Old Faithful")}
+            val previous=prefs.getString("last-world-window",null)
+            val next=cameras.filterNot{it==previous}.randomOrNull() ?: cameras.firstOrNull()
+            if(next!=null){route=routes.indexOfFirst{it.first==next}.coerceAtLeast(0);prefs.edit().putString("last-world-window",next).apply()}
+        }
         remaining=interval*60000L
         playRoute();refreshData();updateLocalPanels();scheduleRotation();updateChrome();showControls();handler.post(clockTick);handler.postDelayed(pageTick,25000);handler.postDelayed(panelRefresh,60000);handler.postDelayed(localTick,60000)
     }
@@ -205,7 +220,7 @@ class MyChannelActivity : Activity() {
         worker.submit {
             val programmes=kotlinx.coroutines.runBlocking {(application as TvApplication).database.dao().personalNowNext(channelName,System.currentTimeMillis())}
             val now=System.currentTimeMillis()
-            val info=PersonalPanel("onair","Now & next",channelName,programmes.map{p->PersonalItem((if(p.start<=now)"NOW · " else "NEXT · ")+p.title,p.description.take(500),java.text.SimpleDateFormat("HH:mm",java.util.Locale.UK).format(java.util.Date(p.start)))}.ifEmpty{listOf(PersonalItem(channelName,"Programme guide unavailable for this feed. Use Sources to change the picture."))})
+            val info=PersonalPanel("onair","Now & next",channelName,programmes.map{p->PersonalItem((if(p.start<=now)"NOW · " else "NEXT · ")+p.title,p.description.take(500),java.text.SimpleDateFormat("HH:mm",java.util.Locale.UK).format(java.util.Date(p.start)))}.ifEmpty{listOf(PersonalItem(channelName,"Programme guide unavailable for this feed. Use Sources to change the picture."))},available=programmes.isNotEmpty())
             handler.post{if(active && token==generation && routeToken==sourceGeneration){panelData["onair"]=info;renderPanels()}}
         }
         if(panelGroups().flatten().none{it=="library" || it=="rundown"}){renderPanels();return}
@@ -319,11 +334,12 @@ class MyChannelActivity : Activity() {
     }
     private fun lists() {
         val saved=VodSavedCodec.decode(getSharedPreferences("vod-library",MODE_PRIVATE).getString("saved","").orEmpty())
-        sheet("Up next & My Lists",listOf("Play / resume queue","Manage queue","Queue autoplay: ${if(prefs.getBoolean("queueAuto",false)) "On" else "Off"}")+saved.lists.map{it.name}+"Open On Demand"){choice->
+        sheet("Up next & My Lists",listOf("Play / resume queue","Manage queue","Queue autoplay: ${if(prefs.getBoolean("queueAuto",false)) "On" else "Off"}")+saved.lists.map{it.name}+"Build a personal programme mix"+"Open On Demand"){choice->
             if(choice==0){playQueue();return@sheet}
             if(choice==1){manageQueue();return@sheet}
             if(choice==2){prefs.edit().putBoolean("queueAuto",!prefs.getBoolean("queueAuto",false)).apply();lists();return@sheet}
             val i=choice-3
+            if(i==saved.lists.size){buildProgrammeMix();return@sheet}
             val launch=Intent(this,OnDemandActivity::class.java).putExtra("personal-channel",true)
             if(i<saved.lists.size)launch.putExtra("initial-shelf",saved.lists[i].id)
             startActivity(launch)
@@ -346,6 +362,34 @@ class MyChannelActivity : Activity() {
             }
         }
     }
+    private fun buildProgrammeMix() {
+        val token=generation
+        val saved=PersonalQueue.saved(this)
+        val allowed=VodProviderSelection.decode(getSharedPreferences("vod-library",MODE_PRIVATE).getString("providers",null))
+        val completed=getSharedPreferences("vod-progress",MODE_PRIVATE).getStringSet("personal-completed",emptySet()).orEmpty().toSet()
+        val candidates=PersonalProgrammePlan.candidates(saved,keys[selected])
+        if(candidates.isEmpty()){sheet("Add programmes to your mix",listOf("Open My Lists and save classics, practical programmes or favourites")){lists()};return}
+        val previousStatus=pictureStatus.text;val previousVisibility=pictureStatus.visibility
+        pictureStatus.text="Finding episodes from your saved programmes…";pictureStatus.visibility=View.VISIBLE
+        programmeJob?.cancel(true)
+        programmeJob=worker.submit {
+            val chosen=mutableListOf<VodTitle>()
+            for(title in candidates.take(5)) {
+                if(!active || generation!=token)break
+                runCatching{kotlinx.coroutines.runBlocking{PersonalProgrammePlan.next(title,allowed,completed)}}.getOrNull()?.let{chosen+=it}
+            }
+            handler.post {
+                if(!active || generation!=token)return@post
+                pictureStatus.text=previousStatus;pictureStatus.visibility=previousVisibility
+                if(chosen.isEmpty()){sheet("No playable episodes found",listOf("Try another saved title or provider in My Lists","Back to channel")){if(it==0)lists()};return@post}
+                var current=PersonalQueue.saved(this)
+                chosen.forEach{current=PersonalQueue.add(current,it)}
+                getSharedPreferences("vod-library",MODE_PRIVATE).edit().putString("saved",VodSavedCodec.encode(current)).apply()
+                updateLocalPanels()
+                sheet("Your programme mix · ${chosen.size} titles found",listOf("Review programme order","Play / resume mix","Back to channel")){i->if(i==0)manageQueue() else if(i==1)playQueue()}
+            }
+        }
+    }
     private fun playQueue() {
         val saved=PersonalQueue.saved(this);val titles=saved.listTitles(PersonalQueue.ID,emptyList())
         if(titles.isEmpty()){sheet("Your queue is empty",listOf("Open My Lists, choose an exact episode or film, then Add to My Channel queue")){lists()};return}
@@ -359,7 +403,12 @@ class MyChannelActivity : Activity() {
     override fun onActivityResult(requestCode:Int,resultCode:Int,data:Intent?) {
         super.onActivityResult(requestCode,resultCode,data)
         if(requestCode==41 && resultCode==RESULT_OK){
-            val count=PersonalQueue.saved(this).listTitles(PersonalQueue.ID,emptyList()).size
+            val queued=PersonalQueue.saved(this).listTitles(PersonalQueue.ID,emptyList())
+            queued.getOrNull(prefs.getInt("queueCursor",0))?.takeIf{data?.getBooleanExtra("personal-ended",false)==true}?.let{done->
+                val progress=getSharedPreferences("vod-progress",MODE_PRIVATE)
+                progress.edit().putStringSet("personal-completed",(progress.getStringSet("personal-completed",emptySet()).orEmpty()+done.key).toList().takeLast(500).toSet()).apply()
+            }
+            val count=queued.size
             val next=prefs.getInt("queueCursor",0)+1;prefs.edit().putInt("queueCursor",next.coerceAtMost(count)).apply()
             if(next<count && prefs.getBoolean("queueAuto",false))handler.post{playQueue()}
         }
