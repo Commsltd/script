@@ -32,7 +32,7 @@ object PersonalPanelParser {
                 val doc=Jsoup.parse(raw,"",Parser.xmlParser())
                 doc.select("item, entry").take(24).map { e ->
                     val date=e.selectFirst("pubDate, published, updated")?.text().orEmpty()
-                    PersonalItem(clean(e.selectFirst("title")?.text().orEmpty()).take(240),"",date,
+                    PersonalItem(clean(e.selectFirst("title")?.text().orEmpty()).take(240),clean(e.selectFirst("description, summary, content")?.text().orEmpty()).take(550),date,
                         e.selectFirst("link")?.let{it.attr("href").ifBlank{it.text()}}.orEmpty())
                 }.filter{it.headline.isNotBlank() && !(spec.id=="nasa" && (it.url.contains("/es/") || Regex("(?i)^(la nasa |el |los |las |¿|¡)").containsMatchIn(it.headline)))}
                 .filter{spec.maxAge==0L || publishedTime(it.observed)?.let{stamp->now-stamp<=spec.maxAge && stamp-now<86400000}==true}
@@ -40,7 +40,7 @@ object PersonalPanelParser {
             }
             "github-release" -> {
                 val o=JSONObject(raw);require(!o.optBoolean("draft"))
-                listOf(PersonalItem(o.getString("tag_name"),if(o.optBoolean("prerelease"))"Pre-release" else "Published release",o.getString("published_at"),o.getString("html_url")))
+                listOf(PersonalItem(o.getString("tag_name"),clean(o.optString("body")).take(550).ifBlank{if(o.optBoolean("prerelease"))"Pre-release" else "Published release"},o.getString("published_at"),o.getString("html_url")))
             }
             "fx", "fx-json" -> {
                 val observations=sortedMapOf<String,MutableMap<String,Double>>()

@@ -73,7 +73,11 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
     fun hasInformationFocus()=rundown.hasFocus() || middle.hasFocus() || numerical.hasFocus()
     fun pictureOnly(value:Boolean){pictureOnly=value;middle.visibility=if(value)GONE else VISIBLE;numerical.visibility=middle.visibility;rundown.visibility=middle.visibility;dataBand.visibility=middle.visibility;requestLayout()}
     fun tickerVisible(value:Boolean){newsBand.visibility=if(value && !pictureOnly)VISIBLE else GONE}
-    fun bind(domain:String,data:Map<String,PersonalPanel>,page:Int){
+    fun bind(domain:String,rawData:Map<String,PersonalPanel>,page:Int){
+        val data=rawData.toMutableMap()
+        val sources=when(domain){"business"->listOf("bbc-business","guardian-business");"world"->listOf("bbc-world","guardian-world");"spain"->listOf("spain-elpais","spain-rtve");"space"->listOf("nasa");"practical"->listOf("guardian-gardens","bbc-science");else->listOf("bbc-tech","guardian-tech")}
+        data["brief"]=PersonalEditorial.brief(data,sources,page)
+        data["context"]=PersonalEditorial.currencyContext(data["fx"])
         this.domain=domain
         val weights=when(domain){"world"->floatArrayOf(58f,25f,17f);"spain"->floatArrayOf(57f,26f,17f);"space"->floatArrayOf(58f,25f,17f);"classics"->floatArrayOf(59f,25f,16f);"practical"->floatArrayOf(57f,26f,17f);else->floatArrayOf(56f,27f,17f)}
         if(!weights.contentEquals(proportions)){proportions=weights;listOf(left,middle,numerical).forEachIndexed{i,v->(v.layoutParams as LayoutParams).weight=weights[i]};requestLayout()}
@@ -86,15 +90,15 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
         var metricItems=emptyList<Pair<PersonalPanel,PersonalItem>>()
         when(domain){
             "business"->{
-                list(rundown,"BUSINESS BRIEFING",entries("bbc-business","guardian-business"),2)
-                list(agenda,"ECONOMIC RELEASES  /  ONS",entries("releases"),4)
-                list(bulletin,"POLICY WATCH",entries("boe"),1)
+                list(rundown,"IN FOCUS · BUSINESS",entries("brief",body=true),1,true)
+                list(agenda,"CURRENCY PERSPECTIVE",entries("context",body=true),2,true)
+                list(bulletin,"POLICY & ECONOMIC BULLETINS",entries("boe","releases",body=true),1,true)
                 railTitle.text="CURRENCIES · DAILY";data["fx"]?.let{p->metricItems=p.items.take(5).map{p to it}}
                 bandTexts[0].text="REFERENCE  /  ${data["fx"]?.items?.firstOrNull()?.observed ?: "CONNECTING"}"
                 bandTexts[1].text="ECB  ·  DAILY CHANGE";bandTexts[2].text="30 OBSERVATIONS  ·  FX HISTORY"
             }
             "world"->{
-                list(rundown,"WORLD BRIEFING",entries("bbc-world","guardian-world"),2)
+                list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
                 list(agenda,"YOUR WINDOW",entries("picture",body=true),1,true)
                 list(bulletin,"EARTH WATCH",entries("quakes"),1)
                 railTitle.text="LOCAL CONDITIONS"
@@ -107,14 +111,14 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
                 bandTexts[2].text="EARTH OBSERVATIONS · USGS"
             }
             "spain"->{
-                list(rundown,"ESPAÑA  /  EL PAÍS",entries("spain-elpais"),2)
-                list(agenda,"ACTUALIDAD  /  EL MUNDO",entries("spain-rtve"),3)
+                list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
+                list(agenda,"ALSO IN SPAIN",entries("spain-rtve",body=true),2,true)
                 list(bulletin,"ANDALUCÍA · CONDITIONS",entries("seville",body=true),1,true)
                 railTitle.text="MADRID · FORECAST";data["madrid"]?.let{p->metricItems=p.items.map{p to it}}
                 bandTexts[0].text="MADRID · "+(data["madrid"]?.items?.firstOrNull()?.headline ?: "CONNECTING");bandTexts[1].text="SEVILLE · "+(data["seville"]?.items?.firstOrNull()?.headline ?: "CONNECTING");bandTexts[2].text="WEATHER · OPEN-METEO"
             }
             "space"->{
-                list(rundown,"SPACE & MISSIONS  /  NASA",entries("nasa"),2)
+                list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
                 list(agenda,"EARTH WATCH / USGS",entries("quakes"),2)
                 val position=data["iss"]?.items.orEmpty()
                 locationMap.position(position.find{it.metric=="LATITUDE"}?.number?.toDoubleOrNull(),position.find{it.metric=="LONGITUDE"}?.number?.toDoubleOrNull(),"ISS · "+(position.firstOrNull()?.observed ?: "CONNECTING"))
@@ -125,23 +129,23 @@ class PersonalBroadcastScreen(context:Context,video:PlayerView,status:TextView,c
                 bandTexts[1].text="Kp SCALE 0–9 · NOAA";bandTexts[2].text="POSITION & SPACE WEATHER · UTC"
             }
             "classics"->{
-                list(rundown,"FROM YOUR PROGRAMME LISTS",entries("library",body=true),1,true)
-                list(agenda,"BRITISH CLASSICS · SPOTLIGHT",entries("porridge","minder","ofah",body=true).filter{!it.title.equals("Cast",true)},3,true)
+                list(rundown,"NOW WATCHING",entries("onair",body=true).take(1),1,true)
+                list(agenda,"DISCOVER FROM MY LISTS",entries("library",body=true),2,true)
                 list(bulletin,"YOUR PROGRAMMING",entries("rundown",body=true),1,true)
-                railTitle.text="CAST & CONTEXT";metricItems=listOf("porridge","minder","ofah").mapNotNull{id->data[id]?.let{p->p to p.items.last().copy(metric=p.items.first().headline.substringBefore(" · "),number="",headline="Cast")}}
+                railTitle.text="YOUR NEXT PROGRAMMES";data["rundown"]?.let{p->metricItems=p.items.map{p to it}}
                 bandTexts[0].text="BRITISH COMEDY & DRAMA";bandTexts[1].text="MY LISTS · YOUR SAVED PROGRAMMES";bandTexts[2].text="REFERENCE · TVMAZE / CC BY-SA"
             }
             "practical"->{
-                list(rundown,"OUTDOORS & ENVIRONMENT",entries("bbc-science"),2)
-                list(agenda,"PRACTICAL READING",entries("guardian-gardens"),3)
-                list(bulletin,"PROGRAMME SPOTLIGHT",entries("homestead",body=true).take(1),1,true)
+                list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
+                list(agenda,"PRACTICAL READING",entries("guardian-gardens",body=true),2,true)
+                list(bulletin,"ON THIS CHANNEL",entries("onair",body=true),1,true)
                 railTitle.text="OUTDOOR CONDITIONS";data["seville"]?.let{p->metricItems=p.items.map{p to it}}
                 bandTexts[0].text="HOMESTEADING · GARDENS · OUTDOORS";bandTexts[1].text="YOUR QUEUE · MENU → MY LISTS";bandTexts[2].text="PROGRAMME REFERENCE · TVMAZE"
             }
             else->{
-                list(rundown,"TECHNOLOGY BRIEFING",entries("bbc-tech","guardian-tech"),2)
-                list(agenda,"AI RESEARCH  /  arXiv",entries("research"),3)
-                list(bulletin,"YOUR PROGRAMMING",entries("rundown"),1)
+                list(rundown,"IN FOCUS · PUBLISHER BRIEFING",entries("brief",body=true),1,true)
+                list(agenda,"RESEARCH · WHAT THE PAPER STUDIES",entries("research",body=true),2,true)
+                list(bulletin,"TOOL UPDATE · RELEASE NOTES",entries("github-releases","node-releases","ollama-releases","media3-releases",body=true),1,true)
                 railTitle.text="RELEASE WATCH"
                 metricItems=listOf("github-releases" to "VS CODE","node-releases" to "NODE.JS","ollama-releases" to "OLLAMA","media3-releases" to "ANDROID MEDIA3").mapNotNull{(id,label)->data[id]?.let{p->p to p.items.first().copy(metric=label,number=p.items.first().headline)}}
                 bandTexts[0].text="TECHNOLOGY & AI";bandTexts[1].text="RESEARCH · arXiv cs.AI";bandTexts[2].text="RELEASES · OFFICIAL GITHUB"

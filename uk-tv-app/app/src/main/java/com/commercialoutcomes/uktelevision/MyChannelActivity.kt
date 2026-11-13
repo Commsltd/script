@@ -100,7 +100,7 @@ class MyChannelActivity : Activity() {
         pictureStatus=PersonalStyle.label(this,18f).apply{gravity=android.view.Gravity.CENTER;setPadding(dp(24),dp(20),dp(24),dp(70));setBackgroundColor(Color.rgb(8,18,28))}
         controls=LinearLayout(this).apply{setPadding(dp(6),dp(6),dp(6),dp(6));setBackgroundColor(Color.rgb(8,18,28))}
         fun action(label:String,block:()->Unit){controls.addView(PersonalStyle.action(this,label,block),LinearLayout.LayoutParams(0,dp(48),1f).apply{setMargins(dp(3),0,dp(3),0)})}
-        action("Domains"){domains()};action("Sources"){sources()};action("Next"){advance()};action("Stay"){automatic=false;saveSettings();scheduleRotation();updateChrome()};action("Menu"){menu()}
+        action("Domains"){domains()};action("Sources"){sources()};action("Next"){advance()};action("Stay"){automatic=false;saveSettings();scheduleRotation();updateChrome()};action("My Lists"){lists()};action("Menu"){menu()}
         broadcast=PersonalBroadcastScreen(this,video,pictureStatus,controls){showTextDetails(it)}
         root=broadcast;body=broadcast.body;cards=broadcast.middle;title=broadcast.title;clock=broadcast.clock;strip=broadcast.strip;ticker=broadcast.ticker
         ticker.setOnClickListener{showTickerDetails()}
@@ -132,6 +132,7 @@ class MyChannelActivity : Activity() {
         handler.removeCallbacks(retry);handler.removeCallbacks(timeout);video.player=null;player?.release();player=null
         val entry=routes.getOrNull(route) ?: return pictureUnavailable()
         pictureStatus.text="Connecting to ${entry.first}…";pictureStatus.visibility=View.VISIBLE;updateChrome()
+        updateLocalPanels()
         val meta=videoMetadata[entry.first];val resolver=meta?.optString("resolver").orEmpty()
         if(resolver.isNotBlank()){
             refreshData();updateLocalPanels()
@@ -187,8 +188,10 @@ class MyChannelActivity : Activity() {
         val groups=panelGroups()
         broadcast.bind(keys[selected],panelData,page)
         val news=groups.take(3).flatten().distinct().mapNotNull{panelData[it]}.filter{panels.specs[it.id]?.kind=="rss"}
-        val items=news.flatMap{p->p.items.take(4).map{p.source+(if(p.stale)" [cached]" else "")+"  •  "+it.headline}}
-            .distinct().ifEmpty{listOf("porridge","minder","ofah").mapNotNull{panelData[it]?.items?.firstOrNull()?.let{item->item.headline+" · "+item.body}}.ifEmpty{panelData["library"]?.items?.map{it.headline}.orEmpty()+listOf(names[selected])}}
+        val lead=PersonalEditorial.brief(panelData,news.map{it.id},page).items.firstOrNull()?.headline
+        val items=PersonalEditorial.distinct(news.flatMap{p->p.items.map{it.copy(observed=p.source)}})
+            .filter{it.headline!=lead}.map{it.observed+" • "+it.headline}
+            .ifEmpty{listOf("Reference information is dated at source · MENU opens your mix and programme queue")}
         ticker.setHeadlines(if(ticker.reducedMotion)items[page.mod(items.size)] else items.joinToString("      ◆      "))
     }
     private fun updateLocalPanels() {
@@ -196,6 +199,14 @@ class MyChannelActivity : Activity() {
         if(domain=="world"){
             val meta=videoMetadata[routes.getOrNull(route)?.first]
             if(meta!=null)panelData["picture"]=PersonalPanel("picture","Your window",meta.optString("publisher"),listOf(PersonalItem(meta.getString("name"),meta.optString("description"),"Live camera · "+meta.optString("timezone"),meta.optString("page").ifBlank{routes[route].second})))
+        }
+        val routeToken=sourceGeneration
+        val channelName=routes.getOrNull(route)?.first.orEmpty().substringBefore(" — ")
+        worker.submit {
+            val programmes=kotlinx.coroutines.runBlocking {(application as TvApplication).database.dao().personalNowNext(channelName,System.currentTimeMillis())}
+            val now=System.currentTimeMillis()
+            val info=PersonalPanel("onair","Now & next",channelName,programmes.map{p->PersonalItem((if(p.start<=now)"NOW · " else "NEXT · ")+p.title,p.description.take(500),java.text.SimpleDateFormat("HH:mm",java.util.Locale.UK).format(java.util.Date(p.start)))}.ifEmpty{listOf(PersonalItem(channelName,"Programme guide unavailable for this feed. Use Sources to change the picture."))})
+            handler.post{if(active && token==generation && routeToken==sourceGeneration){panelData["onair"]=info;renderPanels()}}
         }
         if(panelGroups().flatten().none{it=="library" || it=="rundown"}){renderPanels();return}
         worker.submit {

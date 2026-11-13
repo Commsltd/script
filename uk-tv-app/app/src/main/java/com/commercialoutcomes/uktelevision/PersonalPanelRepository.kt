@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class PersonalPanelRepository(context:Context) : AutoCloseable {
     private val config=JSONObject(context.assets.open("my-channel/panel-feeds.json").bufferedReader().use{it.readText()})
     val specs=config.getJSONObject("feeds").let{o->o.keys().asSequence().associateWith{PersonalFeed.decode(o.getJSONObject(it))}}
-    private val directory=File(context.cacheDir,"personal-panels-v4").apply{mkdirs()}
+    private val directory=File(context.cacheDir,"personal-panels-v5").apply{mkdirs()}
     private val executor=Executors.newFixedThreadPool(2)
     private val calls=java.util.Collections.newSetFromMap(ConcurrentHashMap<Call,Boolean>())
     private val failures=ConcurrentHashMap<String,Int>()
