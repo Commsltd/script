@@ -1,0 +1,13 @@
+{
+  "configured": 6,
+  "resolved": 0,
+  "missing": [
+    "ABCNewsLive.us",
+    "CBSNews247.us",
+    "EuronewsEnglish.fr",
+    "LiveNOWfromFOX.us",
+    "NBCNewsNOW.us",
+    "SkyNews.uk"
+  ],
+  "status": "degraded"
+}
